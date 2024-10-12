@@ -7,7 +7,7 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState({ shortStays: false, rental: false });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const navigate = useNavigate(); // Hook to navigate programmatically
+  const navigate = useNavigate(); 
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
