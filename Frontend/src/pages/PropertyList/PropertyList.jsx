@@ -17,7 +17,7 @@ const PropertyList = () => {
 
   const deleteProperty = (propertyId) => {
     if (window.confirm('Are you sure you want to delete this property?')) {
-      axios.delete(`hhttps://koyocco-backend.onrender.com/api/properties/${propertyId}`)
+      axios.delete(`https://koyocco-backend.onrender.com/api/properties/${propertyId}`)
         .then(response => {
           alert('Property deleted successfully!');
           setProperties(properties.filter(property => property._id !== propertyId));
@@ -41,7 +41,7 @@ const PropertyList = () => {
                 {property.video && (
                   <video
                     controls
-                    className="w-full h-48 object-cover"
+                    className="w-full h-48 object-cover mb-2"
                   >
                     <source
                       src={`https://koyocco-backend.onrender.com/uploads/${property.video}`}
@@ -53,13 +53,13 @@ const PropertyList = () => {
 
                 {/* Display images if available */}
                 {property.images.length > 0 && (
-                  <div className="flex overflow-x-auto">
+                  <div className="flex overflow-x-auto space-x-2">
                     {property.images.map((image, index) => (
                       <img
                         key={index}
                         src={`https://koyocco-backend.onrender.com/uploads/${image}`}
                         alt={`${property.title} - ${index + 1}`}
-                        className="w-full h-48 object-cover"
+                        className="h-48 object-cover rounded-lg"
                       />
                     ))}
                   </div>
@@ -76,7 +76,7 @@ const PropertyList = () => {
 
             <button
               onClick={() => deleteProperty(property._id)}
-              className="w-full py-2 px-4 bg-red-600 text-white rounded-md mt-4"
+              className="w-full py-2 px-4 bg-red-600 text-white rounded-md mt-4 hover:bg-red-700 transition duration-200"
             >
               Delete Property
             </button>
