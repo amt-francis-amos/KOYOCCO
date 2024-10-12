@@ -46,7 +46,7 @@ const UploadProperty = () => {
           }
           formData.append('video', values.video);
 
-          axios.post('https://koyocco-backend.onrender.com/api/auth/properties', formData)
+          axios.post('https://koyocco-backend.onrender.com/api/properties', formData)
             .then(response => {
               alert('Property uploaded successfully!');
               resetForm();
