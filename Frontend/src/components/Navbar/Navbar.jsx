@@ -43,9 +43,9 @@ const Navbar = () => {
     localStorage.removeItem('authToken');
     // Update isLoggedIn state to false
     setIsLoggedIn(false);
-    // Close the menu and redirect to the home page or login page
-    closeMenuOnLinkClick();
+    // Redirect to the home page or login page
     navigate('/');
+    closeMenuOnLinkClick()
   };
 
   return (
@@ -101,7 +101,6 @@ const Navbar = () => {
             <Link
               to="/short-stays"
               className="hover:text-gray-700 py-2 lg:py-0 flex items-center focus:outline-none"
-              onClick={closeMenuOnLinkClick}
             >
               <span className="flex items-center">
                 Short-Stays <FaChevronDown size={10} className="ml-2" />
@@ -153,7 +152,6 @@ const Navbar = () => {
             <Link
               to="/rental"
               className="hover:text-gray-700 py-2 lg:py-0 flex items-center focus:outline-none"
-              onClick={closeMenuOnLinkClick}
             >
               <span className="flex items-center">
                 Property Rentals <FaChevronDown size={10} className="ml-2" />
@@ -208,7 +206,7 @@ const Navbar = () => {
           {/* Other Links */}
           <li>
             <Link
-              to="/property-sales"
+              to="/property Sales"
               className="hover:text-gray-700 block py-2 lg:py-0"
               onClick={closeMenuOnLinkClick}
             >
@@ -262,9 +260,9 @@ const Navbar = () => {
                   </button>
                 </Link>
               </li>
-              <li className="lg:hidden mt-2">
+              <li className="lg:hidden">
                 <Link to="/signup" onClick={closeMenuOnLinkClick}>
-                  <button className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black w-full">
+                  <button className="bg-red-500 mt-2 text-white px-7 py-2 rounded-md hover:bg-black w-full">
                     Signup
                   </button>
                 </Link>
@@ -272,6 +270,31 @@ const Navbar = () => {
             </>
           )}
         </ul>
+
+        {/* Desktop-Only Buttons */}
+        <div className="hidden lg:flex lg:items-center space-x-4">
+          {!isLoggedIn ? (
+            <>
+              <Link to="/login">
+                <button className="bg-red-500 text-white px-7 py-2 rounded-full hover:bg-black">
+                  Login
+                </button>
+              </Link>
+              <Link to="/signup">
+                <button className="bg-red-500 text-white px-7 py-2 rounded-full hover:bg-black">
+                  Signup
+                </button>
+              </Link>
+            </>
+          ) : (
+            <button
+              onClick={handleLogout}
+              className="bg-red-500 text-white px-7 py-2 rounded-full hover:bg-black"
+            >
+              Logout
+            </button>
+          )}
+        </div>
       </div>
     </nav>
   );
