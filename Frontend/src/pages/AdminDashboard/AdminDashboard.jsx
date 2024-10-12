@@ -9,7 +9,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchLogs = async () => {
       try {
-        const response = await axios.get('https://koyocco-frontend.onrender.com/api/auth/admin/logs', {
+        const response = await axios.get('https://koyocco.onrender.com/api/auth/admin/logs', {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('token')}`, 

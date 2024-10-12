@@ -17,7 +17,7 @@ const PropertyList = () => {
 
   const deleteProperty = (propertyId) => {
     if (window.confirm('Are you sure you want to delete this property?')) {
-      axios.delete(`https://koyocco-frontend.onrender.com/api/properties/${propertyId}`)
+      axios.delete(`https://koyocco.onrender.com/api/properties/${propertyId}`)
         .then(response => {
           alert('Property deleted successfully!');
           setProperties(properties.filter(property => property._id !== propertyId));

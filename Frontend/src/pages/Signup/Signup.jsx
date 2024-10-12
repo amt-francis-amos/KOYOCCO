@@ -27,7 +27,7 @@ const Signup = () => {
       return;
     }
     try {
-      const response = await axios.post('https://koyocco-frontend.onrender.com/api/auth/signup', {
+      const response = await axios.post('https://koyocco.onrender.com/api/auth/signup', {
         email,
         password,
         role,
