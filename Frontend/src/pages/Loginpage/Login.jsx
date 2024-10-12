@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import bgImage from "../../assets/koyocco-logo.jpeg";
@@ -10,17 +10,22 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState({});
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
 
-  // Validate email format
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
   const validateEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
   };
 
-  const validatePassword = (password) => {
-    return password.length >= 6;
-  };
+  const validatePassword = (password) => password.length >= 6;
 
   const validateForm = () => {
     const validationErrors = {};
@@ -37,52 +42,35 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
 
     try {
       const response = await axios.post(
         "https://koyocco-backend.onrender.com/api/auth/login",
-        {
-          email,
-          password,
-        }
+        { email, password }
       );
 
       const { token, role } = response.data;
-      console.log(role)
-
       if (!token || !role) {
         setMessage("Login failed: No token or role received");
         return;
       }
 
       localStorage.setItem("authToken", token);
-      localStorage.setItem("role", role); 
+      localStorage.setItem("role", role);
+      setIsAuthenticated(true);
 
-      const redirectPath =
-        role === "Admin"
-          ? "/adminDashboard"
-          : role === "Property Owner"
-          ? "/ownerDashboard"
-          : role === "Agent"
-          ? "/agentDashboard"
-          : "/";
+      const redirectPath = role === "Admin" 
+        ? "/adminDashboard"
+        : role === "Property Owner" 
+        ? "/ownerDashboard"
+        : role === "Agent"
+        ? "/agentDashboard"
+        : "/";
 
-      toast.success("Login successful!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-
-      navigate(redirectPath); // Redirect based on role
+      toast.success("Login successful!");
+      navigate(redirectPath);
     } catch (error) {
-      console.error("Login error:", error);
       setMessage(error.response?.data?.message || "An error occurred");
       toast.error(error.response?.data?.message || "An error occurred");
     }
@@ -129,11 +117,13 @@ const Login = () => {
         </button>
       </form>
       {message && <p className="mt-4 text-red-500">{message}</p>}
-      <div className="mt-4">
-        <Link to="/forgot-password" className="text-gray-900 hover:underline">
-          Forgot Password?
-        </Link>
-      </div>
+      {!isAuthenticated && (
+        <div className="mt-4">
+          <Link to="/signup" className="text-gray-900 hover:underline">
+            Don't have an account? Signup
+          </Link>
+        </div>
+      )}
     </div>
   );
 };
