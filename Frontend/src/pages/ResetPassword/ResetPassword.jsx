@@ -46,7 +46,7 @@ const ResetPassword = () => {
 
       // Send request to reset password
       const response = await axios.post(
-        `https://koyocco.onrender.com/api/auth/reset-password/${token}`,
+        `https://koyocco-backend.onrender.com/api/auth/reset-password/${token}`,
         { password }
       );
 

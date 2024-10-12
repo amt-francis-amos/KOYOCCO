@@ -37,7 +37,7 @@ const Booking = () => {
       };
 console.log(localStorage.getItem(" authToken"))
       // Send booking request to the server
-      const response = await axios.post("https://koyocco.onrender.com/api/auth/bookings", bookingData, {headers:{Authorization: "Bearer " + localStorage.getItem("authToken")}});
+      const response = await axios.post("https://koyocco-backend.onrender.com/api/auth/bookings", bookingData, {headers:{Authorization: "Bearer " + localStorage.getItem("authToken")}});
 
       if (response.status === 201) {
         setSuccess("Booking confirmed! Check your email for confirmation.");

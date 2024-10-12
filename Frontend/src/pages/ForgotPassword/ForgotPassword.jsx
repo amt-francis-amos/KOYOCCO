@@ -13,7 +13,7 @@ const ForgotPassword = () => {
 
     try {
       const response = await axios.post(
-        "https://koyocco.onrender.com/api/auth/forgot-password",
+        "https://koyocco-backend.onrender.com/api/auth/forgot-password",
         {
           email,
         }
