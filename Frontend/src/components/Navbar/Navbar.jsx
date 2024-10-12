@@ -1,19 +1,27 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { assets } from '../../assets/assets';
 import { FaBars, FaTimes, FaChevronDown } from 'react-icons/fa';
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState({ shortStays: false, rental: false });
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate(); // Hook to navigate programmatically
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
 
+  useEffect(() => {
+    // Check if user is already logged in
+    const token = localStorage.getItem('authToken');
+    setIsLoggedIn(!!token); // Set isLoggedIn to true if token exists, false otherwise
+  });
+
   const closeMenuOnLinkClick = () => {
     setMenuOpen(false);
-    setDropdownOpen({ shortStays: false, rental: false }); 
+    setDropdownOpen({ shortStays: false, rental: false });
   };
 
   const handleMouseEnter = (dropdown) => {
@@ -28,6 +36,15 @@ const Navbar = () => {
       ...prev,
       [dropdown]: false,
     }));
+  };
+
+  const handleLogout = () => {
+    // Remove the token from localStorage
+    localStorage.removeItem('authToken');
+    // Update isLoggedIn state to false
+    setIsLoggedIn(false);
+    // Redirect to the home page or login page
+    navigate('/');
   };
 
   return (
@@ -224,34 +241,58 @@ const Navbar = () => {
           </li>
 
           {/* Mobile-Only Buttons */}
-          <li className="lg:hidden mt-4">
-            <Link to="/login">
-              <button className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black w-full">
-                Login
+          {isLoggedIn ? (
+            <li className="lg:hidden mt-4">
+              <button
+                onClick={handleLogout}
+                className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black w-full"
+              >
+                Logout
               </button>
-            </Link>
-          </li>
-          <li className="lg:hidden">
-            <Link to="/signup">
-              <button className="bg-red-500 mt-2 text-white px-7 py-2 rounded-md hover:bg-black w-full">
-                Signup
-              </button>
-            </Link>
-          </li>
+            </li>
+          ) : (
+            <>
+              <li className="lg:hidden mt-4">
+                <Link to="/login">
+                  <button className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black w-full">
+                    Login
+                  </button>
+                </Link>
+              </li>
+              <li className="lg:hidden">
+                <Link to="/signup">
+                  <button className="bg-red-500 mt-2 text-white px-7 py-2 rounded-md hover:bg-black w-full">
+                    Signup
+                  </button>
+                </Link>
+              </li>
+            </>
+          )}
         </ul>
 
         {/* Desktop-Only Buttons */}
-        <div className="hidden lg:flex lg:items-center lg:space-x-4">
-          <Link to="/login">
-            <button className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black">
-              Login
+        <div className="hidden lg:flex lg:items-center space-x-4">
+          {!isLoggedIn ? (
+            <>
+              <Link to="/login">
+                <button className="bg-red-500 text-white px-7 py-2 rounded-full hover:bg-black">
+                  Login
+                </button>
+              </Link>
+              <Link to="/signup">
+                <button className="bg-red-500 text-white px-7 py-2 rounded-full hover:bg-black">
+                  Signup
+                </button>
+              </Link>
+            </>
+          ) : (
+            <button
+              onClick={handleLogout}
+              className="bg-red-500 text-white px-7 py-2 rounded-full hover:bg-black"
+            >
+              Logout
             </button>
-          </Link>
-          <Link to="/signup">
-            <button className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black">
-              Signup
-            </button>
-          </Link>
+          )}
         </div>
       </div>
     </nav>
