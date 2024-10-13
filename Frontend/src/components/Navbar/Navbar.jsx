@@ -14,9 +14,8 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    // Check if user is already logged in
     const token = localStorage.getItem('authToken');
-    setIsLoggedIn(!!token); // Set isLoggedIn to true if token exists, false otherwise
+    setIsLoggedIn(!!token); 
   });
 
   const closeMenuOnLinkClick = () => {
