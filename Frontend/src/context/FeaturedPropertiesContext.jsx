@@ -1,15 +1,24 @@
-import React, { createContext, useState, useContext } from "react";
-
-import { featuredProperties as initialFeaturedProperties } from "../assets/assets";
+import React, { createContext, useState, useContext, useEffect } from "react";
+import axios from "axios";
 
 const FeaturedPropertiesContext = createContext();
 
-
 export const FeaturedPropertiesProvider = ({ children }) => {
-  
-  const [featuredProperties, setFeaturedProperties] = useState(
-    initialFeaturedProperties
-  );
+  const [featuredProperties, setFeaturedProperties] = useState([]);
+
+  // Function to fetch properties from the backend
+  const fetchFeaturedProperties = async () => {
+    try {
+      const response = await axios.get('https://koyocco-backend.onrender.com/api/properties');
+      setFeaturedProperties(response.data); 
+    } catch (error) {
+      console.error("Error fetching properties:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchFeaturedProperties();
+  }, []);
 
   return (
     <FeaturedPropertiesContext.Provider

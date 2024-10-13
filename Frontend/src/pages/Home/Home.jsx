@@ -35,7 +35,7 @@ const Home = () => {
       return matchesSearch;
     })
     .filter((property) => {
-      const priceValue = parseFloat(property.price.replace(/[^0-9.-]+/g, ""));
+      const priceValue = parseFloat(property.price);
       const selectedPriceRange = parseFloat(filter.priceRange);
       const matchesLocation = !filter.location || property.location.toLowerCase() === filter.location.toLowerCase();
       const matchesPrice = !filter.priceRange || priceValue <= selectedPriceRange;
@@ -46,7 +46,7 @@ const Home = () => {
 
   const sortedProperties = [...filteredProperties].sort((a, b) => {
     if (sortAttribute === 'price') {
-      return parseFloat(a.price.replace(/[^0-9.-]+/g, "")) - parseFloat(b.price.replace(/[^0-9.-]+/g, ""));
+      return parseFloat(a.price) - parseFloat(b.price);
     } else if (sortAttribute === 'dateAdded') {
       return new Date(b.dateAdded) - new Date(a.dateAdded);
     }
@@ -148,7 +148,14 @@ const Home = () => {
             {sortedProperties.length > 0 ? (
               sortedProperties.map((property) => (
                 <Link to={`/property/${property.id}`} key={property.id} className="border border-gray-300 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-200">
-                  <img src={property.image} alt={property.title} className="w-full h-64 object-cover" />
+                  {/* Display the image or a default image if property.images[0] is unavailable */}
+                  <img
+                    src={property.images && property.images[0] 
+                      ? `https://koyocco-backend.onrender.com/uploads/${property.images[0]}` 
+                      : 'https://via.placeholder.com/300x200?text=No+Image+Available'}
+                    alt={property.title}
+                    className="w-full h-64 object-cover"
+                  />
                   <div className="p-4">
                     <h3 className="text-xl font-bold mb-2">{property.title}</h3>
                     <p className="text-gray-600">{property.location}</p>
