@@ -4,12 +4,12 @@ import { useNavigate, Link } from "react-router-dom";
 import bgImage from "../../assets/koyocco-logo.jpeg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { FaEye, FaEyeSlash } from "react-icons/fa"; 
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); 
+  const [showPassword, setShowPassword] = useState(false); // Password visibility state
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState({});
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -79,7 +79,7 @@ const Login = () => {
     }
   };
 
-
+  // Toggle password visibility
   const togglePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
   };
@@ -109,7 +109,7 @@ const Login = () => {
         <div className="mb-4 relative">
           <label className="block text-gray-700">Password</label>
           <input
-            type={showPassword ? "text" : "password"} 
+            type={showPassword ? "text" : "password"} // Toggle between text and password type
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="w-full p-2 border border-gray-300 rounded-lg"
@@ -119,10 +119,18 @@ const Login = () => {
             className="absolute right-3 top-10 cursor-pointer"
             onClick={togglePasswordVisibility}
           >
-            {showPassword ? <FaEyeSlash /> : <FaEye />} 
+            {showPassword ? <FaEyeSlash /> : <FaEye />} {/* Display correct icon */}
           </span>
           {errors.password && <p className="text-red-500">{errors.password}</p>}
         </div>
+
+        {/* Forgot Password Link */}
+        <div className="mb-4">
+          <Link to="/forgot-password" className="text-blue-500 hover:underline">
+            Forgot your password?
+          </Link>
+        </div>
+
         <button
           type="submit"
           className="bg-red-600 text-white px-4 py-2 rounded-lg w-full hover:bg-red-700"
