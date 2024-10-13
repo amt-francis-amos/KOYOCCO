@@ -49,9 +49,9 @@ router.post(
         description,
         price,
         location,
-        images,  // Save array of image filenames
-        video,   // Save video filename
-        agent: agentId, // Associate the property with the agent
+        images, 
+        video,   
+        agent: agentId, 
       });
 
       await newProperty.save();
@@ -62,6 +62,7 @@ router.post(
     }
   }
 );
+
 
 // Delete route to remove a property and its associated media files
 router.delete('/:id', async (req, res) => {

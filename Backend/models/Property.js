@@ -7,7 +7,6 @@ const PropertySchema = new mongoose.Schema({
   location: { type: String, required: true },
   images: [{ type: String }],
   video: { type: String },
-  agent: { type: mongoose.Schema.Types.ObjectId, ref: 'Agent' } 
 });
 
 module.exports = mongoose.model('Property', PropertySchema);
