@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
 const Property = require('../models/Property'); 
-const Agent = require('../models/Agent'); 
+
 
 const router = express.Router();
 
@@ -31,13 +31,9 @@ router.post(
   upload.fields([{ name: 'images', maxCount: 10 }, { name: 'video', maxCount: 1 }]),
   async (req, res) => {
     try {
-      const { title, description, price, location, agentId } = req.body; // Include agentId in the request body
+      const { title, description, price, location } = req.body; // Include agentId in the request body
 
-      // Check if the agentId is valid
-      const agent = await Agent.findById(agentId);
-      if (!agent) {
-        return res.status(404).json({ message: 'Agent not found' });
-      }
+     
 
       // Handle uploaded files
       const images = req.files.images ? req.files.images.map(file => file.filename) : [];
@@ -51,7 +47,7 @@ router.post(
         location,
         images, 
         video,   
-        agent: agentId, 
+  
       });
 
       await newProperty.save();
