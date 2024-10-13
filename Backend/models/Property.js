@@ -1,13 +1,13 @@
-
 const mongoose = require('mongoose');
 
-const propertySchema = new mongoose.Schema({
+const PropertySchema = new mongoose.Schema({
   title: { type: String, required: true },
-  description: { type: String, required: true },
+  description: { type: String },
   price: { type: Number, required: true },
   location: { type: String, required: true },
-  images: { type: [String], required: true },
-  video: { type: String }
+  images: [{ type: String }],
+  video: { type: String },
+  agent: { type: mongoose.Schema.Types.ObjectId, ref: 'Agent' } 
 });
 
-module.exports = mongoose.model('Property', propertySchema);
+module.exports = mongoose.model('Property', PropertySchema);
