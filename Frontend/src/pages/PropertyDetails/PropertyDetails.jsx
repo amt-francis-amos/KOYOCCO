@@ -9,7 +9,7 @@ const PropertyDetails = () => {
   const { featuredProperties } = useFeaturedProperties();
   const property = featuredProperties.find((property) => property.id === Number(id));
   
-  // State to manage modal visibility and agent details
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [agent, setAgent] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -24,7 +24,7 @@ const PropertyDetails = () => {
       setError(null);
       
       try {
-        const response = await axios.get(`https://koyocco-backend.onrender.com/api/properties/${property.id}`); // Use Axios to fetch data
+        const response = await axios.get(`https://koyocco-backend.onrender.com/api/properties/${property.id}`); 
         setAgent(response.data);
       } catch (error) {
         setError(error.response?.data?.message || error.message);
