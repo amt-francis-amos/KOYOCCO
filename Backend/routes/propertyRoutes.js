@@ -2,7 +2,6 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
-const Property = require('../models/Property');
 
 
 const router = express.Router();
@@ -56,6 +55,11 @@ router.post(
     }
   }
 );
+
+
+
+
+
 
 
 // Delete route to remove a property and its associated media files
