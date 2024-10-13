@@ -4,10 +4,12 @@ import { useNavigate, Link } from "react-router-dom";
 import bgImage from "../../assets/koyocco-logo.jpeg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // Password visibility state
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState({});
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -60,13 +62,14 @@ const Login = () => {
       localStorage.setItem("role", role);
       setIsAuthenticated(true);
 
-      const redirectPath = role === "Admin" 
-        ? "/adminDashboard"
-        : role === "Property Owner" 
-        ? "/ownerDashboard"
-        : role === "Agent"
-        ? "/agentDashboard"
-        : "/";
+      const redirectPath =
+        role === "Admin"
+          ? "/adminDashboard"
+          : role === "Property Owner"
+          ? "/ownerDashboard"
+          : role === "Agent"
+          ? "/agentDashboard"
+          : "/";
 
       toast.success("Login successful!");
       navigate(redirectPath);
@@ -74,6 +77,11 @@ const Login = () => {
       setMessage(error.response?.data?.message || "An error occurred");
       toast.error(error.response?.data?.message || "An error occurred");
     }
+  };
+
+  // Toggle password visibility
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevState) => !prevState);
   };
 
   return (
@@ -98,15 +106,21 @@ const Login = () => {
           />
           {errors.email && <p className="text-red-500">{errors.email}</p>}
         </div>
-        <div className="mb-4">
+        <div className="mb-4 relative">
           <label className="block text-gray-700">Password</label>
           <input
-            type="password"
+            type={showPassword ? "text" : "password"} // Toggle between text and password type
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="w-full p-2 border border-gray-300 rounded-lg"
             required
           />
+          <span
+            className="absolute right-3 top-10 cursor-pointer"
+            onClick={togglePasswordVisibility}
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />} {/* Display correct icon */}
+          </span>
           {errors.password && <p className="text-red-500">{errors.password}</p>}
         </div>
         <button
