@@ -78,7 +78,7 @@ const Home = () => {
               <div className="bg-black bg-opacity-50 h-full flex flex-col justify-center items-center">
                 <h1 className="text-white text-4xl md:text-5xl font-bold mb-4">Find Your Dream Home</h1>
                 <p className="text-white text-lg md:text-xl mb-8">Browse through the best properties available.</p>
-                <Link to="/listings" className="bg-red-500 text-white px-6 py-3 rounded-full">Get Started</Link>
+                <Link to="/propertyList" className="bg-red-500 text-white px-6 py-3 rounded-full">Get Started</Link>
               </div>
             </div>
           ))}
