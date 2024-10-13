@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
 const Property = require('../models/Property');
+const Agent = require('../models/Agent'); // Import the Agent model
 
 const router = express.Router();
 
@@ -30,13 +31,13 @@ router.post(
   upload.fields([{ name: 'images', maxCount: 10 }, { name: 'video', maxCount: 1 }]),
   async (req, res) => {
     try {
-      const { title, description, price, location } = req.body;
+      const { title, description, price, location, agentId } = req.body; // Include agentId in the request body
 
       // Handle uploaded files
       const images = req.files.images ? req.files.images.map(file => file.filename) : [];
       const video = req.files.video ? req.files.video[0].filename : null;
 
-      // Create new property with uploaded files
+      // Create new property with uploaded files and agent reference
       const newProperty = new Property({
         title,
         description,
@@ -44,27 +45,28 @@ router.post(
         location,
         images,  // Save array of image filenames
         video,   // Save video filename
+        agent: agentId, // Associate the property with the agent
       });
 
       await newProperty.save();
       res.status(201).json(newProperty);
     } catch (error) {
-      console.error('Error uploading property:', error.message); 
+      console.error('Error uploading property:', error.message);
       res.status(500).json({ message: 'Server Error' });
     }
   }
 );
 
-// Get route to fetch a single property by ID
+// Get route to fetch a single property by ID with agent details
 router.get('/:id', async (req, res) => {
   try {
-    const property = await Property.findById(req.params.id);
+    const property = await Property.findById(req.params.id).populate('agent'); // Populate the agent field
     if (!property) {
       return res.status(404).json({ message: 'Property not found' });
     }
     res.status(200).json(property);
   } catch (error) {
-    console.error('Error fetching property:', error.message); 
+    console.error('Error fetching property:', error.message);
     res.status(500).json({ message: 'Server Error' });
   }
 });
@@ -72,10 +74,10 @@ router.get('/:id', async (req, res) => {
 // Get route to fetch all properties
 router.get('/', async (req, res) => {
   try {
-    const properties = await Property.find();
+    const properties = await Property.find().populate('agent'); // Optionally populate agent details for all properties
     res.status(200).json(properties);
   } catch (error) {
-    console.error('Error fetching properties:', error.message); 
+    console.error('Error fetching properties:', error.message);
     res.status(500).json({ message: 'Server Error' });
   }
 });

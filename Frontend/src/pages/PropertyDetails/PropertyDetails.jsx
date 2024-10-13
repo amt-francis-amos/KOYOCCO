@@ -24,7 +24,7 @@ const PropertyDetails = () => {
       setError(null);
       
       try {
-        const response = await axios.get(`/api/properties/${property.id}/agent`); // Use Axios to fetch data
+        const response = await axios.get(`https://koyocco-backend.onrender.com/api/properties/${property.id}/agent`); // Use Axios to fetch data
         setAgent(response.data);
       } catch (error) {
         setError(error.response?.data?.message || error.message); // Handle error gracefully
