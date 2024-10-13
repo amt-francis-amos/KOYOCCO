@@ -1,4 +1,4 @@
-// src/App.js
+
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
@@ -19,10 +19,10 @@ import { FeaturedPropertiesProvider } from './context/FeaturedPropertiesContext'
 import Booking from './pages/Booking/Booking';
 import ResetPassword from './pages/ResetPassword/ResetPassword';
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
-import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'; // Import the ProtectedRoute
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'; 
 
 function App() {
-  const role = localStorage.getItem('role'); // Get user role from local storage
+  const role = localStorage.getItem('role'); 
 
   return (
     <FeaturedPropertiesProvider>
