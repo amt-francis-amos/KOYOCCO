@@ -31,7 +31,7 @@ router.post(
   upload.fields([{ name: 'images', maxCount: 10 }, { name: 'video', maxCount: 1 }]),
   async (req, res) => {
     try {
-      const { title, description, price, location } = req.body; // Include agentId in the request body
+      const { title, description, price, location } = req.body; 
 
      
 
