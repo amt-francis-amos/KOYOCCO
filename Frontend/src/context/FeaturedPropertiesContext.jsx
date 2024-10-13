@@ -1,35 +1,25 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { createContext, useState, useContext } from "react";
+
+import { featuredProperties as initialFeaturedProperties } from "../assets/assets";
 
 const FeaturedPropertiesContext = createContext();
 
-export const useFeaturedProperties = () => {
-  return useContext(FeaturedPropertiesContext);
-};
 
 export const FeaturedPropertiesProvider = ({ children }) => {
-  const [featuredProperties, setFeaturedProperties] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchFeaturedProperties = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/api/properties'); 
-        setFeaturedProperties(response.data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchFeaturedProperties();
-  }, []);
+  
+  const [featuredProperties, setFeaturedProperties] = useState(
+    initialFeaturedProperties
+  );
 
   return (
-    <FeaturedPropertiesContext.Provider value={{ featuredProperties, loading, error }}>
+    <FeaturedPropertiesContext.Provider
+      value={{ featuredProperties, setFeaturedProperties }}
+    >
       {children}
     </FeaturedPropertiesContext.Provider>
   );
+};
+
+export const useFeaturedProperties = () => {
+  return useContext(FeaturedPropertiesContext);
 };
