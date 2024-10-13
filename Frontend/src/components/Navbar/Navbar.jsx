@@ -203,7 +203,7 @@ const Navbar = () => {
           {/* Other Links */}
           <li>
             <Link
-              to="/property Sales"
+              to="/property-sales"
               className="hover:text-gray-700 block py-2 lg:py-0"
               onClick={closeMenuOnLinkClick}
             >
