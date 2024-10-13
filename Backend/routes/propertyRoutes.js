@@ -60,7 +60,7 @@ router.post(
 // Get route to fetch a single property by ID with agent details
 router.get('/:id', async (req, res) => {
   try {
-    const property = await Property.findById(req.params.id).populate('agent'); // Populate the agent field
+    const property = await Property.findById(req.params.id);
     if (!property) {
       return res.status(404).json({ message: 'Property not found' });
     }
