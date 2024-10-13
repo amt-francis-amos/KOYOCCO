@@ -4,12 +4,12 @@ import { useNavigate, Link } from "react-router-dom";
 import bgImage from "../../assets/koyocco-logo.jpeg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
+import { FaEye, FaEyeSlash } from "react-icons/fa"; 
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // Password visibility state
+  const [showPassword, setShowPassword] = useState(false); 
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState({});
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -109,7 +109,7 @@ const Login = () => {
         <div className="mb-4 relative">
           <label className="block text-gray-700">Password</label>
           <input
-            type={showPassword ? "text" : "password"} // Toggle between text and password type
+            type={showPassword ? "text" : "password"} 
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="w-full p-2 border border-gray-300 rounded-lg"
@@ -119,7 +119,7 @@ const Login = () => {
             className="absolute right-3 top-10 cursor-pointer"
             onClick={togglePasswordVisibility}
           >
-            {showPassword ? <FaEyeSlash /> : <FaEye />} {/* Display correct icon */}
+            {showPassword ? <FaEyeSlash /> : <FaEye />} 
           </span>
           {errors.password && <p className="text-red-500">{errors.password}</p>}
         </div>
@@ -133,7 +133,6 @@ const Login = () => {
       </form>
       {message && <p className="mt-4 text-red-500">{message}</p>}
 
-      {/* Flex container for the Forgot Password and Signup link */}
       {!isAuthenticated && (
         <div className="flex justify-between mt-4 ">
           <Link to="/forgot-password" className="text-blue-500 text-sm hover:underline">
