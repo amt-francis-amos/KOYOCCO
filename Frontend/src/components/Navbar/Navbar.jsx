@@ -39,11 +39,8 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    // Remove the token from localStorage
     localStorage.removeItem('authToken');
-    // Update isLoggedIn state to false
     setIsLoggedIn(false);
-    // Redirect to the home page or login page
     navigate('/');
     closeMenuOnLinkClick()
   };
