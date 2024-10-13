@@ -71,6 +71,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+
 // Get route to fetch all properties
 router.get('/', async (req, res) => {
   try {
