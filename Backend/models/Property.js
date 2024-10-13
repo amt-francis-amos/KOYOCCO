@@ -7,6 +7,7 @@ const PropertySchema = new mongoose.Schema({
   location: { type: String, required: true },
   images: [{ type: String }],
   video: { type: String },
+
 });
 
 module.exports = mongoose.model('Property', PropertySchema);
