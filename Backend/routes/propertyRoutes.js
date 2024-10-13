@@ -2,7 +2,8 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
-
+const Property = require('../models/Property'); 
+const Agent = require('../models/Agent'); 
 
 const router = express.Router();
 
@@ -32,6 +33,12 @@ router.post(
     try {
       const { title, description, price, location, agentId } = req.body; // Include agentId in the request body
 
+      // Check if the agentId is valid
+      const agent = await Agent.findById(agentId);
+      if (!agent) {
+        return res.status(404).json({ message: 'Agent not found' });
+      }
+
       // Handle uploaded files
       const images = req.files.images ? req.files.images.map(file => file.filename) : [];
       const video = req.files.video ? req.files.video[0].filename : null;
@@ -55,12 +62,6 @@ router.post(
     }
   }
 );
-
-
-
-
-
-
 
 // Delete route to remove a property and its associated media files
 router.delete('/:id', async (req, res) => {
