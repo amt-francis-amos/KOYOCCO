@@ -124,13 +124,6 @@ const Login = () => {
           {errors.password && <p className="text-red-500">{errors.password}</p>}
         </div>
 
-        {/* Forgot Password Link */}
-        <div className="mb-4">
-          <Link to="/forgot-password" className="text-blue-500 hover:underline">
-            Forgot your password?
-          </Link>
-        </div>
-
         <button
           type="submit"
           className="bg-red-600 text-white px-4 py-2 rounded-lg w-full hover:bg-red-700"
@@ -139,9 +132,14 @@ const Login = () => {
         </button>
       </form>
       {message && <p className="mt-4 text-red-500">{message}</p>}
+
+      {/* Flex container for the Forgot Password and Signup link */}
       {!isAuthenticated && (
-        <div className="mt-4">
-          <Link to="/signup" className="text-gray-900 hover:underline">
+        <div className="flex justify-between mt-4 ">
+          <Link to="/forgot-password" className="text-blue-500 text-sm hover:underline">
+            Forgot your password?
+          </Link>
+          <Link to="/signup" className="text-gray-900  text-sm hover:underline">
             Don't have an account? Signup
           </Link>
         </div>
