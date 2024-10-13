@@ -4,40 +4,34 @@ import { Link } from 'react-router-dom';
 
 const PropertyList = () => {
   const [properties, setProperties] = useState([]);
-  const [error, setError] = useState(null); // State to handle errors
 
   useEffect(() => {
-    const fetchProperties = async () => {
-      try {
-        const response = await axios.get('https://koyocco-backend.onrender.com/api/properties');
-        console.log('Fetched properties:', response.data); // Log the response for debugging
+    axios.get('https://koyocco-backend.onrender.com/api/properties')
+      .then(response => {
         setProperties(response.data);
-      } catch (error) {
+      })
+      .catch(error => {
         console.error('There was an error fetching the properties!', error);
-        setError('Error fetching properties. Please try again later.'); // Set error message
-      }
-    };
-
-    fetchProperties();
+      });
   }, []);
 
-  const deleteProperty = async (propertyId) => {
+  const deleteProperty = (propertyId) => {
     if (window.confirm('Are you sure you want to delete this property?')) {
-      try {
-        await axios.delete(`https://koyocco-backend.onrender.com/api/properties/${propertyId}`);
-        alert('Property deleted successfully!');
-        setProperties(properties.filter(property => property._id !== propertyId));
-      } catch (error) {
-        console.error('Error deleting property:', error);
-        alert('An error occurred while deleting the property.');
-      }
+      axios.delete(`https://koyocco-backend.onrender.com/api/properties/${propertyId}`)
+        .then(response => {
+          alert('Property deleted successfully!');
+          setProperties(properties.filter(property => property._id !== propertyId));
+        })
+        .catch(error => {
+          console.error('Error deleting property:', error);
+          alert('An error occurred while deleting the property.');
+        });
     }
   };
 
   return (
     <div className="max-w-7xl mx-auto py-12">
       <h1 className="text-3xl font-bold text-center mb-8">Property Listings</h1>
-      {error && <p className="text-red-500 text-center">{error}</p>} {/* Display error message if any */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {properties.map(property => (
           <div key={property._id} className="bg-white shadow-md rounded-lg overflow-hidden">
