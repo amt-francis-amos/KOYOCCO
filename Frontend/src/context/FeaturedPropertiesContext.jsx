@@ -6,7 +6,7 @@ const FeaturedPropertiesContext = createContext();
 export const FeaturedPropertiesProvider = ({ children }) => {
   const [featuredProperties, setFeaturedProperties] = useState([]);
 
-  // Function to fetch properties from the backend
+
   const fetchFeaturedProperties = async () => {
     try {
       const response = await axios.get('https://koyocco-backend.onrender.com/api/properties');

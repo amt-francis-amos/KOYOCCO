@@ -15,7 +15,7 @@ const PropertyDetails = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Fetch agent details when the property is available
+ 
   useEffect(() => {
     const fetchAgentDetails = async () => {
       if (!property) return;
