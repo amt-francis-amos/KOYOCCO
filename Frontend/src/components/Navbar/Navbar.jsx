@@ -5,9 +5,13 @@ import { FaBars, FaTimes, FaChevronDown } from 'react-icons/fa';
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState({ shortStays: false, rental: false });
+  const [dropdownOpen, setDropdownOpen] = useState({
+    shortStays: false,
+    rental: false,
+    propertySales: false, // New state for Property Sales dropdown
+  });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -15,25 +19,22 @@ const Navbar = () => {
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');
-    setIsLoggedIn(!!token); 
-  });
+    setIsLoggedIn(!!token);
+  }, []);
 
   const closeMenuOnLinkClick = () => {
     setMenuOpen(false);
-    setDropdownOpen({ shortStays: false, rental: false });
+    setDropdownOpen({
+      shortStays: false,
+      rental: false,
+      propertySales: false, // Reset Property Sales dropdown on link click
+    });
   };
 
-  const handleMouseEnter = (dropdown) => {
+  const toggleDropdown = (dropdown) => {
     setDropdownOpen((prev) => ({
       ...prev,
-      [dropdown]: true,
-    }));
-  };
-
-  const handleMouseLeave = (dropdown) => {
-    setDropdownOpen((prev) => ({
-      ...prev,
-      [dropdown]: false,
+      [dropdown]: !prev[dropdown],
     }));
   };
 
@@ -41,7 +42,7 @@ const Navbar = () => {
     localStorage.removeItem('authToken');
     setIsLoggedIn(false);
     navigate('/');
-    closeMenuOnLinkClick()
+    closeMenuOnLinkClick();
   };
 
   return (
@@ -89,19 +90,12 @@ const Navbar = () => {
           </li>
 
           {/* Short-Stays Dropdown */}
-          <li
-            className="relative group"
-            onMouseEnter={() => handleMouseEnter('shortStays')}
-            onMouseLeave={() => handleMouseLeave('shortStays')}
-          >
-            <Link
-              to="/short-stays"
-              className="hover:text-gray-700 py-2 lg:py-0 flex items-center focus:outline-none"
-            >
-              <span className="flex items-center">
+          <li className="relative">
+            <div onClick={() => toggleDropdown('shortStays')} className="flex items-center cursor-pointer">
+              <span className="hover:text-gray-700 py-2 lg:py-0 flex items-center">
                 Short-Stays <FaChevronDown size={10} className="ml-2" />
               </span>
-            </Link>
+            </div>
 
             {/* Dropdown Content */}
             <ul
@@ -140,19 +134,12 @@ const Navbar = () => {
           </li>
 
           {/* Rental Dropdown */}
-          <li
-            className="relative group"
-            onMouseEnter={() => handleMouseEnter('rental')}
-            onMouseLeave={() => handleMouseLeave('rental')}
-          >
-            <Link
-              to="/rental"
-              className="hover:text-gray-700 py-2 lg:py-0 flex items-center focus:outline-none"
-            >
-              <span className="flex items-center">
+          <li className="relative">
+            <div onClick={() => toggleDropdown('rental')} className="flex items-center cursor-pointer">
+              <span className="hover:text-gray-700 py-2 lg:py-0 flex items-center">
                 Property Rentals <FaChevronDown size={10} className="ml-2" />
               </span>
-            </Link>
+            </div>
 
             {/* Dropdown Content */}
             <ul
@@ -199,16 +186,51 @@ const Navbar = () => {
             </ul>
           </li>
 
-          {/* Other Links */}
-          <li>
-            <Link
-              to="/property-sales"
-              className="hover:text-gray-700 block py-2 lg:py-0"
-              onClick={closeMenuOnLinkClick}
+          {/* Property Sales Dropdown */}
+          <li className="relative">
+            <div onClick={() => toggleDropdown('propertySales')} className="flex items-center cursor-pointer">
+              <span className="hover:text-gray-700 py-2 lg:py-0 flex items-center">
+                Property Sales <FaChevronDown size={10} className="ml-2" />
+              </span>
+            </div>
+
+            {/* Dropdown Content */}
+            <ul
+              className={`absolute left-0 mt-1 bg-white shadow-lg rounded-md py-2 w-48 ${
+                dropdownOpen.propertySales ? 'block' : 'hidden'
+              } transition-opacity ease-in-out duration-300`}
             >
-              Property Sales
-            </Link>
+              <li>
+                <Link
+                  to="/houses"
+                  className="block px-4 py-2 hover:bg-gray-100"
+                  onClick={closeMenuOnLinkClick}
+                >
+                  Houses
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/lands"
+                  className="block px-4 py-2 hover:bg-gray-100"
+                  onClick={closeMenuOnLinkClick}
+                >
+                  Lands
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/commercials"
+                  className="block px-4 py-2 hover:bg-gray-100"
+                  onClick={closeMenuOnLinkClick}
+                >
+                  Commercials
+                </Link>
+              </li>
+            </ul>
           </li>
+
+          {/* Other Links */}
           <li>
             <Link
               to="/cars"
@@ -237,8 +259,8 @@ const Navbar = () => {
             </Link>
           </li>
 
-          {/* Mobile-Only Buttons */}
-          {isLoggedIn ? (
+                {/* Mobile-Only Buttons */}
+                {isLoggedIn ? (
             <li className="lg:hidden mt-4">
               <button
                 onClick={handleLogout}
