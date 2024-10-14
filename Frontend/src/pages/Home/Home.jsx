@@ -148,7 +148,7 @@ const Home = () => {
             {sortedProperties.length > 0 ? (
               sortedProperties.map((property) => (
                 <Link to={`/property/${property.id}`} key={property.id} className="border border-gray-300 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-200">
-                  <img src={property.image[0]} alt={property.title} className="w-full h-64 object-cover" />
+                  <img src={property.images[0]} alt={property.title} className="w-full h-64 object-cover" />
                   <div className="p-4">
                     <h3 className="text-xl font-bold mb-2">{property.title}</h3>
                     <p className="text-gray-600">{property.location}</p>

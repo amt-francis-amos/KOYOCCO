@@ -9,6 +9,7 @@ const PropertyList = () => {
     axios.get('https://koyocco-backend.onrender.com/api/properties')
       .then(response => {
         setProperties(response.data);
+        console.log(response)
       })
       .catch(error => {
         console.error('There was an error fetching the properties!', error);
