@@ -21,7 +21,7 @@ export const FeaturedPropertiesProvider = ({ children }) => {
           setFeaturedProperties(response.data);
         }
       } catch (err) {
-        setError(err); // Handle the error
+        setError(err); 
         console.error("Error fetching properties:", err);
       }
     };
