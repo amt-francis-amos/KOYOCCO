@@ -28,6 +28,7 @@ const Home = () => {
     console.log("Searching for:", searchQuery);
   };
 
+  // Filter the properties based on search and filters
   const filteredProperties = featuredProperties
     .filter((property) => {
       const matchesSearch = property.title.toLowerCase().includes(searchQuery) ||
@@ -44,6 +45,7 @@ const Home = () => {
       return matchesLocation && matchesPrice && matchesType;
     });
 
+  // Sort the properties based on the selected attribute
   const sortedProperties = [...filteredProperties].sort((a, b) => {
     if (sortAttribute === 'price') {
       return parseFloat(a.price) - parseFloat(b.price);
@@ -55,6 +57,9 @@ const Home = () => {
 
   if (loading) return <div className="text-center">Loading...</div>;
   if (error) return <div className="text-center">Error loading properties</div>;
+
+
+  const imageBaseUrl = 'https://koyocco-backend.onrender.com/uploads/'; 
 
   return (
     <div>
@@ -147,12 +152,18 @@ const Home = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {sortedProperties.length > 0 ? (
               sortedProperties.map((property) => (
-                <Link to={`/property/${property.id}`} key={property.id} className="border border-gray-300 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-200">
-                  <img src={property.images[0]} alt={property.title} className="w-full h-64 object-cover" />
+                <Link to={`/property/${property._id}`} key={property._id} className="border border-gray-300 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-200">
+                  {/* Add fallback for missing or broken images */}
+                  <img
+                    src={`${imageBaseUrl}${property.images[0] || 'fallback-image.jpg'}`} // Construct the image URL
+                    alt={property.title}
+                    className="w-full h-64 object-cover"
+                    onError={(e) => e.target.src = '/fallback-image.jpg'} // Fallback for missing/broken images
+                  />
                   <div className="p-4">
                     <h3 className="text-xl font-bold mb-2">{property.title}</h3>
                     <p className="text-gray-600">{property.location}</p>
-                    <p className="text-gray-800 font-semibold">{property.price}</p>
+                    <p className="text-gray-800 font-semibold">GHS {property.price}</p>
                     <p className="text-gray-500 mt-2">{property.description}</p>
                   </div>
                 </Link>
