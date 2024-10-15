@@ -13,9 +13,11 @@
     text-decoration:none;
 }
 
-body{
-    overflow-x: hidden;
+html, body {
+  height: 100%;
+  overflow-x: hidden;
 }
+
 
 
 @keyframes slide-down {
