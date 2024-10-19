@@ -31,7 +31,7 @@ const AdminDashboard = () => {
       </header>
       <main className="p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* User Statistics Card */}
+       
           <div className="bg-white shadow-lg rounded-lg p-6 transition-transform transform hover:scale-105">
             <div className="flex items-center mb-4">
               <FaUsers className="text-red-600 text-3xl mr-2" />
@@ -42,7 +42,6 @@ const AdminDashboard = () => {
             <p className="text-gray-700">Inactive Users: <span className="font-bold">{logs.users.filter(user => user.loginLog.length === 0).length}</span></p>
           </div>
 
-          {/* Recent Activities Card */}
           <div className="bg-white shadow-lg rounded-lg p-6 transition-transform transform hover:scale-105">
             <div className="flex items-center mb-4">
               <FaChartBar className="text-red-600 text-3xl mr-2" />
@@ -59,8 +58,6 @@ const AdminDashboard = () => {
               ))}
             </ul>
           </div>
-
-          {/* Quick Links Card */}
           <div className="bg-white shadow-lg rounded-lg p-6 transition-transform transform hover:scale-105">
             <div className="flex items-center mb-4">
               <FaCog className="text-red-600 text-3xl mr-2" />

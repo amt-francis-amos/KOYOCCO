@@ -28,7 +28,7 @@ const Home = () => {
     console.log("Searching for:", searchQuery);
   };
 
-  // Filter the properties based on search and filters
+
   const filteredProperties = featuredProperties
     .filter((property) => {
       const matchesSearch = property.title.toLowerCase().includes(searchQuery) ||
@@ -45,7 +45,6 @@ const Home = () => {
       return matchesLocation && matchesPrice && matchesType;
     });
 
-  // Sort the properties based on the selected attribute
   const sortedProperties = [...filteredProperties].sort((a, b) => {
     if (sortAttribute === 'price') {
       return parseFloat(a.price) - parseFloat(b.price);
@@ -153,12 +152,11 @@ const Home = () => {
             {sortedProperties.length > 0 ? (
               sortedProperties.map((property) => (
                 <Link to={`/property/${property._id}`} key={property._id} className="border border-gray-300 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-200">
-                  {/* Add fallback for missing or broken images */}
                   <img
-                    src={`${imageBaseUrl}${property.images[0] || 'fallback-image.jpg'}`} // Construct the image URL
+                    src={`${imageBaseUrl}${property.images[0] || 'fallback-image.jpg'}`} 
                     alt={property.title}
                     className="w-full h-64 object-cover"
-                    onError={(e) => e.target.src = '/fallback-image.jpg'} // Fallback for missing/broken images
+                    onError={(e) => e.target.src = '/fallback-image.jpg'} 
                   />
                   <div className="p-4">
                     <h3 className="text-xl font-bold mb-2">{property.title}</h3>
