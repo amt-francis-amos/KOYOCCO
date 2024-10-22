@@ -19,6 +19,7 @@ import Booking from "./pages/Booking/Booking";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import PropertyStatusPage from "./pages/PropertyStatusPage/PropertyStatusPage";  // <-- New import
 
 function App() {
   const role = localStorage.getItem("role");
@@ -54,6 +55,14 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/property-status"
+              element={
+                <ProtectedRoute role={role}>
+                  <PropertyStatusPage />  
+                </ProtectedRoute>
+              }
+            />
             <Route path="/login" element={<Login />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
@@ -67,7 +76,6 @@ function App() {
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>
-
         <Footer />
       </div>
     </FeaturedPropertiesProvider>

@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
@@ -5,46 +6,64 @@ const multer = require('multer');
 const Property = require('../models/Property');
 const Agent = require('../models/Agent'); 
 const router = express.Router();
+const { v4: uuidv4 } = require('uuid');
 
-// Directory to store uploads
 const uploadDir = path.join(__dirname, '../uploads');
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
 
-// Multer configuration for file uploads
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, uploadDir); // Set upload directory
+    cb(null, uploadDir); 
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname); // Unique filename
+    const uniqueFilename = uuidv4() + '-' + file.originalname; 
+    cb(null, uniqueFilename);
   },
 });
 
 const upload = multer({ storage });
 
-// Post route to upload property
+
+const deleteFile = (filePath) => {
+  return new Promise((resolve, reject) => {
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        console.error('Error deleting file:', err);
+        return reject(err);
+      }
+      resolve();
+    });
+  });
+};
+
+
 router.post(
   '/',
   upload.fields([{ name: 'images', maxCount: 10 }, { name: 'video', maxCount: 1 }]),
   async (req, res) => {
     try {
-      const { title, description, price, location, agentId } = req.body; // Include agentId in the request body
+      const { title, description, price, location, agentId } = req.body;
 
-      // Handle uploaded files
+
+      const agent = await Agent.findById(agentId);
+      if (!agent) {
+        return res.status(404).json({ message: 'Agent not found' });
+      }
+
       const images = req.files.images ? req.files.images.map(file => file.filename) : [];
       const video = req.files.video ? req.files.video[0].filename : null;
 
-      // Create new property with uploaded files and agent reference
       const newProperty = new Property({
         title,
         description,
         price,
         location,
-        images,  // Save array of image filenames
-        video,   // Save video filename
-        agent: agentId, // Associate the property with the agent
+        images, 
+        video,  
+        agent: agentId, 
       });
 
       await newProperty.save();
@@ -56,14 +75,14 @@ router.post(
   }
 );
 
-// Get route to fetch a single property by ID with agent details
+
 router.get('/:id', async (req, res) => {
   try {
     const property = await Property.findById(req.params.id).populate('agent');
     if (!property) {
       return res.status(404).json({ message: 'Property not found' });
     }
-    res.status(200).json({ property }); // Make sure to return the property with agent details
+    res.status(200).json({ property });
   } catch (error) {
     console.error('Error fetching property:', error.message);
     res.status(500).json({ message: 'Server Error' });
@@ -71,12 +90,9 @@ router.get('/:id', async (req, res) => {
 });
 
 
-
-
-// Get route to fetch all properties
 router.get('/', async (req, res) => {
   try {
-    const properties = await Property.find().populate('agent'); // Optionally populate agent details for all properties
+    const properties = await Property.find().populate('agent'); 
     res.status(200).json(properties);
   } catch (error) {
     console.error('Error fetching properties:', error.message);
@@ -84,7 +100,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Delete route to remove a property and its associated media files
+
 router.delete('/:id', async (req, res) => {
   try {
     const property = await Property.findById(req.params.id);
@@ -92,41 +108,23 @@ router.delete('/:id', async (req, res) => {
       return res.status(404).json({ message: 'Property not found' });
     }
 
-    // Delete associated images and video files
+
     const deletionPromises = [];
 
-    // Delete associated images
+
     property.images.forEach(image => {
       const filePath = path.join(uploadDir, image);
-      deletionPromises.push(new Promise((resolve, reject) => {
-        fs.unlink(filePath, (err) => {
-          if (err) {
-            console.error('Error deleting image file:', err);
-            return reject(err);
-          }
-          resolve();
-        });
-      }));
+      deletionPromises.push(deleteFile(filePath));
     });
 
-    // Delete associated video
     if (property.video) {
       const filePath = path.join(uploadDir, property.video);
-      deletionPromises.push(new Promise((resolve, reject) => {
-        fs.unlink(filePath, (err) => {
-          if (err) {
-            console.error('Error deleting video file:', err);
-            return reject(err);
-          }
-          resolve();
-        });
-      }));
+      deletionPromises.push(deleteFile(filePath));
     }
 
-    // Wait for all file deletions to complete
     await Promise.all(deletionPromises);
 
-    // Delete the property document from the database
+
     await Property.findByIdAndDelete(req.params.id);
     res.status(200).json({ message: 'Property deleted successfully' });
   } catch (error) {
@@ -135,7 +133,7 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-// Serve uploaded files as static resources
+
 router.use('/uploads', express.static(uploadDir));
 
 module.exports = router;

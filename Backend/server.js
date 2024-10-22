@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const path = require('path'); // Add this to handle paths
 const db = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const propertyRoutes = require('./routes/propertyRoutes');
@@ -17,7 +18,7 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static files from the "uploads" directory
-app.use(express.static('uploads'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Connect to MongoDB
 db();
