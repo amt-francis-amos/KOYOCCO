@@ -3,8 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
 const Property = require('../models/Property');
-const Agent = require('../models/Agent'); // Import the Agent model
-
+const Agent = require('../models/Agent'); 
 const router = express.Router();
 
 // Directory to store uploads

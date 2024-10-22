@@ -17,7 +17,7 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static files from the "uploads" directory
-app.use('/uploads', express.static('uploads'));
+app.use(express.static('uploads'));
 
 // Connect to MongoDB
 db();
