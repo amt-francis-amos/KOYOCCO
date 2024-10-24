@@ -28,7 +28,6 @@ const Home = () => {
     console.log("Searching for:", searchQuery);
   };
 
-
   const filteredProperties = featuredProperties
     .filter((property) => {
       const matchesSearch = property.title.toLowerCase().includes(searchQuery) ||
@@ -57,9 +56,8 @@ const Home = () => {
   if (loading) return <div className="text-center">Loading...</div>;
   if (error) return <div className="text-center">Error loading properties</div>;
 
-
-  const imageBaseUrl = 'https://koyocco-backend.onrender.com/uploads/'; 
-
+  const imageBaseUrl = 'https://koyocco-backend.onrender.com/api/uploads/';
+  
   return (
     <div>
       <header className="h-screen">
@@ -92,6 +90,7 @@ const Home = () => {
               placeholder="Search for properties..."
               value={searchQuery}
               onChange={handleSearchChange}
+              aria-label="Search for properties"
             />
           </div>
           <button className="bg-red-500 text-white px-6 py-3 rounded-lg md:ml-4" onClick={handleSearch}>Search</button>
@@ -105,6 +104,7 @@ const Home = () => {
               value={filter[filterName]}
               onChange={handleFilterChange}
               className="border border-gray-300 rounded-lg p-2 mb-4 w-full md:w-auto md:mb-0"
+              aria-label={`Select ${filterName.charAt(0).toUpperCase() + filterName.slice(1)}`}
             >
               <option value="">Select {filterName.charAt(0).toUpperCase() + filterName.slice(1)}</option>
               {filterName === 'priceRange' && (
@@ -140,6 +140,7 @@ const Home = () => {
             value={sortAttribute}
             onChange={(e) => setSortAttribute(e.target.value)}
             className="border border-gray-300 rounded-lg p-2 mb-4 w-full md:w-auto"
+            aria-label="Sort properties"
           >
             <option value="price">Sort by Price</option>
             <option value="dateAdded">Sort by Date Added</option>
@@ -153,10 +154,10 @@ const Home = () => {
               sortedProperties.map((property) => (
                 <Link to={`/property/${property._id}`} key={property._id} className="border border-gray-300 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-200">
                   <img
-                    src={`${imageBaseUrl}${property.images[0] || 'fallback-image.jpg'}`} 
+                    src={`${imageBaseUrl}${property.images[0] || 'fallback-image.jpg'}`}
                     alt={property.title}
                     className="w-full h-64 object-cover"
-                    onError={(e) => e.target.src = '/fallback-image.jpg'} 
+                    onError={(e) => e.target.src = `${imageBaseUrl}fallback-image.jpg`} 
                   />
                   <div className="p-4">
                     <h3 className="text-xl font-bold mb-2">{property.title}</h3>

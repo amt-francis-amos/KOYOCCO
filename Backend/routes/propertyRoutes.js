@@ -1,43 +1,20 @@
-const mongoose = require('mongoose');
 const express = require('express');
-const fs = require('fs');
-const path = require('path');
 const multer = require('multer');
 const Property = require('../models/Property');
 const Agent = require('../models/Agent'); 
 const router = express.Router();
-const { v4: uuidv4 } = require('uuid');
-
-const uploadDir = path.join(__dirname, '../uploads');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
+const cloudinary = require('cloudinary').v2;
 
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDir); 
-  },
-  filename: (req, file, cb) => {
-    const uniqueFilename = uuidv4() + '-' + file.originalname; 
-    cb(null, uniqueFilename);
-  },
+cloudinary.config({
+  cloud_name: 'CLOUD_NAME', 
+  api_key: 'API_KEY',      
+  api_secret: 'API_SECRET',
 });
 
+
+const storage = multer.memoryStorage();
 const upload = multer({ storage });
-
-
-const deleteFile = (filePath) => {
-  return new Promise((resolve, reject) => {
-    fs.unlink(filePath, (err) => {
-      if (err) {
-        console.error('Error deleting file:', err);
-        return reject(err);
-      }
-      resolve();
-    });
-  });
-};
 
 
 router.post(
@@ -45,29 +22,61 @@ router.post(
   upload.fields([{ name: 'images', maxCount: 10 }, { name: 'video', maxCount: 1 }]),
   async (req, res) => {
     try {
+    
       const { title, description, price, location, agentId } = req.body;
 
-
+  
       const agent = await Agent.findById(agentId);
       if (!agent) {
         return res.status(404).json({ message: 'Agent not found' });
       }
 
-      const images = req.files.images ? req.files.images.map(file => file.filename) : [];
-      const video = req.files.video ? req.files.video[0].filename : null;
+  
+      if (!req.files || !req.files.images || req.files.images.length === 0) {
+        return res.status(400).json({ message: 'At least one image is required' });
+      }
 
+
+      const uploadToCloudinary = (file, resourceType) => {
+        return new Promise((resolve, reject) => {
+          const stream = cloudinary.uploader.upload_stream({ resource_type: resourceType }, (error, result) => {
+            if (error) {
+              return reject(new Error(error.message));
+            }
+            resolve(result.secure_url); 
+          });
+          stream.end(file.buffer); 
+        });
+      };
+
+
+      const imageUploadPromises = req.files.images.map(file => uploadToCloudinary(file, 'image'));
+
+
+      const videoUploadPromise = req.files.video
+        ? uploadToCloudinary(req.files.video[0], 'video')
+        : Promise.resolve(null);
+
+   
+      const [images, video] = await Promise.all([
+        Promise.all(imageUploadPromises), 
+        videoUploadPromise                
+      ]);
+
+ 
       const newProperty = new Property({
         title,
         description,
         price,
         location,
         images, 
-        video,  
-        agent: agentId, 
+        video,   
+        agent: agentId,
       });
 
+   
       await newProperty.save();
-      res.status(201).json(newProperty);
+      res.status(201).json(newProperty); 
     } catch (error) {
       console.error('Error uploading property:', error.message);
       res.status(500).json({ message: 'Server Error' });
@@ -89,7 +98,6 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-
 router.get('/', async (req, res) => {
   try {
     const properties = await Property.find().populate('agent'); 
@@ -108,23 +116,6 @@ router.delete('/:id', async (req, res) => {
       return res.status(404).json({ message: 'Property not found' });
     }
 
-
-    const deletionPromises = [];
-
-
-    property.images.forEach(image => {
-      const filePath = path.join(uploadDir, image);
-      deletionPromises.push(deleteFile(filePath));
-    });
-
-    if (property.video) {
-      const filePath = path.join(uploadDir, property.video);
-      deletionPromises.push(deleteFile(filePath));
-    }
-
-    await Promise.all(deletionPromises);
-
-
     await Property.findByIdAndDelete(req.params.id);
     res.status(200).json({ message: 'Property deleted successfully' });
   } catch (error) {
@@ -132,8 +123,5 @@ router.delete('/:id', async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 });
-
-
-router.use('/uploads', express.static(uploadDir));
 
 module.exports = router;

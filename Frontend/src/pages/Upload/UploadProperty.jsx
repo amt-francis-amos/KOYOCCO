@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+// Validation schema
 const UploadPropertySchema = Yup.object().shape({
   title: Yup.string().required('Title is required'),
   description: Yup.string().required('Description is required'),
@@ -14,7 +15,7 @@ const UploadPropertySchema = Yup.object().shape({
     'You can only upload a maximum of 10 images',
     (value) => value && value.length <= 10
   ),
-  video: Yup.mixed().nullable(), // Optional video upload
+  video: Yup.mixed().nullable(), 
 });
 
 const UploadProperty = () => {
@@ -34,14 +35,14 @@ const UploadProperty = () => {
           video: null,
         }}
         validationSchema={UploadPropertySchema}
-        onSubmit={(values, { setSubmitting, resetForm }) => {
+        onSubmit={async (values, { setSubmitting, resetForm }) => {
           const formData = new FormData();
           formData.append('title', values.title);
           formData.append('description', values.description);
           formData.append('price', values.price);
           formData.append('location', values.location);
 
-          // Append multiple images
+
           for (let i = 0; i < values.images.length; i++) {
             formData.append('images', values.images[i]);
           }
@@ -50,21 +51,34 @@ const UploadProperty = () => {
             formData.append('video', values.video);
           }
 
-          axios.post('https://koyocco-backend.onrender.com/api/properties', formData)
-            .then(response => {
-              alert('Property uploaded successfully!');
-              resetForm();
-              navigate('/propertyList'); 
-            })
-            .catch(error => {
-              alert('An error occurred while uploading the property.');
-            })
-            .finally(() => {
-              setSubmitting(false);
+          try {
+      
+            const uploadResponse = await axios.post('https://koyocco-backend.onrender.com/api/upload', formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
             });
+
+           
+            const propertyData = {
+              ...values,
+              images: uploadResponse.data, 
+            };
+
+            await axios.post('https://koyocco-backend.onrender.com/api/properties', propertyData);
+
+            alert('Property uploaded successfully!');
+            resetForm();
+            navigate('/propertyList');
+          } catch (error) {
+            alert('An error occurred while uploading the property.');
+            console.error(error);
+          } finally {
+            setSubmitting(false);
+          }
         }}
       >
-        {({ setFieldValue, values }) => (
+        {({ setFieldValue }) => (
           <Form className="space-y-4">
             <div>
               <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title</label>
