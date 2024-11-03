@@ -26,9 +26,6 @@ db();
 
 
 
-
-
-
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/properties', propertyRoutes);
