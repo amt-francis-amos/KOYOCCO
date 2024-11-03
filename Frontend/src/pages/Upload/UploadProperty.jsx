@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import PropertyList from '../PropertyList/PropertyList'; 
 
 const UploadProperty = () => {
   const [propertyData, setPropertyData] = useState({
@@ -13,7 +12,6 @@ const UploadProperty = () => {
   });
 
   const [message, setMessage] = useState('');
-  const [properties, setProperties] = useState([]); // State to hold uploaded properties
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -48,10 +46,6 @@ const UploadProperty = () => {
         },
       });
       console.log('Upload successful:', response.data);
-      
-      // Add the uploaded property data to the properties state
-      setProperties([...properties, response.data]); // Assuming response.data contains the uploaded property info
-
       // Reset form after successful upload
       setPropertyData({
         name: '',
@@ -126,9 +120,6 @@ const UploadProperty = () => {
           Upload Property
         </button>
       </form>
-
-      {/* Render PropertyList component and pass the uploaded properties */}
-      <PropertyList properties={properties} />
     </div>
   );
 };
