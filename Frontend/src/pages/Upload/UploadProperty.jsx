@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useProperty } from '../../context/PropertyContext'; // Adjust the path based on your file structure
 
 const UploadProperty = () => {
+  const { addProperty } = useProperty(); // Use the addProperty function from context
   const [propertyData, setPropertyData] = useState({
     name: '',
     description: '',
@@ -46,6 +48,7 @@ const UploadProperty = () => {
         },
       });
       console.log('Upload successful:', response.data);
+      addProperty(response.data); // Add the new property to the context
       // Reset form after successful upload
       setPropertyData({
         name: '',
@@ -64,73 +67,70 @@ const UploadProperty = () => {
 
   return (
     <div className="max-w-[500px] mx-auto mt-10 mb-20 p-5 bg-white shadow-md rounded-lg">
-    <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">Upload Property</h2>
-    {message && <div className="mb-4 text-red-500">{message}</div>} {/* Display message */}
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <input
-        type="text"
-        name="name"
-        placeholder="Property Name"
-        value={propertyData.name}
-        onChange={handleChange}
-        required
-        className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
-      />
-      <textarea
-        name="description"
-        placeholder="Description"
-        value={propertyData.description}
-        onChange={handleChange}
-        className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
-        rows="3"
-      />
-      <input
-        type="number"
-        name="price"
-        placeholder="Price"
-        value={propertyData.price}
-        onChange={handleChange}
-        required
-        className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
-      />
-      <input
-        type="text"
-        name="location"
-        placeholder="Location"
-        value={propertyData.location}
-        onChange={handleChange}
-        required
-        className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
-      />
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Upload Images:</label>
+      <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">Upload Property</h2>
+      {message && <div className="mb-4 text-red-500">{message}</div>} {/* Display message */}
+      <form onSubmit={handleSubmit} className="space-y-4">
         <input
-          type="file"
-          name="images"
-          multiple
-          accept="image/*"
+          type="text"
+          name="name"
+          placeholder="Property Name"
+          value={propertyData.name}
           onChange={handleChange}
+          required
           className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
         />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Upload Video:</label>
-        <input
-          type="file"
-          name="video"
-          accept="video/*"
+        <textarea
+          name="description"
+          placeholder="Description"
+          value={propertyData.description}
           onChange={handleChange}
           className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+          rows="3"
         />
-      </div>
-      <button type="submit" className="w-full bg-red-600 text-white font-bold rounded-md p-2 hover:bg-red-700 transition duration-200">
-        Upload Property
-      </button>
-    </form>
-  </div>
-  
-
-  
+        <input
+          type="number"
+          name="price"
+          placeholder="Price"
+          value={propertyData.price}
+          onChange={handleChange}
+          required
+          className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+        />
+        <input
+          type="text"
+          name="location"
+          placeholder="Location"
+          value={propertyData.location}
+          onChange={handleChange}
+          required
+          className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+        />
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Upload Images:</label>
+          <input
+            type="file"
+            name="images"
+            multiple
+            accept="image/*"
+            onChange={handleChange}
+            className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Upload Video:</label>
+          <input
+            type="file"
+            name="video"
+            accept="video/*"
+            onChange={handleChange}
+            className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+          />
+        </div>
+        <button type="submit" className="w-full bg-red-600 text-white font-bold rounded-md p-2 hover:bg-red-700 transition duration-200">
+          Upload Property
+        </button>
+      </form>
+    </div>
   );
 };
 
