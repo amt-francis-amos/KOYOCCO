@@ -1,8 +1,7 @@
-// UploadProperty.jsx
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const UploadProperty = ({ onUpload }) => {
+const UploadProperty = () => {
   const [propertyData, setPropertyData] = useState({
     name: '',
     description: '',
@@ -57,7 +56,6 @@ const UploadProperty = ({ onUpload }) => {
         video: null,
       });
       setMessage('Property uploaded successfully!'); // Success message
-      onUpload(); // Call the onUpload function to refresh property list
     } catch (error) {
       console.error('Error uploading property:', error.response ? error.response.data : error.message);
       setMessage('Failed to upload property. Please try again.'); // Error message
