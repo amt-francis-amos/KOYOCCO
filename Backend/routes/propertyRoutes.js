@@ -1,9 +1,9 @@
-require('dotenv').config(); 
+require('dotenv').config(); // Load environment variables
 
 const express = require('express');
 const multer = require('multer');
 const Property = require('../models/Property');
-const cloudinary = require('cloudinary').v2;
+const cloudinary = require('cloudinary').v2; // Import Cloudinary
 
 const router = express.Router();
 
@@ -14,11 +14,10 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Log the Cloudinary configuration to verify
+// Check if Cloudinary is configured correctly (optional)
 console.log('Cloudinary Config:', {
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 // Set up multer for file uploads
@@ -68,7 +67,7 @@ router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 
     await property.save();
     res.status(201).json({ message: 'Property uploaded successfully', property });
   } catch (error) {
-    console.error('Error uploading property:', error); // Enhanced error logging
+    console.error('Error uploading property:', error);
     res.status(500).json({ message: 'Failed to upload property', error: error.message || error });
   }
 });
