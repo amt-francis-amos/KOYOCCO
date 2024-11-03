@@ -3,6 +3,8 @@ const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const Property = require('../models/Property');
 const router = express.Router();
+require('dotenv').config();
+
 
 // Set up multer for file uploads
 const storage = multer.memoryStorage();
