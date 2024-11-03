@@ -71,7 +71,7 @@ router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 
 
     // Save the property to the database
     await property.save();
-    res.status(201).json({ message: 'Property uploaded successfully', property });
+    res.status(200).json({ message: 'Property uploaded successfully', property });
   } catch (error) {
     console.error('Error uploading property:', error);
     res.status(500).json({ message: 'Failed to upload property', error: error.message || error });

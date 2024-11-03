@@ -11,6 +11,8 @@ const UploadProperty = () => {
     video: null,
   });
 
+  const [message, setMessage] = useState('');
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === 'images') {
@@ -44,14 +46,26 @@ const UploadProperty = () => {
         },
       });
       console.log('Upload successful:', response.data);
+      // Reset form after successful upload
+      setPropertyData({
+        name: '',
+        description: '',
+        price: '',
+        location: '',
+        images: [],
+        video: null,
+      });
+      setMessage('Property uploaded successfully!'); // Success message
     } catch (error) {
       console.error('Error uploading property:', error.response ? error.response.data : error.message);
+      setMessage('Failed to upload property. Please try again.'); // Error message
     }
   };
 
   return (
     <div className="max-w-[600px] mx-auto mt-10 mb-20 p-5 bg-white shadow-md">
       <h2 className="text-2xl mb-4">Upload Property</h2>
+      {message && <div className="mb-4 text-red-500">{message}</div>} {/* Display message */}
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
