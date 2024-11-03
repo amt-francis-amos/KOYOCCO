@@ -14,21 +14,25 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Check if Cloudinary is configured correctly (optional)
-console.log('Cloudinary Config:', {
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-});
-
 // Set up multer for file uploads
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 // Upload property route
 router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 'video', maxCount: 1 }]), async (req, res) => {
+  // Log incoming request data for debugging
+  console.log('Request Body:', req.body);
+  console.log('Request Files:', req.files);
+
   try {
     const { name, description, price, location } = req.body;
 
+    // Check if the required fields are present
+    if (!name || !price || !location) {
+      return res.status(400).json({ message: 'Missing required fields: name, price, or location' });
+    }
+
+    // Handle image uploads
     const images = await Promise.all(
       req.files.images.map((image) =>
         new Promise((resolve, reject) => {
@@ -43,6 +47,7 @@ router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 
       )
     );
 
+    // Handle video upload if provided
     const video = req.files.video
       ? await new Promise((resolve, reject) => {
           cloudinary.uploader.upload_stream({ resource_type: 'video' }, (error, result) => {
@@ -55,6 +60,7 @@ router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 
         })
       : null;
 
+    // Create a new property document
     const property = new Property({
       name,
       description,
@@ -64,6 +70,7 @@ router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 
       video,
     });
 
+    // Save the property to the database
     await property.save();
     res.status(201).json({ message: 'Property uploaded successfully', property });
   } catch (error) {
