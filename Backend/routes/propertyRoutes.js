@@ -92,7 +92,7 @@ router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 
   }
 });
 
-// GET route to retrieve all properties
+// --GET route to retrieve all properties
 router.get('/', async (req, res) => {
   try {
     const properties = await Property.find(); // Fetch all properties from the database
