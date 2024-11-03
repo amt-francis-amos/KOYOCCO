@@ -12,9 +12,6 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Log Cloudinary config to verify environment variables
-console.log('Cloudinary Config:', process.env.CLOUDINARY_CLOUD_NAME, process.env.CLOUDINARY_API_KEY, process.env.CLOUDINARY_API_SECRET);
-
 // Set up multer for file uploads
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -28,7 +25,10 @@ router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 
       req.files.images.map((image) =>
         new Promise((resolve, reject) => {
           cloudinary.uploader.upload_stream({ resource_type: 'image' }, (error, result) => {
-            if (error) return reject('Image upload failed');
+            if (error) {
+              console.error('Cloudinary image upload error:', error);
+              return reject('Image upload failed');
+            }
             resolve(result.secure_url);
           }).end(image.buffer);
         })
@@ -38,7 +38,10 @@ router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 
     const video = req.files.video
       ? await new Promise((resolve, reject) => {
           cloudinary.uploader.upload_stream({ resource_type: 'video' }, (error, result) => {
-            if (error) return reject('Video upload failed');
+            if (error) {
+              console.error('Cloudinary video upload error:', error);
+              return reject('Video upload failed');
+            }
             resolve(result.secure_url);
           }).end(req.files.video[0].buffer);
         })
@@ -56,8 +59,8 @@ router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 
     await property.save();
     res.status(201).json({ message: 'Property uploaded successfully', property });
   } catch (error) {
-    console.error('Error uploading property:', error);
-    res.status(500).json({ message: 'Failed to upload property', error });
+    console.error('Error uploading property:', error); // Enhanced error logging
+    res.status(500).json({ message: 'Failed to upload property', error: error.message || error });
   }
 });
 
