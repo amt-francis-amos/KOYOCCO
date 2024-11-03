@@ -1,73 +1,71 @@
 const express = require('express');
 const multer = require('multer');
-const cloudinary = require('cloudinary').v2;
 const Property = require('../models/Property');
+const cloudinary = require('cloudinary').v2;
+
 const router = express.Router();
 
 // Set up multer for file uploads
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-// Cloudinary configuration (make sure to replace with your own credentials)
+// Cloudinary configuration (ensure you have your cloud name, API key, and API secret)
 cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_KEY,
-  api_secret: process.env.API_SECRET,
+  cloud_name: 'CLOUD_NAME', 
+  api_key: 'API_KEY',      
+  api_secret: 'API_SECRET',
 });
 
-// Helper function to upload a file to Cloudinary
-const uploadToCloudinary = (file, resourceType = 'image') => {
+// Helper function to upload an image to Cloudinary
+const uploadImage = (file) => {
   return new Promise((resolve, reject) => {
-    const uploadStream = cloudinary.uploader.upload_stream(
-      { resource_type: resourceType },
+    const stream = cloudinary.uploader.upload_stream(
+      { resource_type: 'image' },
       (error, result) => {
-        if (error) {
-          console.error(`Error uploading ${resourceType} to Cloudinary:`, error.message);
-          reject(error);
-        } else {
-          resolve(result.secure_url);
-        }
+        if (error) reject(error);
+        else resolve(result.secure_url);
       }
     );
-    uploadStream.end(file.buffer);
+    stream.end(file.buffer);
   });
 };
 
-// Route to upload property
+// Helper function to upload a video to Cloudinary
+const uploadVideo = (file) => {
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      { resource_type: 'video' },
+      (error, result) => {
+        if (error) reject(error);
+        else resolve(result.secure_url);
+      }
+    );
+    stream.end(file.buffer);
+  });
+};
+
+// Upload property route
 router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 'video', maxCount: 1 }]), async (req, res) => {
   try {
     const { name, description, price, location } = req.body;
 
-    // Handle images upload
-    const imageUrls = [];
-    if (req.files.images) {
-      for (const image of req.files.images) {
-        const imageUrl = await uploadToCloudinary(image, 'image');
-        imageUrls.push(imageUrl);
-      }
-    }
+    const images = await Promise.all(req.files.images.map((image) => uploadImage(image)));
+    const video = req.files.video ? await uploadVideo(req.files.video[0]) : null;
 
-    // Handle video upload
-    let videoUrl = null;
-    if (req.files.video && req.files.video[0]) {
-      videoUrl = await uploadToCloudinary(req.files.video[0], 'video');
-    }
-
-    // Save property details to the database
     const property = new Property({
       name,
       description,
       price,
       location,
-      images: imageUrls,
-      video: videoUrl,
+      images,
+      video,
     });
 
     await property.save();
     res.status(201).json({ message: 'Property uploaded successfully', property });
   } catch (error) {
-    console.error('Error in /upload route:', error.message);
-    res.status(500).json({ message: 'Failed to upload property', error: error.message });
+    console.error('Error uploading property:', error);
+    res.status(500).json({ message: 'Error uploading property', error });
   }
 });
 
