@@ -14,7 +14,8 @@ const UploadProperty = () => {
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === 'images') {
-      setPropertyData({ ...propertyData, images: [...files] });
+      // Convert FileList to an array
+      setPropertyData({ ...propertyData, images: Array.from(files) });
     } else if (name === 'video') {
       setPropertyData({ ...propertyData, video: files[0] });
     } else {
@@ -25,13 +26,17 @@ const UploadProperty = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
+    
+    // Append all fields to the formData
     Object.keys(propertyData).forEach((key) => {
       if (key === 'images') {
         propertyData.images.forEach((image) => {
           formData.append('images', image);
         });
       } else if (key === 'video') {
-        formData.append('video', propertyData[key]);
+        if (propertyData.video) {
+          formData.append('video', propertyData.video);
+        }
       } else {
         formData.append(key, propertyData[key]);
       }
@@ -44,8 +49,18 @@ const UploadProperty = () => {
         },
       });
       console.log('Upload successful:', response.data);
+      // Optionally reset the form after successful upload
+      setPropertyData({
+        name: '',
+        description: '',
+        price: '',
+        location: '',
+        images: [],
+        video: null,
+      });
     } catch (error) {
       console.error('Error uploading property:', error.response ? error.response.data : error.message);
+      alert('Failed to upload property. Please try again.'); // Provide user feedback
     }
   };
 

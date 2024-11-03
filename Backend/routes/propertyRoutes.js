@@ -1,9 +1,9 @@
-require('dotenv').config(); // Load environment variables
+require('dotenv').config(); 
 
 const express = require('express');
 const multer = require('multer');
 const Property = require('../models/Property');
-const cloudinary = require('cloudinary').v2; // Import Cloudinary
+const cloudinary = require('cloudinary').v2; 
 
 const router = express.Router();
 
@@ -20,7 +20,6 @@ const upload = multer({ storage: storage });
 
 // Upload property route
 router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 'video', maxCount: 1 }]), async (req, res) => {
-  // Log incoming request data for debugging
   console.log('Request Body:', req.body);
   console.log('Request Files:', req.files);
 
@@ -39,7 +38,7 @@ router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 
           cloudinary.uploader.upload_stream({ resource_type: 'image' }, (error, result) => {
             if (error) {
               console.error('Cloudinary image upload error:', error);
-              return reject('Image upload failed');
+              return reject(`Image upload failed: ${error.message}`);
             }
             resolve(result.secure_url);
           }).end(image.buffer);
@@ -53,7 +52,7 @@ router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 
           cloudinary.uploader.upload_stream({ resource_type: 'video' }, (error, result) => {
             if (error) {
               console.error('Cloudinary video upload error:', error);
-              return reject('Video upload failed');
+              return reject(`Video upload failed: ${error.message}`);
             }
             resolve(result.secure_url);
           }).end(req.files.video[0].buffer);
