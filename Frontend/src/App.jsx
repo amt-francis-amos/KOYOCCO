@@ -1,5 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+import { PropertyProvider } from "./context/PropertyContext";
 import Navbar from "./components/Navbar/Navbar";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Loginpage/Login";
@@ -24,7 +25,7 @@ function App() {
   const role = localStorage.getItem("role");
 
   return (
- 
+    <PropertyProvider>
       <div className="flex flex-col min-h-screen">
         <Navbar />
         <main className="flex-grow">
@@ -77,7 +78,7 @@ function App() {
         </main>
         <Footer />
       </div>
-  
+    </PropertyProvider>
   );
 }
 
