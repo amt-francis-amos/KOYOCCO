@@ -32,32 +32,40 @@ router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 
     }
 
     // Handle image uploads
-    const images = await Promise.all(
-      req.files.images.map((image) =>
-        new Promise((resolve, reject) => {
-          cloudinary.uploader.upload_stream({ resource_type: 'image' }, (error, result) => {
-            if (error) {
-              console.error('Cloudinary image upload error:', error);
-              return reject(`Image upload failed: ${error.message}`);
-            }
-            resolve(result.secure_url);
-          }).end(image.buffer);
-        })
-      )
-    );
+    let images = [];
+    if (req.files.images) {
+      images = await Promise.all(
+        req.files.images.map((image) =>
+          new Promise((resolve, reject) => {
+            console.log('Uploading image...');
+            cloudinary.uploader.upload_stream({ resource_type: 'image' }, (error, result) => {
+              if (error) {
+                console.error('Cloudinary image upload error:', error);
+                return reject(`Image upload failed: ${error.message}`);
+              }
+              console.log('Image uploaded:', result.secure_url);
+              resolve(result.secure_url);
+            }).end(image.buffer);
+          })
+        )
+      );
+    }
 
     // Handle video upload if provided
-    const video = req.files.video
-      ? await new Promise((resolve, reject) => {
-          cloudinary.uploader.upload_stream({ resource_type: 'video' }, (error, result) => {
-            if (error) {
-              console.error('Cloudinary video upload error:', error);
-              return reject(`Video upload failed: ${error.message}`);
-            }
-            resolve(result.secure_url);
-          }).end(req.files.video[0].buffer);
-        })
-      : null;
+    let video = null;
+    if (req.files.video && req.files.video.length > 0) {
+      video = await new Promise((resolve, reject) => {
+        console.log('Uploading video...');
+        cloudinary.uploader.upload_stream({ resource_type: 'video' }, (error, result) => {
+          if (error) {
+            console.error('Cloudinary video upload error:', error);
+            return reject(`Video upload failed: ${error.message}`);
+          }
+          console.log('Video uploaded:', result.secure_url);
+          resolve(result.secure_url);
+        }).end(req.files.video[0].buffer);
+      });
+    }
 
     // Create a new property document
     const property = new Property({
