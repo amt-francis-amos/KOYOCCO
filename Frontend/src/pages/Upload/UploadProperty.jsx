@@ -1,162 +1,112 @@
 import React, { useState } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-
-// Validation schema
-const UploadPropertySchema = Yup.object().shape({
-  title: Yup.string().required('Title is required'),
-  description: Yup.string().required('Description is required'),
-  price: Yup.number().required('Price is required').positive(),
-  location: Yup.string().required('Location is required'),
-  images: Yup.mixed().required('Images are required').test(
-    'fileCount',
-    'You can only upload a maximum of 10 images',
-    (value) => value && value.length <= 10
-  ),
-  video: Yup.mixed().nullable(), 
-});
 
 const UploadProperty = () => {
-  const [imageError, setImageError] = useState('');
-  const navigate = useNavigate();
+  const [propertyData, setPropertyData] = useState({
+    name: '',
+    description: '',
+    price: '',
+    location: '',
+    images: [],
+    video: null,
+  });
+
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+    if (name === 'images') {
+      setPropertyData({ ...propertyData, images: [...files] });
+    } else if (name === 'video') {
+      setPropertyData({ ...propertyData, video: files[0] });
+    } else {
+      setPropertyData({ ...propertyData, [name]: value });
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    Object.keys(propertyData).forEach((key) => {
+      if (key === 'images') {
+        propertyData.images.forEach((image) => {
+          formData.append('images', image);
+        });
+      } else if (key === 'video') {
+        formData.append(key, propertyData[key]);
+      } else {
+        formData.append(key, propertyData[key]);
+      }
+    });
+
+    try {
+      const response = await axios.post('https://koyocco-backend.onrender.com/api/properties', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log(response.data);
+      // Handle successful upload (e.g., show a success message or redirect)
+    } catch (error) {
+      console.error('Error uploading property:', error.response ? error.response.data : error.message);
+    }
+  };
 
   return (
-    <div className="max-w-2xl mx-auto bg-white p-8 shadow-md rounded-lg m-10">
-      <h1 className="text-2xl font-semibold mb-6 text-center">Upload Property</h1>
-      <Formik
-        initialValues={{
-          title: '',
-          description: '',
-          price: '',
-          location: '',
-          images: null,
-          video: null,
-        }}
-        validationSchema={UploadPropertySchema}
-        onSubmit={async (values, { setSubmitting, resetForm }) => {
-          const formData = new FormData();
-          formData.append('title', values.title);
-          formData.append('description', values.description);
-          formData.append('price', values.price);
-          formData.append('location', values.location);
-
-
-          for (let i = 0; i < values.images.length; i++) {
-            formData.append('images', values.images[i]);
-          }
-
-          if (values.video) {
-            formData.append('video', values.video);
-          }
-
-          try {
-      
-            const uploadResponse = await axios.post('https://koyocco-backend.onrender.com/api/upload', formData, {
-              headers: {
-                'Content-Type': 'multipart/form-data',
-              },
-            });
-
-           
-            const propertyData = {
-              ...values,
-              images: uploadResponse.data, 
-            };
-
-            await axios.post('https://koyocco-backend.onrender.com/api/properties', propertyData);
-
-            alert('Property uploaded successfully!');
-            resetForm();
-            navigate('/propertyList');
-          } catch (error) {
-            alert('An error occurred while uploading the property.');
-            console.error(error);
-          } finally {
-            setSubmitting(false);
-          }
-        }}
-      >
-        {({ setFieldValue }) => (
-          <Form className="space-y-4">
-            <div>
-              <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title</label>
-              <Field
-                name="title"
-                type="text"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm"
-              />
-              <ErrorMessage name="title" component="div" className="text-red-500 text-sm mt-1" />
-            </div>
-            <div>
-              <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
-              <Field
-                name="description"
-                as="textarea"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm"
-              />
-              <ErrorMessage name="description" component="div" className="text-red-500 text-sm mt-1" />
-            </div>
-            <div>
-              <label htmlFor="price" className="block text-sm font-medium text-gray-700">Price</label>
-              <Field
-                name="price"
-                type="number"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm"
-              />
-              <ErrorMessage name="price" component="div" className="text-red-500 text-sm mt-1" />
-            </div>
-            <div>
-              <label htmlFor="location" className="block text-sm font-medium text-gray-700">Location</label>
-              <Field
-                name="location"
-                type="text"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm"
-              />
-              <ErrorMessage name="location" component="div" className="text-red-500 text-sm mt-1" />
-            </div>
-            <div>
-              <label htmlFor="images" className="block text-sm font-medium text-gray-700">Images (Max 10)</label>
-              <input
-                name="images"
-                type="file"
-                multiple
-                className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
-                onChange={(event) => {
-                  const files = event.currentTarget.files;
-                  if (files.length > 10) {
-                    setImageError('You can only upload a maximum of 10 images');
-                  } else {
-                    setImageError('');
-                    setFieldValue('images', files);
-                  }
-                }}
-              />
-              {imageError && <div className="text-red-500 text-sm mt-1">{imageError}</div>}
-              <ErrorMessage name="images" component="div" className="text-red-500 text-sm mt-1" />
-            </div>
-            <div>
-              <label htmlFor="video" className="block text-sm font-medium text-gray-700">Video (Optional)</label>
-              <input
-                name="video"
-                type="file"
-                className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
-                onChange={(event) => {
-                  setFieldValue('video', event.currentTarget.files[0]);
-                }}
-              />
-              <ErrorMessage name="video" component="div" className="text-red-500 text-sm mt-1" />
-            </div>
-            <button
-              type="submit"
-              className="w-full py-2 px-4 bg-red-600 text-white rounded-md hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
-            >
-              Submit Property
-            </button>
-          </Form>
-        )}
-      </Formik>
+    <div className="container mx-auto p-5">
+      <h2 className="text-2xl mb-4">Upload Property</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <input
+          type="text"
+          name="name"
+          placeholder="Property Name"
+          value={propertyData.name}
+          onChange={handleChange}
+          required
+          className="border rounded p-2 w-full"
+        />
+        <textarea
+          name="description"
+          placeholder="Description"
+          value={propertyData.description}
+          onChange={handleChange}
+          className="border rounded p-2 w-full"
+        />
+        <input
+          type="number"
+          name="price"
+          placeholder="Price"
+          value={propertyData.price}
+          onChange={handleChange}
+          required
+          className="border rounded p-2 w-full"
+        />
+        <input
+          type="text"
+          name="location"
+          placeholder="Location"
+          value={propertyData.location}
+          onChange={handleChange}
+          required
+          className="border rounded p-2 w-full"
+        />
+        <input
+          type="file"
+          name="images"
+          multiple
+          accept="image/*"
+          onChange={handleChange}
+          className="border rounded p-2 w-full"
+        />
+        <input
+          type="file"
+          name="video"
+          accept="video/*"
+          onChange={handleChange}
+          className="border rounded p-2 w-full"
+        />
+        <button type="submit" className="bg-blue-500 text-white rounded p-2 w-full">
+          Upload Property
+        </button>
+      </form>
     </div>
   );
 };
