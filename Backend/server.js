@@ -31,7 +31,7 @@ db();
 
 // Routes
 app.use('/api/auth', authRoutes);
-app.use('/api/properties/upload', propertyRoutes);
+app.use('/api/properties', propertyRoutes);
 app.use('/api/bookings', bookingRoutes); 
 
 
