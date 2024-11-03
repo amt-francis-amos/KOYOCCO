@@ -10,10 +10,11 @@ const upload = multer({ storage: storage });
 
 // Cloudinary configuration (make sure to replace with your own credentials)
 cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_KEY,
-  api_secret: process.env.API_SECRET,
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
+
 
 // Helper function to upload a file to Cloudinary
 const uploadToCloudinary = (file, resourceType = 'image') => {
