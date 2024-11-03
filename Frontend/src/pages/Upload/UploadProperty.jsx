@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import PropertyList from '../PropertyList/PropertyList'; // Adjust the import according to your file structure
+import PropertyList from '../PropertyList/PropertyList'; 
 
 const UploadProperty = () => {
   const [propertyData, setPropertyData] = useState({
