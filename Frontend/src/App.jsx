@@ -14,18 +14,17 @@ import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
 import OwnerDashboard from "./pages/PropertyOwner/OwnerDashboard";
 import AgentDashboard from "./pages/AgentDashboard/AgentDashboard";
 import PropertyDetails from "./pages/PropertyDetails/PropertyDetails";
-import { FeaturedPropertiesProvider } from "./context/FeaturedPropertiesContext";
 import Booking from "./pages/Booking/Booking";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
-import PropertyStatusPage from "./pages/PropertyStatusPage/PropertyStatusPage";  // <-- New import
+import PropertyStatusPage from "./pages/PropertyStatusPage/PropertyStatusPage"; 
 
 function App() {
   const role = localStorage.getItem("role");
 
   return (
-    <FeaturedPropertiesProvider>
+ 
       <div className="flex flex-col min-h-screen">
         <Navbar />
         <main className="flex-grow">
@@ -78,7 +77,7 @@ function App() {
         </main>
         <Footer />
       </div>
-    </FeaturedPropertiesProvider>
+  
   );
 }
 

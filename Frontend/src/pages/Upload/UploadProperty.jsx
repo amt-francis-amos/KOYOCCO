@@ -31,27 +31,26 @@ const UploadProperty = () => {
           formData.append('images', image);
         });
       } else if (key === 'video') {
-        formData.append(key, propertyData[key]);
+        formData.append('video', propertyData[key]);
       } else {
         formData.append(key, propertyData[key]);
       }
     });
 
     try {
-      const response = await axios.post('https://koyocco-backend.onrender.com/api/properties', formData, {
+      const response = await axios.post('https://koyocco-backend.onrender.com/api/properties/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log(response.data);
-      // Handle successful upload (e.g., show a success message or redirect)
+      console.log('Upload successful:', response.data);
     } catch (error) {
       console.error('Error uploading property:', error.response ? error.response.data : error.message);
     }
   };
 
   return (
-    <div className="container mx-auto p-5">
+    <div className="max-w-[600px] mx-auto mt-10 mb-20 p-5 bg-white shadow-md">
       <h2 className="text-2xl mb-4">Upload Property</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
@@ -103,7 +102,7 @@ const UploadProperty = () => {
           onChange={handleChange}
           className="border rounded p-2 w-full"
         />
-        <button type="submit" className="bg-blue-500 text-white rounded p-2 w-full">
+        <button type="submit" className="bg-red-500 text-white rounded p-2">
           Upload Property
         </button>
       </form>

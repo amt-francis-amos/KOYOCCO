@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useFeaturedProperties } from '../../context/FeaturedPropertiesContext';
+
 import axios from 'axios'; 
 import ContactAgentModal from '../../components/Modals/ContactAgentModal';
 
 const PropertyDetails = () => {
   const { id } = useParams(); 
-  const { featuredProperties } = useFeaturedProperties();
-  const property = featuredProperties.find((property) => property.id === Number(id));
+
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [agent, setAgent] = useState(null);
@@ -15,27 +14,7 @@ const PropertyDetails = () => {
   const [error, setError] = useState(null);
 
 
-  useEffect(() => {
-    const fetchAgentDetails = async () => {
-      if (!property) return;
-
-      setLoading(true);
-      setError(null);
-      
-      try {
-    
-        const response = await axios.get(`https://koyocco-backend.onrender.com/api/properties/${property.id}`); 
-        setAgent(response.data.property.agent); 
-      } catch (error) {
-        setError(error.response?.data?.message || error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchAgentDetails();
-  }, [property]);
-
+  
   const handleContactAgentClick = () => {
     setIsModalOpen(true);
   };
@@ -51,7 +30,7 @@ const PropertyDetails = () => {
           {/* Displaying images */}
           <div className="w-full h-64 overflow-hidden">
             {property.images.length > 0 ? (
-              <img src={`https://koyocco-backend.onrender.com/api/properties/uploads/${property.images[0]}`} alt={property.title} className="w-full h-full object-cover" />
+              <img src={`https://koyocco-backend.onrender.com/api/properties/${property.images[0]}`} alt={property.title} className="w-full h-full object-cover" />
             ) : (
               <p>No image available.</p>
             )}
