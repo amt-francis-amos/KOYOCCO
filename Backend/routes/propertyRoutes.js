@@ -20,7 +20,6 @@ console.log('Cloudinary Config:', {
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-
 // Set up multer for file uploads
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -90,6 +89,17 @@ router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 
   } catch (error) {
     console.error('Error uploading property:', error);
     res.status(500).json({ message: 'Failed to upload property', error: error.message || error });
+  }
+});
+
+// GET route to retrieve all properties
+router.get('/', async (req, res) => {
+  try {
+    const properties = await Property.find(); // Fetch all properties from the database
+    res.status(200).json(properties); // Send the properties back as a JSON response
+  } catch (error) {
+    console.error('Error fetching properties:', error);
+    res.status(500).json({ message: 'Failed to fetch properties', error: error.message || error });
   }
 });
 
