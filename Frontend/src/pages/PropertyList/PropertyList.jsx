@@ -1,8 +1,20 @@
 import React from 'react';
-import { useProperty } from '../../context/PropertyContext'; // Adjust the import path as necessary
+import axios from 'axios';
+import { useProperty } from '../../context/PropertyContext';
 
 const PropertyList = () => {
-  const { property } = useProperty(); // Get the property data from context
+  const { property, setProperty } = useProperty();
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`https://koyocco-backend.onrender.com/api/properties/${id}`);
+      setProperty(property.filter((item) => item._id !== id)); // Update context
+      alert('Property deleted successfully');
+    } catch (error) {
+      console.error('Error deleting property:', error);
+      alert('Failed to delete property');
+    }
+  };
 
   return (
     <div className="max-w-[1200px] mx-auto p-5">
@@ -15,16 +27,28 @@ const PropertyList = () => {
             <div key={item._id} className="border rounded-lg overflow-hidden shadow-md">
               {item.images.length > 0 && (
                 <img
-                  src={item.images[0]} // Display the first image as a thumbnail
+                  src={item.images[0]}
                   alt={item.name}
                   className="w-full h-40 object-cover"
                 />
+              )}
+              {item.video && (
+                <video controls className="w-full h-40 mt-2">
+                  <source src={item.video} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
               )}
               <div className="p-4">
                 <h3 className="text-lg font-bold">{item.name}</h3>
                 <p className="text-gray-600">{item.description}</p>
                 <p className="text-xl font-semibold text-red-600">${item.price}</p>
                 <p className="text-gray-500">{item.location}</p>
+                <button
+                  onClick={() => handleDelete(item._id)}
+                  className="mt-4 bg-red-600 text-white rounded-md p-2 hover:bg-red-700"
+                >
+                  Delete Property
+                </button>
               </div>
             </div>
           ))

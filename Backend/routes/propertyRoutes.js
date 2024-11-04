@@ -103,4 +103,22 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Add delete property route
+router.delete('/:id', async (req, res) => {
+  try {
+    const propertyId = req.params.id;
+    const property = await Property.findByIdAndDelete(propertyId);
+    
+    if (!property) {
+      return res.status(404).json({ message: 'Property not found' });
+    }
+
+    res.status(200).json({ message: 'Property deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting property:', error);
+    res.status(500).json({ message: 'Failed to delete property', error: error.message || error });
+  }
+});
+
+
 module.exports = router;
