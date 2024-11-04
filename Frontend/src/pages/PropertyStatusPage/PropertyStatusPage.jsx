@@ -3,16 +3,16 @@ import axios from 'axios';
 
 const PropertyStatusPage = () => {
   const [properties, setProperties] = useState([]);
-  const [status, setStatus] = useState(''); 
+  const [status, setStatus] = useState('');
   const [selectedProperty, setSelectedProperty] = useState(null);
 
   useEffect(() => {
-    axios.get('/api/properties') 
+    axios.get('https://koyocco-backend.onrender.com/api/properties')
       .then(response => {
         if (Array.isArray(response.data)) {
           setProperties(response.data);
         } else {
-          setProperties([]); 
+          setProperties([]);
         }
       })
       .catch(error => {
@@ -21,6 +21,11 @@ const PropertyStatusPage = () => {
   }, []);
 
   const handleStatusUpdate = (propertyId) => {
+    if (!status) {
+      alert('Please select a status.');
+      return;
+    }
+
     axios.put(`/api/properties/${propertyId}`, { status })
       .then(response => {
         setProperties((prevProps) =>
@@ -28,17 +33,20 @@ const PropertyStatusPage = () => {
             property._id === propertyId ? { ...property, status } : property
           )
         );
+        setSelectedProperty(null);
+        setStatus(''); // Reset the status field after updating
         alert('Property status updated successfully!');
       })
       .catch(error => {
         console.error('Error updating status:', error);
+        alert('Failed to update property status');
       });
   };
 
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-bold mb-4">Update Property Status</h1>
-      {Array.isArray(properties) && properties.length > 0 ? ( 
+      {Array.isArray(properties) && properties.length > 0 ? (
         <table className="min-w-full bg-white border border-gray-300">
           <thead>
             <tr>
@@ -71,6 +79,7 @@ const PropertyStatusPage = () => {
                   <button
                     onClick={() => handleStatusUpdate(property._id)}
                     className="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    disabled={!status || selectedProperty !== property._id}
                   >
                     Update
                   </button>
