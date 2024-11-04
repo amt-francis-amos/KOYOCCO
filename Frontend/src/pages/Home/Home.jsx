@@ -71,7 +71,7 @@ const Home = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {Array.isArray(filteredProperties) && filteredProperties.length > 0 ? (
               filteredProperties.map((prop) => (
-                <div key={prop._id} className="border rounded-lg overflow-hidden shadow-lg">
+                <Link key={prop._id} to={`/propertyDetails/${prop._id}`} className="border rounded-lg overflow-hidden shadow-lg">
                   <img src={prop.images[0]} alt={prop.name} className="w-full h-48 object-cover" />
                   <div className="p-4">
                     <h3 className="font-bold text-lg">{prop.name}</h3>
@@ -79,7 +79,7 @@ const Home = () => {
                     <p className="text-red-500 font-bold">${prop.price}</p>
                     <p className="text-gray-500">{prop.location}</p>
                   </div>
-                </div>
+                </Link>
               ))
             ) : (
               <p className="text-center">No properties available at the moment.</p>

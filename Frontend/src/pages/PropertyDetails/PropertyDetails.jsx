@@ -1,20 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-
 import axios from 'axios'; 
 import ContactAgentModal from '../../components/Modals/ContactAgentModal';
 
 const PropertyDetails = () => {
   const { id } = useParams(); 
 
-  
+  const [property, setProperty] = useState(null); // Initialize property state
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [agent, setAgent] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  // Fetch property details using the id from the URL
+  useEffect(() => {
+    const fetchProperty = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(`https://koyocco-backend.onrender.com/api/properties/${id}`);
+        setProperty(response.data); // Set the fetched property
+      } catch (err) {
+        setError(err.message); // Handle error
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  
+    fetchProperty();
+  }, [id]); // Only run effect when id changes
+
   const handleContactAgentClick = () => {
     setIsModalOpen(true);
   };
@@ -22,6 +35,10 @@ const PropertyDetails = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+  // Handle loading state and error display
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <div className="max-w-[600px] mx-auto my-12">
