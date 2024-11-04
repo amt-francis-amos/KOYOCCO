@@ -10,21 +10,57 @@ import  aboutImg from './aboutImg.png'
 import rentImg from './rentImg.jpeg'
 import rentImg2 from './rentImg2.jpeg'
 import rentImg3 from './rentImg3.jpeg'
+import carImg1 from './car-1.jpg';
+import carImg2 from './car-2.png';
+import carImg3 from './car-3.jpg';
 
 
- export const assets = {
-    koyoccoLogo,
-    aboutImg,
-    houseImg1,
-    houseImg2,
-    houseImg3,
-    propertyImg1,
-    propertyImg2,
-    propertyImg3,
-    rentImg,
-    rentImg2,
-    rentImg3
+
+export const assets = {
+  koyoccoLogo,
+  aboutImg,
+  houseImg1,
+  houseImg2,
+  houseImg3,
+  propertyImg1,
+  propertyImg2,
+  propertyImg3,
+  rentImg,
+  rentImg2,
+  rentImg3,
+  carImg1,
+  carImg2,
+  carImg3
 }
+
+
+
+export const carListings = [
+    {
+        id: 1,
+        name: "Totoya Rav 4 2023",
+        image: assets.carImg1,
+        location: "Accra",
+        price: "$85,000",
+    },
+    {
+        id: 2,
+        name: "2020 Elantra",
+        image: assets.carImg2,
+        location: "Tema",
+        price: "$50,000",
+    },
+    {
+        id: 3,
+        name: "2020 Elentra",
+        image: assets.carImg3,
+        location: "Spintex",
+        price: "$70,000",
+    },
+    // Add more car listings as needed
+];
+
+
 
 
 export const listings = [

@@ -21,6 +21,7 @@ import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import PropertyStatusPage from "./pages/PropertyStatusPage/PropertyStatusPage"; 
 import PropertyRentals from "./pages/PropertyRentals/PropertyRentals";
+import Cars from "./pages/Cars/Cars";
 
 function App() {
   const role = localStorage.getItem("role");
@@ -70,6 +71,7 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/short-stays" element={<ShortStays />} />
             <Route path="/property-rentals" element={<PropertyRentals />} />
+            <Route path="/cars" element={<Cars/>} />
             <Route path="/booking" element={<Booking />} />
             <Route path="/uploadProperty" element={<UploadProperty />} />
             <Route path="/property-list" element={<PropertyList />} />
