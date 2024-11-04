@@ -70,7 +70,7 @@ function App() {
             <Route path="/short-stays" element={<ShortStays />} />
             <Route path="/booking" element={<Booking />} />
             <Route path="/uploadProperty" element={<UploadProperty />} />
-            <Route path="/propertyList" element={<PropertyList />} />
+            <Route path="/property-list" element={<PropertyList />} />
             <Route path="/property/:id" element={<PropertyDetails />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="*" element={<NotFoundPage />} />
