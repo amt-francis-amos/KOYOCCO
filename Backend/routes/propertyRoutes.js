@@ -125,26 +125,31 @@ router.delete('/:id', async (req, res) => {
 
 
 
-router.put('/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { status } = req.body;
+router.put('/:id/status', async (req, res) => {
+  const { id } = req.params; // Get the property ID from the route parameter
+  const { status } = req.body; // Get the new status from the request body
 
+  // Check if a valid status is provided
+  if (!status) {
+    return res.status(400).json({ message: 'Status is required' });
+  }
+
+  try {
+    // Update the property status
     const updatedProperty = await Property.findByIdAndUpdate(
       id,
       { status },
-      { new: true }
+      { new: true } // Return the updated document
     );
 
     if (!updatedProperty) {
       return res.status(404).json({ message: 'Property not found' });
     }
 
-    res.status(200).json(updatedProperty);
+    res.status(200).json(updatedProperty); // Return the updated property data
   } catch (error) {
     console.error('Error updating property status:', error);
     res.status(500).json({ message: 'Failed to update property status' });
   }
 });
-
 module.exports = router;
