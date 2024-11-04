@@ -104,19 +104,22 @@ router.get('/', async (req, res) => {
 });
 
 // Add delete property route
+// Add delete property route
 router.delete('/:id', async (req, res) => {
   try {
     const propertyId = req.params.id;
     const property = await Property.findByIdAndDelete(propertyId);
     
     if (!property) {
+      // Return 404 if the property was not found in the database
       return res.status(404).json({ message: 'Property not found' });
     }
 
+    // Send success response if the property was deleted successfully
     res.status(200).json({ message: 'Property deleted successfully' });
   } catch (error) {
-    console.error('Error deleting property:', error);
-    res.status(500).json({ message: 'Failed to delete property', error: error.message || error });
+    console.error('Error deleting property:', error.message); // Log the error message
+    res.status(500).json({ message: 'Failed to delete property', error: error.message });
   }
 });
 

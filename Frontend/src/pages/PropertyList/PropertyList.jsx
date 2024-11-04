@@ -7,11 +7,18 @@ const PropertyList = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`https://koyocco-backend.onrender.com/api/properties/${id}`);
-      setProperty(property.filter((item) => item._id !== id)); // Update context
-      alert('Property deleted successfully');
+      // Make delete request to the backend
+      const response = await axios.delete(`https://koyocco-backend.onrender.com/api/properties/${id}`);
+      
+      if (response.status === 200) {
+        // Update context state by removing the deleted property
+        setProperty(property.filter((item) => item._id !== id)); 
+        alert('Property deleted successfully');
+      } else {
+        alert('Failed to delete property');
+      }
     } catch (error) {
-      console.error('Error deleting property:', error);
+      console.error('Error deleting property:', error.message); // Log the error message
       alert('Failed to delete property');
     }
   };
