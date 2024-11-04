@@ -1,85 +1,61 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios'; 
-import ContactAgentModal from '../../components/Modals/ContactAgentModal';
+import axios from 'axios';
 
 const PropertyDetails = () => {
-  const { id } = useParams(); 
+    const { id } = useParams(); // Get the property ID from the URL
+    const [propertyDetail, setPropertyDetail] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-  const [property, setProperty] = useState(null); // Initialize property state
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+    useEffect(() => {
+        const fetchPropertyDetail = async () => {
+            try {
+                const response = await axios.get(`https://koyocco-backend.onrender.com/api/properties/${id}`);
+                setPropertyDetail(response.data); // Set the property details including agent info
+            } catch (error) {
+                console.error('Error fetching property details:', error);
+                setError('Failed to load property details.');
+            } finally {
+                setLoading(false);
+            }
+        };
 
-  // Fetch property details using the id from the URL
-  useEffect(() => {
-    const fetchProperty = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(`https://koyocco-backend.onrender.com/api/properties/${id}`);
-        setProperty(response.data); // Set the fetched property
-      } catch (err) {
-        setError(err.message); // Handle error
-      } finally {
-        setLoading(false);
-      }
-    };
+        fetchPropertyDetail();
+    }, [id]);
 
-    fetchProperty();
-  }, [id]); // Only run effect when id changes
+    if (loading) return <p className="text-center">Loading...</p>;
+    if (error) return <p className="text-center">{error}</p>;
+    if (!propertyDetail) return <p className="text-center">Property not found.</p>;
 
-  const handleContactAgentClick = () => {
-    setIsModalOpen(true);
-  };
+    const agent = propertyDetail.agent || {}; // Access agent details safely
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  // Handle loading state and error display
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
-
-  return (
-    <div className="max-w-[600px] mx-auto my-12">
-      {property ? (
-        <div className="border border-gray-300 rounded-lg overflow-hidden shadow-lg">
-          {/* Displaying images */}
-          <div className="w-full h-64 overflow-hidden">
-            {property.images.length > 0 ? (
-              <img src={`https://koyocco-backend.onrender.com/api/properties/${property.images[0]}`} alt={property.title} className="w-full h-full object-cover" />
-            ) : (
-              <p>No image available.</p>
-            )}
-          </div>
-          <div className="p-6">
-            <h1 className="text-3xl font-bold mb-2">{property.title}</h1>
-            <p className="text-gray-600 text-lg mb-4">{property.location}</p>
-            <p className="text-xl font-semibold text-red-600 mb-4">${property.price}</p>
-            <p className="text-gray-800 mb-4">{property.description || "No description available."}</p>
-            <button 
-              onClick={handleContactAgentClick} 
-              className="mt-4 bg-red-500 text-white px-6 py-2 rounded-full hover:bg-red-600 transition"
-            >
-              Contact Agent
-            </button>
-          </div>
+    return (
+        <div className="container mx-auto my-8 px-4">
+            <h2 className="text-3xl font-bold mb-4">{propertyDetail.name}</h2>
+            <img src={propertyDetail.images[0]} alt={propertyDetail.name} className="w-full h-64 object-cover mb-4" />
+            <p className="text-gray-600 mb-4">{propertyDetail.description}</p>
+            <p className="text-red-500 font-bold text-lg">${propertyDetail.price}</p>
+            <p className="text-gray-500 mb-4">{propertyDetail.location}</p>
+            
+            {/* Agent Details Section */}
+            <div className="border-t mt-6 pt-4">
+                <h3 className="text-xl font-bold">Agent Details</h3>
+                <div className="flex items-center mt-4">
+                    {agent.profilePicture ? (
+                        <img src={agent.profilePicture} alt={agent.name} className="w-16 h-16 rounded-full mr-4" />
+                    ) : (
+                        <div className="w-16 h-16 rounded-full bg-gray-300 mr-4"></div>
+                    )}
+                    <div>
+                        <p className="font-bold">{agent.name || 'Unknown Agent'}</p>
+                        <p className="text-gray-600">Email: {agent.email || 'N/A'}</p>
+                        <p className="text-gray-600">Phone: {agent.phone || 'N/A'}</p>
+                    </div>
+                </div>
+            </div>
         </div>
-      ) : (
-        <p className="text-center text-gray-600">Property not found</p>
-      )}
-
-      {/* Modal for contacting the agent */}
-      {isModalOpen && (
-        <ContactAgentModal 
-          agent={agent} 
-          onClose={closeModal} 
-          loading={loading}
-          error={error}
-        />
-      )}
-    </div>
-  );
+    );
 };
 
 export default PropertyDetails;

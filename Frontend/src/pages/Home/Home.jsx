@@ -8,11 +8,9 @@ import { useProperty } from '../../context/PropertyContext';
 const Home = () => {
   const { property } = useProperty();
   
-  // State for search and filter
   const [searchTerm, setSearchTerm] = useState('');
   const [priceRange, setPriceRange] = useState('');
 
-  // Filter properties based on search term and price range
   const filteredProperties = property.filter(prop => {
     const matchesSearchTerm = prop.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
                                prop.description.toLowerCase().includes(searchTerm.toLowerCase());
@@ -46,7 +44,6 @@ const Home = () => {
       <div className="container mx-auto my-8 px-4">
         <section className="my-8">
           <h2 className="text-3xl font-bold text-center mb-8">Featured Properties</h2>
-          {/* Search and Filter Section */}
           <div className="flex flex-col md:flex-row justify-between mb-4">
             <input 
               type="text" 
@@ -67,17 +64,19 @@ const Home = () => {
               <option value="400000">Up to $400,000</option>
             </select>
           </div>
-          {/* Properties Grid */}
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {Array.isArray(filteredProperties) && filteredProperties.length > 0 ? (
               filteredProperties.map((prop) => (
-                <Link key={prop._id} to={`/propertyDetails/${prop._id}`} className="border rounded-lg overflow-hidden shadow-lg">
-                  <img src={prop.images[0]} alt={prop.name} className="w-full h-48 object-cover" />
-                  <div className="p-4">
-                    <h3 className="font-bold text-lg">{prop.name}</h3>
-                    <p className="text-gray-600">{prop.description}</p>
-                    <p className="text-red-500 font-bold">${prop.price}</p>
-                    <p className="text-gray-500">{prop.location}</p>
+                <Link key={prop._id} to={`/property/${prop._id}`}>
+                  <div className="border rounded-lg overflow-hidden shadow-lg">
+                    <img src={prop.images[0]} alt={prop.name} className="w-full h-48 object-cover" />
+                    <div className="p-4">
+                      <h3 className="font-bold text-lg">{prop.name}</h3>
+                      <p className="text-gray-600">{prop.description}</p>
+                      <p className="text-red-500 font-bold">${prop.price}</p>
+                      <p className="text-gray-500">{prop.location}</p>
+                    </div>
                   </div>
                 </Link>
               ))
