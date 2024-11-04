@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useProperty } from '../../context/PropertyContext'; // Adjust the path based on your file structure
+
 
 const UploadProperty = () => {
-  const { addProperty } = useProperty(); // Use the addProperty function from context
+
   const [propertyData, setPropertyData] = useState({
     name: '',
     description: '',
@@ -14,7 +14,7 @@ const UploadProperty = () => {
     video: null,
   });
   const [message, setMessage] = useState('');
-  const navigate = useNavigate(); // Initialize navigate for redirection
+  const navigate = useNavigate(); 
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -49,8 +49,7 @@ const UploadProperty = () => {
         },
       });
       console.log('Upload successful:', response.data);
-      addProperty(response.data); // Add the new property to the context
-      // Reset form after successful upload
+    
       setPropertyData({
         name: '',
         description: '',
