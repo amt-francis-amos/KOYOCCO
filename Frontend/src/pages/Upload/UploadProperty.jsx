@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useProperty } from '../../context/PropertyContext'; // Adjust the path based on your file structure
 
@@ -12,8 +13,8 @@ const UploadProperty = () => {
     images: [],
     video: null,
   });
-
   const [message, setMessage] = useState('');
+  const navigate = useNavigate(); // Initialize navigate for redirection
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -59,6 +60,7 @@ const UploadProperty = () => {
         video: null,
       });
       setMessage('Property uploaded successfully!'); // Success message
+      navigate('/property-list'); // Redirect to PropertyList page
     } catch (error) {
       console.error('Error uploading property:', error.response ? error.response.data : error.message);
       setMessage('Failed to upload property. Please try again.'); // Error message
