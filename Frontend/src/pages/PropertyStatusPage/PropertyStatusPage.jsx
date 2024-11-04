@@ -26,7 +26,7 @@ const PropertyStatusPage = () => {
       return;
     }
 
-    axios.put(`/api/properties/${propertyId}`, { status })
+    axios.put(`https://koyocco-backend.onrender.com/api/properties${propertyId}`, { status })
       .then(response => {
         setProperties((prevProps) =>
           prevProps.map((property) =>
@@ -78,7 +78,7 @@ const PropertyStatusPage = () => {
                   </select>
                   <button
                     onClick={() => handleStatusUpdate(property._id)}
-                    className="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    className="ml-4 bg-red-500 hover:bg-black text-white font-bold py-2 px-4 rounded"
                     disabled={!status || selectedProperty !== property._id}
                   >
                     Update
