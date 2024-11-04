@@ -20,6 +20,7 @@ import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import PropertyStatusPage from "./pages/PropertyStatusPage/PropertyStatusPage"; 
+import PropertyRentals from "./pages/PropertyRentals/PropertyRentals";
 
 function App() {
   const role = localStorage.getItem("role");
@@ -68,6 +69,7 @@ function App() {
             <Route path="/reset-password/:token" element={<ResetPassword />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/short-stays" element={<ShortStays />} />
+            <Route path="/property-rentals" element={<PropertyRentals />} />
             <Route path="/booking" element={<Booking />} />
             <Route path="/uploadProperty" element={<UploadProperty />} />
             <Route path="/property-list" element={<PropertyList />} />

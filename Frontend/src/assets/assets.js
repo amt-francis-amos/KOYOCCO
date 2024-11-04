@@ -7,6 +7,9 @@ import  propertyImg1  from  './propertyImg1.jpeg'
 import  propertyImg2  from  './propertyImg2.jpeg'
 import  propertyImg3  from  './propertyImg3.jpeg'
 import  aboutImg from './aboutImg.png'
+import rentImg from './rentImg.jpeg'
+import rentImg2 from './rentImg2.jpeg'
+import rentImg3 from './rentImg3.jpeg'
 
 
  export const assets = {
@@ -17,7 +20,10 @@ import  aboutImg from './aboutImg.png'
     houseImg3,
     propertyImg1,
     propertyImg2,
-    propertyImg3 
+    propertyImg3,
+    rentImg,
+    rentImg2,
+    rentImg3
 }
 
 
@@ -61,7 +67,7 @@ export const listings = [
   export const featuredProperties = [
     {
       id: 1,
-      image: assets.propertyImg1,  
+      image: assets.rentImg,  
       title: "Luxury Villa",
       location: "Tema",
       price: "$2,500,000",
@@ -69,7 +75,7 @@ export const listings = [
     },
     {
       id: 2,
-      image: assets.propertyImg2,
+      image: assets.rentImg2,
       title: "Modern Apartment",
       location: "Spintex",
       price: "$1,200,000",
@@ -77,7 +83,7 @@ export const listings = [
     },
     {
       id: 3,
-      image: assets.propertyImg3,
+      image: assets.rentImg3,
       title: "Beach House",
       location: "Kaneshie",
       price: "$3,800,000",

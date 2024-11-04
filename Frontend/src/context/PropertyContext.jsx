@@ -23,12 +23,8 @@ export const PropertyProvider = ({ children }) => {
         setProperty(newProperty);
     };
 
-    const addProperty = (newProperty) => {
-        setProperty((prevProperties) => [...prevProperties, newProperty]);
-    };
-
     return (
-        <PropertyContext.Provider value={{ property, updateProperty, addProperty }}>
+        <PropertyContext.Provider value={{ property, updateProperty }}>
             {children}
         </PropertyContext.Provider>
     );

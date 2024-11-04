@@ -146,7 +146,7 @@ const Navbar = () => {
             onMouseLeave={() => handleMouseLeave('rental')}
           >
             <Link
-              to="/rental"
+              to="/property-rentals"
               className="hover:text-gray-700 py-2 lg:py-0 flex items-center focus:outline-none"
             >
               <span className="flex items-center">
