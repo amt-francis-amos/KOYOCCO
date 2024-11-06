@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+
 const UploadProperty = () => {
+
   const [propertyData, setPropertyData] = useState({
     name: '',
     description: '',
@@ -12,34 +14,14 @@ const UploadProperty = () => {
     video: null,
   });
   const [message, setMessage] = useState('');
-  const navigate = useNavigate();
-
-  // Function to format the price for display
-  const formatPrice = (value) => {
-   
-    const rawValue = value.replace(/[^0-9.]/g, '');
-    const number = parseFloat(rawValue);
-
-    if (isNaN(number)) return '';
-
-   
-    return number.toLocaleString('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  };
+  const navigate = useNavigate(); 
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-
     if (name === 'images') {
       setPropertyData({ ...propertyData, images: [...files] });
     } else if (name === 'video') {
       setPropertyData({ ...propertyData, video: files[0] });
-    } else if (name === 'price') {
-
-      const formattedPrice = formatPrice(value);
-      setPropertyData({
-        ...propertyData,
-        price: formattedPrice,
-      });
     } else {
       setPropertyData({ ...propertyData, [name]: value });
     }
@@ -48,10 +30,6 @@ const UploadProperty = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-
-    // Get the raw price (remove formatting)
-    const rawPrice = propertyData.price.replace(/[^0-9.]/g, ''); 
-
     Object.keys(propertyData).forEach((key) => {
       if (key === 'images') {
         propertyData.images.forEach((image) => {
@@ -59,8 +37,6 @@ const UploadProperty = () => {
         });
       } else if (key === 'video') {
         formData.append('video', propertyData[key]);
-      } else if (key === 'price') {
-        formData.append(key, rawPrice); 
       } else {
         formData.append(key, propertyData[key]);
       }
@@ -73,7 +49,7 @@ const UploadProperty = () => {
         },
       });
       console.log('Upload successful:', response.data);
-
+    
       setPropertyData({
         name: '',
         description: '',
@@ -82,18 +58,18 @@ const UploadProperty = () => {
         images: [],
         video: null,
       });
-      setMessage('Property uploaded successfully!');
-      navigate('/property-list');
+      setMessage('Property uploaded successfully!'); // Success message
+      navigate('/property-list'); // Redirect to PropertyList page
     } catch (error) {
       console.error('Error uploading property:', error.response ? error.response.data : error.message);
-      setMessage('Failed to upload property. Please try again.');
+      setMessage('Failed to upload property. Please try again.'); // Error message
     }
   };
 
   return (
     <div className="max-w-[500px] mx-auto mt-10 mb-20 p-5 bg-white shadow-md rounded-lg">
       <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">Upload Property</h2>
-      {message && <div className="mb-4 text-red-500">{message}</div>}
+      {message && <div className="mb-4 text-red-500">{message}</div>} {/* Display message */}
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
@@ -115,7 +91,7 @@ const UploadProperty = () => {
         <input
           type="number"
           name="price"
-          placeholder="₵ Price"
+          placeholder="Price"
           value={propertyData.price}
           onChange={handleChange}
           required

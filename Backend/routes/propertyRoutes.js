@@ -1,9 +1,9 @@
-require('dotenv').config();
+require('dotenv').config(); // Load environment variables
 
 const express = require('express');
 const multer = require('multer');
 const Property = require('../models/Property');
-const cloudinary = require('cloudinary').v2;
+const cloudinary = require('cloudinary').v2; 
 
 const router = express.Router();
 
@@ -36,12 +36,6 @@ router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 
     if (!name || !price || !location) {
       return res.status(400).json({ message: 'Missing required fields: name, price, or location' });
     }
-
-    // Format the price to show both ₵ and $
-    const formattedPrice = {
-      cedi: `₵${price}`,
-      dollar: `$${(price / 12).toFixed(2)}`, 
-    };
 
     // Handle image uploads
     let images = [];
@@ -79,11 +73,11 @@ router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 
       });
     }
 
-    // Create a new property document with formatted price
+    // Create a new property document
     const property = new Property({
       name,
       description,
-      price: formattedPrice, // Save the formatted price (Cedi and Dollar)
+      price,
       location,
       images,
       video,
@@ -101,19 +95,20 @@ router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 
 // --GET route to retrieve all properties
 router.get('/', async (req, res) => {
   try {
-    const properties = await Property.find();
-    res.status(200).json(properties); 
+    const properties = await Property.find(); // Fetch all properties from the database
+    res.status(200).json(properties); // Send the properties back as a JSON response
   } catch (error) {
     console.error('Error fetching properties:', error);
     res.status(500).json({ message: 'Failed to fetch properties', error: error.message || error });
   }
 });
 
-// Delete property route
+// Add delete property route
+
 router.delete('/:id', async (req, res) => {
   try {
     const propertyId = req.params.id;
-    console.log("Deleting property with ID:", propertyId);
+    console.log("Deleting property with ID:", propertyId); // Log ID on the backend
     const property = await Property.findByIdAndDelete(propertyId);
     
     if (!property) {
@@ -127,10 +122,12 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-// Update property status route
+
+
+
 router.put('/:id/status', async (req, res) => {
-  const { id } = req.params;
-  const { status } = req.body;
+  const { id } = req.params; // Get the property ID from the route parameter
+  const { status } = req.body; // Get the new status from the request body
 
   // Check if a valid status is provided
   if (!status) {
@@ -142,18 +139,19 @@ router.put('/:id/status', async (req, res) => {
     const updatedProperty = await Property.findByIdAndUpdate(
       id,
       { status },
-      { new: true }
+      { new: true } // Return the updated document
     );
 
     if (!updatedProperty) {
       return res.status(404).json({ message: 'Property not found' });
     }
 
-    res.status(200).json(updatedProperty);
+    res.status(200).json(updatedProperty); // Return the updated property data
   } catch (error) {
     console.error('Error updating property status:', error);
-    res.status(500).json({ message: 'Failed to update property status', error: error.message });
+    res.status(500).json({ message: 'Failed to update property status' });
   }
 });
+
 
 module.exports = router;
