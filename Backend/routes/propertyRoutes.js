@@ -1,4 +1,4 @@
-require('dotenv').config(); // Load environment variables
+require('dotenv').config(); 
 
 const express = require('express');
 const multer = require('multer');
@@ -95,8 +95,8 @@ router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 
 // --GET route to retrieve all properties
 router.get('/', async (req, res) => {
   try {
-    const properties = await Property.find(); // Fetch all properties from the database
-    res.status(200).json(properties); // Send the properties back as a JSON response
+    const properties = await Property.find(); 
+    res.status(200).json(properties);
   } catch (error) {
     console.error('Error fetching properties:', error);
     res.status(500).json({ message: 'Failed to fetch properties', error: error.message || error });
@@ -108,7 +108,7 @@ router.get('/', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     const propertyId = req.params.id;
-    console.log("Deleting property with ID:", propertyId); // Log ID on the backend
+    console.log("Deleting property with ID:", propertyId); 
     const property = await Property.findByIdAndDelete(propertyId);
     
     if (!property) {
@@ -126,8 +126,8 @@ router.delete('/:id', async (req, res) => {
 
 
 router.put('/:id/status', async (req, res) => {
-  const { id } = req.params; // Get the property ID from the route parameter
-  const { status } = req.body; // Get the new status from the request body
+  const { id } = req.params; 
+  const { status } = req.body; 
 
   // Check if a valid status is provided
   if (!status) {
@@ -139,14 +139,14 @@ router.put('/:id/status', async (req, res) => {
     const updatedProperty = await Property.findByIdAndUpdate(
       id,
       { status },
-      { new: true } // Return the updated document
+      { new: true } 
     );
 
     if (!updatedProperty) {
       return res.status(404).json({ message: 'Property not found' });
     }
 
-    res.status(200).json(updatedProperty); // Return the updated property data
+    res.status(200).json(updatedProperty); 
   } catch (error) {
     console.error('Error updating property status:', error);
     res.status(500).json({ message: 'Failed to update property status' });

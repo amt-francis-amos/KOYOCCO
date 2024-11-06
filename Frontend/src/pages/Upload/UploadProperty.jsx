@@ -58,18 +58,18 @@ const UploadProperty = () => {
         images: [],
         video: null,
       });
-      setMessage('Property uploaded successfully!'); // Success message
-      navigate('/property-list'); // Redirect to PropertyList page
+      setMessage('Property uploaded successfully!'); 
+      navigate('/property-list'); 
     } catch (error) {
       console.error('Error uploading property:', error.response ? error.response.data : error.message);
-      setMessage('Failed to upload property. Please try again.'); // Error message
+      setMessage('Failed to upload property. Please try again.'); 
     }
   };
 
   return (
     <div className="max-w-[500px] mx-auto mt-10 mb-20 p-5 bg-white shadow-md rounded-lg">
       <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">Upload Property</h2>
-      {message && <div className="mb-4 text-red-500">{message}</div>} {/* Display message */}
+      {message && <div className="mb-4 text-red-500">{message}</div>} 
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
