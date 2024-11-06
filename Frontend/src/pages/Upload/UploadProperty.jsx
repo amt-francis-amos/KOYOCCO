@@ -113,7 +113,7 @@ const UploadProperty = () => {
           rows="3"
         />
         <input
-          type="text"
+          type="number"
           name="price"
           placeholder="₵ Price"
           value={propertyData.price}
