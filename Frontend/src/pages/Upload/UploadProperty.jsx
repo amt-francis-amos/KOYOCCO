@@ -16,13 +16,13 @@ const UploadProperty = () => {
 
   // Function to format the price for display
   const formatPrice = (value) => {
-    // Remove any non-numeric characters (except commas and decimal)
+   
     const rawValue = value.replace(/[^0-9.]/g, '');
     const number = parseFloat(rawValue);
 
     if (isNaN(number)) return '';
 
-    // Format the number with commas and two decimal places
+   
     return number.toLocaleString('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 });
   };
 
@@ -34,7 +34,7 @@ const UploadProperty = () => {
     } else if (name === 'video') {
       setPropertyData({ ...propertyData, video: files[0] });
     } else if (name === 'price') {
-      // Format the price but save the raw value for submission
+
       const formattedPrice = formatPrice(value);
       setPropertyData({
         ...propertyData,
@@ -50,7 +50,7 @@ const UploadProperty = () => {
     const formData = new FormData();
 
     // Get the raw price (remove formatting)
-    const rawPrice = propertyData.price.replace(/[^0-9.]/g, ''); // Remove any non-numeric characters
+    const rawPrice = propertyData.price.replace(/[^0-9.]/g, ''); 
 
     Object.keys(propertyData).forEach((key) => {
       if (key === 'images') {
@@ -60,7 +60,7 @@ const UploadProperty = () => {
       } else if (key === 'video') {
         formData.append('video', propertyData[key]);
       } else if (key === 'price') {
-        formData.append(key, rawPrice); // Append raw price for backend
+        formData.append(key, rawPrice); 
       } else {
         formData.append(key, propertyData[key]);
       }
@@ -83,7 +83,7 @@ const UploadProperty = () => {
         video: null,
       });
       setMessage('Property uploaded successfully!');
-      navigate('/property-list'); // Redirect to PropertyList page
+      navigate('/property-list');
     } catch (error) {
       console.error('Error uploading property:', error.response ? error.response.data : error.message);
       setMessage('Failed to upload property. Please try again.');
@@ -93,7 +93,7 @@ const UploadProperty = () => {
   return (
     <div className="max-w-[500px] mx-auto mt-10 mb-20 p-5 bg-white shadow-md rounded-lg">
       <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">Upload Property</h2>
-      {message && <div className="mb-4 text-red-500">{message}</div>} {/* Display message */}
+      {message && <div className="mb-4 text-red-500">{message}</div>}
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
