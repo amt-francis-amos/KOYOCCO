@@ -104,7 +104,6 @@ router.get('/', async (req, res) => {
 });
 
 // Add delete property route
-
 router.delete('/:id', async (req, res) => {
   try {
     const propertyId = req.params.id;

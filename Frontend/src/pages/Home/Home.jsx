@@ -6,8 +6,9 @@ import { Link } from "react-router-dom";
 import { useProperty } from "../../context/PropertyContext";
 
 const Home = () => {
-  const { property } = useProperty();
 
+  
+  const { property } = useProperty();
   const [searchTerm, setSearchTerm] = useState("");
   const [priceRange, setPriceRange] = useState("");
 

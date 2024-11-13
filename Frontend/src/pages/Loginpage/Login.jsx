@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import bgImage from "../../assets/koyocco-logo.jpeg";
+import {assets} from "../../assets/assets";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; 
@@ -88,7 +88,7 @@ const Login = () => {
     <div className="bg-white shadow-md m-[60px] rounded-lg p-8 max-w-md w-full mx-auto">
       <ToastContainer />
       <img
-        src={bgImage}
+        src={assets.koyoccoLogo}
         alt="Logo"
         className="mx-auto mb-6"
         style={{ width: "80px", height: "80px" }}

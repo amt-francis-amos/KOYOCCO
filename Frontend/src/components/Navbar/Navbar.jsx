@@ -4,9 +4,11 @@ import { assets } from '../../assets/assets';
 import { FaBars, FaTimes, FaChevronDown } from 'react-icons/fa';
 
 const Navbar = () => {
+
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState({ shortStays: false, rental: false });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  
   const navigate = useNavigate(); 
 
   const toggleMenu = () => {
