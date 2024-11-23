@@ -265,15 +265,7 @@ const Navbar = () => {
           </li>
 
             {/* Other Links */}
-            <li>
-            <Link
-              to="/property-sales"
-              className="hover:text-gray-700 block py-2 lg:py-0"
-              onClick={closeMenuOnLinkClick}
-            >
-              Property Sales
-            </Link>
-          </li>
+         
           <li>
             <Link
               to="/cars"
