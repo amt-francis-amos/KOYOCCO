@@ -101,7 +101,7 @@ const Navbar = () => {
               className="hover:text-gray-700 py-2 lg:py-0 flex items-center focus:outline-none"
             >
               <span className="flex items-center">
-                Short-Stays <FaChevronDown size={10} className="ml-2" />
+                Short-Stays <FaChevronDown size={13} className="ml-2" />
               </span>
             </Link>
 
@@ -150,7 +150,7 @@ const Navbar = () => {
               className="hover:text-gray-700 py-2 lg:py-0 flex items-center focus:outline-none"
             >
               <span className="flex items-center">
-                Property Rentals <FaChevronDown size={10} className="ml-2" />
+                Property Rentals <FaChevronDown size={13} className="ml-2" />
               </span>
             </Link>
 
@@ -226,7 +226,7 @@ const Navbar = () => {
               className="hover:text-gray-700 py-2 lg:py-0 flex items-center focus:outline-none"
             >
               <span className="flex items-center">
-                Property Sales <FaChevronDown size={10} className="ml-2" />
+                Property Sales <FaChevronDown size={13} className="ml-2" />
               </span>
             </Link>
 
