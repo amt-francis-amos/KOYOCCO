@@ -49,12 +49,12 @@ const Navbar = () => {
   return (
     <nav className="bg-white shadow-md">
       <div className="container mx-auto px-4 py-2 flex items-center justify-between">
-        {/* Logo */}
+      
         <Link to="/" onClick={closeMenuOnLinkClick}>
           <img src={assets.koyoccoLogo} className="w-[80px]" alt="Koyocco Logo" />
         </Link>
 
-        {/* Hamburger Icon */}
+       
         <div className="lg:hidden" onClick={toggleMenu}>
           {menuOpen ? (
             <FaTimes size={24} aria-label="Close menu" />
@@ -105,7 +105,7 @@ const Navbar = () => {
               </span>
             </Link>
 
-            {/* Dropdown Content */}
+            
             <ul
               className={`absolute left-0 z-10 mt-1 bg-white shadow-lg rounded-md py-2 w-48 ${dropdownOpen.shortStays ? 'block' : 'hidden'} transition-opacity ease-in-out duration-300`}
             >
@@ -154,7 +154,7 @@ const Navbar = () => {
               </span>
             </Link>
 
-            {/* Dropdown Content */}
+         
             <ul
               className={`absolute left-0 mt-1 bg-white shadow-lg rounded-md py-2 w-48 ${dropdownOpen.rental ? 'block' : 'hidden'} transition-opacity ease-in-out duration-300`}
             >
@@ -215,7 +215,7 @@ const Navbar = () => {
             </ul>
           </li>
 
-          {/* Property Sales Dropdown */}
+       
           <li
             className="relative group"
             onMouseEnter={() => handleMouseEnter('propertySales')}
@@ -230,7 +230,7 @@ const Navbar = () => {
               </span>
             </Link>
 
-            {/* Dropdown Content */}
+       
             <ul
               className={`absolute left-0 mt-1 bg-white shadow-lg rounded-md py-2 w-48 ${dropdownOpen.propertySales ? 'block' : 'hidden'} transition-opacity ease-in-out duration-300`}
             >
@@ -264,7 +264,6 @@ const Navbar = () => {
             </ul>
           </li>
 
-            {/* Other Links */}
          
           <li>
             <Link
@@ -294,7 +293,7 @@ const Navbar = () => {
             </Link>
           </li>
 
-          {/* Mobile-Only Buttons */}
+      
           {isLoggedIn ? (
             <li className="lg:hidden mt-4">
               <button
@@ -324,7 +323,7 @@ const Navbar = () => {
           )}
         </ul>
 
-        {/* Desktop-Only Buttons */}
+        
         <div className="hidden lg:flex lg:items-center space-x-4">
           {!isLoggedIn ? (
             <>
