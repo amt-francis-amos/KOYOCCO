@@ -6,7 +6,7 @@ import { FaBars, FaTimes, FaChevronDown } from 'react-icons/fa';
 const Navbar = () => {
 
   const [menuOpen, setMenuOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState({ shortStays: false, rental: false });
+  const [dropdownOpen, setDropdownOpen] = useState({ shortStays: false, rental: false, propertySales: false });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   
   const navigate = useNavigate(); 
@@ -22,7 +22,7 @@ const Navbar = () => {
 
   const closeMenuOnLinkClick = () => {
     setMenuOpen(false);
-    setDropdownOpen({ shortStays: false, rental: false });
+    setDropdownOpen({ shortStays: false, rental: false, propertySales: false });
   };
 
   const handleMouseEnter = (dropdown) => {
@@ -107,9 +107,7 @@ const Navbar = () => {
 
             {/* Dropdown Content */}
             <ul
-              className={`absolute left-0 z-10 mt-1 bg-white shadow-lg rounded-md py-2 w-48 ${
-                dropdownOpen.shortStays ? 'block' : 'hidden'
-              } transition-opacity ease-in-out duration-300`}
+              className={`absolute left-0 z-10 mt-1 bg-white shadow-lg rounded-md py-2 w-48 ${dropdownOpen.shortStays ? 'block' : 'hidden'} transition-opacity ease-in-out duration-300`}
             >
               <li>
                 <Link
@@ -158,9 +156,7 @@ const Navbar = () => {
 
             {/* Dropdown Content */}
             <ul
-              className={`absolute left-0 mt-1 bg-white shadow-lg rounded-md py-2 w-48 ${
-                dropdownOpen.rental ? 'block' : 'hidden'
-              } transition-opacity ease-in-out duration-300`}
+              className={`absolute left-0 mt-1 bg-white shadow-lg rounded-md py-2 w-48 ${dropdownOpen.rental ? 'block' : 'hidden'} transition-opacity ease-in-out duration-300`}
             >
               <li>
                 <Link
@@ -198,11 +194,78 @@ const Navbar = () => {
                   Duplex
                 </Link>
               </li>
+              <li>
+                <Link
+                  to="/office"
+                  className="block px-4 py-2 hover:bg-gray-100"
+                  onClick={closeMenuOnLinkClick}
+                >
+                  Office
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/shop"
+                  className="block px-4 py-2 hover:bg-gray-100"
+                  onClick={closeMenuOnLinkClick}
+                >
+                 Shop
+                </Link>
+              </li>
             </ul>
           </li>
 
-          {/* Other Links */}
-          <li>
+          {/* Property Sales Dropdown */}
+          <li
+            className="relative group"
+            onMouseEnter={() => handleMouseEnter('propertySales')}
+            onMouseLeave={() => handleMouseLeave('propertySales')}
+          >
+            <Link
+              to="/property-sales"
+              className="hover:text-gray-700 py-2 lg:py-0 flex items-center focus:outline-none"
+            >
+              <span className="flex items-center">
+                Property Sales <FaChevronDown size={10} className="ml-2" />
+              </span>
+            </Link>
+
+            {/* Dropdown Content */}
+            <ul
+              className={`absolute left-0 mt-1 bg-white shadow-lg rounded-md py-2 w-48 ${dropdownOpen.propertySales ? 'block' : 'hidden'} transition-opacity ease-in-out duration-300`}
+            >
+              <li>
+                <Link
+                  to="/houses"
+                  className="block px-4 py-2 hover:bg-gray-100"
+                  onClick={closeMenuOnLinkClick}
+                >
+                  Houses
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/land"
+                  className="block px-4 py-2 hover:bg-gray-100"
+                  onClick={closeMenuOnLinkClick}
+                >
+                  Land
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/commercial"
+                  className="block px-4 py-2 hover:bg-gray-100"
+                  onClick={closeMenuOnLinkClick}
+                >
+                  Commercial
+                </Link>
+              </li>
+            </ul>
+          </li>
+
+            {/* Other Links */}
+            <li>
             <Link
               to="/property-sales"
               className="hover:text-gray-700 block py-2 lg:py-0"
