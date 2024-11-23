@@ -2,23 +2,26 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-
 const UploadProperty = () => {
-
   const [propertyData, setPropertyData] = useState({
     name: '',
     description: '',
-    price: '',
+    price: '', // Will store only the numeric value
     location: '',
     images: [],
     video: null,
   });
+  const [displayPrice, setDisplayPrice] = useState(''); // For formatted display
   const [message, setMessage] = useState('');
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    if (name === 'images') {
+    if (name === 'price') {
+      const numericValue = value.replace(/[^0-9.]/g, ''); // Remove non-numeric characters
+      setPropertyData({ ...propertyData, price: numericValue });
+      setDisplayPrice(numericValue ? `₵${numericValue}` : ''); // Add the ₵ symbol
+    } else if (name === 'images') {
       setPropertyData({ ...propertyData, images: [...files] });
     } else if (name === 'video') {
       setPropertyData({ ...propertyData, video: files[0] });
@@ -49,7 +52,7 @@ const UploadProperty = () => {
         },
       });
       console.log('Upload successful:', response.data);
-    
+
       setPropertyData({
         name: '',
         description: '',
@@ -58,18 +61,19 @@ const UploadProperty = () => {
         images: [],
         video: null,
       });
-      setMessage('Property uploaded successfully!'); 
-      navigate('/property-list'); 
+      setDisplayPrice('');
+      setMessage('Property uploaded successfully!');
+      navigate('/property-list');
     } catch (error) {
       console.error('Error uploading property:', error.response ? error.response.data : error.message);
-      setMessage('Failed to upload property. Please try again.'); 
+      setMessage('Failed to upload property. Please try again.');
     }
   };
 
   return (
     <div className="max-w-[500px] mx-auto mt-10 mb-20 p-5 bg-white shadow-md rounded-lg">
       <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">Upload Property</h2>
-      {message && <div className="mb-4 text-red-500">{message}</div>} 
+      {message && <div className="mb-4 text-red-500">{message}</div>}
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
@@ -89,10 +93,10 @@ const UploadProperty = () => {
           rows="3"
         />
         <input
-          type="number"
+          type="text"
           name="price"
           placeholder="Price"
-          value={propertyData.price}
+          value={displayPrice}
           onChange={handleChange}
           required
           className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
@@ -127,7 +131,10 @@ const UploadProperty = () => {
             className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
           />
         </div>
-        <button type="submit" className="w-full bg-red-600 text-white font-bold rounded-md p-2 hover:bg-red-700 transition duration-200">
+        <button
+          type="submit"
+          className="w-full bg-red-600 text-white font-bold rounded-md p-2 hover:bg-red-700 transition duration-200"
+        >
           Upload Property
         </button>
       </form>
