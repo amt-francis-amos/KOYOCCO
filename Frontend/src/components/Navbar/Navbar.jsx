@@ -1,23 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { assets } from '../../assets/assets';
-import { FaBars, FaTimes, FaChevronDown } from 'react-icons/fa';
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { assets } from "../../assets/assets";
+import { FaBars, FaTimes, FaChevronDown } from "react-icons/fa";
 
 const Navbar = () => {
-
   const [menuOpen, setMenuOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState({ shortStays: false, rental: false, propertySales: false });
+  const [dropdownOpen, setDropdownOpen] = useState({
+    shortStays: false,
+    rental: false,
+    propertySales: false,
+  });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  
-  const navigate = useNavigate(); 
+
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
-    setIsLoggedIn(!!token); 
+    const token = localStorage.getItem("authToken");
+    setIsLoggedIn(!!token);
   });
 
   const closeMenuOnLinkClick = () => {
@@ -40,21 +43,23 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('authToken');
+    localStorage.removeItem("authToken");
     setIsLoggedIn(false);
-    navigate('/');
-    closeMenuOnLinkClick()
+    navigate("/");
+    closeMenuOnLinkClick();
   };
 
   return (
     <nav className="bg-white shadow-md">
       <div className="container mx-auto px-4 py-2 flex items-center justify-between">
-      
         <Link to="/" onClick={closeMenuOnLinkClick}>
-          <img src={assets.koyoccoLogo} className="w-[80px]" alt="Koyocco Logo" />
+          <img
+            src={assets.koyoccoLogo}
+            className="w-[80px]"
+            alt="Koyocco Logo"
+          />
         </Link>
 
-       
         <div className="lg:hidden" onClick={toggleMenu}>
           {menuOpen ? (
             <FaTimes size={24} aria-label="Close menu" />
@@ -66,13 +71,17 @@ const Navbar = () => {
         {/* Menu Links */}
         <ul
           className={`lg:flex lg:items-center lg:space-x-6 fixed lg:static top-0 left-0 w-full lg:w-auto bg-white lg:bg-transparent p-8 lg:p-0 transform ${
-            menuOpen ? 'translate-x-0' : '-translate-x-full'
+            menuOpen ? "translate-x-0" : "-translate-x-full"
           } lg:transform-none transition-transform duration-300 ease-in-out z-50`}
         >
           {/* Mobile Menu Header (logo + close icon) */}
           <div className="flex justify-between items-center mb-4 lg:hidden">
             <Link to="/" onClick={closeMenuOnLinkClick}>
-              <img src={assets.koyoccoLogo} className="w-[80px]" alt="Koyocco Logo" />
+              <img
+                src={assets.koyoccoLogo}
+                className="w-[80px]"
+                alt="Koyocco Logo"
+              />
             </Link>
             <div onClick={toggleMenu}>
               <FaTimes size={24} aria-label="Close menu" />
@@ -93,8 +102,8 @@ const Navbar = () => {
           {/* Short-Stays Dropdown */}
           <li
             className="relative group"
-            onMouseEnter={() => handleMouseEnter('shortStays')}
-            onMouseLeave={() => handleMouseLeave('shortStays')}
+            onMouseEnter={() => handleMouseEnter("shortStays")}
+            onMouseLeave={() => handleMouseLeave("shortStays")}
           >
             <Link
               to="/short-stays"
@@ -105,9 +114,10 @@ const Navbar = () => {
               </span>
             </Link>
 
-            
             <ul
-              className={`absolute left-0 z-10 mt-1 bg-white shadow-lg rounded-md py-2 w-48 ${dropdownOpen.shortStays ? 'block' : 'hidden'} transition-opacity ease-in-out duration-300`}
+              className={`absolute left-0 z-10 mt-1 bg-white shadow-lg rounded-md py-2 w-48 ${
+                dropdownOpen.shortStays ? "block" : "hidden"
+              } transition-opacity ease-in-out duration-300`}
             >
               <li>
                 <Link
@@ -142,8 +152,8 @@ const Navbar = () => {
           {/* Rental Dropdown */}
           <li
             className="relative group"
-            onMouseEnter={() => handleMouseEnter('rental')}
-            onMouseLeave={() => handleMouseLeave('rental')}
+            onMouseEnter={() => handleMouseEnter("rental")}
+            onMouseLeave={() => handleMouseLeave("rental")}
           >
             <Link
               to="/property-rentals"
@@ -154,9 +164,11 @@ const Navbar = () => {
               </span>
             </Link>
 
-         
+            {/* Dropdown Content */}
             <ul
-              className={`absolute left-0 mt-1 bg-white shadow-lg rounded-md py-2 w-48 ${dropdownOpen.rental ? 'block' : 'hidden'} transition-opacity ease-in-out duration-300`}
+              className={`absolute left-0 mt-1 bg-white shadow-lg rounded-md py-2 w-48 ${
+                dropdownOpen.rental ? "block" : "hidden"
+              } transition-opacity ease-in-out duration-300`}
             >
               <li>
                 <Link
@@ -209,7 +221,7 @@ const Navbar = () => {
                   className="block px-4 py-2 hover:bg-gray-100"
                   onClick={closeMenuOnLinkClick}
                 >
-                 Shop
+                  Shop
                 </Link>
               </li>
             </ul>
@@ -218,8 +230,8 @@ const Navbar = () => {
           {/* Property Sales Dropdown */}
           <li
             className="relative group"
-            onMouseEnter={() => handleMouseEnter('propertySales')}
-            onMouseLeave={() => handleMouseLeave('propertySales')}
+            onMouseEnter={() => handleMouseEnter("propertySales")}
+            onMouseLeave={() => handleMouseLeave("propertySales")}
           >
             <Link
               to="/property-sales"
@@ -232,7 +244,9 @@ const Navbar = () => {
 
             {/* Dropdown Content */}
             <ul
-              className={`absolute left-0 mt-1 bg-white shadow-lg rounded-md py-2 w-48 ${dropdownOpen.propertySales ? 'block' : 'hidden'} transition-opacity ease-in-out duration-300`}
+              className={`absolute left-0 mt-1 bg-white shadow-lg rounded-md py-2 w-48 ${
+                dropdownOpen.propertySales ? "block" : "hidden"
+              } transition-opacity ease-in-out duration-300`}
             >
               <li>
                 <Link
@@ -264,8 +278,8 @@ const Navbar = () => {
             </ul>
           </li>
 
-            {/* Other Links */}
-         
+          {/* Other Links */}
+
           <li>
             <Link
               to="/cars"
