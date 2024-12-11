@@ -20,11 +20,11 @@ const PropertySales = () => {
         const file = files[i];
         const formDataToSend = new FormData();
         formDataToSend.append("file", file);
-        formDataToSend.append("upload_preset", "YOUR_CLOUDINARY_UPLOAD_PRESET");
+        formDataToSend.append("upload_preset", "ml_default");
 
         try {
           const response = await axios.post(
-            "https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/image/upload",
+            "https://api.cloudinary.com/v1_1/dkvs0lnab/image/upload",
             formDataToSend
           );
           uploadedPhotos.push(response.data.secure_url);
