@@ -20,6 +20,15 @@ const CreateRequest = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log('Sending request with data:', formData); // Log form data for inspection
+
+        // Basic validation to ensure all required fields are provided
+        const { userName, userEmail, phone, serviceType, vehicleId, date, location } = formData;
+        if (!userName || !userEmail || !phone || !serviceType || !vehicleId || !date || !location) {
+            alert('Please fill in all fields.');
+            return;
+        }
+
         try {
             const response = await axios.post('https://koyocco-backend.onrender.com/api/requests/create', formData);
 
@@ -39,7 +48,7 @@ const CreateRequest = () => {
                 alert('Failed to submit request.');
             }
         } catch (error) {
-            console.error('Error submitting request:', error);
+            console.error('Error submitting request:', error); // Log error for debugging
             alert('An error occurred while submitting the request.');
         }
     };
