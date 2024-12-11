@@ -1,21 +1,22 @@
 const express = require('express');
 const router = express.Router();
-const upload = require('./multerConfig'); 
+const multerConfig = require('../config/multer.js'); 
 
-router.post('/post-listing', upload.fields([{ name: 'photos' }, { name: 'video' }]), async (req, res) => {
+// Define the route to post the listing
+router.post('/post-listing', multerConfig.fields([{ name: 'photos' }, { name: 'video' }]), async (req, res) => {
   try {
     const { title, description, isPropertyOwner } = req.body;
     const photos = req.files['photos'];
     const video = req.files['video'];
 
-    // If no photos or video are uploaded
+    // Check if all necessary fields are provided
     if (!title || !description || !photos || !video) {
       return res.status(400).json({ error: 'All fields are required' });
     }
 
-    // Map over photos and store Cloudinary URLs
-    const photosUrls = photos.map(photo => photo.path); // Cloudinary URL
-    const videoUrl = video[0].path; // Cloudinary URL
+    // Map over the photos and store Cloudinary URLs
+    const photosUrls = photos.map(photo => photo.path); // Assuming Cloudinary URL is stored in 'path'
+    const videoUrl = video[0].path; // Cloudinary URL for the video
 
     const listingData = {
       title,
@@ -25,7 +26,7 @@ router.post('/post-listing', upload.fields([{ name: 'photos' }, { name: 'video' 
       isPropertyOwner,
     };
 
-    // Save to your database (example with mongoose)
+    // Save to your database (example using mongoose)
     const newListing = new Listing(listingData);
     await newListing.save();
 
