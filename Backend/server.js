@@ -2,7 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const db = require('./config/db');
+const mongoDb = require('./config/mongoDb.js');
 const authRoutes = require('./routes/authRoutes');
 const propertyRoutes = require('./routes/propertyRoutes'); 
 const bookingRoutes = require('./routes/bookingRoutes');
@@ -17,7 +17,7 @@ app.use(cors());
 app.use(express.json());
 
 // Connect to MongoDB
-db();
+mongoDb();
 
 // Routes
 app.use('/api/auth', authRoutes);
