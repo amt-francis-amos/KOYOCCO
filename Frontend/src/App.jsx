@@ -8,6 +8,7 @@ import Signup from "./pages/Signup/Signup";
 import Footer from "./components/Footer/Footer";
 import AboutPage from "./pages/About/AboutPage";
 import UploadProperty from "./pages/Upload/UploadProperty";
+import CreateRequest from "./pages/CreateRequest/CreateRequest";
 import PropertyList from "./pages/PropertyList/PropertyList";
 import ShortStays from "./pages/ShortStay/ShortStays";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
@@ -66,6 +67,7 @@ function App() {
               }
             />
             <Route path="/login" element={<Login />} />
+            <Route  path='/request'  element={<CreateRequest />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
             <Route path="/signup" element={<Signup />} />
