@@ -74,12 +74,13 @@ const Cars = () => {
                             <h2 className="text-xl font-semibold">{truck}</h2>
                             <p className="text-gray-600">Driver License Verified</p>
                             <p className="text-lg font-bold mt-2">Contact for Price</p>
-                            <button
-                                className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-black"
-                                onClick={() => alert('Redirect to relocation request page!')}
+                           
+                            <Link
+                                to="/create-request" // Path to CreateRequest page
+                                className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-black inline-block"
                             >
                                 Request Relocation
-                            </button>
+                            </Link>
                         </div>
                     </div>
                 ))}
