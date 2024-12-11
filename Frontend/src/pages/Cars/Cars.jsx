@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { carListings } from '../../assets/assets';
 
 const Cars = () => {
-    // State to manage requests and errors
+   
     const [requests, setRequests] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -76,7 +76,7 @@ const Cars = () => {
                             <p className="text-lg font-bold mt-2">Contact for Price</p>
                            
                             <Link
-                                to="/create-request" // Path to CreateRequest page
+                                to="/create-request" 
                                 className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-black inline-block"
                             >
                                 Request Relocation
