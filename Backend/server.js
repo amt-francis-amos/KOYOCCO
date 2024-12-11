@@ -7,7 +7,7 @@ const authRoutes = require('./routes/authRoutes');
 const propertyRoutes = require('./routes/propertyRoutes'); 
 const bookingRoutes = require('./routes/bookingRoutes');
 const requestRoutes = require('./routes/requestRoutes');
-const vehicleRoutes = require('./routes/vehicleRoutes');
+
 
 dotenv.config();
 
@@ -26,7 +26,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/properties', propertyRoutes); 
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/requests', requestRoutes);
-app.use('/api/vehicles', vehicleRoutes);
+
 
 // Global error handling middleware
 app.use((err, req, res, next) => {

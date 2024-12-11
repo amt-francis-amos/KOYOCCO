@@ -1,4 +1,4 @@
-// routes/vehicleRoutes.js
+
 const express = require('express');
 const Vehicle = require('../models/vehicle'); 
 const router = express.Router();
@@ -14,4 +14,5 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Export the router to be used in the server.js
 module.exports = router;

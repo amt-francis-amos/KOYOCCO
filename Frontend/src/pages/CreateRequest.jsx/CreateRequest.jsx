@@ -8,9 +8,9 @@ const CreateRequest = () => {
         phone: '',
         serviceType: 'airport-pickup',
         details: '',
-        vehicleId: '',  // Add vehicleId
-        date: '',  // Add date
-        location: '',  // Add location
+        vehicleId: '',  
+        date: '',  
+        location: '',  
     });
 
     const handleChange = (e) => {
@@ -20,9 +20,8 @@ const CreateRequest = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Sending request with data:', formData); // Log form data for inspection
-
-        // Basic validation to ensure all required fields are provided
+        console.log('Sending request with data:', formData); 
+       
         const { userName, userEmail, phone, serviceType, vehicleId, date, location } = formData;
         if (!userName || !userEmail || !phone || !serviceType || !vehicleId || !date || !location) {
             alert('Please fill in all fields.');

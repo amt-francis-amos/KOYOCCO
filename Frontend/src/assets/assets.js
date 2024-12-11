@@ -35,6 +35,31 @@ export const assets = {
 
 
 
+export const carListings = [
+    {
+        id: 1,
+        name: "Totoya Rav 4 2023",
+        image: assets.carImg1,
+        location: "Accra",
+        price: "$85,000",
+    },
+    {
+        id: 2,
+        name: "2020 Elantra",
+        image: assets.carImg2,
+        location: "Tema",
+        price: "$50,000",
+    },
+    {
+        id: 3,
+        name: "2020 Elentra",
+        image: assets.carImg3,
+        location: "Spintex",
+        price: "$70,000",
+    },
+    // Add more car listings as needed
+];
+
 
 
 
