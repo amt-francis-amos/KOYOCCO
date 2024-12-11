@@ -31,7 +31,7 @@ const Cars = () => {
                 date: new Date().toISOString(),
                 location: "Various",
             };
-            const response = await axios.post('http://localhost:5000/api/requests/create', requestData);
+            const response = await axios.post('https://koyocco-backend.onrender.com/api/requests/create', requestData);
             alert(`Truck Request Submitted: ${response.data.message}`);
         } catch (error) {
             console.error('Error submitting request:', error);
