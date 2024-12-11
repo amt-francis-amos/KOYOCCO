@@ -1,7 +1,7 @@
-// routes/listing.js
+
 const express = require("express");
 const multer = require("multer");
-const Listing = require("../models/Listing");
+const Listing = require("../models/Listing.js");
 
 const router = express.Router();
 

@@ -7,7 +7,7 @@ const authRoutes = require('./routes/authRoutes');
 const propertyRoutes = require('./routes/propertyRoutes'); 
 const bookingRoutes = require('./routes/bookingRoutes');
 const requestRoutes = require('./routes/requestRoutes');
-const listingRoutes = require("./routes/listing");
+const listingRoutes = require("./routes/listingRoutes");
 
 
 dotenv.config();
