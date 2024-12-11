@@ -1,13 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom'; 
 import { carListings } from '../../assets/assets';
 
 const Cars = () => {
-   
     const [requests, setRequests] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+
+    const fetchRequests = async () => {
+        try {
+            setLoading(true);
+            const response = await axios.get('https://koyocco-backend.onrender.com/api/requests');
+            setRequests(response.data);
+        } catch (error) {
+            setError('Failed to load requests');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleRequestAirportPickup = async (car) => {
         try {
@@ -22,7 +33,7 @@ const Cars = () => {
                 location: car.location,
             };
             const response = await axios.post('https://koyocco-backend.onrender.com/api/requests/create', requestData);
-            setRequests((prevRequests) => [...prevRequests, response.data]);
+            fetchRequests();  // Fetch updated list after submitting a request
             alert(`Airport Pickup Request Submitted: ${response.data.message}`);
         } catch (error) {
             console.error('Error submitting request:', error);
@@ -31,6 +42,10 @@ const Cars = () => {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        fetchRequests();  // Fetch requests when the component is mounted
+    }, []);
 
     return (
         <div className="container mx-auto p-4">
@@ -43,45 +58,31 @@ const Cars = () => {
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {carListings.map(car => (
-                    <div key={car.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
-                        <img src={car.image} alt={car.name} className="w-full h-48 object-cover" />
-                        <div className="p-4">
-                            <h2 className="text-xl font-semibold">{car.name}</h2>
-                            <p className="text-gray-600">Location: {car.location}</p>
-                            <p className="text-lg font-bold mt-2">Price: {car.price}</p>
-                            {/* Link to CreateRequest */}
-                            <Link
-                                to="/create-request" // Path to CreateRequest page
-                                className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-black inline-block"
-                            >
-                                Request Airport Pickup
-                            </Link>
-                        </div>
+                    <div key={car.id} className="bg-white shadow-lg rounded-lg p-4">
+                        <img src={car.image} alt={car.name} className="w-full h-40 object-cover rounded-lg mb-4" />
+                        <h3 className="text-xl font-semibold mb-2">{car.name}</h3>
+                        <p className="text-gray-700 mb-4">{car.description}</p>
+                        <button 
+                            onClick={() => handleRequestAirportPickup(car)} 
+                            className="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-black"
+                        >
+                            Request Airport Pickup
+                        </button>
                     </div>
                 ))}
             </div>
 
-            {/* Relocation Section */}
-            <h2 className="text-2xl font-bold mt-8 mb-4">Relocation Services</h2>
-            <p className="text-gray-600 mb-6">
-                Need to relocate? Request trucks to move goods or logistics to new locations.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {['Truck 1', 'Truck 2', 'Truck 3'].map((truck, index) => (
-                    <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden">
-                        <img src={`https://via.placeholder.com/400?text=${truck}`} alt={truck} className="w-full h-48 object-cover" />
-                        <div className="p-4">
-                            <h2 className="text-xl font-semibold">{truck}</h2>
-                            <p className="text-gray-600">Driver License Verified</p>
-                            <p className="text-lg font-bold mt-2">Contact for Price</p>
-                           
-                            <Link
-                                to="/create-request" 
-                                className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-black inline-block"
-                            >
-                                Request Relocation
-                            </Link>
-                        </div>
+            {/* Display Requests */}
+            <h2 className="text-2xl font-bold mt-8 mb-4">Your Requests</h2>
+            {loading && <p>Loading...</p>}
+            {error && <p className="text-red-500">{error}</p>}
+            <div className="space-y-4">
+                {requests.map((request, index) => (
+                    <div key={index} className="bg-white shadow-md p-4 rounded-lg">
+                        <h3 className="text-xl font-semibold">{request.userName}</h3>
+                        <p className="text-gray-600">{request.serviceType}</p>
+                        <p className="text-gray-600">Location: {request.location}</p>
+                        <p className="text-gray-600">Date: {new Date(request.date).toLocaleString()}</p>
                     </div>
                 ))}
             </div>

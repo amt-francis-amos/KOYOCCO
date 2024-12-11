@@ -47,7 +47,7 @@ const CreateRequest = () => {
                 alert('Failed to submit request.');
             }
         } catch (error) {
-            console.error('Error submitting request:', error); // Log error for debugging
+            console.error('Error submitting request:', error); 
             alert('An error occurred while submitting the request.');
         }
     };
