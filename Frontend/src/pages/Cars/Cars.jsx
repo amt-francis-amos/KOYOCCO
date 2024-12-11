@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { carListings } from '../../assets/assets';  
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 const Cars = () => {
     const [requests, setRequests] = useState([]);
@@ -24,16 +24,25 @@ const Cars = () => {
         try {
             setLoading(true);
             setError(null);
+
+            const user = JSON.parse(localStorage.getItem('user')); // Fetch authenticated user data from localStorage
+
+            if (!user) {
+                setError('User not authenticated');
+                return;
+            }
+
             const requestData = {
-                userName: "Sample User",
-                userEmail: "user@example.com",
+                userName: user.name, // Use authenticated user's name
+                userEmail: user.email, // Use authenticated user's email
                 serviceType: "Airport Pickup",
                 vehicleId: car.id,
                 date: new Date().toISOString(),
                 location: car.location,
             };
+
             const response = await axios.post('https://koyocco-backend.onrender.com/api/requests/create', requestData);
-            fetchRequests(); 
+            fetchRequests(); // Refetch the requests
             alert(`Airport Pickup Request Submitted: ${response.data.message}`);
         } catch (error) {
             console.error('Error submitting request:', error);
@@ -50,12 +59,12 @@ const Cars = () => {
     return (
         <div className="container mx-auto p-4">
             <h1 className="text-3xl font-bold text-center mb-8">Cars and Relocation Services</h1>
-            
-         
+
             <h2 className="text-2xl font-bold mt-8 mb-4">Airport Pickup</h2>
             <p className="text-gray-600 mb-6">
                 Book a car for airport pickup as part of your accommodation package.
             </p>
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {carListings.map(car => (
                     <div key={car.id} className="bg-white shadow-lg rounded-lg p-7">
@@ -73,13 +82,24 @@ const Cars = () => {
                 ))}
             </div>
 
-       
             <h2 className="text-2xl text-center font-bold mt-8 mb-4">Your Requests</h2>
-            {loading && <p>Loading...</p>}
-            {error && <p className="text-red-500">{error}</p>}
+            
+            {loading && (
+                <div className="flex justify-center">
+                    <div className="spinner-border animate-spin border-4 border-t-4 border-blue-500 rounded-full w-16 h-16"></div>
+                </div>
+            )}
+
+            {error && (
+                <div className="text-center">
+                    <p className="text-red-500">{error}</p>
+                    <button onClick={fetchRequests} className="text-blue-500">Retry</button>
+                </div>
+            )}
+
             <div className="flex gap-4 space-y-4 my-10">
                 {requests.map((request, index) => (
-                    <div key={index} className=" bg-white md:w-1/2 shadow-md p-6 rounded-lg">
+                    <div key={index} className="bg-white md:w-1/2 shadow-md p-6 rounded-lg">
                         <h3 className="text-xl font-semibold">{request.userName}</h3>
                         <p className="text-gray-600">{request.serviceType}</p>
                         <p className="text-gray-600">Location: {request.location}</p>
