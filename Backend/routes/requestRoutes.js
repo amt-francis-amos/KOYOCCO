@@ -8,7 +8,6 @@ const router = express.Router();
  */
 router.post('/create', async (req, res) => {
     try {
-        // Destructure incoming data from the request body
         const { userName, userEmail, serviceType, vehicleId, date, location } = req.body;
 
         // Validate required fields

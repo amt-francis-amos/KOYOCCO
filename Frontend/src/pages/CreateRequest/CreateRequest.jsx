@@ -8,6 +8,9 @@ const CreateRequest = () => {
         phone: '',
         serviceType: 'airport-pickup',
         details: '',
+        vehicleId: '',  // Add vehicleId
+        date: '',  // Add date
+        location: '',  // Add location
     });
 
     const handleChange = (e) => {
@@ -28,6 +31,9 @@ const CreateRequest = () => {
                     phone: '',
                     serviceType: 'airport-pickup',
                     details: '',
+                    vehicleId: '',
+                    date: '',
+                    location: '',
                 });
             } else {
                 alert('Failed to submit request.');
@@ -42,6 +48,7 @@ const CreateRequest = () => {
         <div className="container mx-auto p-6">
             <h1 className="text-3xl font-bold text-center mb-6">Create a Request</h1>
             <form onSubmit={handleSubmit} className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
+                {/* Full Name */}
                 <div className="mb-4">
                     <label htmlFor="userName" className="block text-gray-700 font-bold mb-2">
                         Full Name
@@ -57,6 +64,7 @@ const CreateRequest = () => {
                     />
                 </div>
 
+                {/* Email Address */}
                 <div className="mb-4">
                     <label htmlFor="userEmail" className="block text-gray-700 font-bold mb-2">
                         Email Address
@@ -72,6 +80,7 @@ const CreateRequest = () => {
                     />
                 </div>
 
+                {/* Phone Number */}
                 <div className="mb-4">
                     <label htmlFor="phone" className="block text-gray-700 font-bold mb-2">
                         Phone Number
@@ -87,6 +96,7 @@ const CreateRequest = () => {
                     />
                 </div>
 
+                {/* Request Type */}
                 <div className="mb-4">
                     <label htmlFor="serviceType" className="block text-gray-700 font-bold mb-2">
                         Request Type
@@ -103,6 +113,55 @@ const CreateRequest = () => {
                     </select>
                 </div>
 
+                {/* Vehicle ID */}
+                <div className="mb-4">
+                    <label htmlFor="vehicleId" className="block text-gray-700 font-bold mb-2">
+                        Vehicle ID
+                    </label>
+                    <input
+                        type="text"
+                        id="vehicleId"
+                        name="vehicleId"
+                        value={formData.vehicleId}
+                        onChange={handleChange}
+                        required
+                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    />
+                </div>
+
+                {/* Date */}
+                <div className="mb-4">
+                    <label htmlFor="date" className="block text-gray-700 font-bold mb-2">
+                        Date
+                    </label>
+                    <input
+                        type="date"
+                        id="date"
+                        name="date"
+                        value={formData.date}
+                        onChange={handleChange}
+                        required
+                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    />
+                </div>
+
+                {/* Location */}
+                <div className="mb-4">
+                    <label htmlFor="location" className="block text-gray-700 font-bold mb-2">
+                        Location
+                    </label>
+                    <input
+                        type="text"
+                        id="location"
+                        name="location"
+                        value={formData.location}
+                        onChange={handleChange}
+                        required
+                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    />
+                </div>
+
+                {/* Additional Details */}
                 <div className="mb-4">
                     <label htmlFor="details" className="block text-gray-700 font-bold mb-2">
                         Additional Details
