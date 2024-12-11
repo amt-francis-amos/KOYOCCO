@@ -1,49 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom'; // Import Link
-import { carListings } from '../../assets/assets';
 
 const Cars = () => {
-    // State to manage requests and errors
-    const [requests, setRequests] = useState([]);
+    // State to manage vehicle data, loading, and errors
+    const [carListings, setCarListings] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const handleRequestAirportPickup = async (car) => {
-        try {
-            setLoading(true);
-            setError(null);
-            const requestData = {
-                userName: "Sample User",
-                userEmail: "user@example.com",
-                serviceType: "Airport Pickup",
-                vehicleId: car.id,
-                date: new Date().toISOString(),
-                location: car.location,
-            };
-            const response = await axios.post('https://koyocco-backend.onrender.com/api/requests/create', requestData);
-            setRequests((prevRequests) => [...prevRequests, response.data]);
-            alert(`Airport Pickup Request Submitted: ${response.data.message}`);
-        } catch (error) {
-            console.error('Error submitting request:', error);
-            setError('Failed to submit airport pickup request.');
-        } finally {
-            setLoading(false);
-        }
-    };
+    // Fetch vehicles when the component mounts
+    useEffect(() => {
+        const fetchCars = async () => {
+            try {
+                setLoading(true);
+                const response = await axios.get('https://koyocco-backend.onrender.com/api/vehicles');
+                setCarListings(response.data); // Store vehicle data in state
+            } catch (err) {
+                setError('Failed to fetch car listings.');
+                console.error(err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchCars(); // Call the fetch function when component mounts
+    }, []);
 
     return (
         <div className="container mx-auto p-4">
             <h1 className="text-3xl font-bold text-center mb-8">Cars and Relocation Services</h1>
             
-            {/* Airport Pickup Section */}
+            {/* Loading or error messages */}
+            {loading && <p className="text-center">Loading...</p>}
+            {error && <p className="text-center text-red-500">{error}</p>}
+
+            {/* Display car listings */}
             <h2 className="text-2xl font-bold mt-8 mb-4">Airport Pickup</h2>
             <p className="text-gray-600 mb-6">
                 Book a car for airport pickup as part of your accommodation package.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {carListings.map(car => (
-                    <div key={car.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <div key={car._id} className="bg-white rounded-lg shadow-lg overflow-hidden">
                         <img src={car.image} alt={car.name} className="w-full h-48 object-cover" />
                         <div className="p-4">
                             <h2 className="text-xl font-semibold">{car.name}</h2>
@@ -74,7 +72,6 @@ const Cars = () => {
                             <h2 className="text-xl font-semibold">{truck}</h2>
                             <p className="text-gray-600">Driver License Verified</p>
                             <p className="text-lg font-bold mt-2">Contact for Price</p>
-                           
                             <Link
                                 to="/create-request" // Path to CreateRequest page
                                 className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-black inline-block"
