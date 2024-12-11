@@ -23,6 +23,7 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import PropertyStatusPage from "./pages/PropertyStatusPage/PropertyStatusPage"; 
 import PropertyRentals from "./pages/PropertyRentals/PropertyRentals";
 import Cars from "./pages/Cars/Cars";
+import PropertySales from "./pages/PropertySales/PropertySales";
 
 function App() {
   const role = localStorage.getItem("role");
@@ -78,6 +79,7 @@ function App() {
             <Route path="/uploadProperty" element={<UploadProperty />} />
             <Route path="/property-list" element={<PropertyList />} />
             <Route path="/property/:id" element={<PropertyDetails />} />
+            <Route path="/sales"   element={<PropertySales />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
