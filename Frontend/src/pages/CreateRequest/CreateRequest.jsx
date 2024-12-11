@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';  // Import useNavigate
 
 const CreateRequest = () => {
     const [formData, setFormData] = useState({
@@ -12,6 +13,8 @@ const CreateRequest = () => {
         date: '',  
         location: '',  
     });
+
+    const navigate = useNavigate();  // Initialize navigate
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -43,6 +46,9 @@ const CreateRequest = () => {
                     date: '',
                     location: '',
                 });
+
+                // Redirect to the Cars page after successful submission
+                navigate('/cars');  // Replace with the correct path to your Cars page
             } else {
                 alert('Failed to submit request.');
             }
