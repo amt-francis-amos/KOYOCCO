@@ -5,32 +5,33 @@ const router = express.Router();
 
 router.post('/create', async (req, res) => {
     try {
-        const { userName, userEmail, serviceType, vehicleId, date, location } = req.body;
-
-        // Validate required fields
-        if (!userName || !userEmail || !serviceType || !vehicleId || !date || !location) {
-            return res.status(400).json({ message: 'All fields are required.' });
-        }
-
-        const newRequest = new Request({
-            userName,
-            userEmail,
-            serviceType,
-            vehicleId,
-            date,
-            location,
-        });
-
-        await newRequest.save();
-        res.status(201).json({ message: 'Request created successfully.', request: newRequest });
-
-    } catch (error) {
-        console.error('Error creating request:', error); // Log the error
-        res.status(500).json({ message: 'Internal server error.', error: error.message });
+      const { userName, userEmail, phone, serviceType, details, vehicleId, date, location } = req.body;
+  
+      // Validate the request body
+      if (!userName || !userEmail || !phone || !serviceType || !details || !date || !location) {
+        return res.status(400).json({ error: 'All fields are required.' });
+      }
+  
+      // Create and save the request
+      const newRequest = new Request({
+        userName,
+        userEmail,
+        phone,
+        serviceType,
+        details,
+        vehicleId,
+        date,
+        location,
+      });
+  
+      const savedRequest = await newRequest.save();
+  
+      res.status(201).json({ success: true, data: savedRequest });
+    } catch (err) {
+      console.error('Error creating request:', err);
+      res.status(500).json({ message: 'Internal Server Error', error: err.message });
     }
-});
-
-
+  });
 
 router.get('/', async (req, res) => {
     try {
