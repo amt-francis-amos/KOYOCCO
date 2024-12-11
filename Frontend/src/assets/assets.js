@@ -10,9 +10,9 @@ import  aboutImg from './aboutImg.png'
 import rentImg from './rentImg.jpeg'
 import rentImg2 from './rentImg2.jpeg'
 import rentImg3 from './rentImg3.jpeg'
-import carImg1 from './car-1.jpg';
+import carImg1 from './car-1.png';
 import carImg2 from './car-2.png';
-import carImg3 from './car-3.jpg';
+import carImg3 from './car-3.png';
 
 
 
