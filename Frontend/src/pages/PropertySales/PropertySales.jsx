@@ -6,21 +6,61 @@ const PropertySales = () => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    photos: null,
+    photos: [],
     video: null,
   });
 
-  const handleFileChange = (e) => {
+  const handleFileChange = async (e) => {
     const { name, files } = e.target;
-    setFormData({ ...formData, [name]: files });
+
+    // Handle photo upload to Cloudinary
+    if (name === "photos") {
+      const uploadedPhotos = [];
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const formDataToSend = new FormData();
+        formDataToSend.append("file", file);
+        formDataToSend.append("upload_preset", "YOUR_CLOUDINARY_UPLOAD_PRESET");
+
+        try {
+          const response = await axios.post(
+            "https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/image/upload",
+            formDataToSend
+          );
+          uploadedPhotos.push(response.data.secure_url);
+        } catch (error) {
+          console.error("Error uploading photo to Cloudinary:", error);
+        }
+      }
+      setFormData({ ...formData, photos: uploadedPhotos });
+    } else if (name === "video") {
+      // Handle video upload to Cloudinary
+      const file = files[0];
+      const formDataToSend = new FormData();
+      formDataToSend.append("file", file);
+      formDataToSend.append("upload_preset", "YOUR_CLOUDINARY_UPLOAD_PRESET");
+
+      try {
+        const response = await axios.post(
+          "https://api.cloudinary.com/v1_1/dkvs0lnab/video/upload",
+          formDataToSend
+        );
+        setFormData({ ...formData, video: response.data.secure_url });
+      } catch (error) {
+        console.error("Error uploading video to Cloudinary:", error);
+      }
+    }
   };
 
   const handlePostListing = async () => {
+    const { title, description, photos, video } = formData;
+
     const formDataToSend = new FormData();
-    formDataToSend.append('title', formData.title);
-    formDataToSend.append('description', formData.description);
-    Array.from(formData.photos).forEach((file) => formDataToSend.append('photos', file));
-    formDataToSend.append('video', formData.video[0]);
+    formDataToSend.append('title', title);
+    formDataToSend.append('description', description);
+
+    photos.forEach((photo) => formDataToSend.append('photos', photo));
+    formDataToSend.append('video', video);
     formDataToSend.append('isPropertyOwner', isPropertyOwner);
   
     try {
@@ -45,7 +85,6 @@ const PropertySales = () => {
     }
   };
   
-
   return (
     <div className="min-h-screen bg-gray-50 py-10">
       <div className="container mx-auto px-6">
@@ -54,17 +93,13 @@ const PropertySales = () => {
         <div className="flex justify-center mb-8">
           <button
             onClick={() => setIsPropertyOwner(true)}
-            className={`py-2 px-6 rounded-lg text-lg font-semibold mr-4 ${
-              isPropertyOwner ? "bg-red-500 text-white" : "bg-gray-300 text-gray-700"
-            }`}
+            className={`py-2 px-6 rounded-lg text-lg font-semibold mr-4 ${isPropertyOwner ? "bg-red-500 text-white" : "bg-gray-300 text-gray-700"}`}
           >
             Property Owner
           </button>
           <button
             onClick={() => setIsPropertyOwner(false)}
-            className={`py-2 px-6 rounded-lg text-lg font-semibold ${
-              !isPropertyOwner ? "bg-red-500 text-white" : "bg-gray-300 text-gray-700"
-            }`}
+            className={`py-2 px-6 rounded-lg text-lg font-semibold ${!isPropertyOwner ? "bg-red-500 text-white" : "bg-gray-300 text-gray-700"}`}
           >
             Agent (Rental)
           </button>
@@ -74,8 +109,7 @@ const PropertySales = () => {
           <div className="bg-white shadow-lg rounded-lg p-8">
             <h2 className="text-2xl font-semibold mb-4">Property Owner Post</h2>
             <p className="text-gray-600 mb-6">
-              As a property owner, you can post your properties for sale. You are required to pay a small
-              fee for promotion and visibility to potential buyers.
+              As a property owner, you can post your properties for sale. You are required to pay a small fee for promotion and visibility to potential buyers.
             </p>
             <div className="mb-6">
               <label className="block text-lg font-medium text-gray-700 mb-2">Property Title</label>
@@ -179,9 +213,6 @@ const PropertySales = () => {
             </div>
 
             <div className="text-center">
-              <h3 className="text-lg font-semibold text-gray-700 mb-4">
-                Monthly Subscription: <span className="text-green-500">$100/month</span>
-              </h3>
               <button onClick={handlePostListing} className="bg-red-500 text-white py-3 px-8 rounded-lg">
                 Post Rental Property
               </button>
