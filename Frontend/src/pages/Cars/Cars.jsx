@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { carListings } from '../../assets/assets';
 
 const Cars = () => {
+    // State to manage requests and errors
+    const [requests, setRequests] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
     const handleRequestAirportPickup = async (car) => {
         try {
+            setLoading(true);
+            setError(null);
             const requestData = {
                 userName: "Sample User",
                 userEmail: "user@example.com",
@@ -14,15 +21,20 @@ const Cars = () => {
                 location: car.location,
             };
             const response = await axios.post('http://localhost:5000/api/requests/create', requestData);
+            setRequests((prevRequests) => [...prevRequests, response.data]);
             alert(`Airport Pickup Request Submitted: ${response.data.message}`);
         } catch (error) {
             console.error('Error submitting request:', error);
-            alert('Failed to submit airport pickup request.');
+            setError('Failed to submit airport pickup request.');
+        } finally {
+            setLoading(false);
         }
     };
 
     const handleRequestTruck = async (truck) => {
         try {
+            setLoading(true);
+            setError(null);
             const requestData = {
                 userName: "Sample User",
                 userEmail: "user@example.com",
@@ -32,10 +44,13 @@ const Cars = () => {
                 location: "Various",
             };
             const response = await axios.post('https://koyocco-backend.onrender.com/api/requests/create', requestData);
+            setRequests((prevRequests) => [...prevRequests, response.data]);
             alert(`Truck Request Submitted: ${response.data.message}`);
         } catch (error) {
             console.error('Error submitting request:', error);
-            alert('Failed to submit truck request.');
+            setError('Failed to submit truck request.');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -43,9 +58,10 @@ const Cars = () => {
         <div className="container mx-auto p-4">
             <h1 className="text-3xl font-bold text-center mb-8">Cars and Relocation Services</h1>
             
+            {/* Airport Pickup Section */}
             <h2 className="text-2xl font-bold mt-8 mb-4">Airport Pickup</h2>
             <p className="text-gray-600 mb-6">
-                Book a car for airport pickup as part of your accommodation package. Ideal for customers arriving from abroad to ensure a smooth journey from the airport.
+                Book a car for airport pickup as part of your accommodation package.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {carListings.map(car => (
@@ -66,9 +82,10 @@ const Cars = () => {
                 ))}
             </div>
 
+            {/* Relocation Section */}
             <h2 className="text-2xl font-bold mt-8 mb-4">Relocation Services</h2>
             <p className="text-gray-600 mb-6">
-                Need to relocate? Request trucks to move goods or logistics to new locations. This service is available for landlords, tenants, business owners, and anyone needing assistance.
+                Need to relocate? Request trucks to move goods or logistics to new locations.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {['Truck 1', 'Truck 2', 'Truck 3'].map((truck, index) => (
@@ -88,6 +105,33 @@ const Cars = () => {
                     </div>
                 ))}
             </div>
+
+            {/* Requests Display Section */}
+            <h2 className="text-2xl font-bold mt-8 mb-4">Recent Requests</h2>
+            {loading && <p className="text-gray-600">Loading requests...</p>}
+            {error && <p className="text-red-600">{error}</p>}
+            {requests.length > 0 ? (
+                <table className="table-auto w-full border-collapse border border-gray-200">
+                    <thead>
+                        <tr>
+                            <th className="border border-gray-200 px-4 py-2">Service Type</th>
+                            <th className="border border-gray-200 px-4 py-2">Location</th>
+                            <th className="border border-gray-200 px-4 py-2">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {requests.map((request, index) => (
+                            <tr key={index}>
+                                <td className="border border-gray-200 px-4 py-2">{request.serviceType}</td>
+                                <td className="border border-gray-200 px-4 py-2">{request.location}</td>
+                                <td className="border border-gray-200 px-4 py-2">{new Date(request.date).toLocaleString()}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            ) : (
+                <p className="text-gray-600">No requests have been made yet.</p>
+            )}
         </div>
     );
 };
