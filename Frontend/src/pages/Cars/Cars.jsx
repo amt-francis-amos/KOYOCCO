@@ -74,12 +74,12 @@ const Cars = () => {
             </div>
 
        
-            <h2 className="text-2xl font-bold mt-8 mb-4">Your Requests</h2>
+            <h2 className="text-2xl text-center font-bold mt-8 mb-4">Your Requests</h2>
             {loading && <p>Loading...</p>}
             {error && <p className="text-red-500">{error}</p>}
-            <div className="space-y-4">
+            <div className="flex gap-4 space-y-4 my-10">
                 {requests.map((request, index) => (
-                    <div key={index} className="bg-white shadow-md p-4 rounded-lg">
+                    <div key={index} className="md:flex  flex-row items-center gap-3 bg-white md:w-1/2 shadow-md p-6 rounded-lg">
                         <h3 className="text-xl font-semibold">{request.userName}</h3>
                         <p className="text-gray-600">{request.serviceType}</p>
                         <p className="text-gray-600">Location: {request.location}</p>
