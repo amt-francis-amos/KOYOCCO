@@ -171,7 +171,7 @@ const PropertySales = () => {
               <h3 className="text-lg font-semibold text-gray-700 mb-4">
                 Monthly Subscription: <span className="text-green-500">$100/month</span>
               </h3>
-              <button onClick={handlePostListing} className="bg-blue-500 text-white py-3 px-8 rounded-lg">
+              <button onClick={handlePostListing} className="bg-red-500 text-white py-3 px-8 rounded-lg">
                 Post Rental Property
               </button>
             </div>
