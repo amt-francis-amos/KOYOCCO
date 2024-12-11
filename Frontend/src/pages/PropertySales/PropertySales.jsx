@@ -26,12 +26,20 @@ const PropertySales = () => {
     formDataToSend.append("isPropertyOwner", isPropertyOwner);
 
     try {
-      const response = await axios.post("https://koyocco-backend.onrender.com/api/post-listing", formDataToSend, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const response = await axios.post(
+        "https://koyocco-backend.onrender.com/api/post-listing", 
+        formDataToSend
+      );
       alert(response.data.message);
     } catch (error) {
-      alert(error.response.data.error);
+      // More specific error handling
+      if (error.response) {
+        alert(`Error: ${error.response.data.error}`);
+      } else if (error.request) {
+        alert('No response received from the server.');
+      } else {
+        alert(`Request Error: ${error.message}`);
+      }
     }
   };
 
