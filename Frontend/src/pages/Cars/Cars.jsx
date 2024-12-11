@@ -56,7 +56,7 @@ const Cars = () => {
                             <p className="text-gray-600">Location: {car.location}</p>
                             <p className="text-lg font-bold mt-2">Price: {car.price}</p>
                             <button
-                                className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-black"
+                                className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-black"
                                 onClick={() => handleRequestAirportPickup(car)}
                             >
                                 Request Airport Pickup
@@ -79,7 +79,7 @@ const Cars = () => {
                             <p className="text-gray-600">Driver License Verified</p>
                             <p className="text-lg font-bold mt-2">Location: Various</p>
                             <button
-                                className="mt-4 bg-green-500 text-white py-2 px-4 rounded hover:bg-black"
+                                className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-black"
                                 onClick={() => handleRequestTruck(truck)}
                             >
                                 Request Truck
