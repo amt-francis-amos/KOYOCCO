@@ -28,6 +28,7 @@ app.use('/api/bookings', bookingRoutes);
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err.stack);
   res.status(500).json({ message: 'Internal Server Error', error: err.message });
+  next()
 });
 
 // Default 404 handler
