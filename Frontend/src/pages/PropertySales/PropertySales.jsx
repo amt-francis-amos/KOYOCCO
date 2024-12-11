@@ -24,7 +24,7 @@ const PropertySales = () => {
 
         try {
           const response = await axios.post(
-            "https://api.cloudinary.com/v1_1/dkvs0lnab/image/upload",
+            "https://api.cloudinary.com/v1_1/CLOUDINARY_CLOUD_NAME/image/upload",
             formDataToSend
           );
           uploadedPhotos.push(response.data.secure_url);
@@ -42,7 +42,7 @@ const PropertySales = () => {
 
       try {
         const response = await axios.post(
-          "https://api.cloudinary.com/v1_1/dkvs0lnab/video/upload",
+          "https://api.cloudinary.com/v1_1/CLOUDINARY_CLOUD_NAME/video/upload",
           formDataToSend
         );
         setFormData({ ...formData, video: response.data.secure_url });
