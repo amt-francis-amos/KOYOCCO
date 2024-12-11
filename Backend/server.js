@@ -6,6 +6,7 @@ const mongoDb = require('./config/mongoDb.js');
 const authRoutes = require('./routes/authRoutes');
 const propertyRoutes = require('./routes/propertyRoutes'); 
 const bookingRoutes = require('./routes/bookingRoutes');
+const requestRoutes = require('./routes/requestRoutes');
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ mongoDb();
 app.use('/api/auth', authRoutes);
 app.use('/api/properties', propertyRoutes); 
 app.use('/api/bookings', bookingRoutes);
+app.use('/api/requests', requestRoutes);
 
 // Global error handling middleware
 app.use((err, req, res, next) => {
