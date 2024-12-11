@@ -38,7 +38,7 @@ const PropertySales = () => {
       const file = files[0];
       const formDataToSend = new FormData();
       formDataToSend.append("file", file);
-      formDataToSend.append("upload_preset", "YOUR_CLOUDINARY_UPLOAD_PRESET");
+      formDataToSend.append("upload_preset", "ml_default");
 
       try {
         const response = await axios.post(
