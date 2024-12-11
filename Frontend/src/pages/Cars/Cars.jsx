@@ -58,7 +58,7 @@ const Cars = () => {
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {carListings.map(car => (
-                    <div key={car.id} className="bg-white shadow-lg rounded-lg p-4">
+                    <div key={car.id} className="bg-white shadow-lg rounded-lg p-7">
                         <img src={car.image} alt={car.name} className="w-full h-40 object-cover rounded-lg mb-4" />
                         <h3 className="text-xl font-semibold mb-2">{car.name}</h3>
                         <p className="text-gray-700 mb-4">{car.description}</p>
