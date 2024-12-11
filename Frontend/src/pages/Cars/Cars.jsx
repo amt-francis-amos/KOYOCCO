@@ -20,7 +20,7 @@ const Cars = () => {
                 date: new Date().toISOString(),
                 location: car.location,
             };
-            const response = await axios.post('http://localhost:5000/api/requests/create', requestData);
+            const response = await axios.post('https://koyocco-backend.onrender.com/api/requests/create', requestData);
             setRequests((prevRequests) => [...prevRequests, response.data]);
             alert(`Airport Pickup Request Submitted: ${response.data.message}`);
         } catch (error) {
