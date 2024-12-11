@@ -33,7 +33,7 @@ const Cars = () => {
                 location: car.location,
             };
             const response = await axios.post('https://koyocco-backend.onrender.com/api/requests/create', requestData);
-            fetchRequests();  // Fetch updated list after submitting a request
+            fetchRequests(); 
             alert(`Airport Pickup Request Submitted: ${response.data.message}`);
         } catch (error) {
             console.error('Error submitting request:', error);
@@ -44,14 +44,14 @@ const Cars = () => {
     };
 
     useEffect(() => {
-        fetchRequests();  // Fetch requests when the component is mounted
+        fetchRequests();  
     }, []);
 
     return (
         <div className="container mx-auto p-4">
             <h1 className="text-3xl font-bold text-center mb-8">Cars and Relocation Services</h1>
             
-            {/* Airport Pickup Section */}
+         
             <h2 className="text-2xl font-bold mt-8 mb-4">Airport Pickup</h2>
             <p className="text-gray-600 mb-6">
                 Book a car for airport pickup as part of your accommodation package.
@@ -73,7 +73,7 @@ const Cars = () => {
                 ))}
             </div>
 
-            {/* Display Requests */}
+       
             <h2 className="text-2xl font-bold mt-8 mb-4">Your Requests</h2>
             {loading && <p>Loading...</p>}
             {error && <p className="text-red-500">{error}</p>}
