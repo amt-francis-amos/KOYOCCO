@@ -17,31 +17,34 @@ const PropertySales = () => {
 
   const handlePostListing = async () => {
     const formDataToSend = new FormData();
-    formDataToSend.append("title", formData.title);
-    formDataToSend.append("description", formData.description);
-    Array.from(formData.photos).forEach((file) => {
-      formDataToSend.append("photos", file);
-    });
-    formDataToSend.append("video", formData.video[0]);
-    formDataToSend.append("isPropertyOwner", isPropertyOwner);
-
+    formDataToSend.append('title', formData.title);
+    formDataToSend.append('description', formData.description);
+    Array.from(formData.photos).forEach((file) => formDataToSend.append('photos', file));
+    formDataToSend.append('video', formData.video[0]);
+    formDataToSend.append('isPropertyOwner', isPropertyOwner);
+  
     try {
       const response = await axios.post(
-        "https://koyocco-backend.onrender.com/api/post-listing", 
+        'https://koyocco-backend.onrender.com/api/post-listing',
         formDataToSend
       );
-      alert(response.data.message);
+      console.log('Response:', response.data);
+      alert(response.data.message); // Assuming response contains a message
     } catch (error) {
-      // More specific error handling
+      console.error('Error:', error);
       if (error.response) {
+        console.log('Response Error:', error.response.data);
         alert(`Error: ${error.response.data.error}`);
       } else if (error.request) {
+        console.log('No Response:', error.request);
         alert('No response received from the server.');
       } else {
+        console.log('Request Error:', error.message);
         alert(`Request Error: ${error.message}`);
       }
     }
   };
+  
 
   return (
     <div className="min-h-screen bg-gray-50 py-10">
