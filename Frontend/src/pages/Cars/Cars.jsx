@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom'; 
-import { carListings } from '../../assets/assets';
+import { carListings } from '../../assets/assets';  
+import {Link} from 'react-router-dom'
 
 const Cars = () => {
     const [requests, setRequests] = useState([]);
@@ -62,12 +62,13 @@ const Cars = () => {
                         <img src={car.image} alt={car.name} className="w-full h-40 object-cover rounded-lg mb-4" />
                         <h3 className="text-xl font-semibold mb-2">{car.name}</h3>
                         <p className="text-gray-700 mb-4">{car.description}</p>
-                        <button 
-                            onClick={() => handleRequestAirportPickup(car)} 
+                        <p className="text-gray-900 font-semibold mb-4">{`Price: $${car.price}`}</p> {/* Price added here */}
+                        <Link to='/create-request'
+                            onClick={() => handleRequestAirportPickup(car)}
                             className="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-black"
                         >
                             Request Airport Pickup
-                        </button>
+                        </Link>
                     </div>
                 ))}
             </div>
