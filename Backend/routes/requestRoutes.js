@@ -2,10 +2,7 @@ const express = require('express');
 const Request = require('../models/Request');
 const router = express.Router();
 
-/**
- * Route: POST /create
- * Description: Submit a new service request
- */
+
 router.post('/create', async (req, res) => {
     try {
         const { userName, userEmail, serviceType, vehicleId, date, location } = req.body;
@@ -15,7 +12,6 @@ router.post('/create', async (req, res) => {
             return res.status(400).json({ message: 'All fields are required.' });
         }
 
-        // Create a new request instance
         const newRequest = new Request({
             userName,
             userEmail,
@@ -25,21 +21,17 @@ router.post('/create', async (req, res) => {
             location,
         });
 
-        // Save the request to the database
         await newRequest.save();
-
-        // Respond with success
         res.status(201).json({ message: 'Request created successfully.', request: newRequest });
+
     } catch (error) {
-        console.error('Error creating request:', error);
-        res.status(500).json({ message: 'Internal server error.' });
+        console.error('Error creating request:', error); // Log the error
+        res.status(500).json({ message: 'Internal server error.', error: error.message });
     }
 });
 
-/**
- * Route: GET /
- * Description: Fetch all service requests
- */
+
+
 router.get('/', async (req, res) => {
     try {
         // Fetch all requests and populate vehicle details
