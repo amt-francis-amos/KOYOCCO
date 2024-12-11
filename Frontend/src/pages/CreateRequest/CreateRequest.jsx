@@ -18,7 +18,7 @@ const CreateRequest = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('/api/requests/create', formData);
+            const response = await axios.post('https://koyocco-backend.onrender.com/api/requests/create', formData);
 
             if (response.status === 201) {
                 alert('Request submitted successfully!');
