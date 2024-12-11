@@ -52,7 +52,7 @@ const PropertySales = () => {
           <button
             onClick={() => setIsPropertyOwner(false)}
             className={`py-2 px-6 rounded-lg text-lg font-semibold ${
-              !isPropertyOwner ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-700"
+              !isPropertyOwner ? "bg-red-500 text-white" : "bg-gray-300 text-gray-700"
             }`}
           >
             Agent (Rental)
