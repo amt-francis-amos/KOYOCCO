@@ -57,8 +57,22 @@ export const carListings = [
         location: "Spintex",
         price: "$70,000",
     },
-    // Add more car listings as needed
+   
 ];
+
+
+const truckListings = [
+  {
+      id: 1,
+      name: "Heavy Duty Truck",
+      image: assets.carImg1,
+      description: "A powerful truck for heavy load transportation.",
+      price: 100,
+      location: "New York",
+  },
+ 
+];
+
 
 
 
