@@ -11,80 +11,46 @@ const PropertySales = () => {
     video: null,
   });
 
-  const handleFileChange = async (e) => {
+  const handleFileChange = (e) => {
     const { name, files } = e.target;
-
- 
-    if (name === "photos") {
-      const uploadedPhotos = [];
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        const formDataToSend = new FormData();
-        formDataToSend.append("file", file);
-        formDataToSend.append("upload_preset", "ml_default");
-
-        try {
-          const response = await axios.post(
-            "https://api.cloudinary.com/v1_1/CLOUDINARY_CLOUD_NAME/image/upload",
-            formDataToSend
-          );
-          uploadedPhotos.push(response.data.secure_url);
-        } catch (error) {
-          console.error("Error uploading photo to Cloudinary:", error);
-        }
-      }
-      setFormData({ ...formData, photos: uploadedPhotos });
-    } else if (name === "video") {
-     
-      const file = files[0];
-      const formDataToSend = new FormData();
-      formDataToSend.append("file", file);
-      formDataToSend.append("upload_preset", "CLOUDINARY_UPLOAD_PRESET");
-
-      try {
-        const response = await axios.post(
-          "https://api.cloudinary.com/v1_1/CLOUDINARY_CLOUD_NAME/video/upload",
-          formDataToSend
-        );
-        setFormData({ ...formData, video: response.data.secure_url });
-      } catch (error) {
-        console.error("Error uploading video to Cloudinary:", error);
-      }
+  
+    if (name === 'photos') {
+      setFormData((prevData) => ({
+        ...prevData,
+        photos: [...prevData.photos, ...files],
+      }));
+    } else if (name === 'video') {
+      setFormData((prevData) => ({
+        ...prevData,
+        video: files[0],
+      }));
     }
   };
-
+  
   const handlePostListing = async () => {
     const { title, description, photos, video } = formData;
-
+  
     const formDataToSend = new FormData();
     formDataToSend.append('title', title);
     formDataToSend.append('description', description);
-
-    photos.forEach((photo) => formDataToSend.append('photos', photo));
-    formDataToSend.append('video', video);
     formDataToSend.append('isPropertyOwner', isPropertyOwner);
+  
+    Array.from(photos).forEach(photo => formDataToSend.append('photos', photo));
+    if (video) formDataToSend.append('video', video);
   
     try {
       const response = await axios.post(
         'https://koyocco-backend.onrender.com/api/post-listing',
-        formDataToSend
+        formDataToSend,
+        { headers: { 'Content-Type': 'multipart/form-data' } }
       );
-      console.log('Response:', response.data);
       alert(response.data.message);
     } catch (error) {
       console.error('Error:', error);
-      if (error.response) {
-        console.log('Response Error:', error.response.data);
-        alert(`Error: ${error.response.data.error}`);
-      } else if (error.request) {
-        console.log('No Response:', error.request);
-        alert('No response received from the server.');
-      } else {
-        console.log('Request Error:', error.message);
-        alert(`Request Error: ${error.message}`);
-      }
+      alert(error.response?.data?.error || 'An error occurred');
     }
   };
+  
   
   return (
     <div className="min-h-screen bg-gray-50 py-10">
