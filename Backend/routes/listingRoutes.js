@@ -1,16 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const multerConfig = require('../config/multer.js');
-const Listing = require('../models/Listing'); // Assuming you have a Listing model
+const Listing = require('../models/Listing');
 
-router.post('/post-listing', multerConfig.fields([{ name: 'photos', maxCount: 10 }, { name: 'video', maxCount: 1 }]), async (req, res) => {
+router.post('/post-listing', multerConfig.fields([{ name: 'photos' }, { name: 'video' }]), async (req, res) => {
   try {
     const { title, description, isPropertyOwner } = req.body;
-    const photos = req.files['photos'] || [];
-    const video = req.files['video'] || [];
+    const photos = req.files['photos'];
+    const video = req.files['video'];
 
-    if (!title || !description || photos.length === 0 || video.length === 0) {
-      return res.status(400).json({ error: 'All fields and uploads are required' });
+    if (!title || !description || !photos || !video) {
+      console.log('Missing Fields:', { title, description, photos, video });
+      return res.status(400).json({ error: 'All fields are required' });
     }
 
     const photosUrls = photos.map(photo => photo.path);
@@ -21,17 +22,20 @@ router.post('/post-listing', multerConfig.fields([{ name: 'photos', maxCount: 10
       description,
       photos: photosUrls,
       video: videoUrl,
-      isPropertyOwner: isPropertyOwner === 'true', // Cast to boolean
+      isPropertyOwner: isPropertyOwner === 'true',
     };
+
+    console.log('Listing Data:', listingData);
 
     const newListing = new Listing(listingData);
     await newListing.save();
 
     res.status(201).json({ message: 'Listing posted successfully', listing: newListing });
   } catch (error) {
-    console.error('Error occurred while posting listing:', error);
+    console.error('Error occurred while posting listing:', error.message);
     res.status(500).json({ error: 'Error saving listing' });
   }
 });
+
 
 module.exports = router;
