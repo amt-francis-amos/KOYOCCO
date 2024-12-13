@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const PropertySales = () => {
+
   const [isPropertyOwner, setIsPropertyOwner] = useState(true);
   const [formData, setFormData] = useState({
     title: "",
@@ -13,7 +14,7 @@ const PropertySales = () => {
   const handleFileChange = async (e) => {
     const { name, files } = e.target;
 
-    // Handle photo upload to Cloudinary
+ 
     if (name === "photos") {
       const uploadedPhotos = [];
       for (let i = 0; i < files.length; i++) {
@@ -34,7 +35,7 @@ const PropertySales = () => {
       }
       setFormData({ ...formData, photos: uploadedPhotos });
     } else if (name === "video") {
-      // Handle video upload to Cloudinary
+     
       const file = files[0];
       const formDataToSend = new FormData();
       formDataToSend.append("file", file);
@@ -69,7 +70,7 @@ const PropertySales = () => {
         formDataToSend
       );
       console.log('Response:', response.data);
-      alert(response.data.message); // Assuming response contains a message
+      alert(response.data.message);
     } catch (error) {
       console.error('Error:', error);
       if (error.response) {
