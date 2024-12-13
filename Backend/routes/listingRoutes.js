@@ -3,7 +3,8 @@ const router = express.Router();
 const multerConfig = require('../config/multer.js');
 const Listing = require('../models/Listing');
 
-router.post('/post-listing', multerConfig.fields([{ name: 'photos' }, { name: 'video' }]), async (req, res) => {
+
+router.post('/', multerConfig.fields([{ name: 'photos' }, { name: 'video' }]), async (req, res) => {
   try {
     const { title, description, isPropertyOwner } = req.body;
     const photos = req.files['photos'];
@@ -22,7 +23,7 @@ router.post('/post-listing', multerConfig.fields([{ name: 'photos' }, { name: 'v
       description,
       photos: photosUrls,
       video: videoUrl,
-      isPropertyOwner: isPropertyOwner === 'true',
+      isPropertyOwner: JSON.parse(isPropertyOwner),
     };
 
     console.log('Listing Data:', listingData);
@@ -36,6 +37,5 @@ router.post('/post-listing', multerConfig.fields([{ name: 'photos' }, { name: 'v
     res.status(500).json({ error: 'Error saving listing' });
   }
 });
-
 
 module.exports = router;
