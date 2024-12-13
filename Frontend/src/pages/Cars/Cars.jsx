@@ -2,6 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { carListings } from '../../assets/assets';  
 import { Link } from 'react-router-dom';
+import {motion} from 'framer-motion'
+
+
+
+
 
 const Cars = () => {
     const [requests, setRequests] = useState([]);
@@ -57,7 +62,13 @@ const Cars = () => {
     }, []);
 
     return (
-        <div className="container mx-auto p-4">
+        <motion.div 
+        initial={{opacity:0, y:100}}
+        transition={{duration:1.5}}
+        whileInView={{opacity:1, y:0}}
+        viewport={{once:true}}
+  
+        className="container mx-auto p-4">
             <h1 className="text-3xl font-bold text-center mb-8">Cars and Relocation Services</h1>
 
             <h2 className="text-2xl font-bold mt-8 mb-4">Airport Pickup</h2>
@@ -107,7 +118,7 @@ const Cars = () => {
                     </div>
                 ))}
             </div>
-        </div>
+        </motion.div>
     );
 };
 

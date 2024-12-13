@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom'; 
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaMapMarkerAlt, FaEnvelope, FaPhoneAlt, FaGlobe } from 'react-icons/fa';
 import { assets } from '../../assets/assets'; 
+import {motion} from 'framer-motion'
 
 const AboutPage = () => {
   return (
@@ -23,7 +24,13 @@ const AboutPage = () => {
 
       <div className="bg-gray-50 flex-grow flex flex-col items-center py-12 px-6">
         <section className="container mx-auto px-4 mb-12">
-          <div className="flex flex-col md:flex-row md:space-x-8">
+          <motion.div 
+           initial={{opacity:0, y:100}}
+           transition={{duration:1.5}}
+           whileInView={{opacity:1, y:0}}
+           viewport={{once:true}}
+     
+          className="flex flex-col md:flex-row md:space-x-8">
             <div className="md:w-1/2 mb-8 md:mb-0">
               <img
                 src={assets.houseImg3} 
@@ -43,7 +50,7 @@ const AboutPage = () => {
                 Thank you for considering Koyocco Ghana as your real estate partner. We look forward to helping you achieve your real estate goals.
               </p>
             </div>
-          </div>
+          </motion.div>
         </section>
 
         <section className="container mx-auto px-4 mb-12">
