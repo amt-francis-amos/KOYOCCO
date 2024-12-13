@@ -53,12 +53,17 @@ const AboutPage = () => {
           </motion.div>
         </section>
 
-        <section className="container mx-auto px-4 mb-12">
+        <motion.div 
+         initial={{opacity:0, y:100}}
+         transition={{duration:1.5}}
+         whileInView={{opacity:1, y:0}}
+         viewport={{once:true}}
+        className="container mx-auto px-4 mb-12">
           <h2 className="text-xl md:text-2xl font-semibold text-gray-800 mb-6 text-center">Our History</h2>
           <p className="text-gray-700 mb-4 max-w-[900px] mx-auto text-center">
             Established in 2022, Koyocco Ghana has been at the forefront of the real estate industry, providing top-notch services to our clients. Over the years, we have expanded our services and built a reputation for excellence and integrity.
           </p>
-        </section>
+        </motion.div>
 
         <section
           className="container mx-auto px-4 mb-12 relative bg-cover bg-center py-12"

@@ -30,7 +30,7 @@ const Cars = () => {
             setLoading(true);
             setError(null);
 
-            const user = JSON.parse(localStorage.getItem('user')); // Fetch authenticated user data from localStorage
+            const user = JSON.parse(localStorage.getItem('user')); 
 
             if (!user) {
                 setError('User not authenticated');
@@ -38,8 +38,8 @@ const Cars = () => {
             }
 
             const requestData = {
-                userName: user.name, // Use authenticated user's name
-                userEmail: user.email, // Use authenticated user's email
+                userName: user.name, 
+                userEmail: user.email, 
                 serviceType: "Airport Pickup",
                 vehicleId: car.id,
                 date: new Date().toISOString(),
@@ -47,7 +47,7 @@ const Cars = () => {
             };
 
             const response = await axios.post('https://koyocco-backend.onrender.com/api/requests/create', requestData);
-            fetchRequests(); // Refetch the requests
+            fetchRequests();
             alert(`Airport Pickup Request Submitted: ${response.data.message}`);
         } catch (error) {
             console.error('Error submitting request:', error);
