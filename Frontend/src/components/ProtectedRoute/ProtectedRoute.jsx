@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import jwtDecode from 'jwt-decode'; // Add this if you're using JWTs
+import * as jwtDecode from 'jwt-decode'; // Correct import for named export
 
 const ProtectedRoute = ({ children, requiredRole }) => {
   const token = localStorage.getItem('authToken');
@@ -11,7 +11,7 @@ const ProtectedRoute = ({ children, requiredRole }) => {
   }
 
   try {
-    const decodedToken = jwtDecode(token); // Decode the token to validate and extract user info
+    const decodedToken = jwtDecode(token); // Decode the token
     const userRole = decodedToken.role;
 
     if (requiredRole && userRole !== requiredRole) {
