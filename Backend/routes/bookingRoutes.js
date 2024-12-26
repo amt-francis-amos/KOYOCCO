@@ -3,7 +3,7 @@ const router = express.Router();
 const Booking = require('../models/Booking');
 const nodemailer = require('nodemailer'); 
 const path = require('path');
-const authenticateToken = require('../middleware/auth.middleware');
+const authenticateToken = require('../middleware/auth.middleware.js');
 
 const createTransporter = () => {
   return nodemailer.createTransport({
@@ -54,13 +54,22 @@ const sendBookingConfirmationEmail = async (booking) => {
 router.post('/', authenticateToken, async (req, res) => {
   try {
     const { propertyId, fullName, email, date } = req.body;
-    const {userId} = req.user;
+    const { userId } = req.user;
 
-    const existingBooking = await Booking.findOne({propertyId});
+    // Check if the same user has already booked this property for the same date
+    const existingBooking = await Booking.findOne({ 
+      userId, 
+      propertyId, 
+      fullName, 
+      email, 
+      date 
+    });
+
     if (existingBooking) {
-      return res.status(409).json({ message: "A booking already exists for this user with the same name, email, and date." });
+      return res.status(409).json({ message: "A booking already exists for this user with the same property, name, email, and date." });
     }
 
+    // Create a new booking
     const newBooking = new Booking({
       userId,
       propertyId,
@@ -71,6 +80,7 @@ router.post('/', authenticateToken, async (req, res) => {
 
     await newBooking.save();
 
+    // Send confirmation email
     await sendBookingConfirmationEmail(newBooking);
 
     res.status(201).json({ message: "Booking successful! Confirmation email sent." });

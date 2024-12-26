@@ -27,35 +27,36 @@ const PropertyRentals = () => {
 
   // Handle booking process
   const handleBooking = async (property) => {
-  const token = localStorage.getItem('authToken'); // Get token from localStorage or context
-  if (!token) {
-    navigate('/login'); // Redirect to login page if token is missing
-    return;
-  }
+    const token = localStorage.getItem('authToken'); // Get token from localStorage or context
+    const userId = localStorage.getItem('userId'); // Assuming you store the userId in localStorage after login
 
-  const userConfirmed = window.confirm(`Are you sure you want to rent ${property.name}?`);
-  if (!userConfirmed) return;
+    if (!token || !userId) {
+      navigate('/login'); // Redirect to login page if token or userId is missing
+      return;
+    }
 
-  try {
-    const response = await axios.post(
-      'https://koyocco-backend.onrender.com/api/bookings',
-      {
-        propertyId: property._id,
-        userId: '12345', // Replace with actual user ID from authentication
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`, // Add the token to the request headers
+    const userConfirmed = window.confirm(`Are you sure you want to rent ${property.name}?`);
+    if (!userConfirmed) return;
+
+    try {
+      const response = await axios.post(
+        'https://koyocco-backend.onrender.com/api/bookings',
+        {
+          propertyId: property._id,
+          userId, // Use actual userId from localStorage
         },
-      }
-    );
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Add the token to the request headers
+          },
+        }
+      );
 
-    setBookingMessage(`Successfully booked ${property.name}!`);
-  } catch (error) {
-    setBookingMessage(error.response?.data?.message || 'Booking failed. Please try again.');
-  }
-};
-
+      setBookingMessage(`Successfully booked ${property.name}!`);
+    } catch (error) {
+      setBookingMessage(error.response?.data?.message || 'Booking failed. Please try again.');
+    }
+  };
 
   if (loading) {
     return <p className="text-center py-4">Loading properties...</p>;
