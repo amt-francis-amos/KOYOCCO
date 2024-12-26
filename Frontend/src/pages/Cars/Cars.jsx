@@ -108,16 +108,17 @@ const Cars = () => {
                 </div>
             )}
 
-            <div className="md:flex  lg:flex-col gap-4 space-y-4 my-10">
-                {requests.map((request, index) => (
-                    <div key={index} className="bg-white md:w-1/2 shadow-md p-6 rounded-lg">
-                        <h3 className="text-xl font-semibold">{request.userName}</h3>
-                        <p className="text-gray-600">{request.serviceType}</p>
-                        <p className="text-gray-600">Location: {request.location}</p>
-                        <p className="text-gray-600">Date: {new Date(request.date).toLocaleString()}</p>
-                    </div>
-                ))}
-            </div>
+<div className="flex flex-wrap gap-4 my-10">
+  {requests.map((request, index) => (
+    <div key={index} className="bg-white w-full md:w-1/2 lg:w-1/3 shadow-md p-6 rounded-lg">
+      <h3 className="text-xl font-semibold">{request.userName}</h3>
+      <p className="text-gray-600">{request.serviceType}</p>
+      <p className="text-gray-600">Location: {request.location}</p>
+      <p className="text-gray-600">Date: {new Date(request.date).toLocaleString()}</p>
+    </div>
+  ))}
+</div>
+
         </motion.div>
     );
 };
