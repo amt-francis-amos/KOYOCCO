@@ -5,18 +5,20 @@ import axios from 'axios';
 
 const AdminDashboard = () => {
   const [logs, setLogs] = useState({ users: [], bookings: [] });
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Track if the user is logged in
-  const navigate = useNavigate(); // To redirect if needed
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if the token exists in localStorage when the component loads
     if (localStorage.getItem('token')) {
-      setIsLoggedIn(true); // Set the login state to true if the token is present
+      setIsLoggedIn(true);
     } else {
-      navigate('/login'); // Redirect to login if no token is found
+      navigate('/login');
     }
 
     const fetchLogs = async () => {
+      setLoading(true);
       try {
         const response = await axios.get('https://koyocco-backend.onrender.com/api/auth/admin/logs', {
           headers: {
@@ -26,19 +28,36 @@ const AdminDashboard = () => {
         });
         setLogs(response.data);
       } catch (error) {
-        console.error("Error fetching logs:", error);
+        setError('Failed to load data');
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchLogs();
-  }, [navigate]); // Use navigate as dependency to ensure it redirects properly
+  }, [navigate]);
 
   const handleLogout = () => {
-    // Clear the token from localStorage
     localStorage.removeItem('token');
-    setIsLoggedIn(false); // Update the login status
-    navigate('/login'); // Redirect to login page
+    setIsLoggedIn(false);
+    navigate('/login');
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="loader">Loading...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-red-500 text-center">
+        <p>{error}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -47,6 +66,7 @@ const AdminDashboard = () => {
       </header>
       <main className="p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Stats Card for Users */}
           <div className="bg-white shadow-lg rounded-lg p-6 transition-transform transform hover:scale-105">
             <div className="flex items-center mb-4">
               <FaUsers className="text-red-600 text-3xl mr-2" />
@@ -57,6 +77,7 @@ const AdminDashboard = () => {
             <p className="text-gray-700">Inactive Users: <span className="font-bold">{logs.users.filter(user => user.loginLog.length === 0).length}</span></p>
           </div>
 
+          {/* Recent Activities Card */}
           <div className="bg-white shadow-lg rounded-lg p-6 transition-transform transform hover:scale-105">
             <div className="flex items-center mb-4">
               <FaChartBar className="text-red-600 text-3xl mr-2" />
@@ -73,30 +94,31 @@ const AdminDashboard = () => {
               ))}
             </ul>
           </div>
+
+          {/* Quick Links Card */}
           <div className="bg-white shadow-lg rounded-lg p-6 transition-transform transform hover:scale-105">
             <div className="flex items-center mb-4">
               <FaCog className="text-red-600 text-3xl mr-2" />
               <h2 className="text-xl font-semibold">Quick Links</h2>
             </div>
-            <ul className="text-gray-700">
-              <li><Link to="/admin/users" className="text-blue-600 hover:underline">Manage Users</Link></li>
-              <li><Link to="/admin/bookings" className="text-blue-600 hover:underline">Manage Bookings</Link></li>
-              <li><Link to="/admin/settings" className="text-blue-600 hover:underline">Manage Settings</Link></li>
-              <li><Link to="/admin/analytics" className="text-blue-600 hover:underline">View Analytics</Link></li>
-            </ul>
+            <div className="space-y-3">
+              <Link to="/admin/users" className="text-blue-600 hover:underline hover:text-red-600">Manage Users</Link>
+              <Link to="/admin/bookings" className="text-blue-600 hover:underline hover:text-red-600">Manage Bookings</Link>
+              <Link to="/admin/settings" className="text-blue-600 hover:underline hover:text-red-600">Manage Settings</Link>
+              <Link to="/admin/analytics" className="text-blue-600 hover:underline hover:text-red-600">View Analytics</Link>
+            </div>
           </div>
         </div>
       </main>
 
-      {/* Conditionally render login/signup or logout button */}
       <footer className="fixed bottom-0 left-0 right-0 bg-gray-800 text-white p-4 flex justify-between items-center">
         {isLoggedIn ? (
-          <button onClick={handleLogout} className="bg-red-600 px-4 py-2 rounded">Logout</button>
+          <button onClick={handleLogout} className="bg-red-600 px-4 py-2 rounded-full">Logout</button>
         ) : (
-          <>
-            <Link to="/login" className="text-white px-4 py-2">Login</Link>
-            <Link to="/signup" className="text-white px-4 py-2">Signup</Link>
-          </>
+          <div>
+            <Link to="/login" className="text-white mr-4">Login</Link>
+            <Link to="/signup" className="text-white">Signup</Link>
+          </div>
         )}
       </footer>
     </div>
