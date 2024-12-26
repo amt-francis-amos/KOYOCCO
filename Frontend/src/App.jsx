@@ -1,5 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+import {ToastContainer} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import { PropertyProvider } from "./context/PropertyContext";
 import Navbar from "./components/Navbar/Navbar";
 import Home from "./pages/Home/Home";
@@ -31,6 +33,7 @@ function App() {
   return (
     <PropertyProvider>
       <div className="flex flex-col min-h-screen">
+      <ToastContainer position='top-right'/>
         <Navbar />
         <main className="flex-grow">
           <Routes>
