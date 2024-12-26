@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const authenticateToken = require('../middleware/auth.middleware.js');
-const User = require('../models/User');  // Import User model
-const Booking = require('../models/Booking');  // Import Booking model
+const User = require('../models/User');
+const Booking = require('../models/Booking'); 
 
 // Admin dashboard route
 router.get("/dashboard", authenticateToken, async (req, res) => {

@@ -1,11 +1,12 @@
-const User = require('../models/User'); 
+const User = require('../models/User');
 
 const getDashboardData = async (req, res) => {
   try {
     const totalUsers = await User.countDocuments();
-    res.json({ totalUsers });
+    return res.json({ totalUsers });
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching data' });
+    console.error('Error fetching data:', error);
+    return res.status(500).json({ success: false, message: 'Error fetching data' });
   }
 };
 
