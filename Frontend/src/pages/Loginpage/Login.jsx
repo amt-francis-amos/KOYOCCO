@@ -4,24 +4,28 @@ import { useNavigate, Link } from "react-router-dom";
 import { assets } from "../../assets/assets";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { FaEye, FaEyeSlash } from "react-icons/fa"; 
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); 
+  const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState({});
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [users, setUsers] = useState([]); 
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (token) {
       setIsAuthenticated(true);
+      const role = localStorage.getItem("role");
+      if (role === "Admin") {
+        navigate("/adminDashboard");
+      }
+      // You can also handle other roles if needed, such as Owner or Agent
     }
-  }, []);
+  }, [navigate]);
 
   const validateEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -44,33 +48,28 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (!validateForm()) return;
-  
+
     try {
       const response = await axios.post(
         "https://koyocco-backend.onrender.com/api/auth/login",
         { email, password }
       );
-  
-      const { token, role, users, bookings } = response.data;
-  
+
+      const { token, role } = response.data;
+
       if (!token || !role) {
         setMessage("Login failed: No token or role received");
         return;
       }
-  
+
       // Store the token and role in localStorage for persistence
       localStorage.setItem("authToken", token);
       localStorage.setItem("role", role);
-  
+
       setIsAuthenticated(true);
-  
-      // If the role is Admin, store the users in state
-      if (role === "Admin") {
-        setUsers(users);
-      }
-  
+
       // Redirect the user to the appropriate dashboard based on their role
       const redirectPath =
         role === "Admin"
@@ -79,16 +78,15 @@ const Login = () => {
           ? "/ownerDashboard"
           : role === "Agent"
           ? "/agentDashboard"
-          : "/"; // Redirect to home if no matching role
-  
+          : "/"; // Default path if no matching role
+
       toast.success("Login successful!");
-      navigate(redirectPath);  // Correct use of navigate for redirection
+      navigate(redirectPath);  // Redirect user after successful login
     } catch (error) {
       setMessage(error.response?.data?.message || "An error occurred");
       toast.error(error.response?.data?.message || "An error occurred");
     }
   };
-  
 
   // Toggle password visibility
   const togglePasswordVisibility = () => {
