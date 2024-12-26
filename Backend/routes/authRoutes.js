@@ -143,12 +143,19 @@ router.post("/login", async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
-    res.status(200).json({ token, role: user.role });
+
+    // Respond with token, role, and userId
+    res.status(200).json({
+      token,          // JWT token
+      role: user.role, // User's role (Admin, Agent, etc.)
+      userId: user._id // User's ID (useful for client-side logic)
+    });
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
 
 // Forgot password route
 router.post("/forgot-password", async (req, res) => {
