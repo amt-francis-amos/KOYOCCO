@@ -48,28 +48,29 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!validateForm()) return;
-
+  
     try {
       const response = await axios.post(
         "https://koyocco-backend.onrender.com/api/auth/login",
         { email, password }
       );
-
-      const { token, role } = response.data;
-
-      if (!token || !role) {
-        setMessage("Login failed: No token or role received");
+  
+      const { token, role, userId } = response.data;
+  
+      if (!token || !role || !userId) {
+        setMessage("Login failed: No token, role, or userId received");
         return;
       }
-
-      // Store the token and role in localStorage for persistence
+  
+      // Store the token, role, and userId in localStorage for persistence
       localStorage.setItem("authToken", token);
       localStorage.setItem("role", role);
-
+      localStorage.setItem("userId", userId); // Store the userId
+  
       setIsAuthenticated(true);
-
+  
       // Redirect the user to the appropriate dashboard based on their role
       const redirectPath =
         role === "Admin"
@@ -79,7 +80,7 @@ const Login = () => {
           : role === "Agent"
           ? "/agentDashboard"
           : "/"; // Default path if no matching role
-
+  
       toast.success("Login successful!");
       navigate(redirectPath);  // Redirect user after successful login
     } catch (error) {
@@ -87,6 +88,7 @@ const Login = () => {
       toast.error(error.response?.data?.message || "An error occurred");
     }
   };
+  
 
   // Toggle password visibility
   const togglePasswordVisibility = () => {
