@@ -33,7 +33,7 @@ function App() {
   return (
     <PropertyProvider>
       <div className="flex flex-col min-h-screen">
-      <ToastContainer position='top-right'/>
+         <ToastContainer position='top-right'/>
         <Navbar />
         <main className="flex-grow">
           <Routes>
