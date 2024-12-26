@@ -7,14 +7,17 @@ const Booking = require('../models/Booking');  // Import Booking model
 // Admin dashboard route
 router.get("/dashboard", authenticateToken, async (req, res) => {
   try {
-    // Fetch users and bookings from the database
-    const users = await User.find();  // Adjust this to fetch users
-    const bookings = await Booking.find();  // Adjust this to fetch bookings
-    res.json({ users, bookings });  // Send the data as response
+    const users = await User.find();
+    const bookings = await Booking.find();
+    console.log("Fetched users:", users); // Log fetched users
+    console.log("Fetched bookings:", bookings); // Log fetched bookings
+    res.json({ users, bookings });
   } catch (err) {
+    console.error('Error:', err); // Log any error
     res.status(500).json({ message: 'Error fetching data' });
   }
 });
+
 
 // Other admin routes
 router.get("/admin/users", authenticateToken, (req, res) => {

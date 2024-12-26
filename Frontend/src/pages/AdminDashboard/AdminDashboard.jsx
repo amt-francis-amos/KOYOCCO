@@ -8,35 +8,34 @@ const AdminDashboard = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!localStorage.getItem('token')) {
-      navigate('/login');
-      return;
-    }
-
     const fetchLogs = async () => {
       setLoading(true);
-      try {
-        const response = await axios.get('https://koyocco-backend.onrender.com/api/admin/dashboard', {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
-          },
-        });
-        console.log(response); // Log the response to check the data
-        setLogs(response.data);  // Set the fetched data
-      } catch (error) {
-        console.error(error); // Log the error if the request fails
-        setError('Failed to load data');
-      } finally {
-        setLoading(false);  // Stop loading when done
-      }
+      setTimeout(async () => {
+        try {
+          const response = await axios.get('https://koyocco-backend.onrender.com/api/admin/dashboard', {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            },
+          });
+          console.log("Response data:", response.data);  // Log the response
+          setLogs(response.data);  // Set the fetched data
+        } catch (error) {
+          console.error("Error fetching data:", error);  // Log the error
+          setError('Failed to load data');
+        } finally {
+          setLoading(false);  // Stop loading when done
+        }
+      }, 2000);  // Simulate a 2-second delay
     };
-
+  
     fetchLogs();
   }, [navigate]);
+  
 
   const handleLogout = () => {
     localStorage.removeItem('token');
