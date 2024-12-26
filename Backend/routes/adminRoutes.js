@@ -12,5 +12,6 @@ router.get("/admin/users", authenticateToken, (req, res) => {
   res.json({ message: "Manage users" });
 });
 
+
 // Other routes...
 module.exports = router;
