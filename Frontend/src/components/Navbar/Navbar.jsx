@@ -46,6 +46,16 @@ const Navbar = () => {
     closeMenuOnLinkClick();
   };
 
+ // Function to hide dropdown when mouse leaves the menu
+ const handleMouseLeave = (dropdown) => {
+  setDropdownOpen((prev) => ({
+    ...prev,
+    [dropdown]: false,
+  }));
+};
+
+
+
   return (
     <nav className="bg-white shadow-md">
       <div className="container mx-auto px-4 py-2 flex items-center justify-between">
@@ -99,7 +109,8 @@ const Navbar = () => {
           </li>
 
           {/* Short-Stays Dropdown */}
-          <li className="relative group">
+          <li className="relative group"  
+   onMouseLeave={() => handleMouseLeave('shortStays')} >
             <Link
               to="/short-stays"
               className="hover:text-gray-700 py-2 lg:py-0 flex items-center focus:outline-none"
@@ -147,7 +158,8 @@ const Navbar = () => {
           </li>
 
           {/* Rental Dropdown */}
-          <li className="relative group">
+          <li className="relative group"   onMouseLeave={() => handleMouseLeave('rental')}
+>
             <Link
               to="/property-rentals"
               className="hover:text-gray-700 py-2 lg:py-0 flex items-center focus:outline-none"
@@ -222,7 +234,7 @@ const Navbar = () => {
           </li>
 
           {/* Property Sales Dropdown */}
-          <li className="relative group">
+          <li className="relative group" onMouseLeave={() => handleMouseLeave('propertySales')} >
             <Link
               to="/sales"
               className="hover:text-gray-700 py-2 lg:py-0 flex items-center focus:outline-none"
