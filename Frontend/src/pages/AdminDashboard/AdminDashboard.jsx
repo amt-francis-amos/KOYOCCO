@@ -13,9 +13,9 @@ const AdminDashboard = () => {
   useEffect(() => {
     if (!localStorage.getItem('token')) {
       navigate('/login');
-      return; // Prevent further actions if not logged in
+      return;
     }
-  
+
     const fetchLogs = async () => {
       setLoading(true);
       try {
@@ -25,17 +25,18 @@ const AdminDashboard = () => {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
           },
         });
-        setLogs(response.data);
+        console.log(response); // Log the response to check the data
+        setLogs(response.data);  // Set the fetched data
       } catch (error) {
+        console.error(error); // Log the error if the request fails
         setError('Failed to load data');
       } finally {
-        setLoading(false);
+        setLoading(false);  // Stop loading when done
       }
     };
-  
+
     fetchLogs();
   }, [navigate]);
-  
 
   const handleLogout = () => {
     localStorage.removeItem('token');
