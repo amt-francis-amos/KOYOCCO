@@ -1,22 +1,19 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const PropertyRentals = () => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch properties from the backend
+  // Fetch properties from the backend using axios
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const response = await fetch('https://koyocco-backend.onrender.com/properties'); // Replace with your backend URL
-        if (!response.ok) {
-          throw new Error('Failed to fetch properties');
-        }
-        const data = await response.json();
-        setProperties(data);
+        const response = await axios.get('https://koyocco-backend.onrender.com/properties'); // Replace with your backend URL
+        setProperties(response.data);
       } catch (error) {
-        setError(error.message);
+        setError(error.response?.data?.message || error.message || 'Failed to fetch properties');
       } finally {
         setLoading(false);
       }
