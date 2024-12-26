@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken'); // Assuming you're using JSON Web Tokens (JWT)
+const jwt = require('jsonwebtoken');
 
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
@@ -17,9 +17,10 @@ const authenticateToken = (req, res, next) => {
       return res.status(403).json({ message: 'Invalid token' });
     }
 
-    req.user = user; // Save decoded user information in the request object
+    console.log('Authenticated User:', user);
+    req.user = user;
     next();
   });
 };
 
-module.exports = authenticateToken
+module.exports = authenticateToken;

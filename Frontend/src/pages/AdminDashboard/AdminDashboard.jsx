@@ -8,34 +8,49 @@ const AdminDashboard = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchLogs = async () => {
+      const token = localStorage.getItem('token');
+
+      if (!token) {
+        console.error('Token is missing. Redirecting to login.');
+        setError('Unauthorized access. Please log in again.');
+        handleLogout();
+        return;
+      }
+
       setLoading(true);
-      setTimeout(async () => {
-        try {
-          const response = await axios.get('https://koyocco-backend.onrender.com/api/admin/dashboard', {
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${localStorage.getItem('token')}`,
-            },
-          });
-          console.log("Response data:", response.data);  // Log the response
-          setLogs(response.data);  // Set the fetched data
-        } catch (error) {
-          console.error("Error fetching data:", error);  // Log the error
-          setError('Failed to load data');
-        } finally {
-          setLoading(false);  // Stop loading when done
+
+      try {
+        const response = await axios.get('https://koyocco-backend.onrender.com/api/admin/dashboard', {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
+        console.log('Response data:', response.data);
+        setLogs(response.data);
+        setIsLoggedIn(true);
+      } catch (error) {
+        console.error('Error fetching data:', error.response?.data || error.message);
+
+        if (error.response?.status === 403) {
+          setError('Unauthorized access. Please log in again.');
+          handleLogout();
+        } else {
+          setError('Failed to load data.');
         }
-      }, 2000);  // Simulate a 2-second delay
+      } finally {
+        setLoading(false);
+      }
     };
-  
+
     fetchLogs();
   }, [navigate]);
-  
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -72,9 +87,21 @@ const AdminDashboard = () => {
               <FaUsers className="text-red-600 text-3xl mr-2" />
               <h2 className="text-xl font-semibold">User Statistics</h2>
             </div>
-            <p className="text-gray-700">Total Users: <span className="font-bold">{logs.users.length}</span></p>
-            <p className="text-gray-700">Active Users: <span className="font-bold">{logs.users.filter(user => user.loginLog.length > 0).length}</span></p>
-            <p className="text-gray-700">Inactive Users: <span className="font-bold">{logs.users.filter(user => user.loginLog.length === 0).length}</span></p>
+            <p className="text-gray-700">
+              Total Users: <span className="font-bold">{logs.users.length}</span>
+            </p>
+            <p className="text-gray-700">
+              Active Users:{' '}
+              <span className="font-bold">
+                {logs.users.filter((user) => user.loginLog.length > 0).length}
+              </span>
+            </p>
+            <p className="text-gray-700">
+              Inactive Users:{' '}
+              <span className="font-bold">
+                {logs.users.filter((user) => user.loginLog.length === 0).length}
+              </span>
+            </p>
           </div>
 
           {/* Recent Activities Card */}
@@ -84,12 +111,19 @@ const AdminDashboard = () => {
               <h2 className="text-xl font-semibold">Recent Activities</h2>
             </div>
             <ul className="list-disc pl-5 text-gray-700">
-              {logs.users.map(user => (
-                <li key={user.email}>New user registered: <span className="font-bold">{user.firstname} {user.lastname}</span></li>
+              {logs.users.map((user) => (
+                <li key={user.email}>
+                  New user registered:{' '}
+                  <span className="font-bold">
+                    {user.firstname} {user.lastname}
+                  </span>
+                </li>
               ))}
-              {logs.bookings.map(booking => (
+              {logs.bookings.map((booking) => (
                 <li key={booking._id}>
-                  New booking from: <span className="font-bold">{booking.fullName}</span> on {new Date(booking.date).toLocaleDateString()}
+                  New booking from:{' '}
+                  <span className="font-bold">{booking.fullName}</span> on{' '}
+                  {new Date(booking.date).toLocaleDateString()}
                 </li>
               ))}
             </ul>
@@ -102,10 +136,18 @@ const AdminDashboard = () => {
               <h2 className="text-xl font-semibold">Quick Links</h2>
             </div>
             <div className="space-y-3">
-              <Link to="/admin/users" className="text-blue-600 hover:underline hover:text-red-600">Manage Users</Link>
-              <Link to="/admin/bookings" className="text-blue-600 hover:underline hover:text-red-600">Manage Bookings</Link>
-              <Link to="/admin/settings" className="text-blue-600 hover:underline hover:text-red-600">Manage Settings</Link>
-              <Link to="/admin/analytics" className="text-blue-600 hover:underline hover:text-red-600">View Analytics</Link>
+              <Link to="/admin/users" className="text-blue-600 hover:underline hover:text-red-600">
+                Manage Users
+              </Link>
+              <Link to="/admin/bookings" className="text-blue-600 hover:underline hover:text-red-600">
+                Manage Bookings
+              </Link>
+              <Link to="/admin/settings" className="text-blue-600 hover:underline hover:text-red-600">
+                Manage Settings
+              </Link>
+              <Link to="/admin/analytics" className="text-blue-600 hover:underline hover:text-red-600">
+                View Analytics
+              </Link>
             </div>
           </div>
         </div>
@@ -113,11 +155,17 @@ const AdminDashboard = () => {
 
       <footer className="fixed bottom-0 left-0 right-0 bg-gray-800 text-white p-4 flex justify-between items-center">
         {isLoggedIn ? (
-          <button onClick={handleLogout} className="bg-red-600 px-4 py-2 rounded-full">Logout</button>
+          <button onClick={handleLogout} className="bg-red-600 px-4 py-2 rounded-full">
+            Logout
+          </button>
         ) : (
           <div>
-            <Link to="/login" className="text-white mr-4">Login</Link>
-            <Link to="/signup" className="text-white">Signup</Link>
+            <Link to="/login" className="text-white mr-4">
+              Login
+            </Link>
+            <Link to="/signup" className="text-white">
+              Signup
+            </Link>
           </div>
         )}
       </footer>
