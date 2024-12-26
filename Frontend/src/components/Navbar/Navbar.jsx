@@ -4,46 +4,46 @@ import { assets } from '../../assets/assets';
 import { FaBars, FaTimes, FaChevronDown } from 'react-icons/fa';
 
 const Navbar = () => {
-
   const [menuOpen, setMenuOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState({ shortStays: false, rental: false, propertySales: false });
+  const [dropdownOpen, setDropdownOpen] = useState({
+    shortStays: false,
+    rental: false,
+    propertySales: false,
+  });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  
-  const navigate = useNavigate(); 
+
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
 
+  const toggleDropdown = (dropdown) => {
+    setDropdownOpen((prev) => ({
+      ...prev,
+      [dropdown]: !prev[dropdown],
+    }));
+  };
+
   useEffect(() => {
     const token = localStorage.getItem('authToken');
-    setIsLoggedIn(!!token); 
-  });
+    setIsLoggedIn(!!token);
+  }, []);
 
   const closeMenuOnLinkClick = () => {
     setMenuOpen(false);
-    setDropdownOpen({ shortStays: false, rental: false, propertySales: false });
-  };
-
-  const handleMouseEnter = (dropdown) => {
-    setDropdownOpen((prev) => ({
-      ...prev,
-      [dropdown]: true,
-    }));
-  };
-
-  const handleMouseLeave = (dropdown) => {
-    setDropdownOpen((prev) => ({
-      ...prev,
-      [dropdown]: false,
-    }));
+    setDropdownOpen({
+      shortStays: false,
+      rental: false,
+      propertySales: false,
+    });
   };
 
   const handleLogout = () => {
     localStorage.removeItem('authToken');
     setIsLoggedIn(false);
     navigate('/');
-    closeMenuOnLinkClick()
+    closeMenuOnLinkClick();
   };
 
   return (
@@ -51,7 +51,11 @@ const Navbar = () => {
       <div className="container mx-auto px-4 py-2 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" onClick={closeMenuOnLinkClick}>
-          <img src={assets.koyoccoLogo} className="w-[80px]" alt="Koyocco Logo" />
+          <img
+            src={assets.koyoccoLogo}
+            className="w-[80px]"
+            alt="Koyocco Logo"
+          />
         </Link>
 
         {/* Hamburger Icon */}
@@ -72,7 +76,11 @@ const Navbar = () => {
           {/* Mobile Menu Header (logo + close icon) */}
           <div className="flex justify-between items-center mb-4 lg:hidden">
             <Link to="/" onClick={closeMenuOnLinkClick}>
-              <img src={assets.koyoccoLogo} className="w-[80px]" alt="Koyocco Logo" />
+              <img
+                src={assets.koyoccoLogo}
+                className="w-[80px]"
+                alt="Koyocco Logo"
+              />
             </Link>
             <div onClick={toggleMenu}>
               <FaTimes size={24} aria-label="Close menu" />
@@ -91,14 +99,11 @@ const Navbar = () => {
           </li>
 
           {/* Short-Stays Dropdown */}
-          <li
-            className="relative group"
-            onMouseEnter={() => handleMouseEnter('shortStays')}
-            onMouseLeave={() => handleMouseLeave('shortStays')}
-          >
+          <li className="relative group">
             <Link
               to="/short-stays"
               className="hover:text-gray-700 py-2 lg:py-0 flex items-center focus:outline-none"
+              onClick={() => toggleDropdown('shortStays')}
             >
               <span className="flex items-center">
                 Short-Stays <FaChevronDown size={13} className="ml-2" />
@@ -107,7 +112,9 @@ const Navbar = () => {
 
             {/* Dropdown Content */}
             <ul
-              className={`absolute left-0 z-10 mt-1 bg-white shadow-lg rounded-md py-2 w-48 ${dropdownOpen.shortStays ? 'block' : 'hidden'} transition-opacity ease-in-out duration-300`}
+              className={`absolute left-0 z-10 mt-1 bg-white shadow-lg rounded-md py-2 w-48 ${
+                dropdownOpen.shortStays ? 'block' : 'hidden'
+              } transition-opacity ease-in-out duration-300`}
             >
               <li>
                 <Link
@@ -140,14 +147,11 @@ const Navbar = () => {
           </li>
 
           {/* Rental Dropdown */}
-          <li
-            className="relative group"
-            onMouseEnter={() => handleMouseEnter('rental')}
-            onMouseLeave={() => handleMouseLeave('rental')}
-          >
+          <li className="relative group">
             <Link
               to="/property-rentals"
               className="hover:text-gray-700 py-2 lg:py-0 flex items-center focus:outline-none"
+              onClick={() => toggleDropdown('rental')}
             >
               <span className="flex items-center">
                 Property Rentals <FaChevronDown size={13} className="ml-2" />
@@ -156,7 +160,9 @@ const Navbar = () => {
 
             {/* Dropdown Content */}
             <ul
-              className={`absolute left-0 mt-1 bg-white shadow-lg rounded-md py-2 w-48 ${dropdownOpen.rental ? 'block' : 'hidden'} transition-opacity ease-in-out duration-300`}
+              className={`absolute left-0 mt-1 bg-white shadow-lg rounded-md py-2 w-48 ${
+                dropdownOpen.rental ? 'block' : 'hidden'
+              } transition-opacity ease-in-out duration-300`}
             >
               <li>
                 <Link
@@ -209,21 +215,18 @@ const Navbar = () => {
                   className="block px-4 py-2 hover:bg-gray-100"
                   onClick={closeMenuOnLinkClick}
                 >
-                 Shop
+                  Shop
                 </Link>
               </li>
             </ul>
           </li>
 
           {/* Property Sales Dropdown */}
-          <li
-            className="relative group"
-            onMouseEnter={() => handleMouseEnter('propertySales')}
-            onMouseLeave={() => handleMouseLeave('propertySales')}
-          >
+          <li className="relative group">
             <Link
               to="/sales"
               className="hover:text-gray-700 py-2 lg:py-0 flex items-center focus:outline-none"
+              onClick={() => toggleDropdown('propertySales')}
             >
               <span className="flex items-center">
                 Property Sales <FaChevronDown size={13} className="ml-2" />
@@ -232,7 +235,9 @@ const Navbar = () => {
 
             {/* Dropdown Content */}
             <ul
-              className={`absolute left-0 mt-1 bg-white shadow-lg rounded-md py-2 w-48 ${dropdownOpen.propertySales ? 'block' : 'hidden'} transition-opacity ease-in-out duration-300`}
+              className={`absolute left-0 mt-1 bg-white shadow-lg rounded-md py-2 w-48 ${
+                dropdownOpen.propertySales ? 'block' : 'hidden'
+              } transition-opacity ease-in-out duration-300`}
             >
               <li>
                 <Link
@@ -264,10 +269,9 @@ const Navbar = () => {
             </ul>
           </li>
 
-            {/* Other Links */}
-         
+          {/* Other Links */}
           <li>
-            <Link
+          <Link
               to="/cars"
               className="hover:text-gray-700 block py-2 lg:py-0"
               onClick={closeMenuOnLinkClick}
@@ -354,3 +358,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
