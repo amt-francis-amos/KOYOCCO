@@ -48,7 +48,7 @@ const Home = () => {
                     Browse through the best properties available.
                   </p>
                   <Link
-                    to="/propertyList"
+                    to="/login"
                     className="bg-red-500 text-white px-6 py-3 rounded-md text-sm md:text-base"
                   >
                     Get Started
