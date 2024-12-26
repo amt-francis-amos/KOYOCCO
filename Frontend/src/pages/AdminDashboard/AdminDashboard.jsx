@@ -11,12 +11,11 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (localStorage.getItem('token')) {
-      setIsLoggedIn(true);
-    } else {
+    if (!localStorage.getItem('token')) {
       navigate('/login');
+      return; // Prevent further actions if not logged in
     }
-
+  
     const fetchLogs = async () => {
       setLoading(true);
       try {
@@ -33,9 +32,10 @@ const AdminDashboard = () => {
         setLoading(false);
       }
     };
-
+  
     fetchLogs();
   }, [navigate]);
+  
 
   const handleLogout = () => {
     localStorage.removeItem('token');
