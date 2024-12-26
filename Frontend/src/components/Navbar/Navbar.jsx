@@ -238,12 +238,12 @@ const Navbar = () => {
  {/* Property Sales Dropdown */}
  <li className="relative" onMouseLeave={() => handleMouseLeave('propertySales')} >
  <Link
-              to="/property-rentals"
+              to="/sales"
               className="hover:text-gray-700 py-2 lg:py-0 flex items-center focus:outline-none"
               onClick={() => toggleDropdown('propertySales')}
             >
               <span className="flex items-center">
-                Property Rentals <FaChevronDown size={13} className="ml-2" />
+                Property Sales <FaChevronDown size={13} className="ml-2" />
               </span>
             </Link>
 
