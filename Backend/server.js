@@ -8,6 +8,7 @@ const propertyRoutes = require('./routes/propertyRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
 const requestRoutes = require('./routes/requestRoutes');
 const listingRoutes = require("./routes/listingRoutes");
+const adminRoutes = require('./routes/adminRoutes');
 
 
 
@@ -29,6 +30,7 @@ app.use('/api/properties', propertyRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/requests', requestRoutes);
 app.use("/api/post-listing", listingRoutes);
+app.use('/api/admin', adminRoutes);
 
 
 
