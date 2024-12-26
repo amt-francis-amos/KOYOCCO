@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import {assets} from "../../assets/assets";
+import { assets } from "../../assets/assets";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; 
@@ -53,15 +53,19 @@ const Login = () => {
       );
 
       const { token, role } = response.data;
+
       if (!token || !role) {
         setMessage("Login failed: No token or role received");
         return;
       }
 
+      // Store the token and role in localStorage for persistence
       localStorage.setItem("authToken", token);
       localStorage.setItem("role", role);
+
       setIsAuthenticated(true);
 
+      // Redirect the user to the appropriate dashboard based on their role
       const redirectPath =
         role === "Admin"
           ? "/adminDashboard"
@@ -69,7 +73,7 @@ const Login = () => {
           ? "/ownerDashboard"
           : role === "Agent"
           ? "/agentDashboard"
-          : "/";
+          : "/"; // Redirect to home if no matching role
 
       toast.success("Login successful!");
       navigate(redirectPath);
@@ -138,7 +142,7 @@ const Login = () => {
           <Link to="/forgot-password" className="text-blue-500 text-sm hover:underline">
             Forgot your password?
           </Link>
-          <Link to="/signup" className="text-gray-900  text-sm hover:underline">
+          <Link to="/signup" className="text-gray-900 text-sm hover:underline">
             Don't have an account? Signup
           </Link>
         </div>
