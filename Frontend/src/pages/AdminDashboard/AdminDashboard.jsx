@@ -20,7 +20,7 @@ const AdminDashboard = () => {
     const fetchLogs = async () => {
       setLoading(true);
       try {
-        const response = await axios.get('https://koyocco-backend.onrender.com/admin/dashboard', {
+        const response = await axios.get('https://koyocco-backend.onrender.com/api/admin/dashboard', {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
