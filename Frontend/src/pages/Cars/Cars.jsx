@@ -108,7 +108,7 @@ const Cars = () => {
                 </div>
             )}
 
-            <div className="flex flex-col gap-4 space-y-4 my-10">
+            <div className="md:flex  lg:flex-col gap-4 space-y-4 my-10">
                 {requests.map((request, index) => (
                     <div key={index} className="bg-white md:w-1/2 shadow-md p-6 rounded-lg">
                         <h3 className="text-xl font-semibold">{request.userName}</h3>
