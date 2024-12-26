@@ -4,9 +4,19 @@ import { listings } from "../../assets/assets";
 
 const ShortStays = () => {
   const navigate = useNavigate();
+  const exchangeRate = 10; // Example exchange rate (1 USD = 10 GHS)
 
   const handleBooking = (listing) => {
     navigate("/booking", { state: listing });
+  };
+
+  const convertToGHS = (priceInUSD) => {
+    // Remove the dollar sign and convert the string to a float
+    const price = parseFloat(priceInUSD.replace(/[^0-9.-]+/g, ""));
+    if (isNaN(price)) {
+      return "Invalid Price"; // Handle invalid price data
+    }
+    return `₵ ${(price * exchangeRate).toLocaleString()}`; // Convert and format the price with ₵ symbol
   };
 
   return (
@@ -26,7 +36,10 @@ const ShortStays = () => {
             <div className="flex-grow">
               <h2 className="text-xl sm:text-2xl font-semibold mb-2">{listing.name}</h2>
               <p className="text-gray-600">{listing.location}</p>
-              <p className="text-gray-800 font-bold text-lg mt-1">{listing.price}</p>
+              {/* Convert price from USD to GHS */}
+              <p className="text-gray-800 font-bold text-lg mt-1">
+                {convertToGHS(listing.price)}
+              </p>
             </div>
             <button
               onClick={() => handleBooking(listing)}
