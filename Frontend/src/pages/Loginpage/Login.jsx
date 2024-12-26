@@ -13,7 +13,7 @@ const Login = () => {
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState({});
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [users, setUsers] = useState([]); // State to store users
+  const [users, setUsers] = useState([]); 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -144,7 +144,7 @@ const Login = () => {
       {message && <p className="mt-4 text-red-500">{message}</p>}
 
       {!isAuthenticated && (
-        <div className="flex justify-between mt-4 ">
+        <div className="flex justify-between mt-4">
           <Link to="/forgot-password" className="text-blue-500 text-sm hover:underline">
             Forgot your password?
           </Link>

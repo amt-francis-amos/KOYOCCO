@@ -40,7 +40,7 @@ const AdminDashboard = () => {
   const handleLogout = () => {
     localStorage.removeItem('token');
     setIsLoggedIn(false);
-    navigate('/adminDashboard');
+    navigate('/login');
   };
 
   if (loading) {
