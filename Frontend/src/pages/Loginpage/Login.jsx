@@ -13,6 +13,7 @@ const Login = () => {
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState({});
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [users, setUsers] = useState([]); // State to store users
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -52,7 +53,7 @@ const Login = () => {
         { email, password }
       );
 
-      const { token, role } = response.data;
+      const { token, role, users, bookings } = response.data;
 
       if (!token || !role) {
         setMessage("Login failed: No token or role received");
@@ -64,6 +65,11 @@ const Login = () => {
       localStorage.setItem("role", role);
 
       setIsAuthenticated(true);
+
+      // If the role is Admin, store the users in state
+      if (role === "Admin") {
+        setUsers(users);
+      }
 
       // Redirect the user to the appropriate dashboard based on their role
       const redirectPath =
@@ -145,6 +151,23 @@ const Login = () => {
           <Link to="/signup" className="text-gray-900 text-sm hover:underline">
             Don't have an account? Signup
           </Link>
+        </div>
+      )}
+
+      {/* If logged in as admin, display the list of users */}
+      {isAuthenticated && users.length > 0 && (
+        <div className="mt-8">
+          <h2 className="text-2xl font-bold mb-4">Users List</h2>
+          <ul>
+            {users.map((user) => (
+              <li key={user._id} className="mb-4">
+                <div className="p-4 border rounded-lg">
+                  <p className="font-semibold">Name: {user.firstname} {user.lastname}</p>
+                  <p>Email: {user.email}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
     </div>
