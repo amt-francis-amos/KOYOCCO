@@ -24,6 +24,5 @@ router.get("/admin/users", authenticateToken, (req, res) => {
   res.json({ message: "Manage users" });
 });
 
-// Add other admin routes as needed...
 
 module.exports = router;
