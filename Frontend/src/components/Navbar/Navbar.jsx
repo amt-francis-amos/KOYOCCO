@@ -160,7 +160,7 @@ const Navbar = () => {
 
             {/* Dropdown Content */}
             <ul
-              className={`absolute left-0 mt-1 bg-white shadow-lg rounded-md py-2 w-48 ${
+              className={`absolute z-10 left-0 bg-white shadow-lg rounded-md py-2 w-48 ${
                 dropdownOpen.rental ? 'block' : 'hidden'
               } transition-opacity ease-in-out duration-300`}
             >
