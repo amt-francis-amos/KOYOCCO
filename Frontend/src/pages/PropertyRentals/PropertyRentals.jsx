@@ -30,6 +30,9 @@ const PropertyRentals = () => {
     const token = localStorage.getItem('authToken'); // Get token from localStorage or context
     const userId = localStorage.getItem('userId'); // Assuming you store the userId in localStorage after login
 
+    console.log('Token:', token);
+    console.log('User ID:', userId);
+
     if (!token || !userId) {
       navigate('/login'); // Redirect to login page if token or userId is missing
       return;
