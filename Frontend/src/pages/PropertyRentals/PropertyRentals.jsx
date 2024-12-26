@@ -10,7 +10,7 @@ const PropertyRentals = () => {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const response = await axios.get('https://koyocco-backend.onrender.com/properties'); // Replace with your backend URL
+        const response = await axios.get('https://koyocco-backend.onrender.com/api/properties'); // Replace with your backend URL
         setProperties(response.data);
       } catch (error) {
         setError(error.response?.data?.message || error.message || 'Failed to fetch properties');
