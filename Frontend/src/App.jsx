@@ -28,12 +28,12 @@ import Cars from "./pages/Cars/Cars";
 import PropertySales from "./pages/PropertySales/PropertySales";
 
 function App() {
-  const role = localStorage.getItem("role");
+  const role = localStorage.getItem("role");  // Get role from localStorage
 
   return (
     <PropertyProvider>
       <div className="flex flex-col min-h-screen">
-      <ToastContainer position='top-right'/>
+        <ToastContainer position='top-right'/>
         <Navbar />
         <main className="flex-grow">
           <Routes>
@@ -41,7 +41,7 @@ function App() {
             <Route
               path="/adminDashboard"
               element={
-                <ProtectedRoute role={role}>
+                <ProtectedRoute role="Admin">
                   <AdminDashboard />
                 </ProtectedRoute>
               }
@@ -49,7 +49,7 @@ function App() {
             <Route
               path="/ownerDashboard"
               element={
-                <ProtectedRoute role={role}>
+                <ProtectedRoute role="Property Owner">
                   <OwnerDashboard />
                 </ProtectedRoute>
               }
@@ -57,32 +57,13 @@ function App() {
             <Route
               path="/agentDashboard"
               element={
-                <ProtectedRoute role={role}>
+                <ProtectedRoute role="Agent">
                   <AgentDashboard />
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/property-status"
-              element={
-                <ProtectedRoute role={role}>
-                  <PropertyStatusPage />  
-                </ProtectedRoute>
-              }
-            />
             <Route path="/login" element={<Login />} />
-            <Route path="/create-request" element={<CreateRequest />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/reset-password/:token" element={<ResetPassword />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/short-stays" element={<ShortStays />} />
-            <Route path="/property-rentals" element={<PropertyRentals />} />
-            <Route path="/cars" element={<Cars/>} />
-            <Route path="/booking" element={<Booking />} />
-            <Route path="/uploadProperty" element={<UploadProperty />} />
-            <Route path="/property-list" element={<PropertyList />} />
-            <Route path="/property/:id" element={<PropertyDetails />} />
-            <Route path="/sales"   element={<PropertySales />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>

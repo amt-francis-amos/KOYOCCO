@@ -82,7 +82,7 @@ const Login = () => {
           : "/"; // Redirect to home if no matching role
 
       toast.success("Login successful!");
-      navigate(redirectPath);
+      navigate(redirectPath);  // Correct use of navigate for redirection
     } catch (error) {
       setMessage(error.response?.data?.message || "An error occurred");
       toast.error(error.response?.data?.message || "An error occurred");
@@ -144,30 +144,13 @@ const Login = () => {
       {message && <p className="mt-4 text-red-500">{message}</p>}
 
       {!isAuthenticated && (
-        <div className="flex justify-between mt-4">
+        <div className="flex justify-between mt-4 ">
           <Link to="/forgot-password" className="text-blue-500 text-sm hover:underline">
             Forgot your password?
           </Link>
           <Link to="/signup" className="text-gray-900 text-sm hover:underline">
             Don't have an account? Signup
           </Link>
-        </div>
-      )}
-
-      {/* If logged in as admin, display the list of users */}
-      {isAuthenticated && users.length > 0 && (
-        <div className="mt-8">
-          <h2 className="text-2xl font-bold mb-4">Users List</h2>
-          <ul>
-            {users.map((user) => (
-              <li key={user._id} className="mb-4">
-                <div className="p-4 border rounded-lg">
-                  <p className="font-semibold">Name: {user.firstname} {user.lastname}</p>
-                  <p>Email: {user.email}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
         </div>
       )}
     </div>

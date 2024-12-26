@@ -1,13 +1,11 @@
-
-import React from 'react';
 import { Navigate } from 'react-router-dom';
 
 const ProtectedRoute = ({ children, role }) => {
-  const token = localStorage.getItem('authToken');
+  const storedRole = localStorage.getItem("role");
+  
 
-
-  if (!token || !role) {
-    return <Navigate to="/login" replace />;
+  if (!storedRole || storedRole !== role) {
+    return <Navigate to="/login" />;
   }
 
   return children;
