@@ -25,9 +25,10 @@ const Navbar = () => {
     }));
   };
 
+  // Check login status as soon as the component mounts
   useEffect(() => {
     const token = localStorage.getItem('authToken');
-    setIsLoggedIn(!!token);
+    setIsLoggedIn(!!token); // If token exists, user is logged in
   }, []);
 
   const closeMenuOnLinkClick = () => {
@@ -46,7 +47,7 @@ const Navbar = () => {
     closeMenuOnLinkClick();
   };
 
-
+  // Function to hide dropdown when mouse leaves the menu
   const handleMouseLeave = (dropdown) => {
     setDropdownOpen((prev) => ({
       ...prev,
@@ -296,7 +297,14 @@ const Navbar = () => {
 
         {/* Desktop-Only Buttons */}
         <div className="hidden lg:flex lg:items-center space-x-4">
-          {!isLoggedIn ? (
+          {isLoggedIn ? (
+            <button
+              onClick={handleLogout}
+              className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black"
+            >
+              Logout
+            </button>
+          ) : (
             <>
               <Link to="/login">
                 <button className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black">
@@ -309,13 +317,6 @@ const Navbar = () => {
                 </button>
               </Link>
             </>
-          ) : (
-            <button
-              onClick={handleLogout}
-              className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black"
-            >
-              Logout
-            </button>
           )}
         </div>
       </div>
