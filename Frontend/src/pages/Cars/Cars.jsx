@@ -69,10 +69,10 @@ const Cars = () => {
         viewport={{once:true}}
   
         className="container mx-auto p-4">
-            <h1 className="text-3xl font-bold text-center mb-8">Cars and Relocation Services</h1>
+            <h1 className="text-2xl md:text-4xl font-bold text-center mb-8">Cars and Relocation Services</h1>
 
-            <h2 className="text-2xl font-bold mt-8 mb-4">Airport Pickup</h2>
-            <p className="text-gray-600 mb-6">
+            <h2 className="text-2xl text-center font-bold mt-8 mb-4">Airport Pickup</h2>
+            <p className="text-gray-600 mb-6 text-center">
                 Book a car for airport pickup as part of your accommodation package.
             </p>
 
