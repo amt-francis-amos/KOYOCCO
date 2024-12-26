@@ -57,17 +57,16 @@ const Login = () => {
         { email, password }
       );
 
-      const { token, role, userId } = response.data;
+      const { token, role } = response.data;
 
-      if (!token || !role || !userId) {
-        setMessage("Login failed: No token, role, or userId received");
+      if (!token || !role) {
+        setMessage("Login failed: No token or role received");
         return;
       }
-  
-      // Store the token, role, and userId in localStorage for persistence
+
+      // Store the token and role in localStorage for persistence
       localStorage.setItem("authToken", token);
       localStorage.setItem("role", role);
-      localStorage.setItem("userId", userId); // Store the userId
 
       setIsAuthenticated(true);
 
