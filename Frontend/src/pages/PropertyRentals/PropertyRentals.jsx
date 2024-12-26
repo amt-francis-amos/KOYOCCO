@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; // For navigation
 
 const PropertyRentals = () => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [bookingMessage, setBookingMessage] = useState(null);
-  const [userId, setUserId] = useState(null); // Store userId
-  const navigate = useNavigate();
+  const [bookingMessage, setBookingMessage] = useState(null); // To show booking feedback
+  const navigate = useNavigate(); // To navigate to login or other pages
 
   // Fetch properties from the backend
   useEffect(() => {
@@ -26,54 +25,37 @@ const PropertyRentals = () => {
     fetchProperties();
   }, []);
 
-  // Fetch user information (e.g., userId)
-  useEffect(() => {
-    const fetchUserInfo = async () => {
-      try {
-        const response = await axios.get('https://koyocco-backend.onrender.com/api/user', {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`, // Include token if using JWT
-          },
-        });
-        setUserId(response.data.userId);
-      } catch (error) {
-        console.error('Failed to fetch user info:', error);
-        navigate('/login'); // Redirect to login if fetching user info fails
-      }
-    };
-
-    fetchUserInfo();
-  }, [navigate]);
-
   // Handle booking process
   const handleBooking = async (property) => {
-    if (!userId) {
-      navigate('/login'); // Redirect to login if userId is not available
+    const token = localStorage.getItem('authToken'); // Get token from localStorage or context
+    if (!token) {
+      navigate('/login'); // Redirect to login page if token is missing
       return;
     }
-
+  
     const userConfirmed = window.confirm(`Are you sure you want to rent ${property.name}?`);
     if (!userConfirmed) return;
-
+  
     try {
       const response = await axios.post(
         'https://koyocco-backend.onrender.com/api/bookings',
         {
           propertyId: property._id,
-          userId: userId,
+          userId: '12345', // Replace with actual user ID from authentication
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`, // Include token in booking request
+            Authorization: `Bearer ${token}`, // Add the token to the request headers
           },
         }
       );
-
+  
       setBookingMessage(`Successfully booked ${property.name}!`);
     } catch (error) {
       setBookingMessage(error.response?.data?.message || 'Booking failed. Please try again.');
     }
   };
+  
 
   if (loading) {
     return <p className="text-center py-4">Loading properties...</p>;
