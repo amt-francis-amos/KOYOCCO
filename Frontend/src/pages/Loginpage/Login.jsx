@@ -143,8 +143,8 @@ const Login = () => {
       {message && <p className="mt-4 text-red-500">{message}</p>}
 
       {!isAuthenticated && (
-        <div className="flex justify-between mt-4 ">
-          <Link to="/forgot-password" className="text-blue-500 text-sm hover:underline">
+        <div className="flex flex-col text-center justify-between mt-4 ">
+          <Link to="/forgot-password" className="text-blue-500 mb-4 text-sm hover:underline">
             Forgot your password?
           </Link>
           <Link to="/signup" className="text-gray-900 text-sm hover:underline">
