@@ -236,7 +236,7 @@ const Navbar = () => {
             </ul>
           </li>
  {/* Property Sales Dropdown */}
- <li className="relative"  onMouseLeave={() => handleMouseLeave('propertySales')} >
+ <li className="relative" onMouseLeave={() => handleMouseLeave('propertySales')} >
  <Link
               to="/property-rentals"
               className="hover:text-gray-700 py-2 lg:py-0 flex items-center focus:outline-none"
