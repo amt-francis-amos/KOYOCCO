@@ -3,7 +3,6 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 
 const Booking = () => {
-  
   const location = useLocation();
   const { name, price, location: stayLocation, id } = location.state;
 
@@ -14,8 +13,18 @@ const Booking = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  const exchangeRate = 10; // Example exchange rate (1 USD = 10 GHS)
+
+  const convertToGHS = (priceInUSD) => {
+    // Remove the dollar sign and convert the string to a float
+    const price = parseFloat(priceInUSD.replace(/[^0-9.-]+/g, ""));
+    if (isNaN(price)) {
+      return "Invalid Price"; // Handle invalid price data
+    }
+    return `₵ ${(price * exchangeRate).toLocaleString()}`; // Convert and format the price with ₵ symbol
+  };
+
   const handleBooking = async (e) => {
-    console.log(location.state)
     e.preventDefault();
     setPropertyId(id)
     // Reset messages
@@ -35,9 +44,11 @@ const Booking = () => {
         email,
         date, 
       };
-console.log(localStorage.getItem(" authToken"))
+
       // Send booking request to the server
-      const response = await axios.post("https://koyocco-backend.onrender.com/api/bookings", bookingData, {headers:{Authorization: "Bearer " + localStorage.getItem("authToken")}});
+      const response = await axios.post("https://koyocco-backend.onrender.com/api/bookings", bookingData, {
+        headers: { Authorization: "Bearer " + localStorage.getItem("authToken") }
+      });
 
       if (response.status === 201) {
         setSuccess("Booking confirmed! Check your email for confirmation.");
@@ -65,7 +76,8 @@ console.log(localStorage.getItem(" authToken"))
       <div className="bg-white shadow-lg rounded-lg p-8 overflow-hidden">
         <h2 className="text-2xl font-semibold mb-4">Stay: {name}</h2>
         <p className="text-gray-600 mb-2">Location: {stayLocation}</p>
-        <p className="text-gray-800 font-bold mb-4">Price: {price}</p>
+        {/* Convert price from USD to GHS */}
+        <p className="text-gray-800 font-bold mb-4">Price: {convertToGHS(price)}</p>
 
         {error && <p className="text-red-500 mb-4">{error}</p>}
         {success && <p className="text-green-500 mb-4">{success}</p>}
