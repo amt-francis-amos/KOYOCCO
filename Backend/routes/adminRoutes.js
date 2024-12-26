@@ -3,7 +3,6 @@ const router = express.Router();
 const authenticateToken = require('../middleware/auth.middleware.js');  
 
 
-
 router.get("/dashboard", authenticateToken, async (req, res) => {
   try {
     const users = await User.find();  
