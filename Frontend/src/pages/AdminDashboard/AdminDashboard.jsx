@@ -13,18 +13,19 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     const fetchLogs = async () => {
-      const token = localStorage.getItem('token');
-
-      if (!token) {
-        console.error('Token is missing. Redirecting to login.');
-        setError('Unauthorized access. Please log in again.');
-        handleLogout();
-        return;
-      }
-
-      setLoading(true);
-
       try {
+        const token = localStorage.getItem('token');
+        console.log('Retrieved token:', token); // Debugging token retrieval
+
+        if (!token) {
+          console.error('Token is missing. Redirecting to login.');
+          setError('Unauthorized access. Please log in again.');
+          handleLogout();
+          return;
+        }
+
+        setLoading(true);
+
         const response = await axios.get('https://koyocco-backend.onrender.com/api/admin/dashboard', {
           headers: {
             'Content-Type': 'application/json',
