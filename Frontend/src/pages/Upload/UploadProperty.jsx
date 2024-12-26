@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-
 const UploadProperty = () => {
-
   const [propertyData, setPropertyData] = useState({
     name: '',
     description: '',
@@ -14,7 +12,7 @@ const UploadProperty = () => {
     video: null,
   });
   const [message, setMessage] = useState('');
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -88,15 +86,18 @@ const UploadProperty = () => {
           className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
           rows="3"
         />
-        <input
-          type="number"
-          name="price"
-          placeholder="Price"
-          value={propertyData.price}
-          onChange={handleChange}
-          required
-          className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
-        />
+        <div className="flex items-center space-x-2">
+          <span className="text-xl">₵</span>
+          <input
+            type="number"
+            name="price"
+            placeholder="Price"
+            value={propertyData.price}
+            onChange={handleChange}
+            required
+            className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+          />
+        </div>
         <input
           type="text"
           name="location"
