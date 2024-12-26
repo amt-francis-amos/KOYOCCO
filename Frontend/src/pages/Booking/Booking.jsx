@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
-import jwt_decode from "jwt-decode"; // Import jwt-decode
 
 const Booking = () => {
   const location = useLocation();
@@ -10,68 +9,58 @@ const Booking = () => {
   const [fullName, setFullName] = useState("");
   const [propertyId, setPropertyId] = useState("");
   const [email, setEmail] = useState("");
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(""); 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   const exchangeRate = 10; // Example exchange rate (1 USD = 10 GHS)
 
   const convertToGHS = (priceInUSD) => {
+    // Remove the dollar sign and convert the string to a float
     const price = parseFloat(priceInUSD.replace(/[^0-9.-]+/g, ""));
     if (isNaN(price)) {
-      return "Invalid Price"; 
+      return "Invalid Price"; // Handle invalid price data
     }
-    return `₵ ${(price * exchangeRate).toLocaleString()}`; 
+    return `₵ ${(price * exchangeRate).toLocaleString()}`; // Convert and format the price with ₵ symbol
   };
 
   const handleBooking = async (e) => {
     e.preventDefault();
-    setPropertyId(id);
+    setPropertyId(id)
+    // Reset messages
     setError("");
     setSuccess("");
 
+    // Validate inputs
     if (!fullName || !email || !date) {
       setError("All fields are required");
       return;
     }
 
-    // Get the token from localStorage
-    const token = localStorage.getItem("authToken");
-    if (!token) {
-      setError("User not authenticated. Please log in.");
-      return;
-    }
-
-    // Decode the token to extract the userId
-    const decodedToken = jwt_decode(token);
-    const userId = decodedToken.userId; // Assuming 'userId' is in the token payload
-
-    const bookingData = {
-      propertyId: id,
-      fullName,
-      email,
-      date,
-      userId, // Add the userId to the booking data
-    };
-
     try {
-      const response = await axios.post(
-        "https://koyocco-backend.onrender.com/api/bookings",
-        bookingData,
-        {
-          headers: { Authorization: "Bearer " + token },
-        }
-      );
+      const bookingData = {
+        propertyId, 
+        fullName,
+        email,
+        date, 
+      };
+
+      // Send booking request to the server
+      const response = await axios.post("https://koyocco-backend.onrender.com/api/bookings", bookingData, {
+        headers: { Authorization: "Bearer " + localStorage.getItem("authToken") }
+      });
 
       if (response.status === 201) {
         setSuccess("Booking confirmed! Check your email for confirmation.");
         setFullName("");
         setEmail("");
-        setDate(""); 
+        setDate(""); // Reset date input
       } else {
+        // Handle unexpected responses
         setError("Unexpected response from the server. Please try again.");
       }
     } catch (err) {
+      // Log error response if available
       if (err.response && err.response.data) {
         setError(err.response.data.message || "Error creating booking. Please try again.");
       } else {
@@ -87,6 +76,7 @@ const Booking = () => {
       <div className="bg-white shadow-lg rounded-lg p-8 overflow-hidden">
         <h2 className="text-2xl font-semibold mb-4">Stay: {name}</h2>
         <p className="text-gray-600 mb-2">Location: {stayLocation}</p>
+        {/* Convert price from USD to GHS */}
         <p className="text-gray-800 font-bold mb-4">Price: {convertToGHS(price)}</p>
 
         {error && <p className="text-red-500 mb-4">{error}</p>}
