@@ -27,6 +27,10 @@ const UploadProperty = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Append the ₵ symbol to the price before submitting
+    const priceWithCurrency = '₵' + propertyData.price;
+  
     const formData = new FormData();
     Object.keys(propertyData).forEach((key) => {
       if (key === 'images') {
@@ -35,11 +39,14 @@ const UploadProperty = () => {
         });
       } else if (key === 'video') {
         formData.append('video', propertyData[key]);
+      } else if (key === 'price') {
+        // Append the ₵ symbol to the price value before adding to formData
+        formData.append(key, priceWithCurrency);
       } else {
         formData.append(key, propertyData[key]);
       }
     });
-
+  
     try {
       const response = await axios.post('https://koyocco-backend.onrender.com/api/properties/upload', formData, {
         headers: {
@@ -47,7 +54,7 @@ const UploadProperty = () => {
         },
       });
       console.log('Upload successful:', response.data);
-    
+  
       setPropertyData({
         name: '',
         description: '',
@@ -56,13 +63,14 @@ const UploadProperty = () => {
         images: [],
         video: null,
       });
-      setMessage('Property uploaded successfully!'); 
-      navigate('/property-list'); 
+      setMessage('Property uploaded successfully!');
+      navigate('/property-list');
     } catch (error) {
       console.error('Error uploading property:', error.response ? error.response.data : error.message);
-      setMessage('Failed to upload property. Please try again.'); 
+      setMessage('Failed to upload property. Please try again.');
     }
   };
+  
 
   return (
     <div className="max-w-[500px] mx-auto mt-10 mb-20 p-5 bg-white shadow-md rounded-lg">
