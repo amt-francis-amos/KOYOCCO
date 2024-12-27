@@ -54,9 +54,6 @@ const PropertySales = () => {
     // Append photos to FormData
     Array.from(photos).forEach((photo) => formDataToSend.append("photos", photo));
     
-    // Log video to verify it is present
-    console.log("Video File:", video);
-
     // Append video to FormData
     if (video) {
       formDataToSend.append("video", video);
@@ -65,7 +62,12 @@ const PropertySales = () => {
       return;
     }
 
-    // Log FormData to confirm data is being sent
+    // Log FormData after appending files to confirm
+    formDataToSend.forEach((value, key) => {
+      console.log(key, value);
+    });
+
+    // Log FormData content
     console.log("FormData being sent:", formDataToSend);
 
     try {
