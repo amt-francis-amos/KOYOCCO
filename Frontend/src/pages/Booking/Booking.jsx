@@ -76,6 +76,7 @@ const Booking = () => {
     }
 
     const token = localStorage.getItem("authToken");
+    console.log("Token being used in request:", token);  // Debugging line
     if (!token) {
       setError("You are not authenticated. Please login first.");
       navigate("/login");
@@ -107,12 +108,12 @@ const Booking = () => {
         setError("Unexpected response from the server. Please try again.");
       }
     } catch (err) {
+      console.error("Booking error:", err);
       if (err.response && err.response.data) {
         setError(err.response.data.message || "Error creating booking. Please try again.");
       } else {
         setError("Error creating booking. Please try again.");
       }
-      console.error(err);
     }
   };
 
