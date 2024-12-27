@@ -65,11 +65,11 @@ const PropertySales = () => {
 
     try {
       const response = await axios.post(
-        "https://koyocco-backend.onrender.com/api/post-listing",
+        "https://koyocco-backend.onrender.com/api/post-listing/",
         formDataToSend,
         {
           headers: {
-            "Content-Type": "multipart/form-data", // Required for file uploads
+            "Content-Type": "multipart/form-data", 
           },
         }
       );
