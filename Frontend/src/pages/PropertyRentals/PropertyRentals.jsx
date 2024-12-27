@@ -27,11 +27,13 @@ const PropertyRentals = () => {
   const handleBooking = async (property) => {
     const token = localStorage.getItem('authToken');
     const userId = localStorage.getItem('userId');
-  
+    const fullName = localStorage.getItem('userFullName'); // Assuming this is stored in localStorage
+    const email = localStorage.getItem('userEmail'); // Assuming this is stored in localStorage
+    
     console.log('Token:', token);
     console.log('User ID:', userId);
   
-    if (!token || !userId) {
+    if (!token || !userId || !fullName || !email) {
       navigate('/login');
       return;
     }
@@ -44,7 +46,9 @@ const PropertyRentals = () => {
         'https://koyocco-backend.onrender.com/api/bookings',
         {
           propertyId: property._id,
-          userId,
+          fullName, // Send full name
+          email,    // Send email
+          date: new Date().toISOString(), // Use the current date as an example
         },
         {
           headers: {
@@ -63,6 +67,7 @@ const PropertyRentals = () => {
       setBookingMessage(error.response?.data?.message || 'Booking failed. Please try again.');
     }
   };
+  
   
 
   if (loading) {
