@@ -120,7 +120,7 @@ const PropertyRentals = () => {
                 value={formData.fullName}
                 onChange={handleInputChange}
                 className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-                disabled
+             
               />
             </div>
             <div className="mb-4">
@@ -134,7 +134,7 @@ const PropertyRentals = () => {
                 value={formData.email}
                 onChange={handleInputChange}
                 className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-                disabled
+             
               />
             </div>
             <div className="mb-4">
