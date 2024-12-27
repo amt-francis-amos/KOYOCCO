@@ -28,60 +28,66 @@ const PropertySales = () => {
 
   const handlePostListing = async () => {
     const { title, description, photos, video } = formData;
-
+  
     // Validate inputs
     if (!title || !description) {
       alert("Title and description are required.");
       return;
     }
-
+  
     if (photos.length === 0) {
       alert("Please upload at least one photo.");
       return;
     }
-
+  
     if (!video) {
       alert("Please upload a video.");
       return;
     }
-
+  
     // Prepare data for submission
     const formDataToSend = new FormData();
     formDataToSend.append("title", title);
     formDataToSend.append("description", description);
     formDataToSend.append("isPropertyOwner", isPropertyOwner);
-
+  
     // Append photos to FormData
     Array.from(photos).forEach((photo) => formDataToSend.append("photos", photo));
-    
+  
     // Append video to FormData
     if (video) {
+      console.log("Appending video to FormData", video);
       formDataToSend.append("video", video);
     } else {
       alert("No video selected.");
       return;
     }
-
-    // Log FormData after appending files to confirm
-    formDataToSend.forEach((value, key) => {
-      console.log(key, value);
-    });
-
+  
+    // Check FormData to ensure files are appended
+    for (let pair of formDataToSend.entries()) {
+      console.log(pair[0] + ': ' + pair[1]);
+    }
+  
     // Log FormData content
     console.log("FormData being sent:", formDataToSend);
-
+  
     try {
       const response = await axios.post(
         "https://koyocco-backend.onrender.com/api/post-listing",
         formDataToSend,
-        { headers: { "Content-Type": "multipart/form-data" } }
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
       alert(response.data.message);
     } catch (error) {
       console.error("Error:", error);
       alert(error.response?.data?.error || "An error occurred");
     }
-};
+  };
+  
 
 
   return (
