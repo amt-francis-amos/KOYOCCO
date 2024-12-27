@@ -46,66 +46,20 @@ const PropertySales = () => {
       return;
     }
 
-    // Upload photos to Cloudinary
-    const photoUploadPromises = Array.from(photos).map((photo) => {
-      const formData = new FormData();
-      formData.append("file", photo);
-      formData.append("upload_preset", `${process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET}`); // Use .env variable for preset
-      formData.append("cloud_name", `${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}`); // Use .env variable for cloud name
-
-      return axios
-        .post(`https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`, formData)
-        .then((response) => response.data.secure_url)
-        .catch((error) => {
-          setError("Error uploading photo: " + error.message);
-          console.error("Error uploading photo: ", error);
-        });
-    });
-
-    // Upload video to Cloudinary
-    const videoUploadPromise = new Promise((resolve, reject) => {
-      if (video) {
-        const formData = new FormData();
-        formData.append("file", video);
-        formData.append("upload_preset", `${process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET}`); // Use .env variable for preset
-        formData.append("cloud_name", `${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}`); // Use .env variable for cloud name
-
-        axios
-          .post(`https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/video/upload`, formData)
-          .then((response) => resolve(response.data.secure_url))
-          .catch((error) => reject("Error uploading video: " + error.message));
-      } else {
-        resolve(null);
-      }
-    });
+    const formDataToSend = new FormData();
+    formDataToSend.append("title", title);
+    formDataToSend.append("description", description);
+    formDataToSend.append("photos", photos);
+    formDataToSend.append("video", video);
 
     try {
-      const photoUrls = await Promise.all(photoUploadPromises);
-      const videoUrl = await videoUploadPromise;
-
-      // Prepare the data for backend
-      const formDataToSend = new FormData();
-      formDataToSend.append("title", title);
-      formDataToSend.append("description", description);
-      formDataToSend.append("photos", JSON.stringify(photoUrls)); // Send as JSON array
-      formDataToSend.append("video", videoUrl || ""); // Send video URL or empty string if no video
-
-      // Send to the backend
-      const response = await axios.post(
-        "https://koyocco-backend.onrender.com/api/post-listing",
-        formDataToSend,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      alert(response.data.message);
-      setError(""); // Clear error message after successful post
+      const response = await axios.post("/api/upload", formDataToSend, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      console.log("Property uploaded successfully:", response.data);
     } catch (error) {
-      setError(error.response?.data?.error || "An error occurred");
-      console.error("Error:", error);
+      console.error("Error uploading property:", error);
+      setError("Failed to upload property. Please try again.");
     }
   };
 
@@ -130,9 +84,7 @@ const PropertySales = () => {
         </div>
 
         <div className="bg-white shadow-lg rounded-lg p-8">
-          <h2 className="text-2xl font-semibold mb-4">
-            {isPropertyOwner ? "Property Owner Post" : "Agent (Rental) Post"}
-          </h2>
+          <h2 className="text-2xl font-semibold mb-4">{isPropertyOwner ? "Property Owner Post" : "Agent (Rental) Post"}</h2>
           <p className="text-gray-600 mb-6">
             {isPropertyOwner
               ? "As a property owner, you can post your properties for sale. You are required to pay a small fee for promotion and visibility to potential buyers."
