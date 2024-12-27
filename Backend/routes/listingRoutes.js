@@ -5,22 +5,19 @@ const Listing = require('../models/Listing');
 
 router.post('/', multerConfig.fields([{ name: 'photos' }, { name: 'video' }]), async (req, res) => {
   try {
-    // Check if files exist
-    if (!req.files['photos'] || !req.files['video']) {
+    // Early file existence check
+    const { photos, video } = req.files;
+    if (!photos || !video) {
       return res.status(400).json({ error: 'Photos and video are required.' });
     }
 
     const { title, description, isPropertyOwner } = req.body;
-    const photos = req.files['photos'] || [];
-    const video = req.files['video'] || [];
 
-    // Log the uploaded files
-    console.log('Files Uploaded:', req.files);
-
-    // Ensure required fields are provided
+    // Field validation
     if (!title || !description || photos.length === 0 || video.length === 0) {
-      console.log('Missing Fields:', { title, description, photos, video });
-      return res.status(400).json({ error: 'All fields are required' });
+      return res.status(400).json({
+        error: 'All fields (title, description, photos, and video) are required.',
+      });
     }
 
     // Extract file paths
@@ -29,12 +26,10 @@ router.post('/', multerConfig.fields([{ name: 'photos' }, { name: 'video' }]), a
 
     // Validate file paths
     if (!photosUrls.length) {
-      console.log('Invalid Photos:', photosUrls);
       return res.status(400).json({ error: 'At least one photo is required' });
     }
 
     if (!videoUrl) {
-      console.log('Invalid Video:', videoUrl);
       return res.status(400).json({ error: 'Video is required' });
     }
 
@@ -47,15 +42,13 @@ router.post('/', multerConfig.fields([{ name: 'photos' }, { name: 'video' }]), a
       isPropertyOwner: JSON.parse(isPropertyOwner),
     };
 
-    console.log('Listing Data:', listingData);
-
     // Save to database
     const newListing = new Listing(listingData);
     await newListing.save();
 
     res.status(201).json({ message: 'Listing posted successfully', listing: newListing });
   } catch (error) {
-    console.error('Server Error:', error); // Log full error
+    console.error('Server Error:', error); // Log full error for debugging
     res.status(500).json({ error: 'Error saving listing', details: error.message });
   }
 });
