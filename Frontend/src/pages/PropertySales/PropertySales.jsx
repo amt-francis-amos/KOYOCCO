@@ -50,8 +50,8 @@ const PropertySales = () => {
     const photoUploadPromises = Array.from(photos).map((photo) => {
       const formData = new FormData();
       formData.append("file", photo);
-      formData.append("upload_preset", process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET); // Use .env variable for preset
-      formData.append("cloud_name", process.env.REACT_APP_CLOUDINARY_CLOUD_NAME); // Use .env variable for cloud name
+      formData.append("upload_preset", `${process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET}`); // Use .env variable for preset
+      formData.append("cloud_name", `${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}`); // Use .env variable for cloud name
 
       return axios
         .post(`https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`, formData)
