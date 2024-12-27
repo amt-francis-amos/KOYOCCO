@@ -9,7 +9,6 @@ const PropertyRentals = () => {
   const [bookingMessage, setBookingMessage] = useState(null);
   const navigate = useNavigate();
 
-  // Fetch properties on mount
   useEffect(() => {
     const fetchProperties = async () => {
       try {
@@ -25,42 +24,31 @@ const PropertyRentals = () => {
     fetchProperties();
   }, []);
 
-  // Ensure the user is logged in when accessing the rentals page
-  useEffect(() => {
-    const token = localStorage.getItem('authToken');
-    if (!token) {
-      alert('Your session has expired. Please log in again.');
-      navigate('/login');
-    }
-  }, [navigate]);
-
-  // Handle booking process
   const handleBooking = async (property) => {
     const token = localStorage.getItem('authToken');
     const userId = localStorage.getItem('userId');
-    const fullName = localStorage.getItem('userFullName'); // Replace with actual source
-    const email = localStorage.getItem('userEmail');       // Replace with actual source
+    const fullName = localStorage.getItem('userFullName'); // Assuming this is stored in localStorage
+    const email = localStorage.getItem('userEmail'); // Assuming this is stored in localStorage
+    
+    console.log('Token:', token);
+    console.log('User ID:', userId);
   
-    // Redirect to login if any required field is missing
     if (!token || !userId || !fullName || !email) {
-      alert('You need to log in to book a property.');
       navigate('/login');
       return;
     }
   
-    // Confirmation dialog
     const userConfirmed = window.confirm(`Are you sure you want to rent ${property.name}?`);
     if (!userConfirmed) return;
   
     try {
-      // Send booking request to backend
       const response = await axios.post(
         'https://koyocco-backend.onrender.com/api/bookings',
         {
           propertyId: property._id,
-          fullName,
-          email,
-          date: new Date().toISOString(), // Replace with actual user input if needed
+          fullName, // Send full name
+          email,    // Send email
+          date: new Date().toISOString(), // Use the current date as an example
         },
         {
           headers: {
@@ -69,25 +57,18 @@ const PropertyRentals = () => {
         }
       );
   
-      // Check response and update UI
-      if (response.status === 201) {
+      if (response.data) {
         setBookingMessage(`Successfully booked ${property.name}!`);
-        setError(null); // Reset error message after successful booking
       } else {
         setBookingMessage('Booking response is empty. Please check the server response.');
       }
     } catch (error) {
-      // Handle specific errors
-      if (error.response?.status === 401) {
-        alert('Session expired. Please log in again.');
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('userId');
-        navigate('/login');
-      } else {
-        setBookingMessage(error.response?.data?.message || 'Booking failed. Please try again.');
-      }
+      console.error('Booking error:', error);
+      setBookingMessage(error.response?.data?.message || 'Booking failed. Please try again.');
     }
   };
+  
+  
 
   if (loading) {
     return <p className="text-center py-4">Loading properties...</p>;
