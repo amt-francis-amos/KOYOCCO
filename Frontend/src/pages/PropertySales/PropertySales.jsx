@@ -6,11 +6,10 @@ const PropertySales = () => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
+    location: "",  // Added location
+    price: "",     // Added price
     photos: [],
     video: null,
-    name: "",  // Added name field
-    price: "",  // Added price field
-    location: "",  // Added location field
   });
   const [error, setError] = useState("");
 
@@ -31,11 +30,11 @@ const PropertySales = () => {
   };
 
   const handlePostListing = async () => {
-    const { title, description, photos, video, name, price, location } = formData;
+    const { title, description, location, price, photos, video } = formData;
 
     // Validate inputs
-    if (!title || !description || !name || !price || !location) {
-      setError("Name, price, location, title, and description are required.");
+    if (!title || !description || !location || !price) {
+      setError("Title, description, location, and price are required.");
       return;
     }
 
@@ -52,11 +51,10 @@ const PropertySales = () => {
     const formDataToSend = new FormData();
     formDataToSend.append("title", title);
     formDataToSend.append("description", description);
+    formDataToSend.append("location", location);  // Add location
+    formDataToSend.append("price", price);        // Add price
     formDataToSend.append("photos", photos);
     formDataToSend.append("video", video);
-    formDataToSend.append("name", name);
-    formDataToSend.append("price", price);
-    formDataToSend.append("location", location);
 
     try {
       const response = await axios.post("https://koyocco-backend.onrender.com/api/post-listing/upload", formDataToSend, {
@@ -100,39 +98,6 @@ const PropertySales = () => {
           {error && <div className="text-red-500 text-center mb-4">{error}</div>}
 
           <div className="mb-6">
-            <label className="block text-lg font-medium text-gray-700 mb-2">Property Name</label>
-            <input
-              type="text"
-              className="w-full p-3 border border-gray-300 rounded-lg"
-              placeholder="Enter property name"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            />
-          </div>
-
-          <div className="mb-6">
-            <label className="block text-lg font-medium text-gray-700 mb-2">Price</label>
-            <input
-              type="number"
-              className="w-full p-3 border border-gray-300 rounded-lg"
-              placeholder="Enter property price"
-              value={formData.price}
-              onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-            />
-          </div>
-
-          <div className="mb-6">
-            <label className="block text-lg font-medium text-gray-700 mb-2">Location</label>
-            <input
-              type="text"
-              className="w-full p-3 border border-gray-300 rounded-lg"
-              placeholder="Enter property location"
-              value={formData.location}
-              onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-            />
-          </div>
-
-          <div className="mb-6">
             <label className="block text-lg font-medium text-gray-700 mb-2">Property Title</label>
             <input
               type="text"
@@ -152,6 +117,28 @@ const PropertySales = () => {
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             ></textarea>
+          </div>
+
+          <div className="mb-6">
+            <label className="block text-lg font-medium text-gray-700 mb-2">Location</label>
+            <input
+              type="text"
+              className="w-full p-3 border border-gray-300 rounded-lg"
+              placeholder="Enter property location"
+              value={formData.location}
+              onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+            />
+          </div>
+
+          <div className="mb-6">
+            <label className="block text-lg font-medium text-gray-700 mb-2">Price</label>
+            <input
+              type="number"
+              className="w-full p-3 border border-gray-300 rounded-lg"
+              placeholder="Enter property price"
+              value={formData.price}
+              onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+            />
           </div>
 
           <div className="mb-6">
