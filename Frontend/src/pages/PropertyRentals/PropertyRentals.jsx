@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 
 const PropertyRentals = () => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [bookingMessage, setBookingMessage] = useState(null); 
-  const navigate = useNavigate(); 
+  const [bookingMessage, setBookingMessage] = useState(null);
+  const navigate = useNavigate();
 
- 
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const response = await axios.get('https://koyocco-backend.onrender.com/api/properties');
-        setProperties(response.data);
+        const { data } = await axios.get('https://koyocco-backend.onrender.com/api/properties');
+        setProperties(data);
       } catch (error) {
         setError(error.response?.data?.message || error.message || 'Failed to fetch properties');
       } finally {
@@ -25,15 +24,14 @@ const PropertyRentals = () => {
     fetchProperties();
   }, []);
 
-
   const handleBooking = async (property) => {
-    const token = localStorage.getItem('authToken'); 
-    const userId = localStorage.getItem('userId'); 
+    const token = localStorage.getItem('authToken');
+    const userId = localStorage.getItem('userId');
     console.log('Token:', token);
     console.log('User ID:', userId);
 
     if (!token || !userId) {
-      navigate('/login'); 
+      navigate('/login');
       return;
     }
 
@@ -41,7 +39,7 @@ const PropertyRentals = () => {
     if (!userConfirmed) return;
 
     try {
-      const response = await axios.post(
+      await axios.post(
         'https://koyocco-backend.onrender.com/api/bookings',
         {
           propertyId: property._id,
@@ -49,7 +47,7 @@ const PropertyRentals = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`, 
+            Authorization: `Bearer ${token}`,
           },
         }
       );
