@@ -9,6 +9,9 @@ router.post('/', multerConfig.fields([{ name: 'photos' }, { name: 'video' }]), a
     const photos = req.files['photos'] || [];
     const video = req.files['video'] || [];
 
+    // Log multer file processing details
+    console.log('Files Uploaded:', req.files);
+
     // Validation: Ensure all required fields are provided
     if (!title || !description || photos.length === 0 || video.length === 0) {
       console.log('Missing Fields:', { title, description, photos, video });
@@ -17,7 +20,7 @@ router.post('/', multerConfig.fields([{ name: 'photos' }, { name: 'video' }]), a
 
     // Extract file paths for photos and video
     const photosUrls = photos.map(photo => photo.path);
-    const videoUrl = video[0].path;
+    const videoUrl = video[0]?.path;
 
     // Validate parsed data
     if (!photosUrls.length) {
@@ -48,7 +51,6 @@ router.post('/', multerConfig.fields([{ name: 'photos' }, { name: 'video' }]), a
     res.status(201).json({ message: 'Listing posted successfully', listing: newListing });
   } catch (error) {
     if (error.name === 'ValidationError') {
-      // Handle validation errors from Mongoose
       console.error('Validation Error:', error.errors);
       return res.status(400).json({
         error: 'Validation error',
@@ -59,7 +61,6 @@ router.post('/', multerConfig.fields([{ name: 'photos' }, { name: 'video' }]), a
       });
     }
 
-    // Handle other unexpected errors
     console.error('Unexpected Error:', error);
     res.status(500).json({ error: 'Error saving listing', details: error.message });
   }
