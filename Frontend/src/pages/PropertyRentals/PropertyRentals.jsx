@@ -11,9 +11,10 @@ const PropertyRentals = () => {
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
-    phoneNumber: '', // Added phoneNumber to formData
+    phoneNumber: '',
     date: '',
   });
+  const [userBooking, setUserBooking] = useState(null); // Store user booking info
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,6 +32,29 @@ const PropertyRentals = () => {
     fetchProperties();
   }, []);
 
+  // Check if the user has an existing booking for the selected property
+  const checkUserBooking = async (propertyId) => {
+    const token = localStorage.getItem('authToken');
+    try {
+      const response = await axios.get(
+        `https://koyocco-backend.onrender.com/api/bookings/user/${propertyId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.data) {
+        setUserBooking(response.data);
+      } else {
+        setUserBooking(null);
+      }
+    } catch (error) {
+      console.error('Error checking user booking:', error);
+      setUserBooking(null);
+    }
+  };
+
   const handleBooking = async (property) => {
     const token = localStorage.getItem('authToken');
     const userId = localStorage.getItem('userId');
@@ -41,9 +65,12 @@ const PropertyRentals = () => {
     setFormData({
       fullName,
       email,
-      phoneNumber: '', // Reset phone number when selecting a new property
+      phoneNumber: '',
       date: new Date().toISOString(),
     });
+
+    // Check if the user has already booked this property
+    await checkUserBooking(property._id);
   };
 
   const handleSubmit = async (e) => {
@@ -60,7 +87,7 @@ const PropertyRentals = () => {
           propertyId,
           fullName,
           email,
-          phoneNumber, // Added phone number to the request body
+          phoneNumber,
           date,
         },
         {
@@ -79,6 +106,32 @@ const PropertyRentals = () => {
     } catch (error) {
       console.error('Booking error:', error);
       setBookingMessage(error.response?.data?.message || 'Booking failed. Please try again.');
+    }
+  };
+
+  const handleCancelBooking = async () => {
+    const propertyId = selectedProperty._id;
+    const bookingId = userBooking._id;
+
+    try {
+      const token = localStorage.getItem('authToken');
+      const response = await axios.delete(
+        `https://koyocco-backend.onrender.com/api/bookings/${bookingId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.data.message) {
+        setBookingMessage(`Successfully canceled your booking for ${selectedProperty.name}`);
+        setUserBooking(null); // Clear user booking after cancellation
+      } else {
+        setBookingMessage('Error while canceling the booking. Please try again.');
+      }
+    } catch (error) {
+      console.error('Cancel booking error:', error);
+      setBookingMessage('Canceling booking failed. Please try again.');
     }
   };
 
@@ -109,66 +162,78 @@ const PropertyRentals = () => {
       {selectedProperty ? (
         <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg">
           <h2 className="text-2xl font-semibold mb-4">{`Booking for ${selectedProperty.name}`}</h2>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
-                Full Name
-              </label>
-              <input
-                type="text"
-                id="fullName"
-                name="fullName"
-                value={formData.fullName}
-                onChange={handleInputChange}
-                className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-              />
+          {userBooking ? (
+            <div>
+              <p>You have already booked this property on {userBooking.date}.</p>
+              <button
+                onClick={handleCancelBooking}
+                className="mt-4 w-full bg-red-500 text-white py-2 rounded hover:bg-black transition duration-300"
+              >
+                Cancel Booking
+              </button>
             </div>
-            <div className="mb-4">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">
-                Phone Number
-              </label>
-              <input
-                type="text"
-                id="phoneNumber"
-                name="phoneNumber"
-                value={formData.phoneNumber}
-                onChange={handleInputChange}
-                className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="date" className="block text-sm font-medium text-gray-700">
-                Renting Date
-              </label>
-              <input
-                type="date"
-                id="date"
-                name="date"
-                value={formData.date}
-                onChange={handleInputChange}
-                className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full bg-red-500 text-white py-2 rounded hover:bg-black transition duration-300"
-            >
-              Confirm Renting
-            </button>
-          </form>
+          ) : (
+            <form onSubmit={handleSubmit}>
+              <div className="mb-4">
+                <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  id="fullName"
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleInputChange}
+                  className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">
+                  Phone Number
+                </label>
+                <input
+                  type="text"
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  value={formData.phoneNumber}
+                  onChange={handleInputChange}
+                  className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="date" className="block text-sm font-medium text-gray-700">
+                  Renting Date
+                </label>
+                <input
+                  type="date"
+                  id="date"
+                  name="date"
+                  value={formData.date}
+                  onChange={handleInputChange}
+                  className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full bg-red-500 text-white py-2 rounded hover:bg-black transition duration-300"
+              >
+                Confirm Renting
+              </button>
+            </form>
+          )}
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
