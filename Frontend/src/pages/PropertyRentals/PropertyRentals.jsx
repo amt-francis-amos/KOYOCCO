@@ -44,7 +44,7 @@ const PropertyRentals = () => {
     // Redirect to login if any required field is missing
     if (!token || !userId || !fullName || !email) {
       alert('You need to log in to book a property.');
-      navigate('/login');
+      navigate('/booking');
       return;
     }
   
