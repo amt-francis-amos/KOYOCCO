@@ -4,7 +4,7 @@ import axios from "axios";
 const PropertySales = () => {
   const [isPropertyOwner, setIsPropertyOwner] = useState(true);
   const [formData, setFormData] = useState({
-    title: "",
+    name: "",
     description: "",
     location: "",  // Added location
     price: "",     // Added price
@@ -30,10 +30,10 @@ const PropertySales = () => {
   };
 
   const handlePostListing = async () => {
-    const { title, description, location, price, photos, video } = formData;
+    const { name, description, location, price, photos, video } = formData;
 
     // Validate inputs
-    if (!title || !description || !location || !price) {
+    if (!name || !description || !location || !price) {
       setError("Title, description, location, and price are required.");
       return;
     }
