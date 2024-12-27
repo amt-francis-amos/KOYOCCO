@@ -135,80 +135,64 @@ const PropertySales = () => {
           </h2>
           <p className="text-gray-600 mb-6">
             {isPropertyOwner
-              ? "As a property owner, you can post your properties for sale. You are required to pay a small fee for promotion and visibility to potential buyers."
-              : "As an agent, you can post rental properties. There is no additional fee for posting, and you can list as many properties as needed."}
+              ? "As a property owner, you can post properties available for sale."
+              : "As an agent, you can post rental properties on behalf of the owners."}
           </p>
 
-          {error && <div className="text-red-500 text-center mb-4">{error}</div>}
+          <div>
+            {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 
-          <div className="mb-6">
-            <label className="block text-lg font-medium text-gray-700 mb-2">Property Title</label>
-            <input
-              type="text"
-              className="w-full p-3 border border-gray-300 rounded-lg"
-              placeholder="Enter property title"
-              value={formData.title}
-              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-            />
-          </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-lg">Title</label>
+              <input
+                type="text"
+                name="title"
+                className="w-full p-3 border rounded-lg mt-2"
+                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                value={formData.title}
+              />
+            </div>
 
-          <div className="mb-6">
-            <label className="block text-lg font-medium text-gray-700 mb-2">Description</label>
-            <textarea
-              rows="4"
-              className="w-full p-3 border border-gray-300 rounded-lg"
-              placeholder="Enter property description"
-              value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-            ></textarea>
-          </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-lg">Description</label>
+              <textarea
+                name="description"
+                className="w-full p-3 border rounded-lg mt-2"
+                rows="4"
+                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                value={formData.description}
+              />
+            </div>
 
-          <div className="mb-6">
-            <label className="block text-lg font-medium text-gray-700 mb-2">Upload Photos</label>
-            <input
-              type="file"
-              name="photos"
-              multiple
-              className="w-full p-3 border border-gray-300 rounded-lg"
-              onChange={handleFileChange}
-            />
-            {formData.photos.length > 0 && (
-              <ul className="mt-2">
-                {Array.from(formData.photos).map((photo, index) => (
-                  <li key={index} className="text-gray-500">{photo.name}</li>
-                ))}
-              </ul>
-            )}
-          </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-lg">Upload Photos</label>
+              <input
+                type="file"
+                name="photos"
+                className="w-full p-3 border rounded-lg mt-2"
+                multiple
+                onChange={handleFileChange}
+              />
+            </div>
 
-          <div className="mb-6">
-            <label className="block text-lg font-medium text-gray-700 mb-2">Upload Video</label>
-            <input
-              type="file"
-              name="video"
-              className="w-full p-3 border border-gray-300 rounded-lg"
-              onChange={handleFileChange}
-            />
-            {formData.video && (
-              <p className="mt-2 text-gray-500">Selected Video: {formData.video.name}</p>
-            )}
-          </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-lg">Upload Video</label>
+              <input
+                type="file"
+                name="video"
+                className="w-full p-3 border rounded-lg mt-2"
+                onChange={handleFileChange}
+              />
+            </div>
 
-          <div className="text-center">
-            {isPropertyOwner ? (
-              <>
-                <h3 className="text-lg font-semibold text-gray-700 mb-4">
-                  Promotion Fee: <span className="text-green-500">$50</span>
-                </h3>
-                <button onClick={handlePostListing} className="bg-red-500 text-white py-3 px-8 rounded-lg">
-                  Pay and Post Property
-                </button>
-              </>
-            ) : (
-              <button onClick={handlePostListing} className="bg-red-500 text-white py-3 px-8 rounded-lg">
-                Post Property
+            <div className="mb-4">
+              <button
+                onClick={handlePostListing}
+                className="w-full py-3 px-6 bg-blue-600 text-white font-semibold rounded-lg"
+              >
+                Post Listing
               </button>
-            )}
+            </div>
           </div>
         </div>
       </div>
