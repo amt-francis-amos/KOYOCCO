@@ -6,8 +6,8 @@ const PropertySales = () => {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    location: "",  // Added location
-    price: "",     // Added price
+    location: "",  
+    price: "",     
     photos: [],
     video: null,
   });
@@ -49,10 +49,10 @@ const PropertySales = () => {
     }
 
     const formDataToSend = new FormData();
-    formDataToSend.append("title", title);
+    formDataToSend.append("name", name);
     formDataToSend.append("description", description);
-    formDataToSend.append("location", location);  // Add location
-    formDataToSend.append("price", price);        // Add price
+    formDataToSend.append("location", location); 
+    formDataToSend.append("price", price);        
     formDataToSend.append("photos", photos);
     formDataToSend.append("video", video);
 
@@ -98,13 +98,13 @@ const PropertySales = () => {
           {error && <div className="text-red-500 text-center mb-4">{error}</div>}
 
           <div className="mb-6">
-            <label className="block text-lg font-medium text-gray-700 mb-2">Property Title</label>
+            <label className="block text-lg font-medium text-gray-700 mb-2">Property Name</label>
             <input
               type="text"
               className="w-full p-3 border border-gray-300 rounded-lg"
               placeholder="Enter property title"
-              value={formData.title}
-              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             />
           </div>
 
