@@ -27,24 +27,23 @@ const Booking = () => {
 
   const handleBooking = async (e) => {
     e.preventDefault();
-    setPropertyId(id);
     setError("");
     setSuccess("");
-
+  
     if (!fullName || !email || !date || !phoneNumber) { // Validate phoneNumber
       setError("All fields are required");
       return;
     }
-
+  
     try {
       const bookingData = {
-        propertyId,
+        propertyId: id, // Use id directly instead of state
         fullName,
         email,
         phoneNumber, // Include phoneNumber in the request
         date,
       };
-
+  
       const response = await axios.post(
         "https://koyocco-backend.onrender.com/api/bookings",
         bookingData,
@@ -52,7 +51,7 @@ const Booking = () => {
           headers: { Authorization: "Bearer " + localStorage.getItem("authToken") },
         }
       );
-
+  
       if (response.status === 201) {
         setSuccess("Booking confirmed! Check your email for confirmation.");
         setFullName("");
@@ -71,6 +70,7 @@ const Booking = () => {
       console.error(err);
     }
   };
+  
 
   return (
     <div className="max-w-[800px] mx-auto py-12">
