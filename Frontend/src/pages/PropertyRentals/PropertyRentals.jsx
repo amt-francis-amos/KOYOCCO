@@ -9,6 +9,7 @@ const PropertyRentals = () => {
   const [bookingMessage, setBookingMessage] = useState(null);
   const navigate = useNavigate();
 
+  // Fetch properties on mount
   useEffect(() => {
     const fetchProperties = async () => {
       try {
@@ -24,6 +25,7 @@ const PropertyRentals = () => {
     fetchProperties();
   }, []);
 
+  // Ensure the user is logged in when accessing the rentals page
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     if (!token) {
@@ -32,6 +34,7 @@ const PropertyRentals = () => {
     }
   }, [navigate]);
 
+  // Handle booking process
   const handleBooking = async (property) => {
     const token = localStorage.getItem('authToken');
     const userId = localStorage.getItem('userId');
@@ -69,6 +72,7 @@ const PropertyRentals = () => {
       // Check response and update UI
       if (response.status === 201) {
         setBookingMessage(`Successfully booked ${property.name}!`);
+        setError(null); // Reset error message after successful booking
       } else {
         setBookingMessage('Booking response is empty. Please check the server response.');
       }
