@@ -51,8 +51,22 @@ const PropertySales = () => {
     formDataToSend.append("description", description);
     formDataToSend.append("isPropertyOwner", isPropertyOwner);
 
+    // Append photos to FormData
     Array.from(photos).forEach((photo) => formDataToSend.append("photos", photo));
-    formDataToSend.append("video", video);
+    
+    // Log video to verify it is present
+    console.log("Video File:", video);
+
+    // Append video to FormData
+    if (video) {
+      formDataToSend.append("video", video);
+    } else {
+      alert("No video selected.");
+      return;
+    }
+
+    // Log FormData to confirm data is being sent
+    console.log("FormData being sent:", formDataToSend);
 
     try {
       const response = await axios.post(
@@ -65,7 +79,8 @@ const PropertySales = () => {
       console.error("Error:", error);
       alert(error.response?.data?.error || "An error occurred");
     }
-  };
+};
+
 
   return (
     <div className="min-h-screen bg-gray-50 py-10">
