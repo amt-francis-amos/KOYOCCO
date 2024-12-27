@@ -1,33 +1,15 @@
-require('dotenv').config();
-const express = require('express');
-const multer = require('multer');
-const Property = require('../models/Property');
-const cloudinary = require('cloudinary').v2;
-
-const router = express.Router();
-
-// Cloudinary configuration
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
-// Set up multer for file uploads
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
-
 // Upload property route
 router.post('/upload', upload.fields([{ name: 'photos', maxCount: 10 }, { name: 'video', maxCount: 1 }]), async (req, res) => {
   console.log('Request Body:', req.body);
   console.log('Request Files:', req.files);
 
   try {
-    const { title, description, location, price } = req.body; // Include location and price
+    // Update to use 'name' instead of 'title'
+    const { name, description, location, price } = req.body; 
 
     // Check if required fields are present
-    if (!title || !description || !location || !price) {
-      return res.status(400).json({ message: 'Title, description, location, and price are required.' });
+    if (!name || !description || !location || !price) {
+      return res.status(400).json({ message: 'Name, description, location, and price are required.' });
     }
 
     // Handle image uploads
@@ -64,10 +46,10 @@ router.post('/upload', upload.fields([{ name: 'photos', maxCount: 10 }, { name: 
 
     // Create a new property document
     const property = new Property({
-      title,
+      name,        // Changed from 'title' to 'name'
       description,
-      location,  // Add location field
-      price,     // Add price field
+      location,
+      price,
       photos,
       video,
     });
@@ -80,5 +62,3 @@ router.post('/upload', upload.fields([{ name: 'photos', maxCount: 10 }, { name: 
     res.status(500).json({ message: 'Failed to upload property', error: error.message });
   }
 });
-
-module.exports = router;
