@@ -27,20 +27,17 @@ const PropertyRentals = () => {
   const handleBooking = async (property) => {
     const token = localStorage.getItem('authToken');
     const userId = localStorage.getItem('userId');
-    const fullName = localStorage.getItem('userFullName'); // Assuming this is stored in localStorage
-    const email = localStorage.getItem('userEmail'); // Assuming this is stored in localStorage
-    
-    console.log('Token:', token);
-    console.log('User ID:', userId);
-  
+    const fullName = localStorage.getItem('userFullName');
+    const email = localStorage.getItem('userEmail');
+
     if (!token || !userId || !fullName || !email) {
       navigate('/login');
       return;
     }
-  
+
     const userConfirmed = window.confirm(`Are you sure you want to rent ${property.name}?`);
     if (!userConfirmed) return;
-  
+
     try {
       const response = await axios.post(
         'https://koyocco-backend.onrender.com/api/bookings',
@@ -56,8 +53,8 @@ const PropertyRentals = () => {
           },
         }
       );
-  
-      if (response.data) {
+
+      if (response.data.message) {
         setBookingMessage(`Successfully booked ${property.name}!`);
       } else {
         setBookingMessage('Booking response is empty. Please check the server response.');
@@ -67,8 +64,6 @@ const PropertyRentals = () => {
       setBookingMessage(error.response?.data?.message || 'Booking failed. Please try again.');
     }
   };
-  
-  
 
   if (loading) {
     return <p className="text-center py-4">Loading properties...</p>;
