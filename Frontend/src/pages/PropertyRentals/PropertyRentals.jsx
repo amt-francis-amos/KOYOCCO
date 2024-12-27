@@ -36,11 +36,7 @@ const PropertyRentals = () => {
     const fullName = localStorage.getItem('userFullName');
     const email = localStorage.getItem('userEmail');
 
-    if (!token || !userId || !fullName || !email) {
-      // Redirect to login page if data is missing
-      navigate('/login');
-      return;
-    }
+   
 
     setSelectedProperty(property);
     setFormData({
@@ -143,7 +139,7 @@ const PropertyRentals = () => {
             </div>
             <div className="mb-4">
               <label htmlFor="date" className="block text-sm font-medium text-gray-700">
-                Booking Date
+                Renting Date
               </label>
               <input
                 type="date"
@@ -158,7 +154,7 @@ const PropertyRentals = () => {
               type="submit"
               className="w-full bg-red-500 text-white py-2 rounded hover:bg-black transition duration-300"
             >
-              Confirm Booking
+              Confirm Renting
             </button>
           </form>
         </div>
