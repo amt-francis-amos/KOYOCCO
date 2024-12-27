@@ -1,66 +1,100 @@
-import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Booking = () => {
   const location = useLocation();
-  const { name, price, location: stayLocation, id } = location.state;
+  const navigate = useNavigate();
+  const { name, price, location: stayLocation, id } = location.state || {};
 
   const [fullName, setFullName] = useState("");
-  const [propertyId, setPropertyId] = useState("");
   const [email, setEmail] = useState("");
-  const [date, setDate] = useState(""); 
+  const [date, setDate] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   const exchangeRate = 10; // Example exchange rate (1 USD = 10 GHS)
 
   const convertToGHS = (priceInUSD) => {
-    // Remove the dollar sign and convert the string to a float
     const price = parseFloat(priceInUSD.replace(/[^0-9.-]+/g, ""));
     if (isNaN(price)) {
-      return "Invalid Price"; // Handle invalid price data
+      return "Invalid Price";
     }
-    return `₵ ${(price * exchangeRate).toLocaleString()}`; // Convert and format the price with ₵ symbol
+    return `₵ ${(price * exchangeRate).toLocaleString()}`;
   };
+
+  // Validate authToken and location.state on mount
+  useEffect(() => {
+    const validateToken = async () => {
+      const token = localStorage.getItem("authToken");
+      if (!token) {
+        console.error("No auth token found, redirecting to login.");
+        navigate("/login");
+        return;
+      }
+      try {
+        await axios.get("https://koyocco-backend.onrender.com/api/validate-token", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+      } catch (err) {
+        console.error("Token validation failed:", err);
+        localStorage.clear();
+        navigate("/login");
+      }
+    };
+
+    // Check if location.state is valid
+    if (!location.state || !id) {
+      console.error("Invalid property data, redirecting.");
+      navigate("/properties");
+      return;
+    }
+
+    validateToken();
+  }, [location.state, id, navigate]);
 
   const handleBooking = async (e) => {
     e.preventDefault();
-    setPropertyId(id)
-    // Reset messages
     setError("");
     setSuccess("");
 
-    // Validate inputs
     if (!fullName || !email || !date) {
       setError("All fields are required");
       return;
     }
 
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      setError("You are not authenticated. Please login first.");
+      navigate("/login");
+      return;
+    }
+
     try {
       const bookingData = {
-        propertyId, 
+        propertyId: id,
         fullName,
         email,
-        date, 
+        date,
       };
 
-      // Send booking request to the server
-      const response = await axios.post("https://koyocco-backend.onrender.com/api/bookings", bookingData, {
-        headers: { Authorization: "Bearer " + localStorage.getItem("authToken") }
-      });
+      const response = await axios.post(
+        "https://koyocco-backend.onrender.com/api/bookings",
+        bookingData,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       if (response.status === 201) {
         setSuccess("Booking confirmed! Check your email for confirmation.");
         setFullName("");
         setEmail("");
-        setDate(""); // Reset date input
+        setDate("");
       } else {
-        // Handle unexpected responses
         setError("Unexpected response from the server. Please try again.");
       }
     } catch (err) {
-      // Log error response if available
       if (err.response && err.response.data) {
         setError(err.response.data.message || "Error creating booking. Please try again.");
       } else {
@@ -76,7 +110,6 @@ const Booking = () => {
       <div className="bg-white shadow-lg rounded-lg p-8 overflow-hidden">
         <h2 className="text-2xl font-semibold mb-4">Stay: {name}</h2>
         <p className="text-gray-600 mb-2">Location: {stayLocation}</p>
-        {/* Convert price from USD to GHS */}
         <p className="text-gray-800 font-bold mb-4">Price: {convertToGHS(price)}</p>
 
         {error && <p className="text-red-500 mb-4">{error}</p>}
