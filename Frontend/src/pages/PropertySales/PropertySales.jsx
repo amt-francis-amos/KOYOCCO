@@ -28,58 +28,81 @@ const PropertySales = () => {
 
   const handlePostListing = async () => {
     const { title, description, photos, video } = formData;
-
+  
     // Validate inputs
     if (!title || !description) {
       alert("Title and description are required.");
       return;
     }
-
+  
     if (photos.length === 0) {
       alert("Please upload at least one photo.");
       return;
     }
-
+  
     if (!video) {
       alert("Please upload a video.");
       return;
     }
-
-    const formDataToSend = new FormData();
-    formDataToSend.append("title", title);
-    formDataToSend.append("description", description);
-    formDataToSend.append("isPropertyOwner", isPropertyOwner);
-
-    // Append photos to FormData
-    Array.from(photos).forEach(photo => formDataToSend.append("photos", photo));
-
-    // Append video to FormData
-    if (video) {
-      formDataToSend.append("video", video);
-    }
-
-    // Check FormData to ensure files are appended
-    for (let pair of formDataToSend.entries()) {
-      console.log(pair[0] + ": " + pair[1]);
-    }
-
+  
+    // Upload photos to Cloudinary
+    const photoUploadPromises = Array.from(photos).map((photo) => {
+      const formData = new FormData();
+      formData.append("file", photo);
+      formData.append("upload_preset", process.env.CLOUDINARY_UPLOAD_PRESET);
+      formData.append("cloud_name", process.env.CLOUDINARY_CLOUD_NAME);
+  
+      return axios.post(`https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload`, formData)
+        .then((response) => response.data.secure_url)
+        .catch((error) => console.error("Error uploading photo: ", error));
+    });
+  
+    // Upload video to Cloudinary
+    const videoUploadPromise = new Promise((resolve, reject) => {
+      if (video) {
+        const formData = new FormData();
+        formData.append("file", video);
+        formData.append("upload_preset", process.env.CLOUDINARY_UPLOAD_PRESET);
+        formData.append("cloud_name", process.env.CLOUDINARY_CLOUD_NAME);
+  
+        axios
+          .post(`https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/video/upload`, formData)
+          .then((response) => resolve(response.data.secure_url))
+          .catch((error) => reject("Error uploading video: ", error));
+      } else {
+        resolve(null);
+      }
+    });
+  
     try {
+      const photoUrls = await Promise.all(photoUploadPromises);
+      const videoUrl = await videoUploadPromise;
+  
+      // Prepare the data for backend
+      const formDataToSend = new FormData();
+      formDataToSend.append("title", title);
+      formDataToSend.append("description", description);
+      formDataToSend.append("photos", JSON.stringify(photoUrls)); // Send as JSON array
+      formDataToSend.append("video", videoUrl || ""); // Send video URL or empty string if no video
+  
+      // Send to the backend
       const response = await axios.post(
         "https://koyocco-backend.onrender.com/api/post-listing",
         formDataToSend,
         {
           headers: {
-            "Content-Type": "multipart/form-data", 
+            "Content-Type": "multipart/form-data",
           },
         }
       );
-
+  
       alert(response.data.message);
     } catch (error) {
       console.error("Error:", error);
       alert(error.response?.data?.error || "An error occurred");
     }
   };
+  
 
   return (
     <div className="min-h-screen bg-gray-50 py-10">
