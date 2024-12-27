@@ -50,8 +50,8 @@ const PropertySales = () => {
     const photoUploadPromises = Array.from(photos).map((photo) => {
       const formData = new FormData();
       formData.append("file", photo);
-      formData.append("upload_preset", process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET);
-      formData.append("cloud_name", process.env.REACT_APP_CLOUDINARY_CLOUD_NAME);
+      formData.append("upload_preset", process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET); // Use .env variable for preset
+      formData.append("cloud_name", process.env.REACT_APP_CLOUDINARY_CLOUD_NAME); // Use .env variable for cloud name
 
       return axios
         .post(`https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`, formData)
@@ -67,8 +67,8 @@ const PropertySales = () => {
       if (video) {
         const formData = new FormData();
         formData.append("file", video);
-        formData.append("upload_preset", process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET);
-        formData.append("cloud_name", process.env.REACT_APP_CLOUDINARY_CLOUD_NAME);
+        formData.append("upload_preset", process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET); // Use .env variable for preset
+        formData.append("cloud_name", process.env.REACT_APP_CLOUDINARY_CLOUD_NAME); // Use .env variable for cloud name
 
         axios
           .post(`https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/video/upload`, formData)
@@ -117,17 +117,13 @@ const PropertySales = () => {
         <div className="flex justify-center mb-8">
           <button
             onClick={() => setIsPropertyOwner(true)}
-            className={`py-2 px-6 rounded-lg text-lg font-semibold mr-4 ${
-              isPropertyOwner ? "bg-red-500 text-white" : "bg-gray-300 text-gray-700"
-            }`}
+            className={`py-2 px-6 rounded-lg text-lg font-semibold mr-4 ${isPropertyOwner ? "bg-red-500 text-white" : "bg-gray-300 text-gray-700"}`}
           >
             Property Owner
           </button>
           <button
             onClick={() => setIsPropertyOwner(false)}
-            className={`py-2 px-6 rounded-lg text-lg font-semibold ${
-              !isPropertyOwner ? "bg-red-500 text-white" : "bg-gray-300 text-gray-700"
-            }`}
+            className={`py-2 px-6 rounded-lg text-lg font-semibold ${!isPropertyOwner ? "bg-red-500 text-white" : "bg-gray-300 text-gray-700"}`}
           >
             Agent (Rental)
           </button>
