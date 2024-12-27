@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const PropertyRentals = () => {
   const [properties, setProperties] = useState([]);
@@ -9,10 +9,10 @@ const PropertyRentals = () => {
   const [bookingMessage, setBookingMessage] = useState(null);
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    phoneNumber: '',
-    date: '',
+    fullName: "",
+    email: "",
+    phoneNumber: "",
+    date: "",
   });
   const [userBooking, setUserBooking] = useState(null); // Store user booking info
   const navigate = useNavigate();
@@ -20,10 +20,16 @@ const PropertyRentals = () => {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const { data } = await axios.get('https://koyocco-backend.onrender.com/api/properties');
+        const { data } = await axios.get(
+          "https://koyocco-backend.onrender.com/api/properties"
+        );
         setProperties(data);
       } catch (error) {
-        setError(error.response?.data?.message || error.message || 'Failed to fetch properties');
+        setError(
+          error.response?.data?.message ||
+            error.message ||
+            "Failed to fetch properties"
+        );
       } finally {
         setLoading(false);
       }
@@ -34,7 +40,7 @@ const PropertyRentals = () => {
 
   // Check if the user has an existing booking for the selected property
   const checkUserBooking = async (propertyId) => {
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem("authToken");
     try {
       const response = await axios.get(
         `https://koyocco-backend.onrender.com/api/bookings/user/${propertyId}`,
@@ -50,22 +56,22 @@ const PropertyRentals = () => {
         setUserBooking(null); // No booking found
       }
     } catch (error) {
-      console.error('Error checking user booking:', error);
+      console.error("Error checking user booking:", error);
       setUserBooking(null); // Error or no booking
     }
   };
 
   const handleBooking = async (property) => {
-    const token = localStorage.getItem('authToken');
-    const userId = localStorage.getItem('userId');
-    const fullName = localStorage.getItem('userFullName');
-    const email = localStorage.getItem('userEmail');
+    const token = localStorage.getItem("authToken");
+    const userId = localStorage.getItem("userId");
+    const fullName = localStorage.getItem("userFullName");
+    const email = localStorage.getItem("userEmail");
 
     setSelectedProperty(property);
     setFormData({
       fullName,
       email,
-      phoneNumber: '',
+      phoneNumber: "",
       date: new Date().toISOString(),
     });
 
@@ -80,9 +86,9 @@ const PropertyRentals = () => {
     const propertyId = selectedProperty._id;
 
     try {
-      const token = localStorage.getItem('authToken');
+      const token = localStorage.getItem("authToken");
       const response = await axios.post(
-        'https://koyocco-backend.onrender.com/api/bookings',
+        "https://koyocco-backend.onrender.com/api/bookings",
         {
           propertyId,
           fullName,
@@ -101,11 +107,15 @@ const PropertyRentals = () => {
         setBookingMessage(`Successfully booked ${selectedProperty.name}!`);
         setSelectedProperty(null); // Clear the selected property after booking
       } else {
-        setBookingMessage('Booking response is empty. Please check the server response.');
+        setBookingMessage(
+          "Booking response is empty. Please check the server response."
+        );
       }
     } catch (error) {
-      console.error('Booking error:', error);
-      setBookingMessage(error.response?.data?.message || 'Booking failed. Please try again.');
+      console.error("Booking error:", error);
+      setBookingMessage(
+        error.response?.data?.message || "Booking failed. Please try again."
+      );
     }
   };
 
@@ -114,7 +124,7 @@ const PropertyRentals = () => {
     const bookingId = userBooking._id;
 
     try {
-      const token = localStorage.getItem('authToken');
+      const token = localStorage.getItem("authToken");
       const response = await axios.delete(
         `https://koyocco-backend.onrender.com/api/bookings/${bookingId}`,
         {
@@ -124,14 +134,18 @@ const PropertyRentals = () => {
         }
       );
       if (response.data.message) {
-        setBookingMessage(`Successfully canceled your booking for ${selectedProperty.name}`);
+        setBookingMessage(
+          `Successfully canceled your booking for ${selectedProperty.name}`
+        );
         setUserBooking(null); // Clear user booking after cancellation
       } else {
-        setBookingMessage('Error while canceling the booking. Please try again.');
+        setBookingMessage(
+          "Error while canceling the booking. Please try again."
+        );
       }
     } catch (error) {
-      console.error('Cancel booking error:', error);
-      setBookingMessage('Canceling booking failed. Please try again.');
+      console.error("Cancel booking error:", error);
+      setBookingMessage("Canceling booking failed. Please try again.");
     }
   };
 
@@ -164,7 +178,9 @@ const PropertyRentals = () => {
           <h2 className="text-2xl font-semibold mb-4">{`Booking for ${selectedProperty.name}`}</h2>
           {userBooking ? (
             <div>
-              <p>You have already booked this property on {userBooking.date}.</p>
+              <p>
+                You have already booked this property on {userBooking.date}.
+              </p>
               <button
                 onClick={handleCancelBooking}
                 className="mt-4 w-full bg-red-500 text-white py-2 rounded hover:bg-black transition duration-300"
@@ -175,7 +191,10 @@ const PropertyRentals = () => {
           ) : (
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
-                <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="fullName"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Full Name
                 </label>
                 <input
@@ -188,7 +207,10 @@ const PropertyRentals = () => {
                 />
               </div>
               <div className="mb-4">
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Email
                 </label>
                 <input
@@ -201,7 +223,10 @@ const PropertyRentals = () => {
                 />
               </div>
               <div className="mb-4">
-                <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="phoneNumber"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Phone Number
                 </label>
                 <input
@@ -214,7 +239,10 @@ const PropertyRentals = () => {
                 />
               </div>
               <div className="mb-4">
-                <label htmlFor="date" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="date"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Renting Date
                 </label>
                 <input
@@ -243,14 +271,23 @@ const PropertyRentals = () => {
               className="bg-white shadow-md rounded-lg overflow-hidden transition-transform transform hover:scale-105 p-4 flex flex-col"
             >
               <img
-                src={property.photos[0]}  
+                src={
+                  property.photos && property.photos.length > 0
+                    ? property.photos[0]
+                    : "default-image-url"
+                }
                 alt={property.name}
                 className="w-full h-48 sm:h-60 object-cover mb-4"
               />
+
               <div className="flex-grow">
-                <h2 className="text-xl sm:text-2xl font-semibold mb-2">{property.name}</h2>
+                <h2 className="text-xl sm:text-2xl font-semibold mb-2">
+                  {property.name}
+                </h2>
                 <p className="text-gray-600">{property.location}</p>
-                <p className="text-gray-800 font-bold text-lg mt-1">${property.price}</p>
+                <p className="text-gray-800 font-bold text-lg mt-1">
+                  ${property.price}
+                </p>
               </div>
               <button
                 onClick={() => handleBooking(property)}
