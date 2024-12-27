@@ -28,6 +28,7 @@ const sendBookingConfirmationEmail = async (booking) => {
         <p>Thank you for your booking. Your booking for property ID ${booking.propertyId} has been confirmed.</p>
         <p><strong>User ID:</strong> ${booking.userId}</p>
         <p><strong>Property ID:</strong> ${booking.propertyId}</p>
+        <p><strong>Phone Number:</strong> ${booking.phoneNumber}</p> <!-- Added phone number -->
         <p>We look forward to having you. If you have any questions, feel free to contact us.</p>
         <p>Best regards,<br>Koyocco Ghana Team</p>
       </div>
@@ -49,6 +50,7 @@ const sendBookingConfirmationEmail = async (booking) => {
     throw new Error('Could not send booking confirmation email');
   }
 };
+
 
 // Booking route
 router.post('/', authenticateToken, async (req, res) => {
