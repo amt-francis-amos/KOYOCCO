@@ -23,11 +23,11 @@ router.post('/upload', upload.fields([{ name: 'photos', maxCount: 10 }, { name: 
   console.log('Request Files:', req.files);
 
   try {
-    const { title, description } = req.body;
+    const { title, description, location, price } = req.body; // Include location and price
 
     // Check if required fields are present
-    if (!title || !description) {
-      return res.status(400).json({ message: 'Title and description are required.' });
+    if (!title || !description || !location || !price) {
+      return res.status(400).json({ message: 'Title, description, location, and price are required.' });
     }
 
     // Handle image uploads
@@ -66,6 +66,8 @@ router.post('/upload', upload.fields([{ name: 'photos', maxCount: 10 }, { name: 
     const property = new Property({
       title,
       description,
+      location,  // Add location field
+      price,     // Add price field
       photos,
       video,
     });
