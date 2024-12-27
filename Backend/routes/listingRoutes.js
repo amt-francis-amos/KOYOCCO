@@ -18,7 +18,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 // Upload property route
-// Upload property route
+
 router.post('/upload', upload.fields([{ name: 'photos', maxCount: 10 }, { name: 'video', maxCount: 1 }]), async (req, res) => {
   console.log('Request Body:', req.body);
   console.log('Request Files:', req.files);
