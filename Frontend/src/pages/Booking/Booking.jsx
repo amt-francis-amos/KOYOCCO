@@ -1,7 +1,3 @@
-import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
-import axios from "axios";
-
 const Booking = () => {
   const location = useLocation();
   const { name, price, location: stayLocation, id } = location.state;
@@ -9,58 +5,59 @@ const Booking = () => {
   const [fullName, setFullName] = useState("");
   const [propertyId, setPropertyId] = useState("");
   const [email, setEmail] = useState("");
-  const [date, setDate] = useState(""); 
+  const [date, setDate] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState(""); // Add phoneNumber state
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const exchangeRate = 10; // Example exchange rate (1 USD = 10 GHS)
+  const exchangeRate = 10;
 
   const convertToGHS = (priceInUSD) => {
-    // Remove the dollar sign and convert the string to a float
     const price = parseFloat(priceInUSD.replace(/[^0-9.-]+/g, ""));
     if (isNaN(price)) {
-      return "Invalid Price"; // Handle invalid price data
+      return "Invalid Price";
     }
-    return `₵ ${(price * exchangeRate).toLocaleString()}`; // Convert and format the price with ₵ symbol
+    return `₵ ${(price * exchangeRate).toLocaleString()}`;
   };
 
   const handleBooking = async (e) => {
     e.preventDefault();
-    setPropertyId(id)
-    // Reset messages
+    setPropertyId(id);
     setError("");
     setSuccess("");
 
-    // Validate inputs
-    if (!fullName || !email || !date) {
+    if (!fullName || !email || !date || !phoneNumber) { // Validate phoneNumber
       setError("All fields are required");
       return;
     }
 
     try {
       const bookingData = {
-        propertyId, 
+        propertyId,
         fullName,
         email,
-        date, 
+        phoneNumber, // Include phoneNumber in the request
+        date,
       };
 
-      // Send booking request to the server
-      const response = await axios.post("https://koyocco-backend.onrender.com/api/bookings", bookingData, {
-        headers: { Authorization: "Bearer " + localStorage.getItem("authToken") }
-      });
+      const response = await axios.post(
+        "https://koyocco-backend.onrender.com/api/bookings",
+        bookingData,
+        {
+          headers: { Authorization: "Bearer " + localStorage.getItem("authToken") },
+        }
+      );
 
       if (response.status === 201) {
         setSuccess("Booking confirmed! Check your email for confirmation.");
         setFullName("");
         setEmail("");
-        setDate(""); // Reset date input
+        setPhoneNumber(""); // Reset phoneNumber input
+        setDate("");
       } else {
-        // Handle unexpected responses
         setError("Unexpected response from the server. Please try again.");
       }
     } catch (err) {
-      // Log error response if available
       if (err.response && err.response.data) {
         setError(err.response.data.message || "Error creating booking. Please try again.");
       } else {
@@ -76,7 +73,6 @@ const Booking = () => {
       <div className="bg-white shadow-lg rounded-lg p-8 overflow-hidden">
         <h2 className="text-2xl font-semibold mb-4">Stay: {name}</h2>
         <p className="text-gray-600 mb-2">Location: {stayLocation}</p>
-        {/* Convert price from USD to GHS */}
         <p className="text-gray-800 font-bold mb-4">Price: {convertToGHS(price)}</p>
 
         {error && <p className="text-red-500 mb-4">{error}</p>}
@@ -103,6 +99,18 @@ const Booking = () => {
               onChange={(e) => setEmail(e.target.value)}
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm"
               placeholder="Your Email"
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700">Phone Number</label>
+            <input
+              type="tel"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm"
+              placeholder="Your Phone Number"
               required
             />
           </div>
