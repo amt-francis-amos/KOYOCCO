@@ -24,19 +24,23 @@ const PropertyRentals = () => {
     fetchProperties();
   }, []);
 
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      alert('Your session has expired. Please log in again.');
+      navigate('/login');
+    }
+  }, [navigate]);
+
   const handleBooking = async (property) => {
     const token = localStorage.getItem('authToken');
     const userId = localStorage.getItem('userId');
     const fullName = localStorage.getItem('userFullName'); // Replace with actual source
     const email = localStorage.getItem('userEmail');       // Replace with actual source
   
-    // Debugging: Log retrieved data
-    console.log('Token:', token);
-    console.log('User ID:', userId);
-  
     // Redirect to login if any required field is missing
     if (!token || !userId || !fullName || !email) {
-      alert("You need to log in to book a property.");
+      alert('You need to log in to book a property.');
       navigate('/login');
       return;
     }
@@ -71,7 +75,7 @@ const PropertyRentals = () => {
     } catch (error) {
       // Handle specific errors
       if (error.response?.status === 401) {
-        alert("Session expired. Please log in again.");
+        alert('Session expired. Please log in again.');
         localStorage.removeItem('authToken');
         localStorage.removeItem('userId');
         navigate('/login');
@@ -80,9 +84,6 @@ const PropertyRentals = () => {
       }
     }
   };
-  
-  
-  
 
   if (loading) {
     return <p className="text-center py-4">Loading properties...</p>;
