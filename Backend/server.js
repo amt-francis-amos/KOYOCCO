@@ -29,7 +29,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/properties', propertyRoutes); 
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/requests', requestRoutes);
-app.use("/api/post-listing", listingRoutes);
+app.use('/api/post-listing', listingRoutes);
 app.use('/api/admin', adminRoutes);
 
 
