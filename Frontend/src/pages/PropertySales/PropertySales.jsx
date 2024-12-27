@@ -28,57 +28,58 @@ const PropertySales = () => {
 
   const handlePostListing = async () => {
     const { title, description, photos, video } = formData;
-  
+
     // Validate inputs
     if (!title || !description) {
       alert("Title and description are required.");
       return;
     }
-  
+
     if (photos.length === 0) {
       alert("Please upload at least one photo.");
       return;
     }
-  
+
     if (!video) {
       alert("Please upload a video.");
       return;
     }
-  
+
     const formDataToSend = new FormData();
     formDataToSend.append("title", title);
     formDataToSend.append("description", description);
     formDataToSend.append("isPropertyOwner", isPropertyOwner);
-  
+
     // Append photos to FormData
     Array.from(photos).forEach(photo => formDataToSend.append("photos", photo));
-  
+
     // Append video to FormData
     if (video) {
       formDataToSend.append("video", video);
     }
-  
+
     // Check FormData to ensure files are appended
     for (let pair of formDataToSend.entries()) {
-      console.log(pair[0] + ': ' + pair[1]);
+      console.log(pair[0] + ": " + pair[1]);
     }
-  
+
     try {
-      const response = await axios.post("https://koyocco-backend.onrender.com/api/post-listing", formDataToSend, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-  
+      const response = await axios.post(
+        "https://koyocco-backend.onrender.com/api/post-listing",
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data", // Required for file uploads
+          },
+        }
+      );
+
       alert(response.data.message);
     } catch (error) {
       console.error("Error:", error);
       alert(error.response?.data?.error || "An error occurred");
     }
   };
-  
-  
-
 
   return (
     <div className="min-h-screen bg-gray-50 py-10">
@@ -237,7 +238,7 @@ const PropertySales = () => {
 
             <div className="text-center">
               <button onClick={handlePostListing} className="bg-red-500 text-white py-3 px-8 rounded-lg">
-                Post Rental Property
+                Post Property
               </button>
             </div>
           </div>
