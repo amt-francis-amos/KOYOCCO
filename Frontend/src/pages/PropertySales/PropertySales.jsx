@@ -45,22 +45,17 @@ const PropertySales = () => {
       return;
     }
   
-    // Prepare data for submission
     const formDataToSend = new FormData();
     formDataToSend.append("title", title);
     formDataToSend.append("description", description);
     formDataToSend.append("isPropertyOwner", isPropertyOwner);
   
     // Append photos to FormData
-    Array.from(photos).forEach((photo) => formDataToSend.append("photos", photo));
+    Array.from(photos).forEach(photo => formDataToSend.append("photos", photo));
   
     // Append video to FormData
     if (video) {
-      console.log("Appending video to FormData", video);
       formDataToSend.append("video", video);
-    } else {
-      alert("No video selected.");
-      return;
     }
   
     // Check FormData to ensure files are appended
@@ -68,25 +63,20 @@ const PropertySales = () => {
       console.log(pair[0] + ': ' + pair[1]);
     }
   
-    // Log FormData content
-    console.log("FormData being sent:", formDataToSend);
-  
     try {
-      const response = await axios.post(
-        "https://koyocco-backend.onrender.com/api/post-listing",
-        formDataToSend,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await axios.post("https://koyocco-backend.onrender.com/api/post-listing", formDataToSend, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+  
       alert(response.data.message);
     } catch (error) {
       console.error("Error:", error);
       alert(error.response?.data?.error || "An error occurred");
     }
   };
+  
   
 
 

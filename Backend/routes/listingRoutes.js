@@ -5,12 +5,11 @@ const Listing = require('../models/Listing');
 
 router.post('/', multerConfig.fields([{ name: 'photos' }, { name: 'video' }]), async (req, res) => {
   try {
+    console.log('Files Uploaded:', req.files); // Log the uploaded files
+
     const { title, description, isPropertyOwner } = req.body;
     const photos = req.files['photos'] || [];
     const video = req.files['video'] || [];
-
-    // Log multer file processing details
-    console.log('Files Uploaded:', req.files);
 
     // Validation: Ensure all required fields are provided
     if (!title || !description || photos.length === 0 || video.length === 0) {
@@ -65,5 +64,6 @@ router.post('/', multerConfig.fields([{ name: 'photos' }, { name: 'video' }]), a
     res.status(500).json({ error: 'Error saving listing', details: error.message });
   }
 });
+
 
 module.exports = router;
