@@ -67,8 +67,8 @@ const PropertySales = () => {
       if (video) {
         const formData = new FormData();
         formData.append("file", video);
-        formData.append("upload_preset", process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET); // Use .env variable for preset
-        formData.append("cloud_name", process.env.REACT_APP_CLOUDINARY_CLOUD_NAME); // Use .env variable for cloud name
+        formData.append("upload_preset", `${process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET}`); // Use .env variable for preset
+        formData.append("cloud_name", `${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}`); // Use .env variable for cloud name
 
         axios
           .post(`https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/video/upload`, formData)
