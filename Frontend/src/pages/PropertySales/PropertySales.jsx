@@ -50,11 +50,11 @@ const PropertySales = () => {
     const photoUploadPromises = Array.from(photos).map((photo) => {
       const formData = new FormData();
       formData.append("file", photo);
-      formData.append("upload_preset", process.env.CLOUDINARY_UPLOAD_PRESET);
-      formData.append("cloud_name", process.env.CLOUDINARY_CLOUD_NAME);
+      formData.append("upload_preset", process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET);
+      formData.append("cloud_name", process.env.REACT_APP_CLOUDINARY_CLOUD_NAME);
 
       return axios
-        .post(`https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload`, formData)
+        .post(`https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`, formData)
         .then((response) => response.data.secure_url)
         .catch((error) => {
           setError("Error uploading photo: " + error.message);
@@ -67,11 +67,11 @@ const PropertySales = () => {
       if (video) {
         const formData = new FormData();
         formData.append("file", video);
-        formData.append("upload_preset", process.env.CLOUDINARY_UPLOAD_PRESET);
-        formData.append("cloud_name", process.env.CLOUDINARY_CLOUD_NAME);
+        formData.append("upload_preset", process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET);
+        formData.append("cloud_name", process.env.REACT_APP_CLOUDINARY_CLOUD_NAME);
 
         axios
-          .post(`https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/video/upload`, formData)
+          .post(`https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/video/upload`, formData)
           .then((response) => resolve(response.data.secure_url))
           .catch((error) => reject("Error uploading video: " + error.message));
       } else {
