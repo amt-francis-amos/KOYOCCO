@@ -10,7 +10,7 @@ require("dotenv").config();
 
 const router = express.Router();
 
-// Create a transporter for email
+
 const createTransporter = () => {
   return nodemailer.createTransport({
     service: "gmail",
@@ -21,7 +21,7 @@ const createTransporter = () => {
   });
 };
 
-// Send confirmation email with logo
+
 const sendConfirmationEmail = async (user) => {
   const transporter = createTransporter();
   const mailOptions = {
@@ -173,7 +173,7 @@ router.post("/forgot-password", async (req, res) => {
 
     const token = crypto.randomBytes(20).toString("hex");
     user.resetPasswordToken = token;
-    user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+    user.resetPasswordExpires = Date.now() + 3600000;
     await user.save();
 
     await sendResetPasswordEmail(user, token);

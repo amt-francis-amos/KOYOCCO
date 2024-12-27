@@ -21,9 +21,9 @@ const Login = () => {
       setIsAuthenticated(true);
       const role = localStorage.getItem("role");
       if (role === "Admin") {
-        navigate("/adminDashboard");
+       navigate("/adminDashboard");
       }
-      // You can also handle other roles if needed, such as Owner or Agent
+    
     }
   }, [navigate]);
 
@@ -57,21 +57,21 @@ const Login = () => {
         { email, password }
       );
   
-      const { token, role, userId } = response.data;  // Get token, role, and userId from response
+      const { token, role, userId } = response.data; 
   
       if (!token || !role || !userId) {
         setMessage("Login failed: No token, role, or userId received");
         return;
       }
   
-      // Store the token, role, and userId in localStorage for persistence
+   
       localStorage.setItem("authToken", token);
       localStorage.setItem("role", role);
-      localStorage.setItem("userId", userId); // Store the userId
+      localStorage.setItem("userId", userId); 
   
       setIsAuthenticated(true);
   
-      // Redirect the user to the appropriate dashboard based on their role
+     
       const redirectPath =
         role === "Admin"
           ? "/adminDashboard"
@@ -79,10 +79,10 @@ const Login = () => {
           ? "/ownerDashboard"
           : role === "Agent"
           ? "/agentDashboard"
-          : "/"; // Default path if no matching role
+          : "/";
   
       toast.success("Login successful!");
-      navigate(redirectPath);  // Redirect user after successful login
+      navigate(redirectPath);  
     } catch (error) {
       setMessage(error.response?.data?.message || "An error occurred");
       toast.error(error.response?.data?.message || "An error occurred");
@@ -90,7 +90,6 @@ const Login = () => {
   };
   
 
-  // Toggle password visibility
   const togglePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
   };

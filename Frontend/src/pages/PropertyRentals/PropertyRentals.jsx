@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // For navigation
+import { useNavigate } from 'react-router-dom'; 
 
 const PropertyRentals = () => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [bookingMessage, setBookingMessage] = useState(null); // To show booking feedback
-  const navigate = useNavigate(); // To navigate to login or other pages
+  const [bookingMessage, setBookingMessage] = useState(null); 
+  const navigate = useNavigate(); 
 
-  // Fetch properties from the backend
+ 
   useEffect(() => {
     const fetchProperties = async () => {
       try {
@@ -25,16 +25,15 @@ const PropertyRentals = () => {
     fetchProperties();
   }, []);
 
-  // Handle booking process
-  const handleBooking = async (property) => {
-    const token = localStorage.getItem('authToken'); // Get token from localStorage or context
-    const userId = localStorage.getItem('userId'); // Assuming you store the userId in localStorage after login
 
+  const handleBooking = async (property) => {
+    const token = localStorage.getItem('authToken'); 
+    const userId = localStorage.getItem('userId'); 
     console.log('Token:', token);
     console.log('User ID:', userId);
 
     if (!token || !userId) {
-      navigate('/login'); // Redirect to login page if token or userId is missing
+      navigate('/login'); 
       return;
     }
 
@@ -46,11 +45,11 @@ const PropertyRentals = () => {
         'https://koyocco-backend.onrender.com/api/bookings',
         {
           propertyId: property._id,
-          userId, // Use actual userId from localStorage
+          userId,
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Add the token to the request headers
+            Authorization: `Bearer ${token}`, 
           },
         }
       );

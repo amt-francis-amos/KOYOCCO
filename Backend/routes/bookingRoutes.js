@@ -56,7 +56,7 @@ router.post('/', authenticateToken, async (req, res) => {
     const { propertyId, fullName, email, date } = req.body;
     const { userId } = req.user;
 
-    // Check if the same user has already booked this property for the same date
+ 
     const existingBooking = await Booking.findOne({ 
       userId, 
       propertyId, 
@@ -69,7 +69,6 @@ router.post('/', authenticateToken, async (req, res) => {
       return res.status(409).json({ message: "A booking already exists for this user with the same property, name, email, and date." });
     }
 
-    // Create a new booking
     const newBooking = new Booking({
       userId,
       propertyId,
@@ -80,7 +79,7 @@ router.post('/', authenticateToken, async (req, res) => {
 
     await newBooking.save();
 
-    // Send confirmation email
+ 
     await sendBookingConfirmationEmail(newBooking);
 
     res.status(201).json({ message: "Booking successful! Confirmation email sent." });
