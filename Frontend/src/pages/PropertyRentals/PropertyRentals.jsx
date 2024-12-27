@@ -243,7 +243,7 @@ const PropertyRentals = () => {
               className="bg-white shadow-md rounded-lg overflow-hidden transition-transform transform hover:scale-105 p-4 flex flex-col"
             >
               <img
-                src={property.images[0]}
+                src={property.photos[0]}  
                 alt={property.name}
                 className="w-full h-48 sm:h-60 object-cover mb-4"
               />
