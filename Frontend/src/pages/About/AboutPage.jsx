@@ -12,14 +12,19 @@ const AboutPage = () => {
         style={{ backgroundImage: `url(${assets.aboutImg})` }} 
       >
         <div className="absolute inset-0 bg-black opacity-50"></div>
-        <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white">
+        <motion.div 
+        initial={{opacity:0, y:100}}
+        transition={{duration:1.5}}
+        whileInView={{opacity:1, y:0}}
+        viewport={{once:true}}
+        className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">About Us</h1>
           <div className="flex space-x-4">
             <Link to="/" className="text-lg hover:underline">HOME</Link>
             <span>|</span>
             <Link to="/about" className="text-lg font-semibold hover:underline">ABOUT</Link>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       <div className="bg-gray-50 flex-grow flex flex-col items-center py-12 px-6">
