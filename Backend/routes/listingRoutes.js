@@ -1,54 +1,58 @@
 const express = require('express');
+const cloudinary = require('../config/cloudinary'); // Import cloudinary configuration
+
 const router = express.Router();
-const multerConfig = require('../config/multer.js');
-const Listing = require('../models/Listing');
 
-router.post('/', multerConfig.fields([{ name: 'photos' }, { name: 'video' }]), async (req, res) => {
+router.post('/', async (req, res) => {
   try {
-    // Early file existence check
-    const { photos, video } = req.files;
-    if (!photos || !video) {
-      return res.status(400).json({ error: 'Photos and video are required.' });
-    }
-
     const { title, description, isPropertyOwner } = req.body;
 
     // Field validation
-    if (!title || !description || photos.length === 0 || video.length === 0) {
+    if (!title || !description) {
       return res.status(400).json({
-        error: 'All fields (title, description, photos, and video) are required.',
+        error: 'Title and description are required.',
       });
     }
 
-    // Extract file paths
-    const photosUrls = photos.map(photo => photo.path);
-    const videoUrl = video[0]?.path;
+    const photos = req.files?.photos || [];
+    const video = req.files?.video || [];
 
-    // Validate file paths
-    if (!photosUrls.length) {
-      return res.status(400).json({ error: 'At least one photo is required' });
+    // File existence check
+    if (photos.length === 0 || video.length === 0) {
+      return res.status(400).json({ error: 'Photos and video are required.' });
     }
 
-    if (!videoUrl) {
-      return res.status(400).json({ error: 'Video is required' });
+    // Upload photos to Cloudinary
+    const uploadedPhotos = [];
+    for (let i = 0; i < photos.length; i++) {
+      const uploadResponse = await cloudinary.uploader.upload(photos[i].path, {
+        folder: 'property_listings/photos',
+      });
+      uploadedPhotos.push(uploadResponse.secure_url); // Store the Cloudinary URL
     }
+
+    // Upload video to Cloudinary
+    const uploadedVideo = await cloudinary.uploader.upload(video[0].path, {
+      resource_type: 'video', // Specify that it's a video
+      folder: 'property_listings/videos',
+    });
 
     // Prepare listing data
     const listingData = {
       title,
       description,
-      photos: photosUrls,
-      video: videoUrl,
+      photos: uploadedPhotos,
+      video: uploadedVideo.secure_url, // Cloudinary video URL
       isPropertyOwner: JSON.parse(isPropertyOwner),
     };
 
-    // Save to database
+    // Save to database (replace this with your actual database logic)
     const newListing = new Listing(listingData);
     await newListing.save();
 
     res.status(201).json({ message: 'Listing posted successfully', listing: newListing });
   } catch (error) {
-    console.error('Server Error:', error); // Log full error for debugging
+    console.error('Server Error:', error);
     res.status(500).json({ error: 'Error saving listing', details: error.message });
   }
 });
