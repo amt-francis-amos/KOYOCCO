@@ -7,6 +7,12 @@ const PropertyRentals = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [bookingMessage, setBookingMessage] = useState(null);
+  const [selectedProperty, setSelectedProperty] = useState(null);
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    date: '',
+  });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,21 +37,34 @@ const PropertyRentals = () => {
     const email = localStorage.getItem('userEmail');
 
     if (!token || !userId || !fullName || !email) {
+      // Redirect to login page if data is missing
       navigate('/login');
       return;
     }
 
-    const userConfirmed = window.confirm(`Are you sure you want to rent ${property.name}?`);
-    if (!userConfirmed) return;
+    setSelectedProperty(property);
+    setFormData({
+      fullName,
+      email,
+      date: new Date().toISOString(),
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const { fullName, email, date } = formData;
+    const propertyId = selectedProperty._id;
 
     try {
+      const token = localStorage.getItem('authToken');
       const response = await axios.post(
         'https://koyocco-backend.onrender.com/api/bookings',
         {
-          propertyId: property._id,
-          fullName, // Send full name
-          email,    // Send email
-          date: new Date().toISOString(), // Use the current date as an example
+          propertyId,
+          fullName,
+          email,
+          date,
         },
         {
           headers: {
@@ -55,7 +74,8 @@ const PropertyRentals = () => {
       );
 
       if (response.data.message) {
-        setBookingMessage(`Successfully booked ${property.name}!`);
+        setBookingMessage(`Successfully booked ${selectedProperty.name}!`);
+        setSelectedProperty(null); // Clear the selected property after booking
       } else {
         setBookingMessage('Booking response is empty. Please check the server response.');
       }
@@ -63,6 +83,14 @@ const PropertyRentals = () => {
       console.error('Booking error:', error);
       setBookingMessage(error.response?.data?.message || 'Booking failed. Please try again.');
     }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
   if (loading) {
@@ -76,34 +104,91 @@ const PropertyRentals = () => {
   return (
     <div className="max-w-[1200px] mx-auto py-6 sm:py-12">
       <h1 className="text-3xl font-bold text-center mb-8">Property Rentals</h1>
+      
       {bookingMessage && (
         <p className="text-center py-2 text-green-500">{bookingMessage}</p>
       )}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {properties.map((property) => (
-          <div
-            key={property._id}
-            className="bg-white shadow-md rounded-lg overflow-hidden transition-transform transform hover:scale-105 p-4 flex flex-col"
-          >
-            <img
-              src={property.images[0]}
-              alt={property.name}
-              className="w-full h-48 sm:h-60 object-cover mb-4"
-            />
-            <div className="flex-grow">
-              <h2 className="text-xl sm:text-2xl font-semibold mb-2">{property.name}</h2>
-              <p className="text-gray-600">{property.location}</p>
-              <p className="text-gray-800 font-bold text-lg mt-1">${property.price}</p>
+
+      {selectedProperty ? (
+        <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg">
+          <h2 className="text-2xl font-semibold mb-4">{`Booking for ${selectedProperty.name}`}</h2>
+          <form onSubmit={handleSubmit}>
+            <div className="mb-4">
+              <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
+                Full Name
+              </label>
+              <input
+                type="text"
+                id="fullName"
+                name="fullName"
+                value={formData.fullName}
+                onChange={handleInputChange}
+                className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                disabled
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                disabled
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="date" className="block text-sm font-medium text-gray-700">
+                Booking Date
+              </label>
+              <input
+                type="date"
+                id="date"
+                name="date"
+                value={formData.date}
+                onChange={handleInputChange}
+                className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+              />
             </div>
             <button
-              onClick={() => handleBooking(property)}
-              className="mt-4 w-full bg-red-500 text-white py-2 rounded hover:bg-black transition duration-300"
+              type="submit"
+              className="w-full bg-red-500 text-white py-2 rounded hover:bg-black transition duration-300"
             >
-              Rent Now
+              Confirm Booking
             </button>
-          </div>
-        ))}
-      </div>
+          </form>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {properties.map((property) => (
+            <div
+              key={property._id}
+              className="bg-white shadow-md rounded-lg overflow-hidden transition-transform transform hover:scale-105 p-4 flex flex-col"
+            >
+              <img
+                src={property.images[0]}
+                alt={property.name}
+                className="w-full h-48 sm:h-60 object-cover mb-4"
+              />
+              <div className="flex-grow">
+                <h2 className="text-xl sm:text-2xl font-semibold mb-2">{property.name}</h2>
+                <p className="text-gray-600">{property.location}</p>
+                <p className="text-gray-800 font-bold text-lg mt-1">${property.price}</p>
+              </div>
+              <button
+                onClick={() => handleBooking(property)}
+                className="mt-4 w-full bg-red-500 text-white py-2 rounded hover:bg-black transition duration-300"
+              >
+                Rent Now
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
