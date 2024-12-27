@@ -53,10 +53,10 @@ const sendBookingConfirmationEmail = async (booking) => {
 // Booking route
 router.post('/', authenticateToken, async (req, res) => {
   try {
-    const { propertyId, fullName, email, date } = req.body;
+    const { propertyId, fullName, email, phoneNumber, date } = req.body;
     const { userId } = req.user;
 
-    if (!propertyId || !fullName || !email || !date) {
+    if (!propertyId || !fullName || !email || !phoneNumber || !date) {
       return res.status(400).json({ message: "Missing required fields." });
     }
 
@@ -70,6 +70,7 @@ router.post('/', authenticateToken, async (req, res) => {
       propertyId,
       fullName,
       email,
+      phoneNumber,
       date,
     });
 

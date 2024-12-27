@@ -11,6 +11,7 @@ const PropertyRentals = () => {
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
+    phoneNumber: '', // Added phoneNumber to formData
     date: '',
   });
   const navigate = useNavigate();
@@ -36,12 +37,11 @@ const PropertyRentals = () => {
     const fullName = localStorage.getItem('userFullName');
     const email = localStorage.getItem('userEmail');
 
-   
-
     setSelectedProperty(property);
     setFormData({
       fullName,
       email,
+      phoneNumber: '', // Reset phone number when selecting a new property
       date: new Date().toISOString(),
     });
   };
@@ -49,7 +49,7 @@ const PropertyRentals = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { fullName, email, date } = formData;
+    const { fullName, email, phoneNumber, date } = formData;
     const propertyId = selectedProperty._id;
 
     try {
@@ -60,6 +60,7 @@ const PropertyRentals = () => {
           propertyId,
           fullName,
           email,
+          phoneNumber, // Added phone number to the request body
           date,
         },
         {
@@ -100,7 +101,7 @@ const PropertyRentals = () => {
   return (
     <div className="max-w-[1200px] mx-auto py-6 sm:py-12">
       <h1 className="text-3xl font-bold text-center mb-8">Property Rentals</h1>
-      
+
       {bookingMessage && (
         <p className="text-center py-2 text-green-500">{bookingMessage}</p>
       )}
@@ -120,7 +121,6 @@ const PropertyRentals = () => {
                 value={formData.fullName}
                 onChange={handleInputChange}
                 className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-             
               />
             </div>
             <div className="mb-4">
@@ -134,7 +134,19 @@ const PropertyRentals = () => {
                 value={formData.email}
                 onChange={handleInputChange}
                 className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-             
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">
+                Phone Number
+              </label>
+              <input
+                type="text"
+                id="phoneNumber"
+                name="phoneNumber"
+                value={formData.phoneNumber}
+                onChange={handleInputChange}
+                className="mt-1 block w-full border border-gray-300 rounded-md p-2"
               />
             </div>
             <div className="mb-4">

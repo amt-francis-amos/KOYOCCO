@@ -5,6 +5,7 @@ const bookingSchema = new mongoose.Schema({
   propertyId: { type: String, required: true },
   fullName: { type: String, required: true },
   email: { type: String, required: true },
+  phoneNumber: { type: String, required: true }, 
   date: { type: Date, required: true },
 });
 
