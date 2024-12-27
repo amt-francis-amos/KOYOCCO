@@ -45,13 +45,13 @@ const PropertyRentals = () => {
         }
       );
       if (response.data) {
-        setUserBooking(response.data);
+        setUserBooking(response.data); // User has already booked this property
       } else {
-        setUserBooking(null);
+        setUserBooking(null); // No booking found
       }
     } catch (error) {
       console.error('Error checking user booking:', error);
-      setUserBooking(null);
+      setUserBooking(null); // Error or no booking
     }
   };
 
