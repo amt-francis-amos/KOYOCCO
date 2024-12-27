@@ -53,7 +53,7 @@ const PropertySales = () => {
     formDataToSend.append("video", video);
 
     try {
-      const response = await axios.post("/api/upload", formDataToSend, {
+      const response = await axios.post("https://koyocco-backend.onrender.com/api/properties/upload", formDataToSend, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       console.log("Property uploaded successfully:", response.data);
