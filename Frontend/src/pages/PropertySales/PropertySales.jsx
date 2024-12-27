@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const PropertySales = () => {
-
   const [isPropertyOwner, setIsPropertyOwner] = useState(true);
   const [formData, setFormData] = useState({
     title: "",
@@ -13,45 +12,61 @@ const PropertySales = () => {
 
   const handleFileChange = (e) => {
     const { name, files } = e.target;
-  
-    if (name === 'photos') {
+
+    if (name === "photos") {
       setFormData((prevData) => ({
         ...prevData,
         photos: [...prevData.photos, ...files],
       }));
-    } else if (name === 'video') {
+    } else if (name === "video") {
       setFormData((prevData) => ({
         ...prevData,
         video: files[0],
       }));
     }
   };
-  
+
   const handlePostListing = async () => {
     const { title, description, photos, video } = formData;
-  
+
+    // Validate inputs
+    if (!title || !description) {
+      alert("Title and description are required.");
+      return;
+    }
+
+    if (photos.length === 0) {
+      alert("Please upload at least one photo.");
+      return;
+    }
+
+    if (!video) {
+      alert("Please upload a video.");
+      return;
+    }
+
+    // Prepare data for submission
     const formDataToSend = new FormData();
-    formDataToSend.append('title', title);
-    formDataToSend.append('description', description);
-    formDataToSend.append('isPropertyOwner', isPropertyOwner);
-  
-    Array.from(photos).forEach(photo => formDataToSend.append('photos', photo));
-    if (video) formDataToSend.append('video', video);
-  
+    formDataToSend.append("title", title);
+    formDataToSend.append("description", description);
+    formDataToSend.append("isPropertyOwner", isPropertyOwner);
+
+    Array.from(photos).forEach((photo) => formDataToSend.append("photos", photo));
+    formDataToSend.append("video", video);
+
     try {
       const response = await axios.post(
-        'https://koyocco-backend.onrender.com/api/post-listing',
+        "https://koyocco-backend.onrender.com/api/post-listing",
         formDataToSend,
-        { headers: { 'Content-Type': 'multipart/form-data' } }
+        { headers: { "Content-Type": "multipart/form-data" } }
       );
       alert(response.data.message);
     } catch (error) {
-      console.error('Error:', error);
-      alert(error.response?.data?.error || 'An error occurred');
+      console.error("Error:", error);
+      alert(error.response?.data?.error || "An error occurred");
     }
   };
-  
-  
+
   return (
     <div className="min-h-screen bg-gray-50 py-10">
       <div className="container mx-auto px-6">
@@ -60,13 +75,17 @@ const PropertySales = () => {
         <div className="flex justify-center mb-8">
           <button
             onClick={() => setIsPropertyOwner(true)}
-            className={`py-2 px-6 rounded-lg text-lg font-semibold mr-4 ${isPropertyOwner ? "bg-red-500 text-white" : "bg-gray-300 text-gray-700"}`}
+            className={`py-2 px-6 rounded-lg text-lg font-semibold mr-4 ${
+              isPropertyOwner ? "bg-red-500 text-white" : "bg-gray-300 text-gray-700"
+            }`}
           >
             Property Owner
           </button>
           <button
             onClick={() => setIsPropertyOwner(false)}
-            className={`py-2 px-6 rounded-lg text-lg font-semibold ${!isPropertyOwner ? "bg-red-500 text-white" : "bg-gray-300 text-gray-700"}`}
+            className={`py-2 px-6 rounded-lg text-lg font-semibold ${
+              !isPropertyOwner ? "bg-red-500 text-white" : "bg-gray-300 text-gray-700"
+            }`}
           >
             Agent (Rental)
           </button>
@@ -109,6 +128,15 @@ const PropertySales = () => {
                 className="w-full p-3 border border-gray-300 rounded-lg"
                 onChange={handleFileChange}
               />
+              {formData.photos.length > 0 && (
+                <ul className="mt-2">
+                  {Array.from(formData.photos).map((photo, index) => (
+                    <li key={index} className="text-gray-500">
+                      {photo.name}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
 
             <div className="mb-6">
@@ -119,6 +147,9 @@ const PropertySales = () => {
                 className="w-full p-3 border border-gray-300 rounded-lg"
                 onChange={handleFileChange}
               />
+              {formData.video && (
+                <p className="mt-2 text-gray-500">Selected Video: {formData.video.name}</p>
+              )}
             </div>
 
             <div className="text-center">
@@ -167,6 +198,15 @@ const PropertySales = () => {
                 className="w-full p-3 border border-gray-300 rounded-lg"
                 onChange={handleFileChange}
               />
+              {formData.photos.length > 0 && (
+                <ul className="mt-2">
+                  {Array.from(formData.photos).map((photo, index) => (
+                    <li key={index} className="text-gray-500">
+                      {photo.name}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
 
             <div className="mb-6">
@@ -177,6 +217,9 @@ const PropertySales = () => {
                 className="w-full p-3 border border-gray-300 rounded-lg"
                 onChange={handleFileChange}
               />
+              {formData.video && (
+                <p className="mt-2 text-gray-500">Selected Video: {formData.video.name}</p>
+              )}
             </div>
 
             <div className="text-center">
