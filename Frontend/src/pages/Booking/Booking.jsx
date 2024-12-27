@@ -27,17 +27,29 @@ const Booking = () => {
   useEffect(() => {
     const validateToken = async () => {
       const token = localStorage.getItem("authToken");
+      console.log("Token from localStorage:", token);  // Debugging line
+
       if (!token) {
-        console.error("No auth token found, redirecting to login.");
+        console.log("No auth token found, redirecting to login.");  // Debugging line
         navigate("/login");
         return;
       }
+
       try {
-        await axios.get("https://koyocco-backend.onrender.com/api/validate-token", {
+        // Try to validate the token by sending a request
+        const response = await axios.get("https://koyocco-backend.onrender.com/api/validate-token", {
           headers: { Authorization: `Bearer ${token}` },
         });
+        console.log("Token validation response:", response);  // Debugging line
+
+        // If token is valid, continue; if not, redirect to login
+        if (response.status !== 200) {
+          console.log("Invalid token, redirecting to login.");  // Debugging line
+          localStorage.clear();
+          navigate("/login");
+        }
       } catch (err) {
-        console.error("Token validation failed:", err);
+        console.error("Token validation failed:", err);  // Debugging line
         localStorage.clear();
         navigate("/login");
       }
@@ -45,7 +57,7 @@ const Booking = () => {
 
     // Check if location.state is valid
     if (!location.state || !id) {
-      console.error("Invalid property data, redirecting.");
+      console.log("Invalid property data, redirecting to properties page.");  // Debugging line
       navigate("/properties");
       return;
     }
