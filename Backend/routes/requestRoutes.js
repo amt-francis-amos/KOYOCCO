@@ -11,6 +11,9 @@ const createTransporter = () => {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS,
     },
+    tls: {
+      rejectUnauthorized: false, // Helps with issues related to SSL/TLS
+    },
   });
 };
 
@@ -55,9 +58,13 @@ const sendConfirmationEmails = async (userEmail, agentEmail, request) => {
   };
 
   try {
+    console.log('Sending email to user...');
     await transporter.sendMail(userMailOptions);
+    console.log('User email sent successfully.');
+
+    console.log('Sending email to agent...');
     await transporter.sendMail(agentMailOptions);
-    console.log('Emails sent successfully');
+    console.log('Agent email sent successfully.');
   } catch (error) {
     console.error('Error sending emails:', error);
   }
