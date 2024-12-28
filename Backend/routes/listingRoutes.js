@@ -18,16 +18,13 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 // Upload property route
-
 router.post('/upload', upload.fields([{ name: 'photos', maxCount: 10 }, { name: 'video', maxCount: 1 }]), async (req, res) => {
   console.log('Request Body:', req.body);
   console.log('Request Files:', req.files);
 
   try {
-    // Update to use 'name' instead of 'title'
-    const { name, description, location, price } = req.body; 
+    const { name, description, location, price } = req.body;
 
-    // Check if required fields are present
     if (!name || !description || !location || !price) {
       return res.status(400).json({ message: 'Name, description, location, and price are required.' });
     }
@@ -64,9 +61,8 @@ router.post('/upload', upload.fields([{ name: 'photos', maxCount: 10 }, { name: 
       });
     }
 
-    // Create a new property document
     const property = new Property({
-      name,        // Changed from 'title' to 'name'
+      name,
       description,
       location,
       price,
@@ -74,7 +70,6 @@ router.post('/upload', upload.fields([{ name: 'photos', maxCount: 10 }, { name: 
       video,
     });
 
-    // Save to the database
     await property.save();
     res.status(200).json({ message: 'Property uploaded successfully', property });
   } catch (error) {
@@ -82,6 +77,5 @@ router.post('/upload', upload.fields([{ name: 'photos', maxCount: 10 }, { name: 
     res.status(500).json({ message: 'Failed to upload property', error: error.message });
   }
 });
-
 
 module.exports = router;
