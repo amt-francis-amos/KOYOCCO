@@ -4,7 +4,7 @@ const nodemailer = require('nodemailer');
 const router = express.Router();
 const path = require('path');
 
-// Function to create the email transporter
+
 const createTransporter = () => {
   return nodemailer.createTransport({
     service: 'gmail',
@@ -15,7 +15,7 @@ const createTransporter = () => {
   });
 };
 
-// Function to send confirmation emails to both user and agent
+
 const sendConfirmationEmails = async (userEmail, agentEmail, request) => {
   const transporter = createTransporter();
 
@@ -69,18 +69,17 @@ const sendConfirmationEmails = async (userEmail, agentEmail, request) => {
   }
 };
 
-// Create request route
-// Create request route
+
 router.post('/create', async (req, res) => {
   try {
     const { userName, userEmail, phone, serviceType, details, vehicleId, date, location, agentEmail } = req.body;
 
-    // Validate the request body
+   
     if (!userName || !userEmail || !phone || !serviceType || !details || !date || !location || !agentEmail) {
       return res.status(400).json({ error: 'All fields, including agentEmail, are required.' });
     }
 
-    // Create and save the request
+
     const newRequest = new Request({
       userName,
       userEmail,
@@ -90,12 +89,12 @@ router.post('/create', async (req, res) => {
       vehicleId,
       date,
       location,
-      agentEmail, // Save the agentEmail as well
+      agentEmail, 
     });
 
     const savedRequest = await newRequest.save();
 
-    // Send confirmation emails to the user and the agent
+
     await sendConfirmationEmails(userEmail, agentEmail, savedRequest);
 
     res.status(201).json({ success: true, data: savedRequest });
@@ -105,7 +104,7 @@ router.post('/create', async (req, res) => {
   }
 });
 
-// Email sending route
+
 router.post('/send-emails', async (req, res) => {
   const { userEmail, agentEmail, userName, serviceType, vehicleId, date, location } = req.body;
 
@@ -114,7 +113,7 @@ router.post('/send-emails', async (req, res) => {
   }
 
   try {
-    // Create and send confirmation emails
+  
     const transporter = createTransporter();
 
     const userMailOptions = {
@@ -153,7 +152,7 @@ router.post('/send-emails', async (req, res) => {
       `,
     };
 
-    // Send emails
+ 
     await transporter.sendMail(userMailOptions);
     await transporter.sendMail(agentMailOptions);
 
@@ -164,10 +163,10 @@ router.post('/send-emails', async (req, res) => {
   }
 });
 
-// Get all requests
+
 router.get('/', async (req, res) => {
   try {
-    // Fetch all requests and populate vehicle details
+ 
     const requests = await Request.find().populate('vehicleId');
     res.status(200).json(requests);
   } catch (error) {
