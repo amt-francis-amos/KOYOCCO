@@ -15,15 +15,19 @@ const Login = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
 
+  // Ensure user is already authenticated
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (token) {
       setIsAuthenticated(true);
       const role = localStorage.getItem("role");
       if (role === "Admin") {
-       navigate("/adminDashboard");
+        navigate("/adminDashboard");
+      } else if (role === "Property Owner") {
+        navigate("/ownerDashboard");
+      } else if (role === "Agent") {
+        navigate("/agentDashboard");
       }
-    
     }
   }, [navigate]);
 
@@ -50,7 +54,7 @@ const Login = () => {
     e.preventDefault();
   
     if (!validateForm()) return;
-  
+
     try {
       const response = await axios.post(
         "https://koyocco-backend.onrender.com/api/auth/login",
@@ -64,14 +68,14 @@ const Login = () => {
         return;
       }
   
-   
+      // Save data to localStorage
       localStorage.setItem("authToken", token);
       localStorage.setItem("role", role);
       localStorage.setItem("userId", userId); 
   
-      setIsAuthenticated(true);
+      setIsAuthenticated(true);  // Update state immediately
   
-     
+      // Redirect based on role
       const redirectPath =
         role === "Admin"
           ? "/adminDashboard"
@@ -82,13 +86,12 @@ const Login = () => {
           : "/";
   
       toast.success("Login successful!");
-      navigate(redirectPath);  
+      navigate(redirectPath);  // Navigate after setting the state
     } catch (error) {
       setMessage(error.response?.data?.message || "An error occurred");
       toast.error(error.response?.data?.message || "An error occurred");
     }
   };
-  
 
   const togglePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
