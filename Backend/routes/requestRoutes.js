@@ -15,7 +15,7 @@ const createTransporter = () => {
   });
 };
 
-// Function to send confirmation email to both user and agent
+// Function to send confirmation emails to both user and agent
 const sendConfirmationEmails = async (userEmail, agentEmail, request) => {
   const transporter = createTransporter();
 
