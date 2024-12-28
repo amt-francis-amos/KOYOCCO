@@ -36,28 +36,28 @@ const PropertySales = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const { name, description, location, price, images, video } = formData;
-
+  
     // Validate inputs
     if (!name || !description || !location || !price) {
       setMessage("Title, description, location, and price are required.");
       toast.error("Title, description, location, and price are required.");
       return;
     }
-
+  
     if (images.length === 0) {
       setMessage("Please upload at least one photo.");
       toast.error("Please upload at least one photo.");
       return;
     }
-
+  
     if (!video) {
       setMessage("Please upload a video.");
       toast.error("Please upload a video.");
       return;
     }
-
+  
     const formDataToSend = new FormData();
     Object.keys(formData).forEach((key) => {
       if (key === "images") {
@@ -70,8 +70,9 @@ const PropertySales = () => {
         formDataToSend.append(key, formData[key]);
       }
     });
-
+  
     try {
+      console.log("Sending data to the server...");
       const response = await axios.post(
         "https://koyocco-backend.onrender.com/api/post-listing/upload",
         formDataToSend,
@@ -79,21 +80,34 @@ const PropertySales = () => {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-      toast.success("Property uploaded successfully!");
-      setMessage("Property uploaded successfully!");
-      setFormData({
-        name: "",
-        description: "",
-        location: "",
-        price: "",
-        images: [],
-        video: null,
-      });
+      console.log("Server response:", response.data);
+      if (response.status === 200) {
+        toast.success("Property uploaded successfully!");
+        setMessage("Property uploaded successfully!");
+        setFormData({
+          name: "",
+          description: "",
+          location: "",
+          price: "",
+          images: [],
+          video: null,
+        });
+      } else {
+        throw new Error("Unexpected response status: " + response.status);
+      }
     } catch (error) {
       console.error("Error uploading property:", error);
-      toast.error("Failed to upload property. Please try again.");
+      if (error.response) {
+        console.error("Server response data:", error.response.data);
+        toast.error(
+          `Failed to upload property: ${error.response.data.message || "Please try again."}`
+        );
+      } else {
+        toast.error("Failed to upload property. Please check your network or try again later.");
+      }
     }
   };
+  
 
   return (
     <div className="min-h-screen bg-gray-50 py-10">
