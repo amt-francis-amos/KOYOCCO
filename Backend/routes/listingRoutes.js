@@ -30,10 +30,10 @@ router.post('/upload', upload.fields([{ name: 'photos', maxCount: 10 }, { name: 
     }
 
     // Handle image uploads
-    let images = [];
-    if (req.files.images) {
+    let photos = [];
+    if (req.files.photos) {
       photos = await Promise.all(
-        req.files.images.map((image) =>
+        req.files.photos.map((photo) =>
           new Promise((resolve, reject) => {
             cloudinary.uploader.upload_stream({ resource_type: 'image' }, (error, result) => {
               if (error) {
