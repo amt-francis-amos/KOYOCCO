@@ -15,7 +15,7 @@ const Login = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
 
-  // Check if user is already authenticated based on token
+
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (token) {
