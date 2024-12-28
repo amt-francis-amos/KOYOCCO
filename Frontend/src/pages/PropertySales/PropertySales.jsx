@@ -39,7 +39,7 @@ const PropertySales = () => {
     // Validate inputs
     if (!name || !description || !location || !price) {
       setError("Title, description, location, and price are required.");
-      toast.error("Please fill all required fields.");
+      toast.error("Title, description, location, and price are required.");
       return;
     }
 
@@ -72,7 +72,6 @@ const PropertySales = () => {
         }
       );
       toast.success("Property uploaded successfully!");
-      console.log("Property uploaded successfully:", response.data);
       setFormData({
         name: "",
         description: "",
@@ -83,13 +82,13 @@ const PropertySales = () => {
       });
     } catch (error) {
       console.error("Error uploading property:", error);
-      setError("Failed to upload property. Please try again.");
       toast.error("Failed to upload property. Please try again.");
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-50 py-10">
+      <ToastContainer />
       <div className="container mx-auto px-6">
         <h1 className="text-4xl font-bold text-center mb-6">Post Property for Sale</h1>
 
@@ -113,9 +112,7 @@ const PropertySales = () => {
         </div>
 
         <div className="bg-white shadow-lg rounded-lg p-8">
-          <h2 className="text-2xl font-semibold mb-4">
-            {isPropertyOwner ? "Property Owner Post" : "Agent (Rental) Post"}
-          </h2>
+          <h2 className="text-2xl font-semibold mb-4">{isPropertyOwner ? "Property Owner Post" : "Agent (Rental) Post"}</h2>
           <p className="text-gray-600 mb-6">
             {isPropertyOwner
               ? "As a property owner, you can post your properties for sale. You are required to pay a small fee for promotion and visibility to potential buyers."
@@ -124,8 +121,81 @@ const PropertySales = () => {
 
           {error && <div className="text-red-500 text-center mb-4">{error}</div>}
 
-          {/* Form Fields */}
-          {/* Add your form fields here */}
+          <div className="mb-6">
+            <label className="block text-lg font-medium text-gray-700 mb-2">Property Name</label>
+            <input
+              type="text"
+              className="w-full p-3 border border-gray-300 rounded-lg"
+              placeholder="Enter property title"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            />
+          </div>
+
+          <div className="mb-6">
+            <label className="block text-lg font-medium text-gray-700 mb-2">Description</label>
+            <textarea
+              rows="4"
+              className="w-full p-3 border border-gray-300 rounded-lg"
+              placeholder="Enter property description"
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            ></textarea>
+          </div>
+
+          <div className="mb-6">
+            <label className="block text-lg font-medium text-gray-700 mb-2">Location</label>
+            <input
+              type="text"
+              className="w-full p-3 border border-gray-300 rounded-lg"
+              placeholder="Enter property location"
+              value={formData.location}
+              onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+            />
+          </div>
+
+          <div className="mb-6">
+            <label className="block text-lg font-medium text-gray-700 mb-2">Price</label>
+            <input
+              type="number"
+              className="w-full p-3 border border-gray-300 rounded-lg"
+              placeholder="Enter property price"
+              value={formData.price}
+              onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+            />
+          </div>
+
+          <div className="mb-6">
+            <label className="block text-lg font-medium text-gray-700 mb-2">Upload Photos</label>
+            <input
+              type="file"
+              name="photos"
+              multiple
+              accept="image/*"
+              className="w-full p-3 border border-gray-300 rounded-lg"
+              onChange={handleFileChange}
+            />
+            {formData.photos.length > 0 && (
+              <ul className="mt-2">
+                {Array.from(formData.photos).map((photo, index) => (
+                  <li key={index} className="text-gray-500">{photo.name}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          <div className="mb-6">
+            <label className="block text-lg font-medium text-gray-700 mb-2">Upload Video</label>
+            <input
+              type="file"
+              name="video"
+              className="w-full p-3 border border-gray-300 rounded-lg"
+              onChange={handleFileChange}
+            />
+            {formData.video && (
+              <p className="mt-2 text-gray-500">Selected Video: {formData.video.name}</p>
+            )}
+          </div>
 
           <div className="text-center">
             {isPropertyOwner ? (
@@ -133,25 +203,18 @@ const PropertySales = () => {
                 <h3 className="text-lg font-semibold text-gray-700 mb-4">
                   Promotion Fee: <span className="text-green-500">$50</span>
                 </h3>
-                <button
-                  onClick={handlePostListing}
-                  className="bg-red-500 text-white py-3 px-8 rounded-lg"
-                >
+                <button onClick={handlePostListing} className="bg-red-500 text-white py-3 px-8 rounded-lg">
                   Pay and Post Property
                 </button>
               </>
             ) : (
-              <button
-                onClick={handlePostListing}
-                className="bg-red-500 text-white py-3 px-8 rounded-lg"
-              >
+              <button onClick={handlePostListing} className="bg-red-500 text-white py-3 px-8 rounded-lg">
                 Post Property
               </button>
             )}
           </div>
         </div>
       </div>
-      <ToastContainer />
     </div>
   );
 };
