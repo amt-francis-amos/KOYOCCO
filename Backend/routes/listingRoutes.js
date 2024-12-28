@@ -30,25 +30,23 @@ router.post('/upload', upload.fields([{ name: 'photos', maxCount: 10 }, { name: 
     }
 
     // Handle image uploads
-    // Handle image uploads
     let images = [];
     if (req.files.images) {
-      images = await Promise.all(
+      photos = await Promise.all(
         req.files.images.map((image) =>
           new Promise((resolve, reject) => {
-            console.log('Uploading image...');
             cloudinary.uploader.upload_stream({ resource_type: 'image' }, (error, result) => {
               if (error) {
-                console.error('Cloudinary image upload error:', error);
-                return reject(`Image upload failed: ${error.message}`);
+                console.error('Error uploading image:', error);
+                return reject(error);
               }
-              console.log('Image uploaded:', result.secure_url);
               resolve(result.secure_url);
-            }).end(image.buffer);
+            }).end(photo.buffer);
           })
         )
       );
     }
+
     // Handle video upload
     let video = null;
     if (req.files.video) {
@@ -68,7 +66,7 @@ router.post('/upload', upload.fields([{ name: 'photos', maxCount: 10 }, { name: 
       description,
       location,
       price,
-      images,
+      photos,
       video,
     });
 
