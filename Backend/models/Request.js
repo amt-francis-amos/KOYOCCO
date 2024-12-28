@@ -6,7 +6,7 @@ const requestSchema = new mongoose.Schema({
   phone: { type: String, required: true },
   serviceType: { type: String, required: true },
   details: { type: String, required: true },
-  vehicleId: { type: mongoose.Schema.Types.ObjectId, ref: 'Vehicle' },
+  vehicleId: { type: String, required: true },  // Change from ObjectId to String
   date: { type: Date, required: true },
   location: { type: String, required: true },
   agentEmail: { type: String, required: true },
