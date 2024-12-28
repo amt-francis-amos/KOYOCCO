@@ -26,7 +26,7 @@ const Login = () => {
       } else if (role === "Property Owner") {
         navigate("/ownerDashboard");
       } else if (role === "Agent") {
-        navigate("/");
+        navigate("/agentDashboard");
       }
     }
   }, [navigate]);
@@ -68,14 +68,13 @@ const Login = () => {
         return;
       }
   
-      // Save data to localStorage
       localStorage.setItem("authToken", token);
       localStorage.setItem("role", role);
       localStorage.setItem("userId", userId); 
   
-      setIsAuthenticated(true);  // Immediately update the authentication state
+      setIsAuthenticated(true); 
   
-      // Redirect based on role
+     
       const redirectPath =
         role === "Admin"
           ? "/adminDashboard"
@@ -86,7 +85,7 @@ const Login = () => {
           : "/";
   
       toast.success("Login successful!");
-      navigate(redirectPath);  // Navigate after setting the state
+      navigate(redirectPath); 
     } catch (error) {
       setMessage(error.response?.data?.message || "An error occurred");
       toast.error(error.response?.data?.message || "An error occurred");
