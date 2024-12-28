@@ -15,6 +15,7 @@ const CreateRequest = () => {
         location: '',
     });
 
+    const [isSubmitting, setIsSubmitting] = useState(false); // Track submission state
     const navigate = useNavigate(); // Initialize navigate
 
     const handleChange = (e) => {
@@ -24,11 +25,13 @@ const CreateRequest = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsSubmitting(true); // Set submitting state to true
         console.log('Sending request with data:', formData);
 
         const { userName, userEmail, phone, serviceType, vehicleId, date, location } = formData;
         if (!userName || !userEmail || !phone || !serviceType || !vehicleId || !date || !location) {
             toast.error('Please fill in all fields.');
+            setIsSubmitting(false); // Reset submitting state
             return;
         }
 
@@ -69,6 +72,8 @@ const CreateRequest = () => {
         } catch (error) {
             console.error('Error submitting request:', error);
             toast.error('An error occurred while submitting the request.');
+        } finally {
+            setIsSubmitting(false); // Reset submitting state
         }
     };
 
@@ -206,9 +211,10 @@ const CreateRequest = () => {
 
                 <button
                     type="submit"
+                    disabled={isSubmitting} // Disable button while submitting
                     className="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-black"
                 >
-                    Submit Request
+                    {isSubmitting ? 'Submitting...' : 'Submit Request'}
                 </button>
             </form>
         </div>
