@@ -4,11 +4,11 @@ const authenticateToken = require('../middleware/auth.middleware.js');
 const User = require('../models/User');
 const Booking = require('../models/Booking');
 
-// Dashboard data route
+
 router.get("/dashboard", authenticateToken, async (req, res) => {
   try {
-    const users = await User.find(); // Fetch users
-    const bookings = await Booking.find(); // Fetch bookings
+    const users = await User.find();
+    const bookings = await Booking.find(); 
     res.json({ users, bookings });
   } catch (err) {
     console.error('Error fetching dashboard data:', err);
@@ -16,7 +16,7 @@ router.get("/dashboard", authenticateToken, async (req, res) => {
   }
 });
 
-// Admin users route
+
 router.get("/admin/users", authenticateToken, (req, res) => {
   res.json({ message: "Manage users" });
 });

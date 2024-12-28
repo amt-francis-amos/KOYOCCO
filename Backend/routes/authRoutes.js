@@ -101,7 +101,7 @@ router.post("/signup", async (req, res) => {
     const userExists = await User.findOne({ email });
     if (userExists) return res.status(400).json({ message: "User already exists" });
 
-    // Create the new user
+
     const user = new User({
       email,
       password: await bcrypt.hash(password, 10),
@@ -112,7 +112,7 @@ router.post("/signup", async (req, res) => {
       location,
     });
 
-    // Save the user in the database
+  
     await user.save();
 
     // Send the confirmation email
