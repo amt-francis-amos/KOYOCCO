@@ -22,12 +22,12 @@ const PropertySales = () => {
     if (name === "images") {
       setFormData((prevData) => ({
         ...prevData,
-        images: files ? Array.from(files) : [],
+        images: [...files],
       }));
     } else if (name === "video") {
       setFormData((prevData) => ({
         ...prevData,
-        video: files ? files[0] : null,
+        video: files[0],
       }));
     } else {
       setFormData({ ...formData, [name]: value });
@@ -36,43 +36,41 @@ const PropertySales = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    const { name, description, location, price, images, video } = formData;
-  
+
     // Validate inputs
+    const { name, description, location, price, images, video } = formData;
     if (!name || !description || !location || !price) {
       setMessage("Title, description, location, and price are required.");
       toast.error("Title, description, location, and price are required.");
       return;
     }
-  
+
     if (images.length === 0) {
       setMessage("Please upload at least one photo.");
       toast.error("Please upload at least one photo.");
       return;
     }
-  
+
     if (!video) {
       setMessage("Please upload a video.");
       toast.error("Please upload a video.");
       return;
     }
-  
+
     const formDataToSend = new FormData();
     Object.keys(formData).forEach((key) => {
       if (key === "images") {
-        images.forEach((image) => {
+        formData.photos.forEach((image) => {
           formDataToSend.append("images", image);
         });
       } else if (key === "video") {
-        formDataToSend.append("video", video);
+        formDataToSend.append("video", formData[key]);
       } else {
         formDataToSend.append(key, formData[key]);
       }
     });
-  
+
     try {
-      console.log("Sending data to the server...");
       const response = await axios.post(
         "https://koyocco-backend.onrender.com/api/post-listing/upload",
         formDataToSend,
@@ -80,34 +78,21 @@ const PropertySales = () => {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-      console.log("Server response:", response.data);
-      if (response.status === 200) {
-        toast.success("Property uploaded successfully!");
-        setMessage("Property uploaded successfully!");
-        setFormData({
-          name: "",
-          description: "",
-          location: "",
-          price: "",
-          images: [],
-          video: null,
-        });
-      } else {
-        throw new Error("Unexpected response status: " + response.status);
-      }
+      toast.success("Property uploaded successfully!");
+      setMessage("Property uploaded successfully!");
+      setFormData({
+        name: "",
+        description: "",
+        location: "",
+        price: "",
+        images: [],
+        video: null,
+      });
     } catch (error) {
       console.error("Error uploading property:", error);
-      if (error.response) {
-        console.error("Server response data:", error.response.data);
-        toast.error(
-          `Failed to upload property: ${error.response.data.message || "Please try again."}`
-        );
-      } else {
-        toast.error("Failed to upload property. Please check your network or try again later.");
-      }
+      toast.error("Failed to upload property. Please try again.");
     }
   };
-  
 
   return (
     <div className="min-h-screen bg-gray-50 py-10">
@@ -200,9 +185,9 @@ const PropertySales = () => {
                 className="w-full p-3 border border-gray-300 rounded-lg"
                 onChange={handleChange}
               />
-              {formData.images.length > 0 && (
+              {formData.photos.length > 0 && (
                 <ul className="mt-2">
-                  {formData.images.map((image, index) => (
+                  {Array.from(formData.images).map((image, index) => (
                     <li key={index} className="text-gray-500">{image.name}</li>
                   ))}
                 </ul>
