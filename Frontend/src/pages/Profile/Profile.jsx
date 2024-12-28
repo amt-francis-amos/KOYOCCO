@@ -5,6 +5,7 @@ const Profile = () => {
   const [profileData, setProfileData] = useState({});
   const [editable, setEditable] = useState(false);
   const [message, setMessage] = useState("");
+  const [imageFile, setImageFile] = useState(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -35,12 +36,30 @@ const Profile = () => {
         },
       };
 
+      if (imageFile) {
+        const formData = new FormData();
+        formData.append("profileImage", imageFile);
+        const imageUploadResponse = await axios.post(
+          "/api/user/upload-profile-image",
+          formData,
+          config
+        );
+        setProfileData((prevData) => ({
+          ...prevData,
+          profileImage: imageUploadResponse.data.profileImage,
+        }));
+      }
+
       const response = await axios.put("/api/user/profile", profileData, config);
       setMessage(response.data.message);
       setEditable(false);
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleImageChange = (e) => {
+    setImageFile(e.target.files[0]);
   };
 
   return (
@@ -50,18 +69,29 @@ const Profile = () => {
 
         {/* Profile Header Section */}
         <div className="flex items-center justify-center mb-8">
-          <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-blue-500">
+          <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-blue-500 cursor-pointer">
             <img
               src={profileData.profileImage || "https://via.placeholder.com/150"}
               alt="Profile"
               className="w-full h-full object-cover"
+              onClick={() => document.getElementById("imageInput").click()}
             />
           </div>
           <div className="ml-6">
-            <h2 className="text-2xl font-semibold text-gray-800">{profileData.firstname} {profileData.lastname}</h2>
+            <h2 className="text-2xl font-semibold text-gray-800">
+              {profileData.firstname} {profileData.lastname}
+            </h2>
             <p className="text-gray-600">{profileData.email}</p>
           </div>
         </div>
+
+        {/* Image Upload Input */}
+        <input
+          id="imageInput"
+          type="file"
+          className="hidden"
+          onChange={handleImageChange}
+        />
 
         {/* Profile Info */}
         <div>

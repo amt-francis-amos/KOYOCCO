@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { assets } from '../../assets/assets';
-import { FaBars, FaTimes, FaChevronDown } from 'react-icons/fa';
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { assets } from "../../assets/assets";
+import { FaBars, FaTimes, FaChevronDown } from "react-icons/fa";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -11,7 +11,6 @@ const Navbar = () => {
     propertySales: false,
   });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   const navigate = useNavigate();
 
   const toggleMenu = () => {
@@ -27,7 +26,7 @@ const Navbar = () => {
 
   // Check login status as soon as the component mounts
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem("authToken");
     setIsLoggedIn(!!token); // If token exists, user is logged in
   }, []);
 
@@ -41,9 +40,9 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('authToken');
+    localStorage.removeItem("authToken");
     setIsLoggedIn(false);
-    navigate('/');
+    navigate("/");
     closeMenuOnLinkClick();
   };
 
@@ -79,7 +78,7 @@ const Navbar = () => {
         {/* Menu Links */}
         <ul
           className={`lg:flex lg:items-center lg:space-x-6 fixed lg:static top-0 left-0 w-full lg:w-auto bg-white lg:bg-transparent p-8 lg:p-0 transform ${
-            menuOpen ? 'translate-x-0' : '-translate-x-full'
+            menuOpen ? "translate-x-0" : "-translate-x-full"
           } lg:transform-none transition-transform duration-300 ease-in-out z-50`}
         >
           {/* Mobile Menu Header (logo + close icon) */}
@@ -110,12 +109,12 @@ const Navbar = () => {
           {/* Short-Stays Dropdown */}
           <li
             className="relative group"
-            onMouseLeave={() => handleMouseLeave('shortStays')}
+            onMouseLeave={() => handleMouseLeave("shortStays")}
           >
             <Link
               to="/short-stays"
               className="hover:text-gray-700 py-2 lg:py-0 flex items-center focus:outline-none"
-              onClick={() => toggleDropdown('shortStays')}
+              onClick={() => toggleDropdown("shortStays")}
             >
               <span className="flex items-center">
                 Short-Stays <FaChevronDown size={13} className="ml-2" />
@@ -125,7 +124,7 @@ const Navbar = () => {
             {/* Dropdown Content */}
             <ul
               className={`absolute left-0 z-10 mt-1 bg-white shadow-lg rounded-md py-2 w-48 ${
-                dropdownOpen.shortStays ? 'block' : 'hidden'
+                dropdownOpen.shortStays ? "block" : "hidden"
               } transition-opacity ease-in-out duration-300`}
             >
               <li>
@@ -161,12 +160,12 @@ const Navbar = () => {
           {/* Rental Dropdown */}
           <li
             className="relative group"
-            onMouseLeave={() => handleMouseLeave('rental')}
+            onMouseLeave={() => handleMouseLeave("rental")}
           >
             <Link
               to="/property-rentals"
               className="hover:text-gray-700 py-2 lg:py-0 flex items-center focus:outline-none"
-              onClick={() => toggleDropdown('rental')}
+              onClick={() => toggleDropdown("rental")}
             >
               <span className="flex items-center">
                 Property Rentals <FaChevronDown size={13} className="ml-2" />
@@ -176,7 +175,7 @@ const Navbar = () => {
             {/* Dropdown Content */}
             <ul
               className={`absolute z-10 left-0 bg-white shadow-lg rounded-md py-2 w-48 ${
-                dropdownOpen.rental ? 'block' : 'hidden'
+                dropdownOpen.rental ? "block" : "hidden"
               } transition-opacity ease-in-out duration-300`}
             >
               <li>
@@ -235,12 +234,16 @@ const Navbar = () => {
               </li>
             </ul>
           </li>
- {/* Property Sales Dropdown */}
- <li className="relative" onMouseLeave={() => handleMouseLeave('propertySales')} >
- <Link
+
+          {/* Property Sales Dropdown */}
+          <li
+            className="relative"
+            onMouseLeave={() => handleMouseLeave("propertySales")}
+          >
+            <Link
               to="/sales"
               className="hover:text-gray-700 py-2 lg:py-0 flex items-center focus:outline-none"
-              onClick={() => toggleDropdown('propertySales')}
+              onClick={() => toggleDropdown("propertySales")}
             >
               <span className="flex items-center">
                 Property Sales <FaChevronDown size={13} className="ml-2" />
@@ -280,13 +283,6 @@ const Navbar = () => {
             )}
           </li>
 
-
-
-
-
-
-
-
           {/* Other Links */}
           <li>
             <Link
@@ -316,60 +312,40 @@ const Navbar = () => {
             </Link>
           </li>
 
-          {/* Mobile-Only Buttons */}
-          {isLoggedIn ? (
-            <li className="lg:hidden mt-4">
-              <button
-                onClick={handleLogout}
-                className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black w-full"
-              >
-                Logout
-              </button>
-            </li>
-          ) : (
-            <>
-              <li className="lg:hidden mt-4">
-                <Link to="/login" onClick={closeMenuOnLinkClick}>
-                  <button className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black w-full">
+          {/* Profile and Logout Section */}
+          <div className="flex items-center space-x-4">
+            {isLoggedIn ? (
+              <>
+                <Link to="/profile">
+                  <img
+                    src={assets.propertyImg1}
+                    alt="Profile"
+                    className="w-12 h-12 rounded-full object-cover cursor-pointer"
+                  />
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/login">
+                  <button className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black">
                     Login
                   </button>
                 </Link>
-              </li>
-              <li className="lg:hidden">
-                <Link to="/signup" onClick={closeMenuOnLinkClick}>
-                  <button className="bg-red-500 mt-2 text-white px-7 py-2 rounded-md hover:bg-black w-full">
-                    Signup
+                <Link to="/signup">
+                  <button className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black">
+                    Sign Up
                   </button>
                 </Link>
-              </li>
-            </>
-          )}
+              </>
+            )}
+          </div>
         </ul>
-
-        {/* Desktop-Only Buttons */}
-        <div className="hidden lg:flex lg:items-center space-x-4">
-          {isLoggedIn ? (
-            <button
-              onClick={handleLogout}
-              className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black"
-            >
-              Logout
-            </button>
-          ) : (
-            <>
-              <Link to="/login">
-                <button className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black">
-                  Login
-                </button>
-              </Link>
-              <Link to="/signup">
-                <button className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black">
-                  Signup
-                </button>
-              </Link>
-            </>
-          )}
-        </div>
       </div>
     </nav>
   );
