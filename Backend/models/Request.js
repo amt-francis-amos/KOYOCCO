@@ -9,6 +9,7 @@ const requestSchema = new mongoose.Schema({
   vehicleId: { type: String },
   date: { type: Date, required: true },
   location: { type: String, required: true },
+  agentEmail: { type: String, required: true },  
 }, { timestamps: true });
 
 module.exports = mongoose.model('Request', requestSchema);
