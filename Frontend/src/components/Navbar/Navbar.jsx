@@ -5,11 +5,15 @@ import { FaBars, FaTimes, FaChevronDown } from "react-icons/fa";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+
+
   const [dropdownOpen, setDropdownOpen] = useState({
     shortStays: false,
     rental: false,
     propertySales: false,
   });
+
+  
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
@@ -313,7 +317,7 @@ const Navbar = () => {
           </li>
 
           {/* Profile and Logout Section */}
-          <div className="flex items-center space-x-4">
+          <div className="flex  items-center space-x-4">
             {isLoggedIn ? (
               <>
                 <Link to="/profile">
