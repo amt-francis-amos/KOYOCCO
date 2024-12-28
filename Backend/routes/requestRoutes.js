@@ -70,13 +70,14 @@ const sendConfirmationEmails = async (userEmail, agentEmail, request) => {
 };
 
 // Create request route
+// Create request route
 router.post('/create', async (req, res) => {
   try {
-    const { userName, userEmail, phone, serviceType, details, vehicleId, date, location } = req.body;
+    const { userName, userEmail, phone, serviceType, details, vehicleId, date, location, agentEmail } = req.body;
 
     // Validate the request body
-    if (!userName || !userEmail || !phone || !serviceType || !details || !date || !location) {
-      return res.status(400).json({ error: 'All fields are required.' });
+    if (!userName || !userEmail || !phone || !serviceType || !details || !date || !location || !agentEmail) {
+      return res.status(400).json({ error: 'All fields, including agentEmail, are required.' });
     }
 
     // Create and save the request
@@ -89,12 +90,10 @@ router.post('/create', async (req, res) => {
       vehicleId,
       date,
       location,
+      agentEmail, // Save the agentEmail as well
     });
 
     const savedRequest = await newRequest.save();
-
-    // Fetch the agent's email (assuming it's stored in the vehicle details or elsewhere in the DB)
-    const agentEmail = "francismarkamos71@gmail.com";  // Replace this with the actual logic to get the agent's email
 
     // Send confirmation emails to the user and the agent
     await sendConfirmationEmails(userEmail, agentEmail, savedRequest);

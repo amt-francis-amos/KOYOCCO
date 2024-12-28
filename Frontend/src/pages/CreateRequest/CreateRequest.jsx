@@ -28,18 +28,17 @@ const CreateRequest = () => {
         e.preventDefault();
         setIsSubmitting(true); // Set submitting state to true
         console.log('Sending request with data:', formData);
-
+    
         const { userName, userEmail, phone, serviceType, vehicleId, date, location, agentEmail } = formData;
         if (!userName || !userEmail || !phone || !serviceType || !vehicleId || !date || !location || !agentEmail) {
             toast.error('Please fill in all fields.');
             setIsSubmitting(false); // Reset submitting state
             return;
         }
-
+    
         try {
-            // Send request to the backend
             const response = await axios.post('https://koyocco-backend.onrender.com/api/requests/create', formData);
-
+    
             if (response.status === 201) {
                 // Notify the user and agent by email on success
                 await axios.post('https://koyocco-backend.onrender.com/api/requests/send-emails', {
@@ -51,8 +50,7 @@ const CreateRequest = () => {
                     date,
                     location,
                 });
-
-                // Show success notification
+    
                 toast.success('Request submitted successfully!');
                 setFormData({
                     userName: '',
@@ -65,8 +63,7 @@ const CreateRequest = () => {
                     location: '',
                     agentEmail: '', // Reset agentEmail after submission
                 });
-
-                // Redirect to the Cars page after successful submission
+    
                 navigate('/cars'); // Replace with the correct path to your Cars page
             } else {
                 toast.error('Failed to submit request.');
@@ -78,6 +75,7 @@ const CreateRequest = () => {
             setIsSubmitting(false); // Reset submitting state
         }
     };
+    
 
     return (
         <div className="container mx-auto p-6">
