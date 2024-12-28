@@ -9,7 +9,6 @@ const Navbar = () => {
     shortStays: false,
     rental: false,
     propertySales: false,
-    user: false,
   });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -38,7 +37,6 @@ const Navbar = () => {
       shortStays: false,
       rental: false,
       propertySales: false,
-      user: false,
     });
   };
 
@@ -237,10 +235,9 @@ const Navbar = () => {
               </li>
             </ul>
           </li>
-
-          {/* Property Sales Dropdown */}
-          <li className="relative" onMouseLeave={() => handleMouseLeave('propertySales')}>
-            <Link
+ {/* Property Sales Dropdown */}
+ <li className="relative" onMouseLeave={() => handleMouseLeave('propertySales')} >
+ <Link
               to="/sales"
               className="hover:text-gray-700 py-2 lg:py-0 flex items-center focus:outline-none"
               onClick={() => toggleDropdown('propertySales')}
@@ -283,6 +280,13 @@ const Navbar = () => {
             )}
           </li>
 
+
+
+
+
+
+
+
           {/* Other Links */}
           <li>
             <Link
@@ -311,49 +315,61 @@ const Navbar = () => {
               About
             </Link>
           </li>
-        </ul>
 
-        {/* User Profile and Logout Button */}
-        {isLoggedIn ? (
-          <div className="relative">
-            <img
-              src="https://randomuser.me/api/portraits/men/44.jpg"
-              alt="Profile"
-              className="w-10 h-10 rounded-full cursor-pointer"
-              title="Profile"
-              onClick={() => toggleDropdown('user')}
-            />
-            <div
-              className={`absolute top-12 right-0 bg-white shadow-md rounded-md py-2 w-32 ${
-                dropdownOpen.user ? 'block' : 'hidden'
-              }`}
-            >
+          {/* Mobile-Only Buttons */}
+          {isLoggedIn ? (
+            <li className="lg:hidden mt-4">
               <button
-                className="block px-4 py-2 text-red-600 hover:bg-gray-100 w-full text-left"
                 onClick={handleLogout}
+                className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black w-full"
               >
                 Logout
               </button>
-            </div>
-          </div>
-        ) : (
-          <div className="flex space-x-4">
-            <Link
-              to="/login"
+            </li>
+          ) : (
+            <>
+              <li className="lg:hidden mt-4">
+                <Link to="/login" onClick={closeMenuOnLinkClick}>
+                  <button className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black w-full">
+                    Login
+                  </button>
+                </Link>
+              </li>
+              <li className="lg:hidden">
+                <Link to="/signup" onClick={closeMenuOnLinkClick}>
+                  <button className="bg-red-500 mt-2 text-white px-7 py-2 rounded-md hover:bg-black w-full">
+                    Signup
+                  </button>
+                </Link>
+              </li>
+            </>
+          )}
+        </ul>
+
+        {/* Desktop-Only Buttons */}
+        <div className="hidden lg:flex lg:items-center space-x-4">
+          {isLoggedIn ? (
+            <button
+              onClick={handleLogout}
               className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black"
-              onClick={closeMenuOnLinkClick}
             >
-              Login
-            </Link>
-            <Link
-              to="/signup"
-              className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black"
-              onClick={closeMenuOnLinkClick}
-            >
-              Signup
-            </Link>
-          </div>
-        )}
+              Logout
+            </button>
+          ) : (
+            <>
+              <Link to="/login">
+                <button className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black">
+                  Login
+                </button>
+              </Link>
+              <Link to="/signup">
+                <button className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black">
+                  Signup
+                </button>
+              </Link>
+            </>
+          )}
+        </div>
       </div>
     </nav>
   );

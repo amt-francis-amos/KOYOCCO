@@ -7,6 +7,8 @@ const Profile = () => {
   const [message, setMessage] = useState("");
   const [imageFile, setImageFile] = useState(null);
 
+
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {
