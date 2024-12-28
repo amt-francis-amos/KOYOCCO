@@ -9,8 +9,7 @@ import {motion} from 'framer-motion'
 
 
 const Cars = () => {
-    const [requests, setRequests] = useState([]);
-    const [loading, setLoading] = useState(false);
+ 
     const [error, setError] = useState(null);
 
     const fetchRequests = async () => {
@@ -93,31 +92,9 @@ const Cars = () => {
                 ))}
             </div>
 
-            <h2 className="text-2xl text-center font-bold mt-8 mb-4">Your Requests</h2>
-            
-            {loading && (
-                <div className="flex justify-center">
-                    <div className="spinner-border animate-spin border-4 border-t-4 border-blue-500 rounded-full w-16 h-16"></div>
-                </div>
-            )}
+           
+           
 
-            {error && (
-                <div className="text-center">
-                    <p className="text-red-500">{error}</p>
-                    <button onClick={fetchRequests} className="text-blue-500">Retry</button>
-                </div>
-            )}
-
-<div className="flex flex-wrap gap-4 my-10">
-  {requests.map((request, index) => (
-    <div key={index} className="bg-white w-full md:w-1/2 lg:w-1/3 shadow-md p-6 rounded-lg">
-      <h3 className="text-xl font-semibold">{request.userName}</h3>
-      <p className="text-gray-600">{request.serviceType}</p>
-      <p className="text-gray-600">Location: {request.location}</p>
-      <p className="text-gray-600">Date: {new Date(request.date).toLocaleString()}</p>
-    </div>
-  ))}
-</div>
 
         </motion.div>
     );

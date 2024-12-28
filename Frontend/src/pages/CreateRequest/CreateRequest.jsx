@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';  
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify'; // Import React Toastify
 
 const CreateRequest = () => {
     const [formData, setFormData] = useState({
@@ -9,12 +10,12 @@ const CreateRequest = () => {
         phone: '',
         serviceType: 'airport-pickup',
         details: '',
-        vehicleId: '',  
-        date: '',  
-        location: '',  
+        vehicleId: '',
+        date: '',
+        location: '',
     });
 
-    const navigate = useNavigate();  // Initialize navigate
+    const navigate = useNavigate(); // Initialize navigate
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -23,19 +24,32 @@ const CreateRequest = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Sending request with data:', formData); 
-       
+        console.log('Sending request with data:', formData);
+
         const { userName, userEmail, phone, serviceType, vehicleId, date, location } = formData;
         if (!userName || !userEmail || !phone || !serviceType || !vehicleId || !date || !location) {
-            alert('Please fill in all fields.');
+            toast.error('Please fill in all fields.');
             return;
         }
 
         try {
+            // Send request to the backend
             const response = await axios.post('https://koyocco-backend.onrender.com/api/requests/create', formData);
 
             if (response.status === 201) {
-                alert('Request submitted successfully!');
+                // Notify the user and agent by email on success
+                await axios.post('https://koyocco-backend.onrender.com/api/send-emails', {
+                    userEmail,
+                    agentEmail: 'agent@example.com', // Replace with the actual agent's email
+                    userName,
+                    serviceType,
+                    vehicleId,
+                    date,
+                    location,
+                });
+
+                // Show success notification
+                toast.success('Request submitted successfully!');
                 setFormData({
                     userName: '',
                     userEmail: '',
@@ -48,13 +62,13 @@ const CreateRequest = () => {
                 });
 
                 // Redirect to the Cars page after successful submission
-                navigate('/cars');  // Replace with the correct path to your Cars page
+                navigate('/cars'); // Replace with the correct path to your Cars page
             } else {
-                alert('Failed to submit request.');
+                toast.error('Failed to submit request.');
             }
         } catch (error) {
-            console.error('Error submitting request:', error); 
-            alert('An error occurred while submitting the request.');
+            console.error('Error submitting request:', error);
+            toast.error('An error occurred while submitting the request.');
         }
     };
 
