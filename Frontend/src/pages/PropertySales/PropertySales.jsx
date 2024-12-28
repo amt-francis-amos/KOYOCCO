@@ -62,6 +62,15 @@ const PropertySales = () => {
     photos.forEach((photo) => formDataToSend.append("photos", photo));
     formDataToSend.append("video", video);
 
+    // For Property Owner, also include the promotion fee and subscription
+    if (isPropertyOwner) {
+      formDataToSend.append("promotionFeePaid", true); // Set true for promotion
+      formDataToSend.append("isPropertyOwner", true);
+    } else {
+      formDataToSend.append("agentSubscription", true); // Set true for agent subscription
+      formDataToSend.append("isPropertyOwner", false);
+    }
+
     try {
       const response = await axios.post(
         "https://koyocco-backend.onrender.com/api/post-listing/upload",
