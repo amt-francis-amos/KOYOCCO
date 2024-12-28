@@ -93,7 +93,7 @@ router.post('/create', async (req, res) => {
     const savedRequest = await newRequest.save();
 
     // Fetch the agent's email (assuming it's stored in the vehicle details or elsewhere in the DB)
-    const agentEmail = "agent@koyocco.com";  // Replace this with the actual logic to get the agent's email
+    const agentEmail = "francismarkamos71@gmail.com";  // Replace this with the actual logic to get the agent's email
 
     // Send confirmation emails to the user and the agent
     await sendConfirmationEmails(userEmail, agentEmail, savedRequest);
@@ -102,6 +102,65 @@ router.post('/create', async (req, res) => {
   } catch (err) {
     console.error('Error creating request:', err);
     res.status(500).json({ message: 'Internal Server Error', error: err.message });
+  }
+});
+
+// Email sending route
+router.post('/send-emails', async (req, res) => {
+  const { userEmail, agentEmail, userName, serviceType, vehicleId, date, location } = req.body;
+
+  if (!userEmail || !agentEmail || !userName || !serviceType || !vehicleId || !date || !location) {
+    return res.status(400).json({ error: 'Missing required fields.' });
+  }
+
+  try {
+    // Create and send confirmation emails
+    const transporter = createTransporter();
+
+    const userMailOptions = {
+      from: '"Koyocco Ghana Team" <no-reply@app.com>',
+      to: userEmail,
+      subject: 'Your Request for Airport Pickup Has Been Received',
+      html: `
+        <div style="text-align: center;">
+          <h2>Hello ${userName},</h2>
+          <p>Thank you for your request. Your request for an airport pickup service has been successfully received.</p>
+          <p><strong>Vehicle:</strong> ${vehicleId}</p>
+          <p><strong>Location:</strong> ${location}</p>
+          <p><strong>Service Type:</strong> ${serviceType}</p>
+          <p><strong>Date:</strong> ${new Date(date).toLocaleString()}</p>
+          <p>We will be in touch with you shortly regarding the details of your pickup. Thank you for choosing us!</p>
+          <p>Best regards,<br>Koyocco Ghana Team</p>
+        </div>
+      `,
+    };
+
+    const agentMailOptions = {
+      from: '"Koyocco Ghana Team" <no-reply@app.com>',
+      to: agentEmail,
+      subject: 'New Airport Pickup Request',
+      html: `
+        <div style="text-align: center;">
+          <h2>New Airport Pickup Request</h2>
+          <p>A new request for airport pickup has been received from ${userName}.</p>
+          <p><strong>Vehicle:</strong> ${vehicleId}</p>
+          <p><strong>Location:</strong> ${location}</p>
+          <p><strong>Service Type:</strong> ${serviceType}</p>
+          <p><strong>Date:</strong> ${new Date(date).toLocaleString()}</p>
+          <p>Please review and confirm the request.</p>
+          <p>Best regards,<br>Koyocco Ghana Team</p>
+        </div>
+      `,
+    };
+
+    // Send emails
+    await transporter.sendMail(userMailOptions);
+    await transporter.sendMail(agentMailOptions);
+
+    res.status(200).json({ message: 'Emails sent successfully' });
+  } catch (error) {
+    console.error('Error sending emails:', error);
+    res.status(500).json({ message: 'Error sending emails' });
   }
 });
 

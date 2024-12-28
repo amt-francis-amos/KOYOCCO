@@ -31,6 +31,8 @@ app.use('/api/bookings', bookingRoutes);
 app.use('/api/requests', requestRoutes);
 app.use('/api/post-listing', listingRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/requests/send-emails', requestRoutes);
+
 
 
 
