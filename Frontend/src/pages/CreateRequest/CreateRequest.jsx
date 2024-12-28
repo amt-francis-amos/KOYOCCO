@@ -38,7 +38,7 @@ const CreateRequest = () => {
 
             if (response.status === 201) {
                 // Notify the user and agent by email on success
-                await axios.post('https://koyocco-backend.onrender.com/api/send-emails', {
+                await axios.post('https://koyocco-backend.onrender.com/api/requests/send-emails', {
                     userEmail,
                     agentEmail: 'agent@example.com', // Replace with the actual agent's email
                     userName,
