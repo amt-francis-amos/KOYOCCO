@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify'; // Import React Toastify
+import { toast } from 'react-toastify'; 
 
 const CreateRequest = () => {
     const [formData, setFormData] = useState({
@@ -13,11 +13,11 @@ const CreateRequest = () => {
         vehicleId: '',
         date: '',
         location: '',
-        agentEmail: '', // Add agentEmail here
+        agentEmail: '',
     });
 
-    const [isSubmitting, setIsSubmitting] = useState(false); // Track submission state
-    const navigate = useNavigate(); // Initialize navigate
+    const [isSubmitting, setIsSubmitting] = useState(false); 
+    const navigate = useNavigate(); 
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -26,13 +26,13 @@ const CreateRequest = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setIsSubmitting(true); // Set submitting state to true
+        setIsSubmitting(true); 
         console.log('Sending request with data:', formData);
     
         const { userName, userEmail, phone, serviceType, vehicleId, date, location, agentEmail } = formData;
         if (!userName || !userEmail || !phone || !serviceType || !vehicleId || !date || !location || !agentEmail) {
             toast.error('Please fill in all fields.');
-            setIsSubmitting(false); // Reset submitting state
+            setIsSubmitting(false);
             return;
         }
     
@@ -40,10 +40,10 @@ const CreateRequest = () => {
             const response = await axios.post('https://koyocco-backend.onrender.com/api/requests/create', formData);
     
             if (response.status === 201) {
-                // Notify the user and agent by email on success
+       
                 await axios.post('https://koyocco-backend.onrender.com/api/requests/send-emails', {
                     userEmail,
-                    agentEmail, // Send agentEmail from form data
+                    agentEmail, 
                     userName,
                     serviceType,
                     vehicleId,
@@ -61,10 +61,10 @@ const CreateRequest = () => {
                     vehicleId: '',
                     date: '',
                     location: '',
-                    agentEmail: '', // Reset agentEmail after submission
+                    agentEmail: '', 
                 });
     
-                navigate('/cars'); // Replace with the correct path to your Cars page
+                navigate('/cars'); 
             } else {
                 toast.error('Failed to submit request.');
             }
@@ -72,7 +72,7 @@ const CreateRequest = () => {
             console.error('Error submitting request:', error);
             toast.error('An error occurred while submitting the request.');
         } finally {
-            setIsSubmitting(false); // Reset submitting state
+            setIsSubmitting(false); 
         }
     };
     
@@ -81,7 +81,7 @@ const CreateRequest = () => {
         <div className="container mx-auto p-6">
             <h1 className="text-3xl font-bold text-center mb-6">Create a Request</h1>
             <form onSubmit={handleSubmit} className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
-                {/* Full Name */}
+              
                 <div className="mb-4">
                     <label htmlFor="userName" className="block text-gray-700 font-bold mb-2">
                         Full Name
@@ -97,7 +97,6 @@ const CreateRequest = () => {
                     />
                 </div>
 
-                {/* Email Address */}
                 <div className="mb-4">
                     <label htmlFor="userEmail" className="block text-gray-700 font-bold mb-2">
                         Email Address
@@ -113,7 +112,7 @@ const CreateRequest = () => {
                     />
                 </div>
 
-                {/* Phone Number */}
+              
                 <div className="mb-4">
                     <label htmlFor="phone" className="block text-gray-700 font-bold mb-2">
                         Phone Number
@@ -129,7 +128,7 @@ const CreateRequest = () => {
                     />
                 </div>
 
-                {/* Request Type */}
+               
                 <div className="mb-4">
                     <label htmlFor="serviceType" className="block text-gray-700 font-bold mb-2">
                         Request Type
@@ -146,7 +145,6 @@ const CreateRequest = () => {
                     </select>
                 </div>
 
-                {/* Vehicle ID */}
                 <div className="mb-4">
                     <label htmlFor="vehicleId" className="block text-gray-700 font-bold mb-2">
                         Vehicle ID
@@ -162,7 +160,7 @@ const CreateRequest = () => {
                     />
                 </div>
 
-                {/* Date */}
+        
                 <div className="mb-4">
                     <label htmlFor="date" className="block text-gray-700 font-bold mb-2">
                         Date
@@ -178,7 +176,6 @@ const CreateRequest = () => {
                     />
                 </div>
 
-                {/* Location */}
                 <div className="mb-4">
                     <label htmlFor="location" className="block text-gray-700 font-bold mb-2">
                         Location
@@ -194,7 +191,7 @@ const CreateRequest = () => {
                     />
                 </div>
 
-                {/* Additional Details */}
+              
                 <div className="mb-4">
                     <label htmlFor="details" className="block text-gray-700 font-bold mb-2">
                         Additional Details
@@ -209,7 +206,7 @@ const CreateRequest = () => {
                     ></textarea>
                 </div>
 
-                {/* Agent Email */}
+               
                 <div className="mb-4">
                     <label htmlFor="agentEmail" className="block text-gray-700 font-bold mb-2">
                         Agent Email
@@ -227,7 +224,7 @@ const CreateRequest = () => {
 
                 <button
                     type="submit"
-                    disabled={isSubmitting} // Disable button while submitting
+                    disabled={isSubmitting} 
                     className="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-black"
                 >
                     {isSubmitting ? 'Submitting...' : 'Submit Request'}
