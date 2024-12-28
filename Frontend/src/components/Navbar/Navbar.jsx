@@ -1,20 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { assets } from "../../assets/assets";
-import { FaBars, FaTimes, FaChevronDown } from "react-icons/fa";
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { assets } from '../../assets/assets';
+import { FaBars, FaTimes, FaChevronDown } from 'react-icons/fa';
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-
-
   const [dropdownOpen, setDropdownOpen] = useState({
     shortStays: false,
     rental: false,
     propertySales: false,
+    user: false,
   });
-
-  
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const navigate = useNavigate();
 
   const toggleMenu = () => {
@@ -30,7 +28,7 @@ const Navbar = () => {
 
   // Check login status as soon as the component mounts
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
+    const token = localStorage.getItem('authToken');
     setIsLoggedIn(!!token); // If token exists, user is logged in
   }, []);
 
@@ -40,13 +38,14 @@ const Navbar = () => {
       shortStays: false,
       rental: false,
       propertySales: false,
+      user: false,
     });
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("authToken");
+    localStorage.removeItem('authToken');
     setIsLoggedIn(false);
-    navigate("/");
+    navigate('/');
     closeMenuOnLinkClick();
   };
 
@@ -82,7 +81,7 @@ const Navbar = () => {
         {/* Menu Links */}
         <ul
           className={`lg:flex lg:items-center lg:space-x-6 fixed lg:static top-0 left-0 w-full lg:w-auto bg-white lg:bg-transparent p-8 lg:p-0 transform ${
-            menuOpen ? "translate-x-0" : "-translate-x-full"
+            menuOpen ? 'translate-x-0' : '-translate-x-full'
           } lg:transform-none transition-transform duration-300 ease-in-out z-50`}
         >
           {/* Mobile Menu Header (logo + close icon) */}
@@ -113,12 +112,12 @@ const Navbar = () => {
           {/* Short-Stays Dropdown */}
           <li
             className="relative group"
-            onMouseLeave={() => handleMouseLeave("shortStays")}
+            onMouseLeave={() => handleMouseLeave('shortStays')}
           >
             <Link
               to="/short-stays"
               className="hover:text-gray-700 py-2 lg:py-0 flex items-center focus:outline-none"
-              onClick={() => toggleDropdown("shortStays")}
+              onClick={() => toggleDropdown('shortStays')}
             >
               <span className="flex items-center">
                 Short-Stays <FaChevronDown size={13} className="ml-2" />
@@ -128,7 +127,7 @@ const Navbar = () => {
             {/* Dropdown Content */}
             <ul
               className={`absolute left-0 z-10 mt-1 bg-white shadow-lg rounded-md py-2 w-48 ${
-                dropdownOpen.shortStays ? "block" : "hidden"
+                dropdownOpen.shortStays ? 'block' : 'hidden'
               } transition-opacity ease-in-out duration-300`}
             >
               <li>
@@ -164,12 +163,12 @@ const Navbar = () => {
           {/* Rental Dropdown */}
           <li
             className="relative group"
-            onMouseLeave={() => handleMouseLeave("rental")}
+            onMouseLeave={() => handleMouseLeave('rental')}
           >
             <Link
               to="/property-rentals"
               className="hover:text-gray-700 py-2 lg:py-0 flex items-center focus:outline-none"
-              onClick={() => toggleDropdown("rental")}
+              onClick={() => toggleDropdown('rental')}
             >
               <span className="flex items-center">
                 Property Rentals <FaChevronDown size={13} className="ml-2" />
@@ -179,7 +178,7 @@ const Navbar = () => {
             {/* Dropdown Content */}
             <ul
               className={`absolute z-10 left-0 bg-white shadow-lg rounded-md py-2 w-48 ${
-                dropdownOpen.rental ? "block" : "hidden"
+                dropdownOpen.rental ? 'block' : 'hidden'
               } transition-opacity ease-in-out duration-300`}
             >
               <li>
@@ -240,14 +239,11 @@ const Navbar = () => {
           </li>
 
           {/* Property Sales Dropdown */}
-          <li
-            className="relative"
-            onMouseLeave={() => handleMouseLeave("propertySales")}
-          >
+          <li className="relative" onMouseLeave={() => handleMouseLeave('propertySales')}>
             <Link
               to="/sales"
               className="hover:text-gray-700 py-2 lg:py-0 flex items-center focus:outline-none"
-              onClick={() => toggleDropdown("propertySales")}
+              onClick={() => toggleDropdown('propertySales')}
             >
               <span className="flex items-center">
                 Property Sales <FaChevronDown size={13} className="ml-2" />
@@ -315,41 +311,51 @@ const Navbar = () => {
               About
             </Link>
           </li>
-
-          {/* Profile and Logout Section */}
-          <div className="flex  items-center space-x-4">
-            {isLoggedIn ? (
-              <>
-                <Link to="/profile">
-                  <img
-                    src={assets.propertyImg1}
-                    alt="Profile"
-                    className="w-12 h-12 rounded-full object-cover cursor-pointer"
-                  />
-                </Link>
-                <button
-                  onClick={handleLogout}
-                  className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black"
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                <Link to="/login">
-                  <button className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black">
-                    Login
-                  </button>
-                </Link>
-                <Link to="/signup">
-                  <button className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black">
-                    Sign Up
-                  </button>
-                </Link>
-              </>
-            )}
-          </div>
         </ul>
+
+        {/* User Profile and Logout Button */}
+        {isLoggedIn ? (
+  <div className="relative">
+    <Link to="/profile" onClick={closeMenuOnLinkClick}>
+      <img
+        src="https://randomuser.me/api/portraits/men/44.jpg"
+        alt="Profile"
+        className="w-10 h-10 rounded-full cursor-pointer"
+        title="Profile"
+      />
+    </Link>
+    <div
+      className={`absolute top-12 right-0 bg-white shadow-md rounded-md py-2 w-32 ${
+        dropdownOpen.user ? 'block' : 'hidden'
+      }`}
+    >
+      <button
+        className="block px-4 py-2 text-red-600 hover:bg-gray-100 w-full text-left"
+        onClick={handleLogout}
+      >
+        Logout
+      </button>
+    </div>
+  </div>
+) : (
+  <div className="flex space-x-4">
+    <Link
+      to="/login"
+      className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black"
+      onClick={closeMenuOnLinkClick}
+    >
+      Login
+    </Link>
+    <Link
+      to="/signup"
+      className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black"
+      onClick={closeMenuOnLinkClick}
+    >
+      Signup
+    </Link>
+  </div>
+)}
+
       </div>
     </nav>
   );
