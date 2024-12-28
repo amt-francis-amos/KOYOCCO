@@ -90,15 +90,15 @@ const PropertySales = () => {
     }
   };
 
-  const handlePaymentSuccess = (response) => {
-    // Handle successful payment response from Paystack
+  const handlePaymentSuccess = () => {
+    // Payment successful callback
     toast.success("Payment Successful! Your property has been posted.");
     setShowPaymentForm(false); // Close the Paystack payment form
     handlePostListing(); // Continue to post the listing after payment success
   };
 
-  const handlePaymentFailure = (error) => {
-    // Handle payment failure
+  const handlePaymentFailure = () => {
+    // Payment failure callback
     toast.error("Payment Failed! Please try again.");
     setShowPaymentForm(false);
   };
@@ -113,7 +113,7 @@ const PropertySales = () => {
       onClose: handlePaymentFailure,
     });
 
-    handler.openIframe();
+    handler.openIframe(); // This opens the Paystack payment form
   };
 
   return (
