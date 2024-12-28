@@ -1,7 +1,7 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
 
 const PropertySales = () => {
   const [isPropertyOwner, setIsPropertyOwner] = useState(true);
@@ -11,64 +11,57 @@ const PropertySales = () => {
     description: "",
     location: "",
     price: "",
-    images: [],
+    photos: [],
     video: null,
   });
 
-  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    if (name === "images") {
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+
+    if (name === "photos") {
       setFormData((prevData) => ({
         ...prevData,
-        images: [...files],
+        photos: [...prevData.photos, ...files],
       }));
     } else if (name === "video") {
       setFormData((prevData) => ({
         ...prevData,
         video: files[0],
       }));
-    } else {
-      setFormData({ ...formData, [name]: value });
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handlePostListing = async () => {
+    const { name, description, location, price, photos, video } = formData;
 
     // Validate inputs
-    const { name, description, location, price, images, video } = formData;
     if (!name || !description || !location || !price) {
-      setMessage("Title, description, location, and price are required.");
+      setError("Title, description, location, and price are required.");
       toast.error("Title, description, location, and price are required.");
       return;
     }
 
-    if (images.length === 0) {
-      setMessage("Please upload at least one photo.");
+    if (photos.length === 0) {
+      setError("Please upload at least one photo.");
       toast.error("Please upload at least one photo.");
       return;
     }
 
     if (!video) {
-      setMessage("Please upload a video.");
+      setError("Please upload a video.");
       toast.error("Please upload a video.");
       return;
     }
 
     const formDataToSend = new FormData();
-    Object.keys(formData).forEach((key) => {
-      if (key === "images") {
-        formData.photos.forEach((image) => {
-          formDataToSend.append("images", image);
-        });
-      } else if (key === "video") {
-        formDataToSend.append("video", formData[key]);
-      } else {
-        formDataToSend.append(key, formData[key]);
-      }
-    });
+    formDataToSend.append("name", name);
+    formDataToSend.append("description", description);
+    formDataToSend.append("location", location);
+    formDataToSend.append("price", price);
+    photos.forEach((photo) => formDataToSend.append("photos", photo));
+    formDataToSend.append("video", video);
 
     try {
       const response = await axios.post(
@@ -79,13 +72,12 @@ const PropertySales = () => {
         }
       );
       toast.success("Property uploaded successfully!");
-      setMessage("Property uploaded successfully!");
       setFormData({
         name: "",
         description: "",
         location: "",
         price: "",
-        images: [],
+        photos: [],
         video: null,
       });
     } catch (error) {
@@ -120,110 +112,107 @@ const PropertySales = () => {
         </div>
 
         <div className="bg-white shadow-lg rounded-lg p-8">
-          <h2 className="text-2xl font-semibold mb-4">
-            {isPropertyOwner ? "Property Owner Post" : "Agent (Rental) Post"}
-          </h2>
+          <h2 className="text-2xl font-semibold mb-4">{isPropertyOwner ? "Property Owner Post" : "Agent (Rental) Post"}</h2>
+          <p className="text-gray-600 mb-6">
+            {isPropertyOwner
+              ? "As a property owner, you can post your properties for sale. You are required to pay a small fee for promotion and visibility to potential buyers."
+              : "As an agent, you can post rental properties. There is no additional fee for posting, and you can list as many properties as needed."}
+          </p>
 
-          {message && <div className="text-red-500 text-center mb-4">{message}</div>}
+          {error && <div className="text-red-500 text-center mb-4">{error}</div>}
 
-          <form onSubmit={handleSubmit}>
-            <div className="mb-6">
-              <label className="block text-lg font-medium text-gray-700 mb-2">Property Name</label>
-              <input
-                type="text"
-                name="name"
-                className="w-full p-3 border border-gray-300 rounded-lg"
-                placeholder="Enter property title"
-                value={formData.name}
-                onChange={handleChange}
-              />
-            </div>
+          <div className="mb-6">
+            <label className="block text-lg font-medium text-gray-700 mb-2">Property Name</label>
+            <input
+              type="text"
+              className="w-full p-3 border border-gray-300 rounded-lg"
+              placeholder="Enter property title"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            />
+          </div>
 
-            <div className="mb-6">
-              <label className="block text-lg font-medium text-gray-700 mb-2">Description</label>
-              <textarea
-                name="description"
-                rows="4"
-                className="w-full p-3 border border-gray-300 rounded-lg"
-                placeholder="Enter property description"
-                value={formData.description}
-                onChange={handleChange}
-              ></textarea>
-            </div>
+          <div className="mb-6">
+            <label className="block text-lg font-medium text-gray-700 mb-2">Description</label>
+            <textarea
+              rows="4"
+              className="w-full p-3 border border-gray-300 rounded-lg"
+              placeholder="Enter property description"
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            ></textarea>
+          </div>
 
-            <div className="mb-6">
-              <label className="block text-lg font-medium text-gray-700 mb-2">Location</label>
-              <input
-                type="text"
-                name="location"
-                className="w-full p-3 border border-gray-300 rounded-lg"
-                placeholder="Enter property location"
-                value={formData.location}
-                onChange={handleChange}
-              />
-            </div>
+          <div className="mb-6">
+            <label className="block text-lg font-medium text-gray-700 mb-2">Location</label>
+            <input
+              type="text"
+              className="w-full p-3 border border-gray-300 rounded-lg"
+              placeholder="Enter property location"
+              value={formData.location}
+              onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+            />
+          </div>
 
-            <div className="mb-6">
-              <label className="block text-lg font-medium text-gray-700 mb-2">Price</label>
-              <input
-                type="number"
-                name="price"
-                className="w-full p-3 border border-gray-300 rounded-lg"
-                placeholder="Enter property price"
-                value={formData.price}
-                onChange={handleChange}
-              />
-            </div>
+          <div className="mb-6">
+            <label className="block text-lg font-medium text-gray-700 mb-2">Price</label>
+            <input
+              type="number"
+              className="w-full p-3 border border-gray-300 rounded-lg"
+              placeholder="Enter property price"
+              value={formData.price}
+              onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+            />
+          </div>
 
-            <div className="mb-6">
-              <label className="block text-lg font-medium text-gray-700 mb-2">Upload Images</label>
-              <input
-                type="file"
-                name="images"
-                multiple
-                accept="image/*"
-                className="w-full p-3 border border-gray-300 rounded-lg"
-                onChange={handleChange}
-              />
-              {formData.photos.length > 0 && (
-                <ul className="mt-2">
-                  {Array.from(formData.images).map((image, index) => (
-                    <li key={index} className="text-gray-500">{image.name}</li>
-                  ))}
-                </ul>
-              )}
-            </div>
+          <div className="mb-6">
+            <label className="block text-lg font-medium text-gray-700 mb-2">Upload Photos</label>
+            <input
+              type="file"
+              name="photos"
+              multiple
+              accept="image/*"
+              className="w-full p-3 border border-gray-300 rounded-lg"
+              onChange={handleFileChange}
+            />
+            {formData.photos.length > 0 && (
+              <ul className="mt-2">
+                {Array.from(formData.photos).map((photo, index) => (
+                  <li key={index} className="text-gray-500">{photo.name}</li>
+                ))}
+              </ul>
+            )}
+          </div>
 
-            <div className="mb-6">
-              <label className="block text-lg font-medium text-gray-700 mb-2">Upload Video</label>
-              <input
-                type="file"
-                name="video"
-                className="w-full p-3 border border-gray-300 rounded-lg"
-                onChange={handleChange}
-              />
-              {formData.video && (
-                <p className="mt-2 text-gray-500">Selected Video: {formData.video.name}</p>
-              )}
-            </div>
+          <div className="mb-6">
+            <label className="block text-lg font-medium text-gray-700 mb-2">Upload Video</label>
+            <input
+              type="file"
+              name="video"
+              className="w-full p-3 border border-gray-300 rounded-lg"
+              onChange={handleFileChange}
+            />
+            {formData.video && (
+              <p className="mt-2 text-gray-500">Selected Video: {formData.video.name}</p>
+            )}
+          </div>
 
-            <div className="text-center">
-              {isPropertyOwner ? (
-                <>
-                  <h3 className="text-lg font-semibold text-gray-700 mb-4">
-                    Promotion Fee: <span className="text-green-500">$50</span>
-                  </h3>
-                  <button type="submit" className="bg-red-500 text-white py-3 px-8 rounded-lg">
-                    Pay and Post Property
-                  </button>
-                </>
-              ) : (
-                <button type="submit" className="bg-red-500 text-white py-3 px-8 rounded-lg">
-                  Post Property
+          <div className="text-center">
+            {isPropertyOwner ? (
+              <>
+                <h3 className="text-lg font-semibold text-gray-700 mb-4">
+                  Promotion Fee: <span className="text-green-500">$50</span>
+                </h3>
+                <button onClick={handlePostListing} className="bg-red-500 text-white py-3 px-8 rounded-lg">
+                  Pay and Post Property
                 </button>
-              )}
-            </div>
-          </form>
+              </>
+            ) : (
+              <button onClick={handlePostListing} className="bg-red-500 text-white py-3 px-8 rounded-lg">
+                Post Property
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>
