@@ -5,7 +5,6 @@ import "react-toastify/dist/ReactToastify.css";
 
 const PropertySales = () => {
   const [isPropertyOwner, setIsPropertyOwner] = useState(true);
-
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -14,8 +13,8 @@ const PropertySales = () => {
     photos: [],
     video: null,
   });
-
   const [error, setError] = useState("");
+  const [showPaymentForm, setShowPaymentForm] = useState(false);
 
   const handleFileChange = (e) => {
     const { name, files } = e.target;
@@ -89,6 +88,32 @@ const PropertySales = () => {
     } catch (error) {
       toast.error("Failed to upload property. Please try again.");
     }
+  };
+
+  const handlePaymentSuccess = (response) => {
+    // Handle successful payment response from Paystack
+    toast.success("Payment Successful! Your property has been posted.");
+    setShowPaymentForm(false); // Close the Paystack payment form
+    handlePostListing(); // Continue to post the listing after payment success
+  };
+
+  const handlePaymentFailure = (error) => {
+    // Handle payment failure
+    toast.error("Payment Failed! Please try again.");
+    setShowPaymentForm(false);
+  };
+
+  const initializePayment = () => {
+    const handler = window.PaystackPop.setup({
+      key: "YOUR_PAYSTACK_PUBLIC_KEY", // Replace with your Paystack public key
+      email: "propertyowner@example.com", // Replace with property owner's email
+      amount: 5000, // Amount in kobo (e.g., 5000 kobo = 50 GHS)
+      currency: "GHS", // Specify the currency
+      callback: handlePaymentSuccess,
+      onClose: handlePaymentFailure,
+    });
+
+    handler.openIframe();
   };
 
   return (
@@ -198,10 +223,13 @@ const PropertySales = () => {
             {isPropertyOwner ? (
               <>
                 <h3 className="text-lg font-semibold text-gray-700 mb-4">
-                  Promotion Fee: <span className="text-green-500">$50</span>
+                  Promotion Fee: <span className="text-green-500">₵50</span>
                 </h3>
                 <button
-                  onClick={handlePostListing}
+                  onClick={() => {
+                    setShowPaymentForm(true);
+                    initializePayment(); // Show Paystack payment form when clicked
+                  }}
                   className="bg-red-500 text-white py-3 px-8 rounded-lg w-full sm:w-auto"
                 >
                   Pay and Post Property
