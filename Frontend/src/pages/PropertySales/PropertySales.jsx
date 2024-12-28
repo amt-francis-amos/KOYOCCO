@@ -15,7 +15,7 @@ const PropertySales = () => {
     video: null,
   });
 
-  
+
   const [error, setError] = useState("");
 
   const handleFileChange = (e) => {
@@ -152,6 +152,7 @@ const PropertySales = () => {
               type="file"
               name="photos"
               multiple
+              accept="image/*"
               className="w-full p-3 border border-gray-300 rounded-lg"
               onChange={handleFileChange}
             />
