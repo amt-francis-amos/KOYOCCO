@@ -36,36 +36,31 @@ const PropertySales = () => {
 
   const handlePostListing = async () => {
     const { name, description, location, price, photos, video } = formData;
-  
+
     // Validate inputs
     if (!name || !description || !location || !price) {
       setError("Title, description, location, and price are required.");
       return;
     }
-  
+
     if (photos.length === 0) {
       setError("Please upload at least one photo.");
       return;
     }
-  
+
     if (!video) {
       setError("Please upload a video.");
       return;
     }
-  
+
     const formDataToSend = new FormData();
     formDataToSend.append("name", name);
     formDataToSend.append("description", description);
-    formDataToSend.append("location", location);
-    formDataToSend.append("price", price);
-  
-    // Append each photo individually
-    photos.forEach((photo) => {
-      formDataToSend.append("photos", photo);
-    });
-  
+    formDataToSend.append("location", location); 
+    formDataToSend.append("price", price);        
+    formDataToSend.append("photos", photos);
     formDataToSend.append("video", video);
-  
+
     try {
       const response = await axios.post("https://koyocco-backend.onrender.com/api/post-listing/upload", formDataToSend, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -76,7 +71,6 @@ const PropertySales = () => {
       setError("Failed to upload property. Please try again.");
     }
   };
-  
 
   return (
     <div className="min-h-screen bg-gray-50 py-10">
