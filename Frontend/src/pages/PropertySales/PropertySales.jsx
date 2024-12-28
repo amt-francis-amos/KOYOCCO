@@ -11,7 +11,7 @@ const PropertySales = () => {
     description: "",
     location: "",
     price: "",
-    photos: [],
+    images: [],
     video: null,
   });
 
@@ -19,10 +19,10 @@ const PropertySales = () => {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    if (name === "photos") {
+    if (name === "images") {
       setFormData((prevData) => ({
         ...prevData,
-        photos: [...files],
+        images: [...files],
       }));
     } else if (name === "video") {
       setFormData((prevData) => ({
@@ -38,14 +38,14 @@ const PropertySales = () => {
     e.preventDefault();
 
     // Validate inputs
-    const { name, description, location, price, photos, video } = formData;
+    const { name, description, location, price, images, video } = formData;
     if (!name || !description || !location || !price) {
       setMessage("Title, description, location, and price are required.");
       toast.error("Title, description, location, and price are required.");
       return;
     }
 
-    if (photos.length === 0) {
+    if (images.length === 0) {
       setMessage("Please upload at least one photo.");
       toast.error("Please upload at least one photo.");
       return;
@@ -59,9 +59,9 @@ const PropertySales = () => {
 
     const formDataToSend = new FormData();
     Object.keys(formData).forEach((key) => {
-      if (key === "photos") {
-        formData.photos.forEach((photo) => {
-          formDataToSend.append("photos", photo);
+      if (key === "images") {
+        formData.photos.forEach((image) => {
+          formDataToSend.append("images", image);
         });
       } else if (key === "video") {
         formDataToSend.append("video", formData[key]);
@@ -85,7 +85,7 @@ const PropertySales = () => {
         description: "",
         location: "",
         price: "",
-        photos: [],
+        images: [],
         video: null,
       });
     } catch (error) {
@@ -176,10 +176,10 @@ const PropertySales = () => {
             </div>
 
             <div className="mb-6">
-              <label className="block text-lg font-medium text-gray-700 mb-2">Upload Photos</label>
+              <label className="block text-lg font-medium text-gray-700 mb-2">Upload Images</label>
               <input
                 type="file"
-                name="photos"
+                name="images"
                 multiple
                 accept="image/*"
                 className="w-full p-3 border border-gray-300 rounded-lg"
@@ -187,8 +187,8 @@ const PropertySales = () => {
               />
               {formData.photos.length > 0 && (
                 <ul className="mt-2">
-                  {Array.from(formData.photos).map((photo, index) => (
-                    <li key={index} className="text-gray-500">{photo.name}</li>
+                  {Array.from(formData.images).map((image, index) => (
+                    <li key={index} className="text-gray-500">{image.name}</li>
                   ))}
                 </ul>
               )}
