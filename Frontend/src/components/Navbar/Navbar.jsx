@@ -25,10 +25,9 @@ const Navbar = () => {
     }));
   };
 
-  // Check login status as soon as the component mounts
   useEffect(() => {
     const token = localStorage.getItem('authToken');
-    setIsLoggedIn(!!token); // If token exists, user is logged in
+    setIsLoggedIn(!!token); 
   }, []); 
 
   const closeMenuOnLinkClick = () => {
@@ -47,7 +46,7 @@ const Navbar = () => {
   };
 
 
-  // Function to hide dropdown when mouse leaves the menu
+ 
   const handleMouseLeave = (dropdown) => {
     setDropdownOpen((prev) => ({
       ...prev,
@@ -58,7 +57,7 @@ const Navbar = () => {
   return (
     <nav className="bg-white shadow-md">
       <div className="container mx-auto px-4 py-2 flex items-center justify-between">
-        {/* Logo */}
+      
         <Link to="/" onClick={closeMenuOnLinkClick}>
           <img
             src={assets.koyoccoLogo}
@@ -67,7 +66,7 @@ const Navbar = () => {
           />
         </Link>
 
-        {/* Hamburger Icon */}
+     
         <div className="lg:hidden" onClick={toggleMenu}>
           {menuOpen ? (
             <FaTimes size={24} aria-label="Close menu" />
@@ -76,13 +75,13 @@ const Navbar = () => {
           )}
         </div>
 
-        {/* Menu Links */}
+   
         <ul
           className={`lg:flex lg:items-center lg:space-x-6 fixed lg:static top-0 left-0 w-full lg:w-auto bg-white lg:bg-transparent p-8 lg:p-0 transform ${
             menuOpen ? 'translate-x-0' : '-translate-x-full'
           } lg:transform-none transition-transform duration-300 ease-in-out z-50`}
         >
-          {/* Mobile Menu Header (logo + close icon) */}
+   
           <div className="flex justify-between items-center mb-4 lg:hidden">
             <Link to="/" onClick={closeMenuOnLinkClick}>
               <img
