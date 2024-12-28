@@ -1,9 +1,8 @@
-require('dotenv').config(); 
-
+require('dotenv').config();
 const express = require('express');
 const multer = require('multer');
 const Property = require('../models/Property');
-const cloudinary = require('cloudinary').v2; 
+const cloudinary = require('cloudinary').v2;
 
 const router = express.Router();
 
@@ -92,10 +91,10 @@ router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 
   }
 });
 
-// --GET route to retrieve all properties
+// GET route to retrieve all properties
 router.get('/', async (req, res) => {
   try {
-    const properties = await Property.find(); 
+    const properties = await Property.find();
     res.status(200).json(properties);
   } catch (error) {
     console.error('Error fetching properties:', error);
@@ -103,13 +102,13 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Add delete property route
+// DELETE route to delete a property
 router.delete('/:id', async (req, res) => {
   try {
     const propertyId = req.params.id;
-    console.log("Deleting property with ID:", propertyId); 
+    console.log('Deleting property with ID:', propertyId);
     const property = await Property.findByIdAndDelete(propertyId);
-    
+
     if (!property) {
       return res.status(404).json({ message: 'Property not found' });
     }
@@ -121,12 +120,10 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-
-
-
+// PUT route to update the status of a property
 router.put('/:id/status', async (req, res) => {
-  const { id } = req.params; 
-  const { status } = req.body; 
+  const { id } = req.params;
+  const { status } = req.body;
 
   // Check if a valid status is provided
   if (!status) {
@@ -138,19 +135,18 @@ router.put('/:id/status', async (req, res) => {
     const updatedProperty = await Property.findByIdAndUpdate(
       id,
       { status },
-      { new: true } 
+      { new: true }
     );
 
     if (!updatedProperty) {
       return res.status(404).json({ message: 'Property not found' });
     }
 
-    res.status(200).json(updatedProperty); 
+    res.status(200).json(updatedProperty);
   } catch (error) {
     console.error('Error updating property status:', error);
     res.status(500).json({ message: 'Failed to update property status' });
   }
 });
-
 
 module.exports = router;
