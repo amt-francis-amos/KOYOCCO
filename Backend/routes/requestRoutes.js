@@ -43,7 +43,7 @@ const sendConfirmationEmails = async (userEmail, agentEmail, request) => {
     subject: 'New Airport Pickup Request',
     html: `
       <div style="text-align: center;">
-      <img src="cid:logo" style="width: 150px;" alt="Koyocco Ghana Logo" />
+        <img src="cid:logo" style="width: 150px;" alt="Koyocco Ghana Logo" />
         <h2>New Airport Pickup Request</h2>
         <p>A new request for airport pickup has been received from ${request.userName}.</p>
         <p><strong>Vehicle:</strong> ${request.vehicleId.name}</p>
@@ -69,13 +69,14 @@ const sendConfirmationEmails = async (userEmail, agentEmail, request) => {
   }
 };
 
+
 // Create request route
 router.post('/create', async (req, res) => {
   try {
-    const { userName, userEmail, phone, serviceType, details, vehicleId, date, location } = req.body;
+    const { userName, userEmail, phone, serviceType, details, vehicleId, date, location, agentEmail } = req.body;
 
     // Validate the request body
-    if (!userName || !userEmail || !phone || !serviceType || !details || !date || !location) {
+    if (!userName || !userEmail || !phone || !serviceType || !details || !date || !location || !agentEmail) {
       return res.status(400).json({ error: 'All fields are required.' });
     }
 
@@ -89,12 +90,10 @@ router.post('/create', async (req, res) => {
       vehicleId,
       date,
       location,
+      agentEmail,  // Save agentEmail
     });
 
     const savedRequest = await newRequest.save();
-
-    // Fetch the agent's email (assuming it's stored in the vehicle details or elsewhere in the DB)
-    const agentEmail = "francismarkamos71@gmail.com";  // Replace this with the actual logic to get the agent's email
 
     // Send confirmation emails to the user and the agent
     await sendConfirmationEmails(userEmail, agentEmail, savedRequest);
@@ -105,6 +104,10 @@ router.post('/create', async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error', error: err.message });
   }
 });
+
+
+
+
 
 // Email sending route
 router.post('/send-emails', async (req, res) => {
