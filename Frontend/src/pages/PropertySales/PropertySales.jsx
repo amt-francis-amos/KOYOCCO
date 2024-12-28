@@ -22,12 +22,12 @@ const PropertySales = () => {
     if (name === "images") {
       setFormData((prevData) => ({
         ...prevData,
-        images: [...files],
+        images: files ? Array.from(files) : [],
       }));
     } else if (name === "video") {
       setFormData((prevData) => ({
         ...prevData,
-        video: files[0],
+        video: files ? files[0] : null,
       }));
     } else {
       setFormData({ ...formData, [name]: value });
@@ -37,8 +37,9 @@ const PropertySales = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate inputs
     const { name, description, location, price, images, video } = formData;
+
+    // Validate inputs
     if (!name || !description || !location || !price) {
       setMessage("Title, description, location, and price are required.");
       toast.error("Title, description, location, and price are required.");
@@ -60,11 +61,11 @@ const PropertySales = () => {
     const formDataToSend = new FormData();
     Object.keys(formData).forEach((key) => {
       if (key === "images") {
-        formData.photos.forEach((image) => {
+        images.forEach((image) => {
           formDataToSend.append("images", image);
         });
       } else if (key === "video") {
-        formDataToSend.append("video", formData[key]);
+        formDataToSend.append("video", video);
       } else {
         formDataToSend.append(key, formData[key]);
       }
@@ -185,9 +186,9 @@ const PropertySales = () => {
                 className="w-full p-3 border border-gray-300 rounded-lg"
                 onChange={handleChange}
               />
-              {formData.photos.length > 0 && (
+              {formData.images.length > 0 && (
                 <ul className="mt-2">
-                  {Array.from(formData.images).map((image, index) => (
+                  {formData.images.map((image, index) => (
                     <li key={index} className="text-gray-500">{image.name}</li>
                   ))}
                 </ul>
