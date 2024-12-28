@@ -3,28 +3,30 @@ import axios from "axios";
 
 const PropertySales = () => {
   const [isPropertyOwner, setIsPropertyOwner] = useState(true);
+
   const [formData, setFormData] = useState({
     name: "",
     description: "",
     location: "",
     price: "",
     photos: [],
-    photoPreviews: [], // For storing preview URLs
+    photoPreviews: [],
     video: null,
   });
+
   const [error, setError] = useState("");
 
   const handleFileChange = (e) => {
     const { name, files } = e.target;
 
     if (name === "photos") {
-      const newPhotos = Array.from(files);
-      const newPreviews = newPhotos.map((file) => URL.createObjectURL(file));
+      const photosArray = Array.from(files);
+      const photoPreviews = photosArray.map((file) => URL.createObjectURL(file));
 
       setFormData((prevData) => ({
         ...prevData,
-        photos: [...prevData.photos, ...newPhotos],
-        photoPreviews: [...prevData.photoPreviews, ...newPreviews],
+        photos: [...prevData.photos, ...photosArray],
+        photoPreviews: [...prevData.photoPreviews, ...photoPreviews],
       }));
     } else if (name === "video") {
       setFormData((prevData) => ({
@@ -37,6 +39,7 @@ const PropertySales = () => {
   const handlePostListing = async () => {
     const { name, description, location, price, photos, video } = formData;
 
+    // Validate inputs
     if (!name || !description || !location || !price) {
       setError("Title, description, location, and price are required.");
       return;
@@ -61,11 +64,9 @@ const PropertySales = () => {
     formDataToSend.append("video", video);
 
     try {
-      const response = await axios.post(
-        "https://koyocco-backend.onrender.com/api/post-listing/upload",
-        formDataToSend,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
+      const response = await axios.post("https://koyocco-backend.onrender.com/api/post-listing/upload", formDataToSend, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       console.log("Property uploaded successfully:", response.data);
     } catch (error) {
       console.error("Error uploading property:", error);
@@ -98,30 +99,11 @@ const PropertySales = () => {
         </div>
 
         <div className="bg-white shadow-lg rounded-lg p-8">
-          <h2 className="text-2xl font-semibold mb-4">
-            {isPropertyOwner ? "Property Owner Post" : "Agent (Rental) Post"}
-          </h2>
-          <p className="text-gray-600 mb-6">
-            {isPropertyOwner
-              ? "As a property owner, you can post your properties for sale. You are required to pay a small fee for promotion and visibility to potential buyers."
-              : "As an agent, you can post rental properties. There is no additional fee for posting, and you can list as many properties as needed."}
-          </p>
+          <h2 className="text-2xl font-semibold mb-4">{isPropertyOwner ? "Property Owner Post" : "Agent (Rental) Post"}</h2>
 
           {error && <div className="text-red-500 text-center mb-4">{error}</div>}
 
-          <div className="mb-6">
-            <label className="block text-lg font-medium text-gray-700 mb-2">Property Name</label>
-            <input
-              type="text"
-              className="w-full p-3 border border-gray-300 rounded-lg"
-              placeholder="Enter property title"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            />
-          </div>
-
-          {/* Other Inputs ... */}
-
+          {/* Upload Photos Section */}
           <div className="mb-6">
             <label className="block text-lg font-medium text-gray-700 mb-2">Upload Photos</label>
             <input
@@ -133,24 +115,30 @@ const PropertySales = () => {
               onChange={handleFileChange}
             />
             {formData.photoPreviews.length > 0 && (
-              <div className="grid grid-cols-3 gap-4 mt-4">
+              <div className="mt-4 grid grid-cols-2 gap-4">
                 {formData.photoPreviews.map((preview, index) => (
-                  <img
-                    key={index}
-                    src={preview}
-                    alt={`Preview ${index + 1}`}
-                    className="w-full h-auto rounded-lg border"
-                  />
+                  <img key={index} src={preview} alt={`Property ${index}`} className="w-full h-40 object-cover rounded-lg shadow" />
                 ))}
               </div>
             )}
           </div>
 
-          {/* Video Upload */}
+          {/* Other Inputs */}
           <div className="text-center">
-            <button onClick={handlePostListing} className="bg-red-500 text-white py-3 px-8 rounded-lg">
-              {isPropertyOwner ? "Pay and Post Property" : "Post Property"}
-            </button>
+            {isPropertyOwner ? (
+              <>
+                <h3 className="text-lg font-semibold text-gray-700 mb-4">
+                  Promotion Fee: <span className="text-green-500">$50</span>
+                </h3>
+                <button onClick={handlePostListing} className="bg-red-500 text-white py-3 px-8 rounded-lg">
+                  Pay and Post Property
+                </button>
+              </>
+            ) : (
+              <button onClick={handlePostListing} className="bg-red-500 text-white py-3 px-8 rounded-lg">
+                Post Property
+              </button>
+            )}
           </div>
         </div>
       </div>
