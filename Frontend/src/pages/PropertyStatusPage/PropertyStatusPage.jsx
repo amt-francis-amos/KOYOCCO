@@ -34,7 +34,7 @@ const PropertyStatusPage = () => {
           )
         );
         setSelectedProperty(null);
-        setStatus(''); // Reset the status field after updating
+        setStatus(''); 
         alert('Property status updated successfully!');
       })
       .catch(error => {

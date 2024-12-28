@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const PropertySales = () => {
+
+
   const [isPropertyOwner, setIsPropertyOwner] = useState(true);
+
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -11,6 +14,8 @@ const PropertySales = () => {
     photos: [],
     video: null,
   });
+
+  
   const [error, setError] = useState("");
 
   const handleFileChange = (e) => {
