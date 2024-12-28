@@ -15,7 +15,7 @@ const Login = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
 
-  // Ensure user is already authenticated
+  // Check if user is already authenticated based on token
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (token) {
@@ -26,7 +26,7 @@ const Login = () => {
       } else if (role === "Property Owner") {
         navigate("/ownerDashboard");
       } else if (role === "Agent") {
-        navigate("/agentDashboard");
+        navigate("/");
       }
     }
   }, [navigate]);
@@ -73,7 +73,7 @@ const Login = () => {
       localStorage.setItem("role", role);
       localStorage.setItem("userId", userId); 
   
-      setIsAuthenticated(true);  // Update state immediately
+      setIsAuthenticated(true);  // Immediately update the authentication state
   
       // Redirect based on role
       const redirectPath =
