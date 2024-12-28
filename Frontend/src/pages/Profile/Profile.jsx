@@ -44,61 +44,102 @@ const Profile = () => {
   };
 
   return (
-    <div className="profile">
-      <h1>Your Profile</h1>
-      <div>
-        <label>First Name:</label>
-        <input
-          type="text"
-          value={profileData.firstname || ""}
-          onChange={(e) =>
-            setProfileData({ ...profileData, firstname: e.target.value })
-          }
-          disabled={!editable}
-        />
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
+      <div className="bg-white shadow-lg rounded-lg w-full max-w-4xl p-8">
+        <h1 className="text-3xl font-semibold text-center text-gray-800 mb-6">Your Profile</h1>
+
+        {/* Profile Header Section */}
+        <div className="flex items-center justify-center mb-8">
+          <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-blue-500">
+            <img
+              src={profileData.profileImage || "https://via.placeholder.com/150"}
+              alt="Profile"
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div className="ml-6">
+            <h2 className="text-2xl font-semibold text-gray-800">{profileData.firstname} {profileData.lastname}</h2>
+            <p className="text-gray-600">{profileData.email}</p>
+          </div>
+        </div>
+
+        {/* Profile Info */}
+        <div>
+          <div className="mb-4">
+            <label className="block text-gray-600 font-medium">First Name:</label>
+            <input
+              type="text"
+              value={profileData.firstname || ""}
+              onChange={(e) => setProfileData({ ...profileData, firstname: e.target.value })}
+              disabled={!editable}
+              className="w-full p-2 mt-2 border border-gray-300 rounded-md bg-gray-50"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-gray-600 font-medium">Last Name:</label>
+            <input
+              type="text"
+              value={profileData.lastname || ""}
+              onChange={(e) => setProfileData({ ...profileData, lastname: e.target.value })}
+              disabled={!editable}
+              className="w-full p-2 mt-2 border border-gray-300 rounded-md bg-gray-50"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-gray-600 font-medium">Email:</label>
+            <input
+              type="email"
+              value={profileData.email || ""}
+              disabled
+              className="w-full p-2 mt-2 border border-gray-300 rounded-md bg-gray-50"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-gray-600 font-medium">Phone Number:</label>
+            <input
+              type="text"
+              value={profileData.phoneNumber || ""}
+              onChange={(e) => setProfileData({ ...profileData, phoneNumber: e.target.value })}
+              disabled={!editable}
+              className="w-full p-2 mt-2 border border-gray-300 rounded-md bg-gray-50"
+            />
+          </div>
+
+          <div className="mb-6">
+            <label className="block text-gray-600 font-medium">Location:</label>
+            <input
+              type="text"
+              value={profileData.location || ""}
+              onChange={(e) => setProfileData({ ...profileData, location: e.target.value })}
+              disabled={!editable}
+              className="w-full p-2 mt-2 border border-gray-300 rounded-md bg-gray-50"
+            />
+          </div>
+
+          <div className="flex justify-between items-center">
+            <button
+              onClick={() => setEditable(!editable)}
+              className="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+            >
+              {editable ? "Cancel" : "Edit"}
+            </button>
+
+            {editable && (
+              <button
+                onClick={handleSave}
+                className="px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+              >
+                Save Changes
+              </button>
+            )}
+          </div>
+
+          {message && <p className="text-green-600 mt-4 text-center">{message}</p>}
+        </div>
       </div>
-      <div>
-        <label>Last Name:</label>
-        <input
-          type="text"
-          value={profileData.lastname || ""}
-          onChange={(e) =>
-            setProfileData({ ...profileData, lastname: e.target.value })
-          }
-          disabled={!editable}
-        />
-      </div>
-      <div>
-        <label>Email:</label>
-        <input type="email" value={profileData.email || ""} disabled />
-      </div>
-      <div>
-        <label>Phone Number:</label>
-        <input
-          type="text"
-          value={profileData.phoneNumber || ""}
-          onChange={(e) =>
-            setProfileData({ ...profileData, phoneNumber: e.target.value })
-          }
-          disabled={!editable}
-        />
-      </div>
-      <div>
-        <label>Location:</label>
-        <input
-          type="text"
-          value={profileData.location || ""}
-          onChange={(e) =>
-            setProfileData({ ...profileData, location: e.target.value })
-          }
-          disabled={!editable}
-        />
-      </div>
-      <button onClick={() => setEditable(!editable)}>
-        {editable ? "Cancel" : "Edit"}
-      </button>
-      {editable && <button onClick={handleSave}>Save</button>}
-      {message && <p>{message}</p>}
     </div>
   );
 };
