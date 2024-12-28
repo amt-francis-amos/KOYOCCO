@@ -315,47 +315,45 @@ const Navbar = () => {
 
         {/* User Profile and Logout Button */}
         {isLoggedIn ? (
-  <div className="relative">
-    <Link to="/profile" onClick={closeMenuOnLinkClick}>
-      <img
-        src="https://randomuser.me/api/portraits/men/44.jpg"
-        alt="Profile"
-        className="w-10 h-10 rounded-full cursor-pointer"
-        title="Profile"
-      />
-    </Link>
-    <div
-      className={`absolute top-12 right-0 bg-white shadow-md rounded-md py-2 w-32 ${
-        dropdownOpen.user ? 'block' : 'hidden'
-      }`}
-    >
-      <button
-        className="block px-4 py-2 text-red-600 hover:bg-gray-100 w-full text-left"
-        onClick={handleLogout}
-      >
-        Logout
-      </button>
-    </div>
-  </div>
-) : (
-  <div className="flex space-x-4">
-    <Link
-      to="/login"
-      className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black"
-      onClick={closeMenuOnLinkClick}
-    >
-      Login
-    </Link>
-    <Link
-      to="/signup"
-      className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black"
-      onClick={closeMenuOnLinkClick}
-    >
-      Signup
-    </Link>
-  </div>
-)}
-
+          <div className="relative">
+            <img
+              src="https://randomuser.me/api/portraits/men/44.jpg"
+              alt="Profile"
+              className="w-10 h-10 rounded-full cursor-pointer"
+              title="Profile"
+              onClick={() => toggleDropdown('user')}
+            />
+            <div
+              className={`absolute top-12 right-0 bg-white shadow-md rounded-md py-2 w-32 ${
+                dropdownOpen.user ? 'block' : 'hidden'
+              }`}
+            >
+              <button
+                className="block px-4 py-2 text-red-600 hover:bg-gray-100 w-full text-left"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="flex space-x-4">
+            <Link
+              to="/login"
+              className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black"
+              onClick={closeMenuOnLinkClick}
+            >
+              Login
+            </Link>
+            <Link
+              to="/signup"
+              className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black"
+              onClick={closeMenuOnLinkClick}
+            >
+              Signup
+            </Link>
+          </div>
+        )}
       </div>
     </nav>
   );
