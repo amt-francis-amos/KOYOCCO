@@ -105,7 +105,7 @@ const PropertySales = () => {
 
   const initializePayment = () => {
     const handler = window.PaystackPop.setup({
-      key: "pk_test_168e8dbe8da7aa3f2243e0d482e9489164cf3f85", // Replace with your Paystack public key
+      key: "pk_live_be305faba4d35f18862ba2e58aeaff4a1aadbaa5", // Replace with your Paystack public key
       email: "francismarkamos71@gmail.com", // Replace with property owner's email
       amount: 5000, // Amount in kobo (e.g., 5000 kobo = 50 GHS)
       currency: "GHS", // Specify the currency
