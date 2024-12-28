@@ -37,7 +37,7 @@ const PropertySales = () => {
     const { name, description, location, price, photos, video } = formData;
 
     if (!name || !description || !location || !price) {
-      setError("Title, description, location, and price are required.");
+      setError("All fields are required.");
       toast.error("All fields are required!");
       return;
     }
@@ -59,20 +59,15 @@ const PropertySales = () => {
     formDataToSend.append("description", description);
     formDataToSend.append("location", location);
     formDataToSend.append("price", price);
-    Array.from(photos).forEach((photo) => {
-      formDataToSend.append("photos", photo);
-    });
+    photos.forEach((photo) => formDataToSend.append("photos", photo));
     formDataToSend.append("video", video);
 
     try {
       const response = await axios.post(
         "https://koyocco-backend.onrender.com/api/post-listing/upload",
         formDataToSend,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
+        { headers: { "Content-Type": "multipart/form-data" } }
       );
-      console.log("Property uploaded successfully:", response.data);
       toast.success("Property uploaded successfully!");
       setFormData({
         name: "",
@@ -83,7 +78,6 @@ const PropertySales = () => {
         video: null,
       });
     } catch (error) {
-      console.error("Error uploading property:", error);
       toast.error("Failed to upload property. Please try again.");
     }
   };
@@ -94,20 +88,20 @@ const PropertySales = () => {
         <ToastContainer />
         <h1 className="text-4xl font-bold text-center mb-6">Post Property for Sale</h1>
 
-        <div className="flex flex-col md:flex-row items-center justify-center mb-8 space-y-4 md:space-y-0 md:space-x-4">
+        <div className="flex flex-col sm:flex-row justify-center items-center mb-8 gap-4">
           <button
             onClick={() => setIsPropertyOwner(true)}
-            className={`py-2 px-6 w-full md:w-auto rounded-lg text-lg font-semibold ${
+            className={`py-2 px-6 rounded-lg text-lg font-semibold ${
               isPropertyOwner ? "bg-red-500 text-white" : "bg-gray-300 text-gray-700"
-            }`}
+            } w-full sm:w-auto`}
           >
             Property Owner
           </button>
           <button
             onClick={() => setIsPropertyOwner(false)}
-            className={`py-2 px-6 w-full md:w-auto rounded-lg text-lg font-semibold ${
+            className={`py-2 px-6 rounded-lg text-lg font-semibold ${
               !isPropertyOwner ? "bg-red-500 text-white" : "bg-gray-300 text-gray-700"
-            }`}
+            } w-full sm:w-auto`}
           >
             Agent (Rental)
           </button>
@@ -125,8 +119,71 @@ const PropertySales = () => {
 
           {error && <div className="text-red-500 text-center mb-4">{error}</div>}
 
-          {/* Form Fields */}
-          {/* ... Keep existing form code unchanged ... */}
+          <div className="mb-6">
+            <label className="block text-lg font-medium text-gray-700 mb-2">Property Name</label>
+            <input
+              type="text"
+              className="w-full p-3 border border-gray-300 rounded-lg"
+              placeholder="Enter property title"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            />
+          </div>
+
+          <div className="mb-6">
+            <label className="block text-lg font-medium text-gray-700 mb-2">Description</label>
+            <textarea
+              rows="4"
+              className="w-full p-3 border border-gray-300 rounded-lg"
+              placeholder="Enter property description"
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            ></textarea>
+          </div>
+
+          <div className="mb-6">
+            <label className="block text-lg font-medium text-gray-700 mb-2">Location</label>
+            <input
+              type="text"
+              className="w-full p-3 border border-gray-300 rounded-lg"
+              placeholder="Enter property location"
+              value={formData.location}
+              onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+            />
+          </div>
+
+          <div className="mb-6">
+            <label className="block text-lg font-medium text-gray-700 mb-2">Price</label>
+            <input
+              type="number"
+              className="w-full p-3 border border-gray-300 rounded-lg"
+              placeholder="Enter property price"
+              value={formData.price}
+              onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+            />
+          </div>
+
+          <div className="mb-6">
+            <label className="block text-lg font-medium text-gray-700 mb-2">Upload Photos</label>
+            <input
+              type="file"
+              name="photos"
+              multiple
+              accept="image/*"
+              className="w-full p-3 border border-gray-300 rounded-lg"
+              onChange={handleFileChange}
+            />
+          </div>
+
+          <div className="mb-6">
+            <label className="block text-lg font-medium text-gray-700 mb-2">Upload Video</label>
+            <input
+              type="file"
+              name="video"
+              className="w-full p-3 border border-gray-300 rounded-lg"
+              onChange={handleFileChange}
+            />
+          </div>
 
           <div className="text-center">
             {isPropertyOwner ? (
@@ -136,7 +193,7 @@ const PropertySales = () => {
                 </h3>
                 <button
                   onClick={handlePostListing}
-                  className="bg-red-500 text-white py-3 px-8 rounded-lg w-full md:w-auto"
+                  className="bg-red-500 text-white py-3 px-8 rounded-lg w-full sm:w-auto"
                 >
                   Pay and Post Property
                 </button>
@@ -144,7 +201,7 @@ const PropertySales = () => {
             ) : (
               <button
                 onClick={handlePostListing}
-                className="bg-red-500 text-white py-3 px-8 rounded-lg w-full md:w-auto"
+                className="bg-red-500 text-white py-3 px-8 rounded-lg w-full sm:w-auto"
               >
                 Post Property
               </button>
