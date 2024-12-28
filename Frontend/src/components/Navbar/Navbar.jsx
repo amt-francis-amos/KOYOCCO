@@ -29,7 +29,7 @@ const Navbar = () => {
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     setIsLoggedIn(!!token); // If token exists, user is logged in
-  }, []);
+  }, []); 
 
   const closeMenuOnLinkClick = () => {
     setMenuOpen(false);
@@ -39,13 +39,13 @@ const Navbar = () => {
       propertySales: false,
     });
   };
-
   const handleLogout = () => {
     localStorage.removeItem('authToken');
     setIsLoggedIn(false);
     navigate('/');
     closeMenuOnLinkClick();
   };
+
 
   // Function to hide dropdown when mouse leaves the menu
   const handleMouseLeave = (dropdown) => {
@@ -347,29 +347,30 @@ const Navbar = () => {
         </ul>
 
         {/* Desktop-Only Buttons */}
-        <div className="hidden lg:flex lg:items-center space-x-4">
-  {isLoggedIn ? (
-    <button
-      onClick={handleLogout}
-      className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black"
-    >
-      Logout
-    </button>
-  ) : (
-    <>
-      <Link to="/login">
-        <button className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black">
-          Login
-        </button>
-      </Link>
-      <Link to="/signup">
-        <button className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black">
-          Signup
-        </button>
-      </Link>
-    </>
-  )}
-</div>
+         {/* Desktop-Only Buttons */}
+         <div className="hidden lg:flex lg:items-center space-x-4">
+          {isLoggedIn ? (
+            <button
+              onClick={handleLogout}
+              className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black"
+            >
+              Logout
+            </button>
+          ) : (
+            <>
+              <Link to="/login">
+                <button className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black">
+                  Login
+                </button>
+              </Link>
+              <Link to="/signup">
+                <button className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black">
+                  Signup
+                </button>
+              </Link>
+            </>
+          )}
+        </div>
 
       </div>
     </nav>
