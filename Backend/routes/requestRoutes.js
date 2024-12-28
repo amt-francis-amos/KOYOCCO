@@ -43,6 +43,7 @@ const sendConfirmationEmails = async (userEmail, agentEmail, request) => {
     subject: 'New Airport Pickup Request',
     html: `
       <div style="text-align: center;">
+      <img src="cid:logo" style="width: 150px;" alt="Koyocco Ghana Logo" />
         <h2>New Airport Pickup Request</h2>
         <p>A new request for airport pickup has been received from ${request.userName}.</p>
         <p><strong>Vehicle:</strong> ${request.vehicleId.name}</p>
