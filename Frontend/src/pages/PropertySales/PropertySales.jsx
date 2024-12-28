@@ -95,7 +95,7 @@ const PropertySales = () => {
         <ToastContainer />
         <h1 className="text-4xl font-bold text-center mb-6">Post Property for Sale</h1>
 
-        <div className="flex justify-center mb-8">
+        <div className="flex flex-col space-y-5 justify-center mb-8">
           <button
             onClick={() => setIsPropertyOwner(true)}
             className={`py-2 px-6 rounded-lg text-lg font-semibold mr-4 ${
