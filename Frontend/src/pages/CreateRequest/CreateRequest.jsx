@@ -13,6 +13,7 @@ const CreateRequest = () => {
         vehicleId: '',
         date: '',
         location: '',
+        agentEmail: '', // Add agentEmail here
     });
 
     const [isSubmitting, setIsSubmitting] = useState(false); // Track submission state
@@ -28,8 +29,8 @@ const CreateRequest = () => {
         setIsSubmitting(true); // Set submitting state to true
         console.log('Sending request with data:', formData);
 
-        const { userName, userEmail, phone, serviceType, vehicleId, date, location } = formData;
-        if (!userName || !userEmail || !phone || !serviceType || !vehicleId || !date || !location) {
+        const { userName, userEmail, phone, serviceType, vehicleId, date, location, agentEmail } = formData;
+        if (!userName || !userEmail || !phone || !serviceType || !vehicleId || !date || !location || !agentEmail) {
             toast.error('Please fill in all fields.');
             setIsSubmitting(false); // Reset submitting state
             return;
@@ -43,7 +44,7 @@ const CreateRequest = () => {
                 // Notify the user and agent by email on success
                 await axios.post('https://koyocco-backend.onrender.com/api/requests/send-emails', {
                     userEmail,
-                    agentEmail: 'agent@example.com', // Replace with the actual agent's email
+                    agentEmail, // Send agentEmail from form data
                     userName,
                     serviceType,
                     vehicleId,
@@ -62,6 +63,7 @@ const CreateRequest = () => {
                     vehicleId: '',
                     date: '',
                     location: '',
+                    agentEmail: '', // Reset agentEmail after submission
                 });
 
                 // Redirect to the Cars page after successful submission
@@ -207,6 +209,22 @@ const CreateRequest = () => {
                         rows="4"
                         className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                     ></textarea>
+                </div>
+
+                {/* Agent Email */}
+                <div className="mb-4">
+                    <label htmlFor="agentEmail" className="block text-gray-700 font-bold mb-2">
+                        Agent Email
+                    </label>
+                    <input
+                        type="email"
+                        id="agentEmail"
+                        name="agentEmail"
+                        value={formData.agentEmail}
+                        onChange={handleChange}
+                        required
+                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    />
                 </div>
 
                 <button
