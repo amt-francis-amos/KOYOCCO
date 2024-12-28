@@ -30,6 +30,20 @@ const Navbar = () => {
     setIsLoggedIn(!!token); 
   }, []); 
 
+  
+  const updateLoginStatus = () => {
+    const token = localStorage.getItem('authToken');
+    setIsLoggedIn(!!token);
+  };
+
+ 
+  const handleLogout = () => {
+    localStorage.removeItem('authToken');
+    updateLoginStatus(); 
+    navigate('/');
+    closeMenuOnLinkClick();
+  };
+
   const closeMenuOnLinkClick = () => {
     setMenuOpen(false);
     setDropdownOpen({
@@ -37,12 +51,6 @@ const Navbar = () => {
       rental: false,
       propertySales: false,
     });
-  };
-  const handleLogout = () => {
-    localStorage.removeItem('authToken');
-    setIsLoggedIn(false);
-    navigate('/');
-    closeMenuOnLinkClick();
   };
 
 
