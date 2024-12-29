@@ -15,6 +15,15 @@ const Dashboard = () => {
         const token = localStorage.getItem("authToken");
         const role = localStorage.getItem("role");
 
+        const bookingData = {
+          propertyId: id, 
+          fullName,
+          email,
+          phoneNumber, 
+          date,
+        };
+    
+
         if (!token) {
           navigate("/login");
           return;
