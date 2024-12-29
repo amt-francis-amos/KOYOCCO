@@ -44,7 +44,7 @@ const Profile = () => {
         const formData = new FormData();
         formData.append("profileImage", imageFile);
         const imageUploadResponse = await axios.post(
-          "https://koyocco-backend.onrender.com/api/user/upload-profile-image",
+          "https://koyocco-backend.onrender.com/api/upload-profile-image",
           formData,
           config
         );
@@ -58,7 +58,7 @@ const Profile = () => {
   
       // Handle profile update (excluding password)
       const response = await axios.put(
-        "https://koyocco-backend.onrender.com/api/user/profile",
+        "https://koyocco-backend.onrender.com/api/profile",
         profileData,
         config
       );
