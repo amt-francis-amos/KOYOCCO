@@ -31,7 +31,9 @@ const Navbar = () => {
     const token = localStorage.getItem("authToken");
     setIsLoggedIn(!!token);
   
+    // Fetch user profile data if logged in
     if (token) {
+      // Replace this with your API call to fetch user data
       const fetchUserData = async () => {
         try {
           const response = await fetch("https://koyocco-backend.onrender.com/api/User/profile", {
@@ -39,8 +41,8 @@ const Navbar = () => {
           });
           const data = await response.json();
           setUserProfile({
-            profilePic: data.profilePic || assets.defaultProfilePic, // Profile image from backend
-            role: data.role || "User",
+            profilePic: data.profilePic || assets.defaultProfilePic, // Fallback to a default picture
+            role: data.role || "User", // Default role
           });
         } catch (error) {
           console.error("Failed to fetch user data:", error);
@@ -49,8 +51,7 @@ const Navbar = () => {
   
       fetchUserData();
     }
-  }, []);
-  
+  }, [isLoggedIn, userProfile.profilePic]); 
 
   const updateLoginStatus = () => {
     const token = localStorage.getItem("authToken");
