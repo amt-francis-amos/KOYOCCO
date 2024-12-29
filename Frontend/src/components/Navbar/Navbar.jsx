@@ -11,7 +11,8 @@ const Navbar = () => {
     propertySales: false,
   });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userProfilePic, setUserProfilePic] = useState(null);
+
+  const [userProfile, setUserProfile] = useState({ profilePic: "", role: "" });
 
   const navigate = useNavigate();
 
@@ -29,6 +30,27 @@ const Navbar = () => {
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     setIsLoggedIn(!!token);
+
+    // Fetch user profile data if logged in
+    if (token) {
+      // Replace this with your API call to fetch user data
+      const fetchUserData = async () => {
+        try {
+          const response = await fetch("/api/profile", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const data = await response.json();
+          setUserProfile({
+            profilePic: data.profilePic || assets.defaultProfilePic, // Fallback to a default picture
+            role: data.role || "User", // Default role
+          });
+        } catch (error) {
+          console.error("Failed to fetch user data:", error);
+        }
+      };
+
+      fetchUserData();
+    }
   }, [isLoggedIn]);
 
   const updateLoginStatus = () => {
@@ -318,30 +340,26 @@ const Navbar = () => {
           </li>
 
           {isLoggedIn && (
-            <li className="relative">
-              <div
-                className="flex items-center space-x-2 cursor-pointer"
-                onClick={goToProfile}
-              >
-                <img
-                  src={assets.houseImg1}
-                  alt="User Profile"
-                  className="w-10 h-10 rounded-full"
-                />
-                <span className="hidden lg:block text-gray-700">Agent</span>
-              </div>
+            <li className="relative flex items-center space-x-2 cursor-pointer" onClick={goToProfile}>
+              <img
+                src={userProfile.profilePic}
+                alt="User Profile"
+                className="w-10 h-10 rounded-full"
+              />
+              <span className="hidden lg:block text-gray-700">{userProfile.role}</span>
             </li>
           )}
 
           {isLoggedIn ? (
-            <li className="lg:hidden mt-4">
+            <li>
               <button
                 onClick={handleLogout}
-                className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black w-full"
+                className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black"
               >
                 Logout
               </button>
             </li>
+
           ) : (
             <>
               <li className="lg:hidden mt-4">
