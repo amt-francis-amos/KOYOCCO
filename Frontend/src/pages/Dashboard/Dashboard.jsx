@@ -29,7 +29,7 @@ const Dashboard = () => {
         const userResponse = await axios.get("https://koyocco-backend.onrender.com/api/User/profile", config);
         setUserData(userResponse.data);
 
-        if (role === "Agent" || role === "Customer") {
+        if (role === "Agent" || role === "Property Owner") {
           const bookingResponse = await axios.get("https://koyocco-backend.onrender.com/api/bookings", config);
           setBookings(bookingResponse.data);
         }
