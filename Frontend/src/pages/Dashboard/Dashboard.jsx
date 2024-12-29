@@ -30,7 +30,10 @@ const Dashboard = () => {
         setUserData(userResponse.data);
 
         if (role === "Agent" || role === "Property Owner") {
-          const bookingResponse = await axios.get("https://koyocco-backend.onrender.com/api/bookings", config);
+          const bookingResponse = await axios.get("https://koyocco-backend.onrender.com/api/bookings",   bookingData,
+          {
+            headers: { Authorization: "Bearer " + localStorage.getItem("authToken") },
+          });
           setBookings(bookingResponse.data);
 
           console.log(bookingResponse)
