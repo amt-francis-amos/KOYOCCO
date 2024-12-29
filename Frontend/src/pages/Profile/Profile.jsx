@@ -19,7 +19,7 @@ const Profile = () => {
           },
         };
 
-        const response = await axios.get("/api/user/profile", config);
+        const response = await axios.get("https://koyocco-backend.onrender.com/api/user/profile", config);
         setProfileData(response.data);
       } catch (error) {
         console.error(error);
@@ -38,31 +38,39 @@ const Profile = () => {
           Authorization: `Bearer ${token}`,
         },
       };
-
+  
       // Handle profile image upload
       if (imageFile) {
         const formData = new FormData();
         formData.append("profileImage", imageFile);
         const imageUploadResponse = await axios.post(
-          "/api/user/upload-profile-image",
+          "https://koyocco-backend.onrender.com/api/user/upload-profile-image",
           formData,
           config
         );
+  
+        // Update profile image in the profile data
         setProfileData((prevData) => ({
           ...prevData,
-          profileImage: imageUploadResponse.data.profileImage,
+          profileImage: imageUploadResponse.data.profileImage, 
         }));
       }
-
-      // Handle profile update (without password)
-      const response = await axios.put("https://koyocco-backend.onrender.com/api/user/profile", profileData, config);
-      setMessage(response.data.message);
+  
+      // Handle profile update (excluding password)
+      const response = await axios.put(
+        "https://koyocco-backend.onrender.com/api/user/profile",
+        profileData,
+        config
+      );
+  
+      setMessage(response.data.message); // Display success message
       setEditable(false);
+      setProfileData(response.data.user); // Update state with the latest profile data
     } catch (error) {
-      console.error(error);
+      console.error("Error updating profile:", error);
     }
   };
-
+  
   // Handle image change
   const handleImageChange = (e) => {
     setImageFile(e.target.files[0]);
