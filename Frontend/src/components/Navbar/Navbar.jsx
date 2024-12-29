@@ -29,9 +29,6 @@ const Navbar = () => {
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     setIsLoggedIn(!!token);
-    if (isLoggedIn) {
-      setUserProfilePic('https://via.placeholder.com/40'); 
-    }
   }, [isLoggedIn]);
 
   
@@ -327,22 +324,21 @@ const Navbar = () => {
             </Link>
           </li>
 
-         {/* Mobile-Only Buttons */}
-        {/* Profile Section - Display when logged in */}
+   
         {isLoggedIn && (
             <li className="relative">
               <div className="flex items-center space-x-2 cursor-pointer" onClick={goToProfile}>
                 <img
-                  src={userProfilePic || assets.defaultProfilePic} // Display user profile pic or default one
+                  src={assets.houseImg1} 
                   alt="User Profile"
                   className="w-10 h-10 rounded-full"
                 />
-                <span className="hidden lg:block text-gray-700">Profile</span>
+                <span className="hidden lg:block text-gray-700">Agent</span>
               </div>
             </li>
           )}
 
-          {/* Mobile-Only Buttons */}
+      
           {isLoggedIn ? (
             <li className="lg:hidden mt-4">
               <button
