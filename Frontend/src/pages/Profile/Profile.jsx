@@ -21,7 +21,7 @@ const Profile = () => {
           },
         };
 
-        const response = await axios.get("https://koyocco-backend.onrender.com/api/profile", config);
+        const response = await axios.get("https://koyocco-backend.onrender.com/api/user/profile", config);
         setProfileData(response.data);
       } catch (error) {
         setError("Failed to load profile");
@@ -49,7 +49,7 @@ const Profile = () => {
         const formData = new FormData();
         formData.append("profileImage", imageFile);
         const imageUploadResponse = await axios.post(
-          "https://koyocco-backend.onrender.com/api/upload-profile-image",
+          "https://koyocco-backend.onrender.com/api/user/upload-profile-image",
           formData,
           config
         );
