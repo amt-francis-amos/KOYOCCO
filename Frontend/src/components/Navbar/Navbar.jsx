@@ -36,7 +36,7 @@ const Navbar = () => {
       // Replace this with your API call to fetch user data
       const fetchUserData = async () => {
         try {
-          const response = await fetch("/api/profile", {
+          const response = await fetch("https://koyocco-backend.onrender.com/api/User/profile", {
             headers: { Authorization: `Bearer ${token}` },
           });
           const data = await response.json();
@@ -340,26 +340,30 @@ const Navbar = () => {
           </li>
 
           {isLoggedIn && (
-            <li className="relative flex items-center space-x-2 cursor-pointer" onClick={goToProfile}>
-              <img
+            <li className="relative">
+              <div
+                className="flex items-center space-x-2 cursor-pointer"
+                onClick={goToProfile}
+              >
+               <img
                 src={userProfile.profilePic}
                 alt="User Profile"
                 className="w-10 h-10 rounded-full"
               />
               <span className="hidden lg:block text-gray-700">{userProfile.role}</span>
+              </div>
             </li>
           )}
 
           {isLoggedIn ? (
-            <li>
+            <li className="lg:hidden mt-4">
               <button
                 onClick={handleLogout}
-                className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black"
+                className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black w-full"
               >
                 Logout
               </button>
             </li>
-
           ) : (
             <>
               <li className="lg:hidden mt-4">
