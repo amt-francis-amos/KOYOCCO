@@ -26,18 +26,20 @@ const Dashboard = () => {
           },
         };
 
+        // Fetch user data
         const userResponse = await axios.get("https://koyocco-backend.onrender.com/api/User/profile", config);
         setUserData(userResponse.data);
+        console.log("User Data:", userResponse.data); // Log user data for debugging
 
+        // Fetch bookings data if the user is an agent or property owner
         if (role === "Agent" || role === "Property Owner") {
           const bookingResponse = await axios.get("https://koyocco-backend.onrender.com/api/bookings", config);
           setBookings(bookingResponse.data);
-
-          console.log(bookingResponse);
+          console.log("Bookings Data:", bookingResponse.data); // Log bookings data for debugging
         }
       } catch (error) {
         console.error("Error fetching data:", error);
-        if (error.response.status === 401) {
+        if (error.response && error.response.status === 401) {
           navigate("/login");
         } else {
           alert("An error occurred while fetching the data.");
@@ -100,7 +102,7 @@ const Dashboard = () => {
                     onClick={() => handleBookingClick(booking)}
                   >
                     <div className="booking-card-header p-4 bg-blue-500 text-white">
-                      <h3 className="font-semibold">{booking.propertyId.name}</h3>
+                      <h3 className="font-semibold">{booking.propertyId?.name || "Property Name"}</h3>
                     </div>
                     <div className="booking-card-body p-4">
                       <p className="flex items-center mb-2">
@@ -109,7 +111,7 @@ const Dashboard = () => {
                       </p>
                       <p className="flex items-center">
                         <FaMapMarkerAlt className="mr-2" />
-                        Location: {booking.propertyId.location}
+                        Location: {booking.propertyId?.location || "Location not available"}
                       </p>
                     </div>
                   </div>
@@ -124,11 +126,11 @@ const Dashboard = () => {
           <div className="booking-details-modal fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
             <div className="modal-content bg-white p-6 rounded-lg max-w-lg w-full">
               <h2 className="text-2xl font-semibold mb-4">Booking Details</h2>
-              <p><strong>Property Name:</strong> {selectedBooking.propertyId.name}</p>
+              <p><strong>Property Name:</strong> {selectedBooking.propertyId?.name || "N/A"}</p>
               <p><strong>Full Name:</strong> {selectedBooking.fullName}</p>
               <p><strong>Email:</strong> {selectedBooking.email}</p>
               <p><strong>Phone Number:</strong> {selectedBooking.phoneNumber}</p>
-              <p><strong>Location:</strong> {selectedBooking.propertyId.location}</p>
+              <p><strong>Location:</strong> {selectedBooking.propertyId?.location || "N/A"}</p>
               <p><strong>Date:</strong> {selectedBooking.date}</p>
 
               <div className="mt-4 flex justify-end">
