@@ -3,7 +3,6 @@ import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { PropertyProvider } from "./context/PropertyContext";
-import { GoogleOAuthProvider } from '@react-oauth/google'; // Import the GoogleOAuthProvider
 import Navbar from "./components/Navbar/Navbar";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Loginpage/Login";
@@ -27,68 +26,97 @@ import PropertyStatusPage from "./pages/PropertyStatusPage/PropertyStatusPage";
 import PropertyRentals from "./pages/PropertyRentals/PropertyRentals";
 import Cars from "./pages/Cars/Cars";
 import PropertySales from "./pages/PropertySales/PropertySales";
-import Profile from "./pages/Profile/Profile";
-import Dashboard from "./pages/Dashboard/Dashboard";
+import Profile from "./pages/Profile/Profile"; // Import Profile
+import Dashboard from "./pages/Dashboard/Dashboard"; // Import Dashboard
 import ProfileUpdate from "./pages/ProfileUpdate/ProfileUpdate";
 
-function App() {
+// Function to get role from localStorage with a fallback option
+const getRoleFromLocalStorage = () => {
   const role = localStorage.getItem("role");
+  return role ? role : null;
+};
+
+function App() {
+  const role = getRoleFromLocalStorage();
 
   return (
-    <GoogleOAuthProvider clientId="fspg egax raob ffoh"> 
-      <PropertyProvider>
-        <div className="flex flex-col min-h-screen">
-          <ToastContainer position="top-right" />
-          <Navbar />
-          <main className="flex-grow">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              
-              {/* Add the Profile and Dashboard routes here */}
-              <Route
-                path="/profile"
-                element={
-                  <ProtectedRoute role={role}>
-                    <Profile />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/dashboard"
-                element={
-                  <ProtectedRoute role={role}>
-                    <Dashboard />
-                  </ProtectedRoute>
-                }
-              />
+    <PropertyProvider>
+      <div className="flex flex-col min-h-screen">
+        <ToastContainer position="top-right" />
+        <Navbar />
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            
+            {/* Add the Profile and Dashboard routes */}
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute role={role}>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute role={role}>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            
+            {/* Admin, Owner, and Agent dashboards */}
+            <Route
+              path="/adminDashboard"
+              element={
+                <ProtectedRoute role={role} requiredRoles={["admin"]}>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/ownerDashboard"
+              element={
+                <ProtectedRoute role={role} requiredRoles={["owner"]}>
+                  <OwnerDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/agentDashboard"
+              element={
+                <ProtectedRoute role={role} requiredRoles={["agent"]}>
+                  <AgentDashboard />
+                </ProtectedRoute>
+              }
+            />
 
-              {/* Existing Routes */}
-              <Route path="/adminDashboard" element={<ProtectedRoute role={role}><AdminDashboard /></ProtectedRoute>} />
-              <Route path="/ownerDashboard" element={<ProtectedRoute role={role}><OwnerDashboard /></ProtectedRoute>} />
-              <Route path="/agentDashboard" element={<ProtectedRoute role={role}><AgentDashboard /></ProtectedRoute>} />
-              <Route path="/property-status" element={<ProtectedRoute role={role}><PropertyStatusPage /></ProtectedRoute>} />
-              <Route path="/create-request" element={<CreateRequest />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/reset-password/:token" element={<ResetPassword />} />
-              <Route path="/short-stays" element={<ShortStays />} />
-              <Route path="/property-rentals" element={<PropertyRentals />} />
-              <Route path="/cars" element={<Cars />} />
-              <Route path="/booking" element={<Booking />} />
-              <Route path="/uploadProperty" element={<UploadProperty />} />
-              <Route path="/property-list" element={<PropertyList />} />
-              <Route path="/profile-update" element={<ProfileUpdate />} />
-              <Route path="/property/:id" element={<PropertyDetails />} />
-              <Route path="/sales" element={<PropertySales />} />
-              <Route path="/about" element={<AboutPage />} />
-              <Route path="*" element={<NotFoundPage />} />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
-      </PropertyProvider>
-    </GoogleOAuthProvider>
+            {/* Additional Routes */}
+            <Route path="/property-status" element={<ProtectedRoute role={role}><PropertyStatusPage /></ProtectedRoute>} />
+            <Route path="/create-request" element={<CreateRequest />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password/:token" element={<ResetPassword />} />
+            <Route path="/short-stays" element={<ShortStays />} />
+            <Route path="/property-rentals" element={<PropertyRentals />} />
+            <Route path="/cars" element={<Cars />} />
+            <Route path="/booking" element={<Booking />} />
+            <Route path="/uploadProperty" element={<UploadProperty />} />
+            <Route path="/property-list" element={<PropertyList />} />
+            <Route path="/profile-update" element={<ProfileUpdate />} />
+            <Route path="/property/:id" element={<PropertyDetails />} />
+            <Route path="/sales" element={<PropertySales />} />
+            <Route path="/about" element={<AboutPage />} />
+
+            {/* Catch-all route for non-existing pages */}
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </PropertyProvider>
   );
 }
 
