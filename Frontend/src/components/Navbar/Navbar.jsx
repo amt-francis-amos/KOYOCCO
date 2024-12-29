@@ -13,7 +13,7 @@ const Navbar = () => {
   });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const [userProfile, setUserProfile] = useState({ profilePic: "", role: "" });
+  const [userProfile, setUserProfile] = useState({ profileImage: "", role: "" });
 
   const navigate = useNavigate();
 
@@ -46,7 +46,7 @@ const Navbar = () => {
           const data = response.data;
   
           setUserProfile({
-            profilePic: data.profileImage || assets.defaultProfilePic, // Update to profileImage
+            profileImage: data.profileImage || assets.defaultProfilePic, // Update to profileImage
             role: data.role || "User", // Default role
           });
         } catch (error) {
