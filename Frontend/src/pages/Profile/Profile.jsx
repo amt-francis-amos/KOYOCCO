@@ -55,7 +55,7 @@ const Profile = () => {
       }
 
       // Handle profile update (without password)
-      const response = await axios.put("/api/user/profile", profileData, config);
+      const response = await axios.put("https://koyocco-backend.onrender.com/api/user/profile", profileData, config);
       setMessage(response.data.message);
       setEditable(false);
     } catch (error) {
