@@ -11,7 +11,7 @@ const Booking = () => {
   const [propertyId, setPropertyId] = useState("");
   const [email, setEmail] = useState("");
   const [date, setDate] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState(""); // Add phoneNumber state
+  const [phoneNumber, setPhoneNumber] = useState(""); 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -30,17 +30,17 @@ const Booking = () => {
     setError("");
     setSuccess("");
   
-    if (!fullName || !email || !date || !phoneNumber) { // Validate phoneNumber
+    if (!fullName || !email || !date || !phoneNumber) { 
       setError("All fields are required");
       return;
     }
   
     try {
       const bookingData = {
-        propertyId: id, // Use id directly instead of state
+        propertyId: id, 
         fullName,
         email,
-        phoneNumber, // Include phoneNumber in the request
+        phoneNumber, 
         date,
       };
   

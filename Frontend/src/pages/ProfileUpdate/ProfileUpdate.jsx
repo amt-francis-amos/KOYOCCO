@@ -13,7 +13,7 @@ const ProfileUpdate = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     
-    axios.get('http://localhost:5000/api/user/profile', {
+    axios.get('https://koyocco-backend.onrender.com/api/user/profile', {
       headers: {
         Authorization: `Bearer ${token}`
       }
