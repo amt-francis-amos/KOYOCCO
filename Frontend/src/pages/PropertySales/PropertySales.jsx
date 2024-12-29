@@ -72,7 +72,7 @@ const PropertySales = () => {
 
     try {
       const response = await axios.post(
-        "https://koyocco-backend.onrender.com/api/Listing/upload",
+        "https://koyocco-backend.onrender.com/api/post-listing/upload",
         formDataToSend,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
