@@ -63,7 +63,7 @@ const Profile = () => {
 
       // Handle profile update (excluding password)
       const response = await axios.put(
-        "https://koyocco-backend.onrender.com/api/profile",
+        "https://koyocco-backend.onrender.com/api/user/profile",
         profileData,
         config
       );
