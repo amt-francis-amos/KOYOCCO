@@ -5,6 +5,7 @@ import { assets } from "../../assets/assets";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { GoogleLogin } from '@react-oauth/google';
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -14,7 +15,6 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
-
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
@@ -74,7 +74,6 @@ const Login = () => {
   
       setIsAuthenticated(true); 
   
-     
       const redirectPath =
         role === "Admin"
           ? "/adminDashboard"
@@ -94,6 +93,42 @@ const Login = () => {
 
   const togglePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
+  };
+
+  // Handle Google Login
+  const handleGoogleLogin = async (response) => {
+    try {
+      const { credential } = response;
+      const res = await axios.post("https://koyocco-backend.onrender.com/api/auth/google", { credential });
+      
+      const { token, role, userId } = res.data; 
+  
+      if (!token || !role || !userId) {
+        setMessage("Google login failed: No token, role, or userId received");
+        return;
+      }
+  
+      localStorage.setItem("authToken", token);
+      localStorage.setItem("role", role);
+      localStorage.setItem("userId", userId);
+  
+      setIsAuthenticated(true);
+  
+      const redirectPath =
+        role === "Admin"
+          ? "/adminDashboard"
+          : role === "Property Owner"
+          ? "/ownerDashboard"
+          : role === "Agent"
+          ? "/agentDashboard"
+          : "/";
+  
+      toast.success("Login successful!");
+      navigate(redirectPath);
+    } catch (error) {
+      setMessage(error.response?.data?.message || "An error occurred during Google login");
+      toast.error(error.response?.data?.message || "An error occurred during Google login");
+    }
   };
 
   return (
@@ -143,10 +178,20 @@ const Login = () => {
           Login
         </button>
       </form>
+      
       {message && <p className="mt-4 text-red-500">{message}</p>}
 
+      <div className="mt-4">
+        {/* Google Sign-In Button */}
+        <GoogleLogin 
+          onSuccess={handleGoogleLogin}
+          onError={() => toast.error("Google sign-in failed.")}
+          useOneTap
+        />
+      </div>
+
       {!isAuthenticated && (
-        <div className="flex flex-col text-center justify-between mt-4 ">
+        <div className="flex flex-col text-center justify-between mt-4">
           <Link to="/forgot-password" className="text-blue-500 mb-4 text-sm hover:underline">
             Forgot your password?
           </Link>
