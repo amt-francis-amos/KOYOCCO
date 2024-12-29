@@ -8,6 +8,7 @@ const Profile = () => {
   const [message, setMessage] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState(false); // Added state for image uploading
   const [error, setError] = useState(null);
 
   // Fetching the profile on component mount
@@ -48,11 +49,13 @@ const Profile = () => {
       if (imageFile) {
         const formData = new FormData();
         formData.append("profileImage", imageFile);
+        setUploading(true);
         const imageUploadResponse = await axios.post(
           "https://koyocco-backend.onrender.com/api/User/upload-profile-image",
           formData,
           config
         );
+        setUploading(false);
 
         // Update profile image in the profile data
         setProfileData((prevData) => ({
@@ -72,6 +75,7 @@ const Profile = () => {
       setEditable(false);
       setProfileData(response.data.user); // Update state with the latest profile data
     } catch (error) {
+      setUploading(false);
       console.error("Error updating profile:", error);
     }
   };
@@ -94,13 +98,18 @@ const Profile = () => {
 
             {/* Profile Header Section */}
             <div className="flex items-center justify-center mb-8">
-              <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-blue-500 cursor-pointer">
+              <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-blue-500 cursor-pointer">
                 <img
                   src={profileData.profileImage || assets.houseImg2}
                   alt="Profile"
                   className="w-full h-full object-cover"
                   onClick={() => document.getElementById("imageInput").click()}
                 />
+                {uploading && (
+                  <div className="absolute inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
+                    <div className="loader"></div>
+                  </div>
+                )}
               </div>
               <div className="ml-6">
                 <h2 className="text-2xl font-semibold text-gray-800">
@@ -115,6 +124,7 @@ const Profile = () => {
               id="imageInput"
               type="file"
               className="hidden"
+              accept="image/*"
               onChange={handleImageChange}
             />
 

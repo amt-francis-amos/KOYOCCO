@@ -60,34 +60,30 @@ router.post("/upload-profile-image", authenticateToken, upload.single("profileIm
   }
 
   try {
-    const uploadStream = cloudinary.uploader.upload_stream(
-      { resource_type: "image", folder: "profile-images" },
-      async (error, result) => {
-        if (error) {
-          console.error("Error uploading to Cloudinary:", error);
-          return res.status(500).json({ message: "Image upload failed" });
-        }
+    const uploadResult = await new Promise((resolve, reject) => {
+      const uploadStream = cloudinary.uploader.upload_stream(
+        { resource_type: "image", folder: "profile-images" },
+        (error, result) => (error ? reject(error) : resolve(result))
+      );
+      uploadStream.end(req.file.buffer);
+    });
 
-        // Update User Profile with Cloudinary URL
-        const user = await User.findByIdAndUpdate(
-          req.user.userId,
-          { profileImage: result.secure_url },
-          { new: true }
-        ).select("-password");
+    const user = await User.findByIdAndUpdate(
+      req.user.userId,
+      { profileImage: uploadResult.secure_url },
+      { new: true }
+    ).select("-password");
 
-        if (!user) {
-          return res.status(404).json({ message: "User not found" });
-        }
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
-        res.json({ message: "Profile image uploaded successfully", profileImage: result.secure_url });
-      }
-    );
-
-    uploadStream.end(req.file.buffer);
+    res.json({ message: "Profile image uploaded successfully", profileImage: uploadResult.secure_url });
   } catch (error) {
     console.error("Error uploading profile image:", error);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "Image upload failed", error });
   }
 });
+
 
 module.exports = router;
