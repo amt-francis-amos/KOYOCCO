@@ -28,6 +28,7 @@ import Cars from "./pages/Cars/Cars";
 import PropertySales from "./pages/PropertySales/PropertySales";
 import Profile from "./pages/Profile/Profile"; // Import Profile
 import Dashboard from "./pages/Dashboard/Dashboard"; // Import Dashboard
+import ProfileUpdate from "./pages/ProfileUpdate/ProfileUpdate";
 
 function App() {
   const role = localStorage.getItem("role");
@@ -75,6 +76,7 @@ function App() {
             <Route path="/booking" element={<Booking />} />
             <Route path="/uploadProperty" element={<UploadProperty />} />
             <Route path="/property-list" element={<PropertyList />} />
+            <Route path="/profile-update" element={<ProfileUpdate />} />
             <Route path="/property/:id" element={<PropertyDetails />} />
             <Route path="/sales" element={<PropertySales />} />
             <Route path="/about" element={<AboutPage />} />
