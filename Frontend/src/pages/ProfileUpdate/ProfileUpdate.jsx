@@ -13,14 +13,14 @@ const Profile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const token = localStorage.getItem("token"); // Ensure consistent token naming
+        const token = localStorage.getItem("token");
         const config = {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         };
 
-        const response = await axios.get("https://koyocco-backend.onrender.com/api/profile", config);
+        const response = await axios.get("https://koyocco-backend.onrender.com/api/User/profile", config);
         setProfileData(response.data);
       } catch (error) {
         setError("Failed to load profile");
@@ -43,7 +43,7 @@ const Profile = () => {
       };
   
       const response = await axios.put(
-        "https://koyocco-backend.onrender.com/api/profile",
+        "https://koyocco-backend.onrender.com/api/User/profile",
         profileData, // Profile data to update
         config
       );
