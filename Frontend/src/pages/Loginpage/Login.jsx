@@ -22,11 +22,11 @@ const Login = () => {
       setIsAuthenticated(true);
       const role = localStorage.getItem("role");
       if (role === "Admin") {
-        navigate("/adminDashboard");
+        navigate("/dashboard");
       } else if (role === "Property Owner") {
-        navigate("/ownerDashboard");
+        navigate("/");
       } else if (role === "Agent") {
-        navigate("/agentDashboard");
+        navigate("/");
       }
     }
   }, [navigate]);
@@ -77,11 +77,11 @@ const Login = () => {
      
       const redirectPath =
         role === "Admin"
-          ? "/adminDashboard"
+          ? "/dashboard"
           : role === "Property Owner"
-          ? "/ownerDashboard"
+          ? "/"
           : role === "Agent"
-          ? "/agentDashboard"
+          ? "/"
           : "/";
   
       toast.success("Login successful!");
