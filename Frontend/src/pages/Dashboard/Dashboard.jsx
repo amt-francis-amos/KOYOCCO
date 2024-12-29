@@ -6,6 +6,11 @@ import { FaUser, FaCalendarAlt, FaMapMarkerAlt } from "react-icons/fa";
 const Dashboard = () => {
   const [userData, setUserData] = useState({});
   const [bookings, setBookings] = useState([]);
+  const [fullName, setFullName] = useState("");
+  const [propertyId, setPropertyId] = useState("");
+  const [email, setEmail] = useState("");
+  const [date, setDate] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [selectedBooking, setSelectedBooking] = useState(null); // State to hold selected booking details
   const navigate = useNavigate();
 
