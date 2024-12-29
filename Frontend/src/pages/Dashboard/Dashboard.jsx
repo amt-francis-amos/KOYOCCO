@@ -14,57 +14,45 @@ const Dashboard = () => {
   const [selectedBooking, setSelectedBooking] = useState(null); // State to hold selected booking details
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const token = localStorage.getItem("authToken");
-        const role = localStorage.getItem("role");
-
-        const bookingData = {
-          propertyId: id, 
-          fullName,
-          email,
-          phoneNumber, 
-          date,
-        };
-    
-
-        if (!token) {
-          navigate("/login");
-          return;
-        }
-
-        const config = {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        };
-
-        const userResponse = await axios.get("https://koyocco-backend.onrender.com/api/User/profile", config);
-        setUserData(userResponse.data);
-
-        if (role === "Agent" || role === "Property Owner") {
-          const bookingResponse = await axios.get("https://koyocco-backend.onrender.com/api/bookings",   bookingData,
-          {
-            headers: { Authorization: "Bearer " + localStorage.getItem("authToken") },
-          });
-          setBookings(bookingResponse.data);
-
-          console.log(bookingResponse)
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        if (error.response.status === 401) {
-          navigate("/login");
-        } else {
-          alert("An error occurred while fetching the data.");
-        }
+  const fetchData = async () => {
+    try {
+      const token = localStorage.getItem("authToken");
+      const role = localStorage.getItem("role");
+  
+      if (!token) {
+        navigate("/login");
+        return;
       }
-    };
-
-    fetchData();
-  }, [navigate]);
-
+  
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+  
+      const userResponse = await axios.get("https://koyocco-backend.onrender.com/api/User/profile", config);
+      setUserData(userResponse.data);
+  
+      // Ensure the id is being referenced correctly
+      const userId = userResponse.data.id;
+  
+      if (role === "Agent" || role === "Property Owner") {
+        const bookingResponse = await axios.get("https://koyocco-backend.onrender.com/api/bookings", {
+          headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
+          params: { userId }, // Pass id as part of the request params if needed
+        });
+        setBookings(bookingResponse.data);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      if (error.response.status === 401) {
+        navigate("/login");
+      } else {
+        alert("An error occurred while fetching the data.");
+      }
+    }
+  };
+  
   const handleProfileClick = () => {
     navigate("/profile");
   };
