@@ -31,10 +31,9 @@ const Navbar = () => {
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     setIsLoggedIn(!!token);
-
+  
     // Fetch user profile data if logged in
     if (token) {
-      // Replace this with your API call to fetch user data
       const fetchUserData = async () => {
         try {
           const response = await axios.get(
@@ -43,7 +42,9 @@ const Navbar = () => {
               headers: { Authorization: `Bearer ${token}` },
             }
           );
-          const data = await response.json();
+          
+          const data = response.data; // Directly use response.data
+  
           setUserProfile({
             profilePic: data.profilePic || assets.defaultProfilePic, // Fallback to a default picture
             role: data.role || "User", // Default role
@@ -52,10 +53,11 @@ const Navbar = () => {
           console.error("Failed to fetch user data:", error);
         }
       };
-
+  
       fetchUserData();
     }
-  }, [isLoggedIn, userProfile.profilePic]);
+  }, [isLoggedIn]); // Only depend on isLoggedIn, not userProfile.profilePic
+  
 
   const updateLoginStatus = () => {
     const token = localStorage.getItem("authToken");
