@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { assets } from "../../assets/assets";
 
 const Profile = () => {
   const [profileData, setProfileData] = useState({});
@@ -76,7 +77,7 @@ const Profile = () => {
         <div className="flex items-center justify-center mb-8">
           <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-blue-500 cursor-pointer">
             <img
-              src={profileData.profileImage || "https://via.placeholder.com/150"}
+              src={assets.houseImg2}
               alt="Profile"
               className="w-full h-full object-cover"
               onClick={() => document.getElementById("imageInput").click()}
