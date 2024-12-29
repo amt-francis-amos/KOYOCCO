@@ -118,23 +118,7 @@ const AboutPage = () => {
           </div>
         </section>
 
-        <section className="container mx-auto px-4 mb-12">
-          <h2 className="text-xl md:text-2xl font-semibold text-gray-800 mb-6 text-center">Follow Us</h2>
-          <div className="flex justify-center space-x-6 text-gray-700">
-            <a href="https://www.facebook.com" className="text-2xl hover:text-blue-600">
-              <FaFacebookF />
-            </a>
-            <a href="https://www.twitter.com" className="text-2xl hover:text-blue-400">
-              <FaTwitter />
-            </a>
-            <a href="https://www.instagram.com" className="text-2xl hover:text-pink-600">
-              <FaInstagram />
-            </a>
-            <a href="https://www.linkedin.com" className="text-2xl hover:text-blue-700">
-              <FaLinkedinIn />
-            </a>
-          </div>
-        </section><section className="container mx-auto px-4 mb-12">
+       <section className="container mx-auto px-4 mb-12">
   <h2 className="text-xl md:text-2xl font-semibold text-gray-800 mb-6 text-center">Follow Us</h2>
   <div className="flex justify-center space-x-6">
     <a
