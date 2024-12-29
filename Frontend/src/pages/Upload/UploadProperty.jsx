@@ -51,10 +51,10 @@ const UploadProperty = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-5 bg-white shadow-md rounded-md">
+    <div className="max-w-[500px] mx-auto mt-10 mb-20 p-5 bg-white shadow-md rounded-lg">
       <h2 className="text-xl font-bold mb-4">Upload Property</h2>
       {message && <p className="text-red-500">{message}</p>}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
           name="name"
@@ -90,7 +90,7 @@ const UploadProperty = () => {
           onChange={handleChange}
           placeholder="Location"
           required
-          className="border p-2 w-full mb-3"
+          className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
         />
         <input
           type="file"
@@ -98,16 +98,16 @@ const UploadProperty = () => {
           multiple
           onChange={handleChange}
           accept="image/*"
-          className="mb-3"
+          className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
         />
         <input
           type="file"
           name="video"
           onChange={handleChange}
           accept="video/*"
-          className="mb-3"
+          className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
         />
-        <button type="submit" className="bg-blue-500 text-white p-2 rounded w-full">Upload</button>
+        <button type="submit" className="bg-red-500 hover:bg-black text-white p-2 rounded w-full">Upload</button>
       </form>
     </div>
   );
