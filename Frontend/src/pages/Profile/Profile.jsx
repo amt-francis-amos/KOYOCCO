@@ -19,7 +19,7 @@ const Profile = () => {
           },
         };
 
-        const response = await axios.get("https://koyocco-backend.onrender.com/api/user/profile", config);
+        const response = await axios.get("https://koyocco-backend.onrender.com/api/profile", config);
         setProfileData(response.data);
       } catch (error) {
         console.error(error);
