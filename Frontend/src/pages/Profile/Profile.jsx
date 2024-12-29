@@ -103,7 +103,7 @@ const handleSave = async () => {
             <h1 className="text-3xl font-semibold text-center text-gray-800 mb-6">Your Profile</h1>
 
             {/* Profile Header Section */}
-            <div className="flex items-center justify-center mb-8">
+            <div className="flex flex-col items-center justify-center mb-8">
               <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-blue-500 cursor-pointer">
                 <img
                   src={profileData.profileImage || assets.houseImg2}
