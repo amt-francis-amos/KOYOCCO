@@ -44,7 +44,7 @@ const Navbar = () => {
           );
           
           const data = response.data;
-  
+          console.log(response.data);
           setUserProfile({
             profileImage: data.profileImage || assets.defaultProfilePic, // Update to profileImage
             role: data.role || "User", // Default role
