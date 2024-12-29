@@ -35,41 +35,28 @@ const Profile = () => {
 
   const handleSave = async () => {
     try {
-      const token = localStorage.getItem("token"); // Ensure consistent token naming
+      const token = localStorage.getItem("authToken");
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       };
-
-      if (imageFile) {
-        const formData = new FormData();
-        formData.append("profileImage", imageFile);
-        const imageUploadResponse = await axios.post(
-          "https://koyocco-backend.onrender.com/api/profile/upload-profile-image",
-          formData,
-          config
-        );
-
-        setProfileData((prevData) => ({
-          ...prevData,
-          profileImage: imageUploadResponse.data.profileImage,
-        }));
-      }
-
+  
       const response = await axios.put(
         "https://koyocco-backend.onrender.com/api/profile",
-        profileData,
+        profileData, // Profile data to update
         config
       );
-
-      setMessage(response.data.message);
+  
+      setMessage(response.data.message); // Success message
       setEditable(false);
-      setProfileData(response.data.user);
+      setProfileData(response.data.user); // Update profile with new data
     } catch (error) {
       console.error("Error updating profile:", error);
+      setMessage("Failed to update profile.");
     }
   };
+  
 
   const handleImageChange = (e) => {
     setImageFile(e.target.files[0]);
