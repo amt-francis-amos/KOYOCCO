@@ -30,9 +30,7 @@ const UploadProperty = () => {
     const formData = new FormData();
     Object.keys(propertyData).forEach((key) => {
       if (key === 'images') {
-        propertyData.images.forEach((image) => {
-          formData.append('images', image);
-        });
+        propertyData.images.forEach((image) => formData.append('images', image));
       } else if (key === 'video') {
         formData.append('video', propertyData[key]);
       } else {
@@ -41,96 +39,75 @@ const UploadProperty = () => {
     });
 
     try {
-      const response = await axios.post('https://koyocco-backend.onrender.com/api/properties/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+      const response = await axios.post('http://localhost:5000/api/properties/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
-      console.log('Upload successful:', response.data);
-    
-      setPropertyData({
-        name: '',
-        description: '',
-        price: '',
-        location: '',
-        images: [],
-        video: null,
-      });
-      setMessage('Property uploaded successfully!'); 
-      navigate('/property-list'); 
+      setMessage('Property uploaded successfully!');
+      setPropertyData({ name: '', description: '', price: '', location: '', images: [], video: null });
+      navigate('/properties');
     } catch (error) {
-      console.error('Error uploading property:', error.response ? error.response.data : error.message);
-      setMessage('Failed to upload property. Please try again.'); 
+      setMessage('Failed to upload property. Please try again.');
     }
   };
 
   return (
-    <div className="max-w-[500px] mx-auto mt-10 mb-20 p-5 bg-white shadow-md rounded-lg">
-      <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">Upload Property</h2>
-      {message && <div className="mb-4 text-red-500">{message}</div>} 
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="max-w-md mx-auto mt-10 p-5 bg-white shadow-md rounded-md">
+      <h2 className="text-xl font-bold mb-4">Upload Property</h2>
+      {message && <p className="text-red-500">{message}</p>}
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
           name="name"
-          placeholder="Property Name"
           value={propertyData.name}
           onChange={handleChange}
+          placeholder="Property Name"
           required
-          className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+          className="border p-2 w-full mb-3"
         />
         <textarea
           name="description"
-          placeholder="Description"
           value={propertyData.description}
           onChange={handleChange}
-          className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
-          rows="3"
+          placeholder="Description"
+          className="border p-2 w-full mb-3"
         />
         <div className="flex items-center space-x-2">
-          <span className="text-xl">₵</span>
+          <span>₵</span>
           <input
             type="number"
             name="price"
-            placeholder="Price"
             value={propertyData.price}
             onChange={handleChange}
+            placeholder="Price"
             required
-            className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+            className="border p-2 w-full"
           />
         </div>
         <input
           type="text"
           name="location"
-          placeholder="Location"
           value={propertyData.location}
           onChange={handleChange}
+          placeholder="Location"
           required
-          className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+          className="border p-2 w-full mb-3"
         />
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Upload Images:</label>
-          <input
-            type="file"
-            name="images"
-            multiple
-            accept="image/*"
-            onChange={handleChange}
-            className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Upload Video:</label>
-          <input
-            type="file"
-            name="video"
-            accept="video/*"
-            onChange={handleChange}
-            className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
-          />
-        </div>
-        <button type="submit" className="w-full bg-red-600 text-white font-bold rounded-md p-2 hover:bg-red-700 transition duration-200">
-          Upload Property
-        </button>
+        <input
+          type="file"
+          name="images"
+          multiple
+          onChange={handleChange}
+          accept="image/*"
+          className="mb-3"
+        />
+        <input
+          type="file"
+          name="video"
+          onChange={handleChange}
+          accept="video/*"
+          className="mb-3"
+        />
+        <button type="submit" className="bg-blue-500 text-white p-2 rounded w-full">Upload</button>
       </form>
     </div>
   );
