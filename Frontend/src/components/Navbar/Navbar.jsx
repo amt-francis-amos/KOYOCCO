@@ -323,8 +323,8 @@ const Navbar = () => {
             </Link>
           </li>
 
-          {/* Mobile-Only Buttons */}
-          {isLoggedIn ? (
+         {/* Mobile-Only Buttons */}
+         {isLoggedIn ? (
             <li className="lg:hidden mt-4">
               <button
                 onClick={handleLogout}
@@ -354,8 +354,7 @@ const Navbar = () => {
         </ul>
 
         {/* Desktop-Only Buttons */}
-         {/* Desktop-Only Buttons */}
-         <div className="hidden lg:flex lg:items-center space-x-4">
+        <div className="hidden lg:flex lg:items-center space-x-4">
           {isLoggedIn ? (
             <button
               onClick={handleLogout}
@@ -378,7 +377,6 @@ const Navbar = () => {
             </>
           )}
         </div>
-
       </div>
     </nav>
   );

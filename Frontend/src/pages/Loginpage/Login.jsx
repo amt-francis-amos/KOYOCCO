@@ -81,7 +81,7 @@ const Login = () => {
           : role === "Property Owner"
           ? "/ownerDashboard"
           : role === "Agent"
-          ? "/agentDashboard"
+          ? "/"
           : "/";
   
       toast.success("Login successful!");
