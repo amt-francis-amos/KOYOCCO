@@ -288,12 +288,6 @@ const Navbar = () => {
           </li>
 
 
-
-
-
-
-
-
           {/* Other Links */}
           <li>
             <Link
