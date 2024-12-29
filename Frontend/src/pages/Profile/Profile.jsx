@@ -7,8 +7,7 @@ const Profile = () => {
   const [message, setMessage] = useState("");
   const [imageFile, setImageFile] = useState(null);
 
-
-
+  // Fetching the profile on component mount
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -29,6 +28,7 @@ const Profile = () => {
     fetchProfile();
   }, []);
 
+  // Handle profile save (including image upload)
   const handleSave = async () => {
     try {
       const token = localStorage.getItem("authToken");
@@ -38,6 +38,7 @@ const Profile = () => {
         },
       };
 
+      // Handle profile image upload
       if (imageFile) {
         const formData = new FormData();
         formData.append("profileImage", imageFile);
@@ -52,6 +53,7 @@ const Profile = () => {
         }));
       }
 
+      // Handle profile update (without password)
       const response = await axios.put("/api/user/profile", profileData, config);
       setMessage(response.data.message);
       setEditable(false);
@@ -60,6 +62,7 @@ const Profile = () => {
     }
   };
 
+  // Handle image change
   const handleImageChange = (e) => {
     setImageFile(e.target.files[0]);
   };

@@ -8,9 +8,11 @@ const UserSchema = new mongoose.Schema({
   lastname: { type: String, required: true },
   phoneNumber: { type: String, required: true },
   location: { type: String, required: true },
+  profileImage: { type: String }, 
   resetPasswordToken: { type: String },
   resetPasswordExpires: { type: Date },
 });
+
 
 const User = mongoose.model('User', UserSchema);
 
