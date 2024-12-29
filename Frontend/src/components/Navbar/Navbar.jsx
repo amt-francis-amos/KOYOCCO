@@ -36,7 +36,7 @@ const Navbar = () => {
       // Replace this with your API call to fetch user data
       const fetchUserData = async () => {
         try {
-          const response = await fetch("https://koyocco-backend.onrender.com/api/User/profile", {
+          const response = await fetch("https://koyocco-backend.onrender.com/api/User/upload-profile-image", {
             headers: { Authorization: `Bearer ${token}` },
           });
           const data = await response.json();
