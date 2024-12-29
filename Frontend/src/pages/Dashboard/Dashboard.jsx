@@ -32,6 +32,8 @@ const Dashboard = () => {
         if (role === "Agent" || role === "Property Owner") {
           const bookingResponse = await axios.get("https://koyocco-backend.onrender.com/api/bookings", config);
           setBookings(bookingResponse.data);
+
+          console.log(bookingResponse)
         }
       } catch (error) {
         console.error("Error fetching data:", error);
