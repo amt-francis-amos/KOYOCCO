@@ -61,12 +61,11 @@ const PropertySales = () => {
     photos.forEach((photo) => formDataToSend.append("photos", photo));
     formDataToSend.append("video", video);
 
-    // For Property Owner, also include the promotion fee and subscription
     if (isPropertyOwner) {
-      formDataToSend.append("promotionFeePaid", true); // Set true for promotion
+      formDataToSend.append("promotionFeePaid", true);
       formDataToSend.append("isPropertyOwner", true);
     } else {
-      formDataToSend.append("agentSubscription", true); // Set true for agent subscription
+      formDataToSend.append("agentSubscription", true);
       formDataToSend.append("isPropertyOwner", false);
     }
 
@@ -92,8 +91,8 @@ const PropertySales = () => {
 
   const handlePaymentSuccess = () => {
     toast.success("Payment Successful! Your property has been posted.");
-    setShowPaymentForm(false); 
-    handlePostListing(); 
+    setShowPaymentForm(false);
+    handlePostListing();
   };
 
   const handlePaymentFailure = () => {
@@ -105,13 +104,13 @@ const PropertySales = () => {
     const handler = window.PaystackPop.setup({
       key: "pk_live_be305faba4d35f18862ba2e58aeaff4a1aadbaa5",
       email: "francismarkamos71@gmail.com",
-      amount: 5000, 
-      currency: "GHS", 
+      amount: 5000, // Amount in Ghana cedis (₵)
+      currency: "GHS", // Set currency to Ghanaian Cedis
       callback: handlePaymentSuccess,
       onClose: handlePaymentFailure,
     });
 
-    handler.openIframe(); // This opens the Paystack payment form
+    handler.openIframe();
   };
 
   return (
@@ -185,11 +184,11 @@ const PropertySales = () => {
           </div>
 
           <div className="mb-6">
-            <label className="block text-lg font-medium text-gray-700 mb-2">Price</label>
+            <label className="block text-lg font-medium text-gray-700 mb-2">Price (₵)</label>
             <input
               type="number"
               className="w-full p-3 border border-gray-300 rounded-lg"
-              placeholder="Enter property price"
+              placeholder="Enter property price in ₵"
               value={formData.price}
               onChange={(e) => setFormData({ ...formData, price: e.target.value })}
             />
@@ -226,7 +225,7 @@ const PropertySales = () => {
                 <button
                   onClick={() => {
                     setShowPaymentForm(true);
-                    initializePayment(); // Show Paystack payment form when clicked
+                    initializePayment();
                   }}
                   className="bg-red-500 text-white py-3 px-8 rounded-lg w-full sm:w-auto"
                 >
