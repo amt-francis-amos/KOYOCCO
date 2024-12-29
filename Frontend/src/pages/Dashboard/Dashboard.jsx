@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FaUser, FaCalendarAlt, FaMapMarkerAlt } from "react-icons/fa";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Dashboard = () => {
   const [userData, setUserData] = useState({});
@@ -29,18 +31,19 @@ const Dashboard = () => {
         // Fetch user profile data
         const userResponse = await axios.get("https://koyocco-backend.onrender.com/api/User/profile", config);
         setUserData(userResponse.data);
+        toast.success("User data fetched successfully!");
 
         // Fetch booking data if user has the required role
         if (role === "Agent" || role === "Property Owner") {
           const bookingResponse = await axios.get("https://koyocco-backend.onrender.com/api/bookings", config);
           setBookings(bookingResponse.data);
+          toast.success("Booking data fetched successfully!");
         }
       } catch (error) {
         console.error("Error fetching data:", error);
+        toast.error("Error fetching data. Please try again.");
         if (error.response && error.response.status === 401) {
           navigate("/login");
-        } else {
-          
         }
       }
     };
@@ -142,6 +145,9 @@ const Dashboard = () => {
           </div>
         )}
       </div>
+
+      {/* Toast notifications */}
+      <ToastContainer />
     </div>
   );
 };
