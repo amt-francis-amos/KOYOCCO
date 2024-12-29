@@ -16,7 +16,7 @@ const ProfileUpdate = () => {
     const token = localStorage.getItem('token');
 
     axios
-      .get('https://koyocco-backend.onrender.com/api/profile', {
+      .get('https://koyocco-backend.onrender.com/api/user/profile', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -51,7 +51,7 @@ const ProfileUpdate = () => {
     const token = localStorage.getItem('token');
 
     axios
-      .put('https://koyocco-backend.onrender.com/api/profile', formData, {
+      .put('https://koyocco-backend.onrender.com/api/user/profile', formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
