@@ -14,7 +14,6 @@ const PropertySales = () => {
     video: null,
   });
   const [error, setError] = useState("");
-  const [showPaymentForm, setShowPaymentForm] = useState(false);
 
   const handleFileChange = (e) => {
     const { name, files } = e.target;
@@ -70,7 +69,7 @@ const PropertySales = () => {
     }
 
     try {
-      const response = await axios.post(
+      await axios.post(
         "https://koyocco-backend.onrender.com/api/post-listing/upload",
         formDataToSend,
         { headers: { "Content-Type": "multipart/form-data" } }
@@ -89,25 +88,14 @@ const PropertySales = () => {
     }
   };
 
-  const handlePaymentSuccess = () => {
-    toast.success("Payment Successful! Your property has been posted.");
-    setShowPaymentForm(false);
-    handlePostListing();
-  };
-
-  const handlePaymentFailure = () => {
-    toast.error("Payment Failed! Please try again.");
-    setShowPaymentForm(false);
-  };
-
   const initializePayment = () => {
     const handler = window.PaystackPop.setup({
       key: "pk_live_be305faba4d35f18862ba2e58aeaff4a1aadbaa5",
       email: "francismarkamos71@gmail.com",
       amount: 5000, // Amount in Ghana cedis (₵)
       currency: "GHS", // Set currency to Ghanaian Cedis
-      callback: handlePaymentSuccess,
-      onClose: handlePaymentFailure,
+      callback: handlePostListing,
+      onClose: () => toast.error("Payment Failed! Please try again."),
     });
 
     handler.openIframe();
@@ -223,10 +211,7 @@ const PropertySales = () => {
                   Promotion Fee: <span className="text-green-500">₵50</span>
                 </h3>
                 <button
-                  onClick={() => {
-                    setShowPaymentForm(true);
-                    initializePayment();
-                  }}
+                  onClick={initializePayment}
                   className="bg-red-500 text-white py-3 px-8 rounded-lg w-full sm:w-auto"
                 >
                   Pay and Post Property
