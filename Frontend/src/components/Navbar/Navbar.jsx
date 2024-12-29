@@ -30,10 +30,8 @@ const Navbar = () => {
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     setIsLoggedIn(!!token);
-
-    // Fetch user profile data if logged in
+  
     if (token) {
-      // Replace this with your API call to fetch user data
       const fetchUserData = async () => {
         try {
           const response = await fetch("https://koyocco-backend.onrender.com/api/User/profile", {
@@ -41,17 +39,18 @@ const Navbar = () => {
           });
           const data = await response.json();
           setUserProfile({
-            profilePic: data.profilePic || assets.defaultProfilePic, // Fallback to a default picture
-            role: data.role || "User", // Default role
+            profilePic: data.profilePic || assets.defaultProfilePic, // Profile image from backend
+            role: data.role || "User",
           });
         } catch (error) {
           console.error("Failed to fetch user data:", error);
         }
       };
-
+  
       fetchUserData();
     }
-  }, [isLoggedIn]);
+  }, []);
+  
 
   const updateLoginStatus = () => {
     const token = localStorage.getItem("authToken");
@@ -346,9 +345,9 @@ const Navbar = () => {
                 onClick={goToProfile}
               >
                <img
-                src={userProfile.profilePic}
-                alt="User Profile"
-                className="w-10 h-10 rounded-full"
+               src={userProfile?.profilePic || assets.defaultProfilePic}
+               alt="User Profile"
+               className="w-10 h-10 rounded-full"
               />
               <span className="hidden lg:block text-gray-700">{userProfile.role}</span>
               </div>
