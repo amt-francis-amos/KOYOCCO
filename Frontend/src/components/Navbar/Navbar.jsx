@@ -30,15 +30,18 @@ const Navbar = () => {
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     setIsLoggedIn(!!token);
-  
+
     // Fetch user profile data if logged in
     if (token) {
       // Replace this with your API call to fetch user data
       const fetchUserData = async () => {
         try {
-          const response = await fetch("https://koyocco-backend.onrender.com/api/User/profile", {
-            headers: { Authorization: `Bearer ${token}` },
-          });
+          const response = await fetch(
+            "https://koyocco-backend.onrender.com/api/User/profile",
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
           const data = await response.json();
           setUserProfile({
             profilePic: data.profilePic || assets.defaultProfilePic, // Fallback to a default picture
@@ -48,10 +51,10 @@ const Navbar = () => {
           console.error("Failed to fetch user data:", error);
         }
       };
-  
+
       fetchUserData();
     }
-  }, [isLoggedIn, userProfile.profilePic]); 
+  }, [isLoggedIn, userProfile.profilePic]);
 
   const updateLoginStatus = () => {
     const token = localStorage.getItem("authToken");
@@ -345,12 +348,16 @@ const Navbar = () => {
                 className="flex items-center space-x-2 cursor-pointer"
                 onClick={goToProfile}
               >
-               <img
-               src={userProfile?.profilePic || assets.defaultProfilePic}
-               alt="User Profile"
-               className="w-10 h-10 rounded-full"
-              />
-              <span className="hidden lg:block text-gray-700">{userProfile.role}</span>
+                <img
+                  src={userProfile?.profilePic || assets.defaultProfilePic}
+                  alt="User Profile"
+                  className="w-10 h-10 rounded-full object-cover"
+                  onError={(e) => (e.target.src = assets.defaultProfilePic)} // Fallback if image fails to load
+                />
+
+                <span className="hidden lg:block text-gray-700">
+                  {userProfile.role}
+                </span>
               </div>
             </li>
           )}
