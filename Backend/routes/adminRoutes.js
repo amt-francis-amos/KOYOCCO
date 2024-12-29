@@ -4,8 +4,17 @@ const authenticateToken = require('../middleware/auth.middleware.js');
 const User = require('../models/User');
 const Booking = require('../models/Booking');
 
+// Middleware to check if the user is an admin
+const isAdmin = (req, res, next) => {
+  if (req.user && req.user.role === 'admin') {
+    next();
+  } else {
+    return res.status(403).json({ message: "Access denied. Admins only." });
+  }
+};
 
-router.get("/dashboard", authenticateToken, async (req, res) => {
+// Admin Dashboard route
+router.get("/dashboard", authenticateToken, isAdmin, async (req, res) => {
   try {
     const users = await User.find();
     const bookings = await Booking.find(); 
@@ -16,9 +25,15 @@ router.get("/dashboard", authenticateToken, async (req, res) => {
   }
 });
 
-
-router.get("/admin/users", authenticateToken, (req, res) => {
-  res.json({ message: "Manage users" });
+// Example of another admin-only route
+router.get("/admin/users", authenticateToken, isAdmin, async (req, res) => {
+  try {
+    const users = await User.find();
+    res.json({ message: "Manage users", users });
+  } catch (err) {
+    console.error('Error fetching users:', err);
+    res.status(500).json({ message: `Error fetching users: ${err.message}` });
+  }
 });
 
 module.exports = router;
