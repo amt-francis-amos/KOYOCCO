@@ -91,4 +91,43 @@ router.post('/', authenticateToken, async (req, res) => {
   }
 });
 
+
+
+
+// Booking route to fetch all bookings or specific booking
+router.get('/', authenticateToken, async (req, res) => {
+  try {
+    const { userId } = req.user; // Assume userId is retrieved from the token
+    const { bookingId } = req.query;
+
+    if (bookingId) {
+      // Fetch a specific booking
+      const booking = await Booking.findOne({ _id: bookingId, userId });
+      if (!booking) {
+        return res.status(404).json({ message: "Booking not found." });
+      }
+      res.status(200).json(booking);
+    } else {
+      // Fetch all bookings for the user
+      const bookings = await Booking.find({ userId });
+      res.status(200).json(bookings);
+    }
+  } catch (error) {
+    console.error("Error fetching bookings:", error);
+    res.status(500).json({ message: "Error fetching bookings." });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
 module.exports = router;
