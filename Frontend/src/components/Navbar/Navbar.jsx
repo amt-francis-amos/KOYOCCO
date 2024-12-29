@@ -11,6 +11,7 @@ const Navbar = () => {
     propertySales: false,
   });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userProfilePic, setUserProfilePic] = useState(null);
 
   const navigate = useNavigate();
 
@@ -27,8 +28,11 @@ const Navbar = () => {
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');
-    setIsLoggedIn(!!token); 
-  }, []); 
+    setIsLoggedIn(!!token);
+    if (isLoggedIn) {
+      setUserProfilePic('https://via.placeholder.com/40'); 
+    }
+  }, [isLoggedIn]);
 
   
   const updateLoginStatus = () => {
@@ -51,6 +55,12 @@ const Navbar = () => {
       rental: false,
       propertySales: false,
     });
+  };
+
+
+  const goToProfile = () => {
+    navigate('/profile');
+    closeMenuOnLinkClick();
   };
 
 
@@ -318,7 +328,22 @@ const Navbar = () => {
           </li>
 
          {/* Mobile-Only Buttons */}
-         {isLoggedIn ? (
+        {/* Profile Section - Display when logged in */}
+        {isLoggedIn && (
+            <li className="relative">
+              <div className="flex items-center space-x-2 cursor-pointer" onClick={goToProfile}>
+                <img
+                  src={userProfilePic || assets.defaultProfilePic} // Display user profile pic or default one
+                  alt="User Profile"
+                  className="w-10 h-10 rounded-full"
+                />
+                <span className="hidden lg:block text-gray-700">Profile</span>
+              </div>
+            </li>
+          )}
+
+          {/* Mobile-Only Buttons */}
+          {isLoggedIn ? (
             <li className="lg:hidden mt-4">
               <button
                 onClick={handleLogout}
