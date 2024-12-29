@@ -35,7 +35,7 @@ function App() {
   const role = localStorage.getItem("role");
 
   return (
-    <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID_HERE"> {/* Wrap with GoogleOAuthProvider */}
+    <GoogleOAuthProvider clientId="fspg egax raob ffoh"> 
       <PropertyProvider>
         <div className="flex flex-col min-h-screen">
           <ToastContainer position="top-right" />
