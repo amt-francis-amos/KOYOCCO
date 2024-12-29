@@ -2,28 +2,26 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
 const authenticateToken = require('../middleware/auth.middleware');
-const multer = require('multer');
-const path = require('path');
+const multer = require("multer");
+const cloudinary = require("cloudinary").v2;
+require("dotenv").config();
 
-// Set up multer for file upload
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // Specify the folder where the image will be stored
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname)); // Filename with a timestamp
-  },
+// Cloudinary Configuration
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+// Multer Configuration for Memory Storage
+const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 // Get user profile
 router.get("/profile", authenticateToken, async (req, res) => {
   try {
-    console.log("Fetching profile for User ID:", req.user.userId);
     const user = await User.findById(req.user.userId).select("-password");
     if (!user) {
-      console.error("User not found");
       return res.status(404).json({ message: "User not found" });
     }
     res.json(user);
@@ -54,23 +52,37 @@ router.put("/profile", authenticateToken, async (req, res) => {
 });
 
 // Upload profile image
-router.post("/upload-profile-image", authenticateToken, upload.single('profileImage'), async (req, res) => {
+router.post("/upload-profile-image", authenticateToken, upload.single("profileImage"), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ message: "No file uploaded" });
   }
 
   try {
-    const imagePath = `/uploads/${req.file.filename}`;
+    // Upload to Cloudinary
+    const result = await cloudinary.uploader.upload_stream(
+      { resource_type: "image", folder: "profile-images" },
+      (error, result) => {
+        if (error) {
+          console.error("Error uploading to Cloudinary:", error);
+          return res.status(500).json({ message: "Image upload failed" });
+        }
+
+        return result;
+      }
+    );
+
+    // Update User Profile with Cloudinary URL
     const user = await User.findByIdAndUpdate(
       req.user.userId,
-      { profileImage: imagePath },
+      { profileImage: result.secure_url },
       { new: true }
     ).select("-password");
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    res.json({ message: "Profile image uploaded successfully", profileImage: imagePath });
+
+    res.json({ message: "Profile image uploaded successfully", profileImage: result.secure_url });
   } catch (error) {
     console.error("Error uploading profile image:", error);
     res.status(500).json({ message: "Internal server error" });
