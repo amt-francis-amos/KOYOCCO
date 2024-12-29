@@ -43,7 +43,7 @@ const ProfileUpdate = () => {
     e.preventDefault();
     const token = localStorage.getItem('token');
     
-    axios.put('http://localhost:5000/api/user/profile', formData, {
+    axios.put('https://koyocco-backend.onrender.com/api/user/profile', formData, {
       headers: {
         Authorization: `Bearer ${token}`
       }
