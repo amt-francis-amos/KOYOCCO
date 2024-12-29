@@ -43,10 +43,10 @@ const Navbar = () => {
             }
           );
           
-          const data = response.data; // Directly use response.data
+          const data = response.data;
   
           setUserProfile({
-            profilePic: data.profilePic || assets.defaultProfilePic, // Fallback to a default picture
+            profilePic: data.profileImage || assets.defaultProfilePic, // Update to profileImage
             role: data.role || "User", // Default role
           });
         } catch (error) {
@@ -56,7 +56,7 @@ const Navbar = () => {
   
       fetchUserData();
     }
-  }, [isLoggedIn]); // Only depend on isLoggedIn, not userProfile.profilePic
+  }, [isLoggedIn]); // Only depend on isLoggedIn
   
 
   const updateLoginStatus = () => {
@@ -352,7 +352,7 @@ const Navbar = () => {
                 onClick={goToProfile}
               >
                 <img
-                  src={userProfile?.profilePic || assets.defaultProfilePic}
+                  src={userProfile?.profileImage || assets.defaultProfilePic}
                   alt="User Profile"
                   className="w-10 h-10 rounded-full object-cover"
                   onError={(e) => (e.target.src = assets.defaultProfilePic)} // Fallback if image fails to load
