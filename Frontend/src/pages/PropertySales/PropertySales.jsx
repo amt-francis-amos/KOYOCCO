@@ -15,15 +15,21 @@ const PropertySales = () => {
   });
   const [error, setError] = useState("");
   const [showPaymentForm, setShowPaymentForm] = useState(false);
+  const [imagePreviews, setImagePreviews] = useState([]); // Store image previews
 
   const handleFileChange = (e) => {
     const { name, files } = e.target;
 
     if (name === "photos") {
+      const newFiles = [...files];
       setFormData((prevData) => ({
         ...prevData,
-        photos: [...prevData.photos, ...files],
+        photos: [...prevData.photos, ...newFiles],
       }));
+
+      // Generate preview URLs for the selected images
+      const previews = newFiles.map((file) => URL.createObjectURL(file));
+      setImagePreviews((prevPreviews) => [...prevPreviews, ...previews]);
     } else if (name === "video") {
       setFormData((prevData) => ({
         ...prevData,
@@ -85,6 +91,7 @@ const PropertySales = () => {
         photos: [],
         video: null,
       });
+      setImagePreviews([]); // Clear image previews after successful upload
     } catch (error) {
       toast.error("Failed to upload property. Please try again.");
     }
@@ -197,6 +204,15 @@ const PropertySales = () => {
 
           <div className="mb-6">
             <label className="block text-lg font-medium text-gray-700 mb-2">Upload Photos</label>
+            {imagePreviews.length > 0 && (
+              <div className="flex flex-wrap gap-4 mb-4">
+                {imagePreviews.map((preview, index) => (
+                  <div key={index} className="w-24 h-24 bg-gray-200 rounded-lg overflow-hidden">
+                    <img src={preview} alt={`Preview ${index}`} className="object-cover w-full h-full" />
+                  </div>
+                ))}
+              </div>
+            )}
             <input
               type="file"
               name="photos"
@@ -242,6 +258,12 @@ const PropertySales = () => {
               </button>
             )}
           </div>
+
+          {showPaymentForm && (
+            <div className="mt-6 text-center">
+              <p className="text-gray-700">Please complete your payment to post your property.</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
