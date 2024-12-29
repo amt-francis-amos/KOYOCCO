@@ -91,24 +91,22 @@ const PropertySales = () => {
   };
 
   const handlePaymentSuccess = () => {
-    // Payment successful callback
     toast.success("Payment Successful! Your property has been posted.");
-    setShowPaymentForm(false); // Close the Paystack payment form
-    handlePostListing(); // Continue to post the listing after payment success
+    setShowPaymentForm(false); 
+    handlePostListing(); 
   };
 
   const handlePaymentFailure = () => {
-    // Payment failure callback
     toast.error("Payment Failed! Please try again.");
     setShowPaymentForm(false);
   };
 
   const initializePayment = () => {
     const handler = window.PaystackPop.setup({
-      key: "pk_live_be305faba4d35f18862ba2e58aeaff4a1aadbaa5", // Replace with your Paystack public key
-      email: "francismarkamos71@gmail.com", // Replace with property owner's email
-      amount: 5000, // Amount in kobo (e.g., 5000 kobo = 50 GHS)
-      currency: "GHS", // Specify the currency
+      key: "pk_live_be305faba4d35f18862ba2e58aeaff4a1aadbaa5",
+      email: "francismarkamos71@gmail.com",
+      amount: 5000, 
+      currency: "GHS", 
       callback: handlePaymentSuccess,
       onClose: handlePaymentFailure,
     });
