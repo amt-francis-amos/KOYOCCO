@@ -30,10 +30,10 @@ const Dashboard = () => {
         setUserData(userResponse.data);
 
         if (role === "Agent" || role === "Property Owner") {
-          const bookingResponse = await axios.get("https://koyocco-backend.onrender.com/api/bookings");
+          const bookingResponse = await axios.get("https://koyocco-backend.onrender.com/api/bookings", config);
           setBookings(bookingResponse.data);
 
-          console.log(bookingResponse)
+          console.log(bookingResponse);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -90,27 +90,31 @@ const Dashboard = () => {
           <div className="bookings">
             <h2 className="text-2xl font-semibold text-gray-800 mb-4">Your Bookings</h2>
             <div className="booking-list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {bookings.map((booking) => (
-                <div
-                  key={booking._id}
-                  className="booking-card bg-white shadow-md rounded-lg overflow-hidden cursor-pointer"
-                  onClick={() => handleBookingClick(booking)}
-                >
-                  <div className="booking-card-header p-4 bg-blue-500 text-white">
-                    <h3 className="font-semibold">{booking.propertyId.name}</h3>
+              {bookings.length === 0 ? (
+                <p>No bookings found.</p>
+              ) : (
+                bookings.map((booking) => (
+                  <div
+                    key={booking._id}
+                    className="booking-card bg-white shadow-md rounded-lg overflow-hidden cursor-pointer"
+                    onClick={() => handleBookingClick(booking)}
+                  >
+                    <div className="booking-card-header p-4 bg-blue-500 text-white">
+                      <h3 className="font-semibold">{booking.propertyId.name}</h3>
+                    </div>
+                    <div className="booking-card-body p-4">
+                      <p className="flex items-center mb-2">
+                        <FaCalendarAlt className="mr-2" />
+                        Date: {booking.date}
+                      </p>
+                      <p className="flex items-center">
+                        <FaMapMarkerAlt className="mr-2" />
+                        Location: {booking.propertyId.location}
+                      </p>
+                    </div>
                   </div>
-                  <div className="booking-card-body p-4">
-                    <p className="flex items-center mb-2">
-                      <FaCalendarAlt className="mr-2" />
-                      Date: {booking.date}
-                    </p>
-                    <p className="flex items-center">
-                      <FaMapMarkerAlt className="mr-2" />
-                      Location: {booking.propertyId.location}
-                    </p>
-                  </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </div>
         )}

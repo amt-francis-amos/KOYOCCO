@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 
-
 const Booking = () => {
   const location = useLocation();
   const { name, price, location: stayLocation, id } = location.state;
@@ -70,7 +69,6 @@ const Booking = () => {
       console.error(err);
     }
   };
-  
 
   return (
     <div className="max-w-[800px] mx-auto py-12">
