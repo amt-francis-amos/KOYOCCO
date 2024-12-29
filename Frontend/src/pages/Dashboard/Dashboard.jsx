@@ -25,17 +25,19 @@ const Dashboard = () => {
           },
         };
 
-        const userResponse = await axios.get("/api/user/profile", config);
-        setUserData(userResponse.data);
+        const userResponse = await axios.get("https://koyocco-backend.onrender.com/api/User/profile", config);
+        setUserData(userResponse.data); // Set the user data
 
-        if (role === "Customer") {
-          const bookingResponse = await axios.get("/api/user/bookings", config);
-          setBookings(bookingResponse.data);
+        if (role === "Agent") {
+          const bookingResponse = await axios.get("https://koyocco-backend.onrender.com/api/bookings", config);
+          setBookings(bookingResponse.data); // Set the bookings data
         }
       } catch (error) {
-        console.error(error);
+        console.error("Error fetching data:", error);
         if (error.response.status === 401) {
           navigate("/login");
+        } else {
+          alert("An error occurred while fetching the data.");
         }
       }
     };
@@ -54,7 +56,7 @@ const Dashboard = () => {
         <ul>
           <li
             className="mb-4 hover:bg-gray-700 p-2 rounded cursor-pointer"
-            onClick={handleProfileClick} // Add click handler here
+            onClick={handleProfileClick}
           >
             <FaUser className="inline-block mr-2" />
             Profile
@@ -80,7 +82,7 @@ const Dashboard = () => {
               {bookings.map((booking) => (
                 <div key={booking._id} className="booking-card bg-white shadow-md rounded-lg overflow-hidden">
                   <div className="booking-card-header p-4 bg-blue-500 text-white">
-                    <h3 className="font-semibold">{booking.propertyName}</h3>
+                    <h3 className="font-semibold">{booking.propertyId.name}</h3> {/* Assuming you populate 'propertyId' */}
                   </div>
                   <div className="booking-card-body p-4">
                     <p className="flex items-center mb-2">
@@ -89,7 +91,7 @@ const Dashboard = () => {
                     </p>
                     <p className="flex items-center">
                       <FaMapMarkerAlt className="mr-2" />
-                      Location: {booking.location}
+                      Location: {booking.propertyId.location} {/* Assuming you populate location */}
                     </p>
                   </div>
                 </div>
