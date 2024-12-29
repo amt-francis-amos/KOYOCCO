@@ -13,7 +13,7 @@ const ProfileUpdate = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     
-    axios.get('https://koyocco-backend.onrender.com/api/user/profile', {
+    axios.get('https://koyocco-backend.onrender.com/api/profile', {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -43,7 +43,7 @@ const ProfileUpdate = () => {
     e.preventDefault();
     const token = localStorage.getItem('token');
     
-    axios.put('https://koyocco-backend.onrender.com/api/user/profile', formData, {
+    axios.put('https://koyocco-backend.onrender.com/api/profile', formData, {
       headers: {
         Authorization: `Bearer ${token}`
       }
