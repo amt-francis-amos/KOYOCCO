@@ -152,7 +152,7 @@ const Signup = () => {
             {message && <p className="text-red-500 text-xs italic">{message}</p>}
             <button
               type="submit"
-              className="w-full bg-red-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-blue-600"
+              className="w-full bg-red-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-black"
             >
               Signup
             </button>

@@ -5,6 +5,7 @@ import { FaBars, FaTimes, FaChevronDown } from "react-icons/fa";
 import axios from 'axios'
 
 const Navbar = () => {
+  
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState({
     shortStays: false,
@@ -46,8 +47,8 @@ const Navbar = () => {
           const data = response.data;
           console.log(response.data);
           setUserProfile({
-            profileImage: data.profileImage || assets.defaultProfilePic, // Update to profileImage
-            role: data.role || "User", // Default role
+            profileImage: data.profileImage || assets.defaultProfilePic, 
+            role: data.role || "User", 
           });
         } catch (error) {
           console.error("Failed to fetch user data:", error);
@@ -56,7 +57,7 @@ const Navbar = () => {
   
       fetchUserData();
     }
-  }, [isLoggedIn]); // Only depend on isLoggedIn
+  }, [isLoggedIn]);
   
 
   const updateLoginStatus = () => {

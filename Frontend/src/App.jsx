@@ -14,9 +14,6 @@ import CreateRequest from "./pages/CreateRequest/CreateRequest";
 import PropertyList from "./pages/PropertyList/PropertyList";
 import ShortStays from "./pages/ShortStay/ShortStays";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
-import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
-import OwnerDashboard from "./pages/PropertyOwner/OwnerDashboard";
-import AgentDashboard from "./pages/AgentDashboard/AgentDashboard";
 import PropertyDetails from "./pages/PropertyDetails/PropertyDetails";
 import Booking from "./pages/Booking/Booking";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
@@ -26,11 +23,10 @@ import PropertyStatusPage from "./pages/PropertyStatusPage/PropertyStatusPage";
 import PropertyRentals from "./pages/PropertyRentals/PropertyRentals";
 import Cars from "./pages/Cars/Cars";
 import PropertySales from "./pages/PropertySales/PropertySales";
-import Profile from "./pages/Profile/Profile"; // Import Profile
-import Dashboard from "./pages/Dashboard/Dashboard"; // Import Dashboard
+import Profile from "./pages/Profile/Profile";
 import ProfileUpdate from "./pages/ProfileUpdate/ProfileUpdate";
 
-// Function to get role from localStorage with a fallback option
+
 const getRoleFromLocalStorage = () => {
   const role = localStorage.getItem("role");
   return role ? role : null;
@@ -59,41 +55,10 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute role={role}>
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
+         
             
-            {/* Admin, Owner, and Agent dashboards */}
-            <Route
-              path="/adminDashboard"
-              element={
-                <ProtectedRoute role={role} requiredRoles={["admin"]}>
-                  <AdminDashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/ownerDashboard"
-              element={
-                <ProtectedRoute role={role} requiredRoles={["owner"]}>
-                  <OwnerDashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/agentDashboard"
-              element={
-                <ProtectedRoute role={role} requiredRoles={["agent"]}>
-                  <AgentDashboard />
-                </ProtectedRoute>
-              }
-            />
-
+           
+          
             {/* Additional Routes */}
             <Route path="/property-status" element={<ProtectedRoute role={role}><PropertyStatusPage /></ProtectedRoute>} />
             <Route path="/create-request" element={<CreateRequest />} />

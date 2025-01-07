@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const authenticateToken = (req, res, next) => {
+const authUser = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(401).json({ message: 'Invalid authorization header format' });
@@ -28,4 +28,4 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
-module.exports = authenticateToken;
+module.exports = authUser;

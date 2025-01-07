@@ -2,12 +2,10 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
-const Booking = require("../models/Booking"); 
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
 const path = require("path");
 require("dotenv").config();
-
 const router = express.Router();
 
 
@@ -146,9 +144,9 @@ router.post("/login", async (req, res) => {
 
     // Respond with token, role, and userId
     res.status(200).json({
-      token,          // JWT token
-      role: user.role, // User's role (Admin, Agent, etc.)
-      userId: user._id // User's ID (useful for client-side logic)
+      token,         
+      role: user.role, 
+      userId: user._id 
     });
   } catch (error) {
     console.error("Login error:", error);
@@ -218,18 +216,6 @@ router.post("/reset-password/:token", async (req, res) => {
 });
 
 
-// Admin Log Route
-router.get("/admin/logs", async (req, res) => {
-  try {
-    const users = await User.find({}, 'firstname lastname email signupLog loginLog');
-    const bookings = await Booking.find().populate('userId', 'firstname lastname email');
-
-    res.status(200).json({ users, bookings });
-  } catch (error) {
-    console.error("Error fetching logs:", error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-});
 
 
 

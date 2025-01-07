@@ -3,13 +3,14 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const mongoDb = require('./config/mongoDb.js');
-const authRoutes = require('./routes/authRoutes');
+const userRoutes = require('./routes/userRoutes');
 const propertyRoutes = require('./routes/propertyRoutes'); 
 const bookingRoutes = require('./routes/bookingRoutes');
 const requestRoutes = require('./routes/requestRoutes');
 const listingRoutes = require("./routes/listingRoutes");
 const adminRoutes = require('./routes/adminRoutes');
 const profileRoutes = require("./routes/profileRoutes");
+const userRouter = require('./routes/userRoutes');
 
 
 
@@ -26,13 +27,15 @@ app.use(express.json());
 mongoDb();
 
 // Routes
-app.use('/api/auth', authRoutes);
+app.use('/api/auth', userRoutes);
 app.use('/api/properties', propertyRoutes); 
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/requests', requestRoutes);
 app.use('/api/post-listing', listingRoutes);
 app.use('/api/admin', adminRoutes);
 app.use("/api/User", profileRoutes);
+app.use('/api/user', userRouter)
+
 
 
 
