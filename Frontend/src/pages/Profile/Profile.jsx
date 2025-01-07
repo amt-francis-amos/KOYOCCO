@@ -40,7 +40,6 @@ const Profile = () => {
   }, []);
   
 
-  // Handle profile save (including image upload)
   // Inside Profile.js
 const handleSave = async () => {
   try {
