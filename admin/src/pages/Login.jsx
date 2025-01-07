@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import { assets } from "../assets/assets.js";
 import { AdminContext } from "../context/AdminContext.jsx";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -23,8 +22,7 @@ const Login = () => {
 
         const { data } = response;
 
-        // Log the response data to inspect it
-        console.log(data);
+        console.log(data); // Debugging log
 
         if (data.success) {
           const token = data.message; // Check if this is the token
@@ -40,7 +38,6 @@ const Login = () => {
         }
       }
     } catch (error) {
-      // Log the error response for debugging
       console.error(error.response?.data || error.message);
       toast.error(error.response?.data?.message || "Something went wrong.");
     }
