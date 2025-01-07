@@ -14,6 +14,11 @@ const loginAdmin = async (req, res) => {
       });
     }
 
+    console.log("Received Email:", email);
+    console.log("Received Password:", password);
+    console.log("Expected Email:", process.env.ADMIN_EMAIL);
+    console.log("Expected Password:", process.env.ADMIN_PASSWORD);
+
     if (
       email === process.env.ADMIN_EMAIL &&
       password === process.env.ADMIN_PASSWORD
@@ -21,11 +26,10 @@ const loginAdmin = async (req, res) => {
       const token = jwt.sign({ email }, process.env.JWT_SECRET, {
         expiresIn: "1h",
       });
-
       return res.json({
         success: true,
         message: "Login successful",
-        token, // Ensure token is part of the response
+        token, // Ensure 'token' is included in the response
       });
     }
 

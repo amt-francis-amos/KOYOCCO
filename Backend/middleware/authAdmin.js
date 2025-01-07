@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 
 const authAdmin = async (req, res, next) => {
   try {
-    const atoken = req.headers.authorization?.split(" ")[1]; // Bearer token
+    const atoken = req.headers.authorization?.split(" ")[1]; // Extract Bearer token
 
     if (!atoken) {
       return res.status(401).json({
@@ -12,7 +12,9 @@ const authAdmin = async (req, res, next) => {
     }
 
     const decodedToken = jwt.verify(atoken, process.env.JWT_SECRET);
-    if (decodedToken.email !== process.env.ADMIN_EMAIL) {
+    console.log("Decoded Token:", decodedToken); // Debugging
+
+    if (!decodedToken || decodedToken.email !== process.env.ADMIN_EMAIL) {
       return res.status(403).json({
         success: false,
         message: "Forbidden. Invalid Token.",
