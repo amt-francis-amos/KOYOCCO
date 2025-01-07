@@ -45,29 +45,6 @@ const loginAdmin = async (req, res) => {
   }
 };
 
-// Existing user login
-const loginUser = async (req, res) => {
-  try {
-    const { email, password } = req.body;
 
-    const user = await UserModel.findOne({ email });  // Corrected reference to UserModel
 
-    if (!user) {
-      return res.json({ success: false, message: 'User does not exist' });
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);  // Corrected bcrypt usage
-
-    if (isMatch) {
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-      return res.json({ success: true, token });
-    } else {
-      return res.json({ success: false, message: 'Invalid credentials' });
-    }
-  } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: error.message });
-  }
-};
-
-export { loginAdmin, loginUser };
+export { loginAdmin};
