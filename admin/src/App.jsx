@@ -10,12 +10,12 @@ import Sidebar from "./components/Sidebar";
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Check if the token exists in localStorage and is valid
+
   useEffect(() => {
     const token = localStorage.getItem("token");
 
     if (token) {
-      // Validate token with the backend (you may want to add a refresh token system here)
+
       axios
         .get("https://koyocco-backend.onrender.com/api/admin/dashboard", {
           headers: {
@@ -46,7 +46,7 @@ const App = () => {
               isAuthenticated ? (
                 <Dashboard />
               ) : (
-                <Navigate to="/login" replace /> // Redirect to login if not authenticated
+                <Navigate to="/login" replace /> 
               )
             }
           />
