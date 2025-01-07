@@ -3,44 +3,24 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
+// -- API FOR ADMIN LOGIN
+
 const loginAdmin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    console.log("Incoming request:", { email, password });
-    console.log("Expected credentials:", {
-      email: process.env.ADMIN_EMAIL,
-      password: process.env.ADMIN_PASSWORD,
-    });
-
-    // Validate input
-    if (!email || !password) {
-      return res.status(400).json({
-        success: false,
-        message: "Email and password are required",
-      });
-    }
-
-    // Check if credentials match the admin account
     if (
       email === process.env.ADMIN_EMAIL &&
       password === process.env.ADMIN_PASSWORD
     ) {
-      const token = jwt.sign({ email }, process.env.JWT_SECRET, {
-        expiresIn: "1h",
-      });
-      console.log("Login successful, token generated:", token);
-      return res.json({ success: true, token });
+      const token = jwt.sign(email + password, process.env.JWT_SECRET);
+      res.json({ success: true, message: token });
+    } else {
+      res.json({ success: false, message: "Invalid Credentials" });
     }
-
-    console.log("Invalid credentials");
-    return res.status(401).json({
-      success: false,
-      message: "Invalid email or password",
-    });
   } catch (error) {
-    console.error("Login error:", error);
-    res.status(500).json({ success: false, message: "Server Error" });
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
