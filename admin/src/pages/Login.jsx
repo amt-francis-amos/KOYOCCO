@@ -15,30 +15,34 @@ const Login = () => {
 
     try {
       if (state === "Admin") {
+        console.log("Submitting with email:", email, "and password:", password); // Debugging
         const response = await axios.post(
-          "https://koyocco-backend.onrender.com/api/admin/login",
+          "https://koyocco-backend.onrender.com/api/admin/register",
           { email, password }
         );
 
-        console.log("Response:", response);
-
         const { data } = response;
+        console.log("Response Data:", data); // Debugging
+
         if (data.success) {
-          const token = data.token; // Updated to fetch 'token'
+          const token = data.token; // Ensure token exists
           if (token) {
             localStorage.setItem("aToken", token);
             setAToken(token);
             toast.success("Login successful!");
+          } else {
+            toast.error("Token not found in response!");
           }
         } else {
           toast.error(data.message || "Login failed");
         }
       }
     } catch (error) {
-      console.error("Error:", error.response ? error.response.data : error.message);
-      toast.error(
-        error.response ? error.response.data.message : "An error occurred"
-      );
+      // Detailed error handling
+      const errorMessage =
+        error.response?.data?.message || "An unexpected error occurred";
+      console.error("Error:", error.response || error.message); // Debugging
+      toast.error(errorMessage);
     }
   };
 
@@ -55,6 +59,7 @@ const Login = () => {
               className="border border-[#DADADA] rounded w-full outline-none p-2 mt-1"
               type="email"
               required
+              placeholder="Enter your email"
               onChange={(e) => setEmail(e.target.value)}
               value={email}
             />
@@ -65,11 +70,15 @@ const Login = () => {
               className="border border-[#DADADA] rounded w-full outline-none p-2 mt-1"
               type="password"
               required
+              placeholder="Enter your password"
               onChange={(e) => setPassword(e.target.value)}
               value={password}
             />
           </div>
-          <button className="bg-red-500 w-full py-2 text-white rounded text-base">
+          <button
+            className="bg-red-500 w-full py-2 text-white rounded text-base"
+            type="submit"
+          >
             Login
           </button>
           {state === "Admin" ? (

@@ -19,6 +19,8 @@ const authAdmin = async (req, res, next) => {
         success: false,
         message: "Forbidden. Invalid Token.",
       });
+
+      
     }
 
     next();
