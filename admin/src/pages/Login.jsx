@@ -19,21 +19,32 @@ const Login = () => {
   
     try {
       if (state === "Admin") {
-        const response = await axios.post( "https://koyocco-backend.onrender.com/api/admin/login", { email, password });
+        const response = await axios.post(
+          "https://koyocco-backend.onrender.com/api/admin/login",
+          { email, password }
+        );
+  
+        console.log("Response:", response);
   
         const { data } = response;
+        console.log("Response Data:", data);
   
         if (data.success) {
           const token = data.message;
           if (token) {
             localStorage.setItem("aToken", token);
             setAToken(token);
-           
-          }  } else {
-          toast.error(data.message);
+            toast.success("Login successful!");
+          }
+        } else {
+          toast.error(data.message || "Login failed");
         }
       }
     } catch (error) {
+      console.error("Error:", error.response ? error.response.data : error.message);
+      toast.error(
+        error.response ? error.response.data.message : "An error occurred"
+      );
     }
   };
   
