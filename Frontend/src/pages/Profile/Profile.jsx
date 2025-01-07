@@ -8,7 +8,7 @@ const Profile = () => {
   const [message, setMessage] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [uploading, setUploading] = useState(false); // Added state for image uploading
+  const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(null);
 
   // Fetching the profile on component mount
@@ -16,6 +16,14 @@ const Profile = () => {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem("authToken");
+
+        // Check if token exists
+        if (!token) {
+          setError("You are not logged in. Please log in again.");
+          window.location.href = "/login"; // Redirect to login if no token
+          return;
+        }
+
         const config = {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -23,9 +31,11 @@ const Profile = () => {
         };
 
         const response = await axios.get("https://koyocco-backend.onrender.com/api/User/profile", config);
+
+        // Successfully fetched profile data
         setProfileData(response.data);
       } catch (error) {
-        setError("Failed to load profile");
+        setError("Failed to load profile. Not authorized, please log in again.");
         console.error(error);
       } finally {
         setLoading(false);
@@ -36,55 +46,57 @@ const Profile = () => {
   }, []);
 
   // Handle profile save (including image upload)
-  // Inside Profile.js
-const handleSave = async () => {
-  try {
-    const token = localStorage.getItem("authToken");
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
+  const handleSave = async () => {
+    try {
+      const token = localStorage.getItem("authToken");
 
-    // Handle profile image upload
-    if (imageFile) {
-      const formData = new FormData();
-      formData.append("profileImage", imageFile);
-      setUploading(true);
-      const imageUploadResponse = await axios.post(
-        "https://koyocco-backend.onrender.com/api/User/upload-profile-image",
-        formData,
+      // Check if token exists
+      if (!token) {
+        setError("You are not logged in. Please log in again.");
+        window.location.href = "/login"; // Redirect to login if no token
+        return;
+      }
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      // Handle profile image upload
+      if (imageFile) {
+        const formData = new FormData();
+        formData.append("profileImage", imageFile);
+        setUploading(true);
+        const imageUploadResponse = await axios.post(
+          "https://koyocco-backend.onrender.com/api/User/upload-profile-image",
+          formData,
+          config
+        );
+        setUploading(false);
+
+        // Update profile image in the profile data
+        setProfileData((prevData) => ({
+          ...prevData,
+          profileImage: imageUploadResponse.data.profileImage,
+        }));
+      }
+
+      // Handle profile update (excluding password)
+      const response = await axios.put(
+        "https://koyocco-backend.onrender.com/api/User/profile",
+        profileData,
         config
       );
+
+      setMessage(response.data.message); // Display success message
+      setEditable(false);
+      setProfileData(response.data.user); // Update state with the latest profile data
+    } catch (error) {
       setUploading(false);
-
-      // Update profile image in the profile data
-      setProfileData((prevData) => ({
-        ...prevData,
-        profileImage: imageUploadResponse.data.profileImage,
-      }));
-
-      // Notify the Navbar component to update the profile picture
-      // This could be done via Context API or re-fetching logic
-      setProfilePic(imageUploadResponse.data.profileImage);  // Assuming you have a setter in Navbar
+      console.error("Error updating profile:", error);
     }
-
-    // Handle profile update (excluding password)
-    const response = await axios.put(
-      "https://koyocco-backend.onrender.com/api/User/profile",
-      profileData,
-      config
-    );
-
-    setMessage(response.data.message); // Display success message
-    setEditable(false);
-    setProfileData(response.data.user); // Update state with the latest profile data
-  } catch (error) {
-    setUploading(false);
-    console.error("Error updating profile:", error);
-  }
-};
-
+  };
 
   // Handle image change
   const handleImageChange = (e) => {
