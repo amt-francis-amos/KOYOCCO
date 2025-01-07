@@ -1,23 +1,27 @@
 const jwt = require("jsonwebtoken");
 
-//  ADMIN AUTHENTICATION MIDDLEWARE
-
+// --ADMIN AUTHENTICATION MIDDLEWARE
 const authAdmin = async (req, res, next) => {
   try {
-    const { atoken } = req.headers;
-
+    const atoken = req.headers.authorization?.split(" ")[1]; // Expect "Bearer <token>"
     if (!atoken) {
-      return res.json({ success: false, message: "Not Authorized Login Again" });
+      return res.status(401).json({ success: false, message: "Authorization token is required" });
     }
-     const token_decode = jwt.verify(atoken, process.env.JWT_SECRET);
-    if(token_decode !== process.env.ADMIN_EMAIL+process.env.ADMIN_PASSWORD) {
-        return res.json({ success: false, message: "Not Authorized Login Again" });       
+
+    const tokenDecode = jwt.verify(atoken, process.env.JWT_SECRET);
+
+    // Validate token payload
+    if (tokenDecode.email !== process.env.ADMIN_EMAIL) {
+      return res.status(403).json({ success: false, message: "Not Authorized. Invalid credentials" });
     }
-     next();
+
+    // Token is valid
+    req.admin = tokenDecode; // Optional: attach the payload to `req` for downstream use
+    next();
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, message: error.message });
+    console.error("Authentication error:", error);
+    res.status(401).json({ success: false, message: "Invalid or expired token" });
   }
 };
 
-export default authAdmin;
+module.exports = authAdmin;
