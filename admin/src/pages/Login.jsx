@@ -1,13 +1,9 @@
 import React, { useContext, useState } from "react";
-import { assets } from "../assets/assets.js";
-import { AdminContext } from "../context/AdminContext.jsx";
-import axios from "axios";
 import { toast } from "react-toastify";
-
+import axios from "axios";
+import { AdminContext } from "../context/AdminContext.jsx";
 
 const Login = () => {
-
-
   const [state, setState] = useState("Admin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,38 +12,32 @@ const Login = () => {
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
-  
+
     try {
       if (state === "Admin") {
         const response = await axios.post(
           "https://koyocco-backend.onrender.com/api/admin/login",
           { email, password }
         );
-  
-        console.log("Response:", response);
-  
+
         const { data } = response;
-        console.log("Response Data:", data);
-  
+
         if (data.success) {
-          const token = data.message;
+          const token = data.token; // Ensure this matches backend response
           if (token) {
             localStorage.setItem("aToken", token);
             setAToken(token);
             toast.success("Login successful!");
           }
         } else {
-          toast.error(data.message || "Login failed");
+          toast.error(data.message);
         }
       }
     } catch (error) {
-      console.error("Error:", error.response ? error.response.data : error.message);
-      toast.error(
-        error.response ? error.response.data.message : "An error occurred"
-      );
+      console.error("Error during login:", error);
+      toast.error("Unable to login. Please try again.");
     }
   };
-  
 
   return (
     <div>
@@ -102,8 +92,6 @@ const Login = () => {
           )}
         </div>
       </form>
-
-   
     </div>
   );
 };
