@@ -7,12 +7,6 @@ const loginAdmin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    console.log("Incoming request:", { email, password });
-    console.log("Expected credentials:", {
-      email: process.env.ADMIN_EMAIL,
-      password: process.env.ADMIN_PASSWORD,
-    });
-
     // Validate input
     if (!email || !password) {
       return res.status(400).json({
@@ -20,6 +14,12 @@ const loginAdmin = async (req, res) => {
         message: "Email and password are required",
       });
     }
+
+    // Debugging: Log received and expected credentials
+    console.log("Received Email:", email);
+    console.log("Received Password:", password);
+    console.log("Expected Email:", process.env.ADMIN_EMAIL);
+    console.log("Expected Password:", process.env.ADMIN_PASSWORD);
 
     // Check if credentials match the admin account
     if (
@@ -29,18 +29,17 @@ const loginAdmin = async (req, res) => {
       const token = jwt.sign({ email }, process.env.JWT_SECRET, {
         expiresIn: "1h",
       });
-      console.log("Login successful, token generated:", token);
       return res.json({ success: true, token });
     }
 
-    console.log("Invalid credentials");
-    return res.json({
+    // Invalid credentials
+    return res.status(401).json({
       success: false,
       message: "Invalid email or password",
     });
   } catch (error) {
     console.error("Login error:", error);
-    res.json({ success: false, message: "Server Error" });
+    res.status(500).json({ success: false, message: "Server Error" });
   }
 };
 
