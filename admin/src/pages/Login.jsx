@@ -4,39 +4,47 @@ import { AdminContext } from "../context/AdminContext.jsx";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-
 const Login = () => {
-
-
   const [state, setState] = useState("Admin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { setAToken} = useContext(AdminContext);
+  const { setAToken } = useContext(AdminContext);
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
-  
+
     try {
       if (state === "Admin") {
-        const response = await axios.post('https://koyocco-backend.onrender.com/api/admin/login', { email, password });
-  
+        const response = await axios.post(
+          "https://koyocco-backend.onrender.com/api/admin/login",
+          { email, password }
+        );
+
         const { data } = response;
-  
+
+        // Log the response data to inspect it
+        console.log(data);
+
         if (data.success) {
-          const token = data.message;
+          const token = data.message; // Check if this is the token
           if (token) {
             localStorage.setItem("aToken", token);
             setAToken(token);
-           
-          }  } else {
-          toast.error(data.message);
+            toast.success("Login successful!");
+          } else {
+            toast.error("Token not found in response.");
+          }
+        } else {
+          toast.error(data.message || "Login failed");
         }
       }
     } catch (error) {
+      // Log the error response for debugging
+      console.error(error.response?.data || error.message);
+      toast.error(error.response?.data?.message || "Something went wrong.");
     }
   };
-  
 
   return (
     <div>
