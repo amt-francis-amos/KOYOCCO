@@ -3,6 +3,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const Login = () => {
+
   const [state, setState] = useState("Admin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -71,7 +72,7 @@ const Login = () => {
               Property Owner Login?{" "}
               <span
                 className="text-primary underline cursor-pointer"
-                onClick={() => setState("Doctor")}
+                onClick={() => setState("Property Owner")}
               >
                 Click Here
               </span>
