@@ -34,7 +34,7 @@ const loginAdmin = async (req, res) => {
     }
 
     console.log("Invalid credentials");
-    return res.status(401).json({
+    return res.json({
       success: false,
       message: "Invalid email or password",
     });
