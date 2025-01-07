@@ -38,7 +38,7 @@ const registerUser = async (req, res) =>{
           password: hashedPassword
       }
 
-      const newUser = new userModel(userData)
+      const newUser = new User(userData)
 
       const user = await newUser.save()
 
@@ -62,7 +62,7 @@ try {
 
   const {email, password} = req.body;
 
-  const user  = await userModel.findOne({ email})
+  const user  = await User.findOne({ email})
   
  if(!user){
   return res.json({success: false, message: 'User does not exist'})
