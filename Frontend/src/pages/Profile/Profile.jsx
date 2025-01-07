@@ -21,13 +21,9 @@ const Profile = () => {
             Authorization: `Bearer ${token}`,
           },
         };
-  
+
         const response = await axios.get("https://koyocco-backend.onrender.com/api/User/profile", config);
-  
-        // Ensure the response contains valid profile data before setting it
-        if (response.data) {
-          setProfileData(response.data);
-        }
+        setProfileData(response.data);
       } catch (error) {
         setError("Failed to load profile");
         console.error(error);
@@ -35,11 +31,11 @@ const Profile = () => {
         setLoading(false);
       }
     };
-  
+
     fetchProfile();
   }, []);
-  
 
+  // Handle profile save (including image upload)
   // Inside Profile.js
 const handleSave = async () => {
   try {

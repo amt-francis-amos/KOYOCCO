@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
-const authUser = require('../middleware/authUser.js');
+const authenticateToken = require('../middleware/auth.middleware');
 const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
 require("dotenv").config();
@@ -18,7 +18,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 // Get user profile
-router.get("/profile", authUser, async (req, res) => {
+router.get("/profile", authenticateToken, async (req, res) => {
   console.log("Fetching profile for user:", req.user.userId);
 
   try {
@@ -34,7 +34,7 @@ router.get("/profile", authUser, async (req, res) => {
 
 
 // Update user profile (basic info)
-router.put("/profile", authUser, async (req, res) => {
+router.put("/profile", authenticateToken, async (req, res) => {
   const { firstname, lastname, phoneNumber, location } = req.body;
   try {
     const user = await User.findByIdAndUpdate(
@@ -54,7 +54,7 @@ router.put("/profile", authUser, async (req, res) => {
 });
 
 // Upload profile image
-router.post("/upload-profile-image", authUser, upload.single("profileImage"), async (req, res) => {
+router.post("/upload-profile-image", authenticateToken, upload.single("profileImage"), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ message: "No file uploaded" });
   }

@@ -3,7 +3,7 @@ const router = express.Router();
 const Booking = require('../models/Booking');
 const nodemailer = require('nodemailer'); 
 const path = require('path');
-const authUser = require('../middleware/authUser.js');
+const authenticateToken = require('../middleware/auth.middleware.js');
 
 const createTransporter = () => {
   return nodemailer.createTransport({
@@ -53,7 +53,7 @@ const sendBookingConfirmationEmail = async (booking) => {
 
 
 // Booking route
-router.post('/', authUser, async (req, res) => {
+router.post('/', authenticateToken, async (req, res) => {
   try {
     const { propertyId, fullName, email, phoneNumber, date } = req.body;
     const { userId } = req.user;
@@ -95,7 +95,7 @@ router.post('/', authUser, async (req, res) => {
 
 
 // Booking route to fetch all bookings or specific booking
-router.get('/', authUser, async (req, res) => {
+router.get('/', authenticateToken, async (req, res) => {
   try {
     const { userId } = req.user; // Assume userId is retrieved from the token
     const { bookingId } = req.query;
