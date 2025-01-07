@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import axios from "axios";
+import Dashboard from "./pages/Admin/Dashboard"; // Import the Admin Dashboard
 import Login from "./pages/Login";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
-import { Routes, Route, Navigate } from "react-router-dom";
-import Dashboard from "./pages/Admin/Dashboard";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -15,11 +15,20 @@ const App = () => {
     const token = localStorage.getItem("token");
 
     if (token) {
-      // Optionally, you could validate the token here by sending it to the backend.
-      // For now, we'll assume the token is valid if it exists.
-      setIsAuthenticated(true);
-    } else {
-      setIsAuthenticated(false);
+      // Validate token with the backend (you may want to add a refresh token system here)
+      axios
+        .get("https://koyocco-backend.onrender.com/api/admin/dashboard", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          setIsAuthenticated(true);
+        })
+        .catch((error) => {
+          setIsAuthenticated(false);
+          localStorage.removeItem("token");
+        });
     }
   }, []);
 
