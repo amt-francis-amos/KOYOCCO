@@ -8,7 +8,7 @@ const Profile = () => {
   const [message, setMessage] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [uploading, setUploading] = useState(false);
+  const [uploading, setUploading] = useState(false); // Added state for image uploading
   const [error, setError] = useState(null);
 
   // Fetching the profile on component mount
@@ -16,26 +16,19 @@ const Profile = () => {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem("authToken");
-
-        // Check if token exists
-        if (!token) {
-          setError("You are not logged in. Please log in again.");
-          window.location.href = "/login"; // Redirect to login if no token
-          return;
-        }
-
         const config = {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         };
 
-        const response = await axios.get("https://koyocco-backend.onrender.com/api/User/profile", config);
-
-        // Successfully fetched profile data
+        const response = await axios.get(
+          "https://koyocco-backend.onrender.com/api/User/profile",
+          config
+        );
         setProfileData(response.data);
       } catch (error) {
-        setError("Failed to load profile. Not authorized, please log in again.");
+        setError("Failed to load profile");
         console.error(error);
       } finally {
         setLoading(false);
@@ -49,14 +42,6 @@ const Profile = () => {
   const handleSave = async () => {
     try {
       const token = localStorage.getItem("authToken");
-
-      // Check if token exists
-      if (!token) {
-        setError("You are not logged in. Please log in again.");
-        window.location.href = "/login"; // Redirect to login if no token
-        return;
-      }
-
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -80,6 +65,10 @@ const Profile = () => {
           ...prevData,
           profileImage: imageUploadResponse.data.profileImage,
         }));
+
+        // Notify the Navbar component to update the profile picture
+        // This could be done via Context API or re-fetching logic
+        setProfilePic(imageUploadResponse.data.profileImage);  // Assuming you have a setter in Navbar
       }
 
       // Handle profile update (excluding password)
@@ -118,7 +107,7 @@ const Profile = () => {
             <div className="flex flex-col items-center justify-center mb-8">
               <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-blue-500 cursor-pointer">
                 <img
-                  src={profileData.profileImage || assets.houseImg2}
+                  src={profileData?.profileImage || assets.houseImg2}  // Use optional chaining here
                   alt="Profile"
                   className="w-full h-full object-cover"
                   onClick={() => document.getElementById("imageInput").click()}
