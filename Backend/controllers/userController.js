@@ -1,95 +1,22 @@
+const User = require("../models/User");
 
-const bcrypt = require('bcrypt');  
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');  
-
-
-//---- API to register user
-
-const registerUser = async (req, res) =>{
-         
+const getUserProfile = async (req, res) => {
   try {
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
-      const {name, email, password} = req.body;
-
-      if(!name || !email || !password){
-          return res.json({success: false, message: 'Missing Details'})
-      }
-
-      // validating email format
-      if(!validator.isEmail(email)){
-          return res.json({success: false, message: 'enter a valid email'})
-      }
-      
-      // validating strong password
-      if(password.length < 8){
-          return res.json({success: false, message: 'enter a strong password'})
-      }
-
-      // hashing user password
-      const salt = await bcrypt.genSalt(10)
-
-      const hashedPassword = await bcrypt.hash(password, salt)
-
-      // save user to database
-      const userData = {
-          name,
-          email,
-          password: hashedPassword
-      }
-
-      const newUser = new User(userData)
-
-      const user = await newUser.save()
-
-
-      const token = jwt.sign({id: user._id}, process.env.JWT_SECRET)
-
-      res.json({success: true, message: 'User registered successfully', token})
-     
+    res.json({
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    });
   } catch (error) {
-      console.log(error);
-      res.json({ success: false, message: error.message });
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
   }
-}
+};
 
-
-//---- API to  UserLogin
-
-const loginUser = async (req, res) => {
-
-try {
-
-  const {email, password} = req.body;
-
-  const user  = await User.findOne({ email})
-  
- if(!user){
-  return res.json({success: false, message: 'User does not exist'})
-    
- }
-
- const isMatch = await bcrypt .compare(password, user.password)
-
- if(isMatch){
-  const token = jwt.sign({id:user._id}, process.env.JWT_SECRET)
-  return res.json({success:true, token})
- }else{
-  return res.json({success: false, message: 'Invalid credentials'})
- }
-
-
-
-
-} catch (error) {
-  console.log(error);
-  res.json({ success: false, message: error.message });                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
-}
-
-}
-
-
-
-
-
-export {registerUser, loginUser};
+module.exports = { getUserProfile };

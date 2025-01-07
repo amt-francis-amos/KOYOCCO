@@ -1,29 +1,47 @@
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const dotenv = require("dotenv");
+const User = require("../models/User");  
 
-dotenv.config();
-
-// -- API FOR ADMIN LOGIN
+// Admin Login
 const loginAdmin = async (req, res) => {
+  const { email, password } = req.body;
+
   try {
-    const { email, password } = req.body;
-
-    // Check credentials (ensure these are correctly set in your environment variables)
-    if (
-      email === process.env.ADMIN_EMAIL &&
-      password === process.env.ADMIN_PASSWORD
-    ) {
-      // Create token with email as payload
-      const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-      // Return the token
-      res.json({ success: true, token });
-    } else {
-      res.status(401).json({ success: false, message: "Invalid Credentials" });
+    // Check if user exists
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: "Invalid credentials" });
     }
+
+    // Check if the user is an admin
+    if (user.role !== "admin") {
+      return res.status(403).json({ message: "Unauthorized" });
+    }
+
+    // Compare password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    // Create JWT token
+    const token = jwt.sign({ userId: user._id }, "your_jwt_secret", {
+      expiresIn: "1h",
+    });
+
+    // Send response
+    res.json({
+      message: "Login successful",
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+    });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, message: error.message });
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 

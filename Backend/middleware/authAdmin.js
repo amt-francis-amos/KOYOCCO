@@ -1,23 +1,19 @@
 const jwt = require("jsonwebtoken");
 
-const authAdmin = async (req, res, next) => {
-  try {
-    const { atoken } = req.headers;
+const authMiddleware = (req, res, next) => {
+  const token = req.header("Authorization")?.split(" ")[1];
 
-    if (!atoken) {
-      return res.json({ success: false, message: "Not Authorized Login Again" });
-    }
-     const token_decode = jwt.verify(atoken, process.env.JWT_SECRET);
-    if(token_decode !== process.env.ADMIN_EMAIL+process.env.ADMIN_PASSWORD) {
-        return res.json({ success: false, message: "Not Authorized Login Again" });       
-    }
-     next();
+  if (!token) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.userId = decoded.userId;
+    next();
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, message: error.message });
+    res.status(401).json({ message: "Unauthorized" });
   }
 };
 
-
-
-module.exports = authAdmin;
+module.exports = authMiddleware;
