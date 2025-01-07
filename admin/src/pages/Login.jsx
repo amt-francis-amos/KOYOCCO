@@ -1,44 +1,40 @@
-import React, { useContext, useState } from "react";
-import { assets } from "../assets/assets.js";
-import { AdminContext } from "../context/AdminContext.jsx";
+import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-
 const Login = () => {
-
-
   const [state, setState] = useState("Admin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { setAToken} = useContext(AdminContext);
+  const [aToken, setAToken] = useState(
+    localStorage.getItem("aToken") ? localStorage.getItem("aToken") : ""
+  );
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
-  
+
     try {
       if (state === "Admin") {
         const response = await axios.post('https://koyocco-backend.onrender.com/api/admin/login', { email, password });
-  
+
         const { data } = response;
-  
+
         if (data.success) {
-          const token = data.message;
+          const token = data.token;
           if (token) {
             localStorage.setItem("aToken", token);
             setAToken(token);
             toast.success("Logged in successfully");
-            
-           
-          }  } else {
+          }
+        } else {
           toast.error(data.message);
         }
       }
     } catch (error) {
+      toast.error("Something went wrong, please try again.");
     }
   };
-  
 
   return (
     <div>
@@ -93,8 +89,6 @@ const Login = () => {
           )}
         </div>
       </form>
-
-   
     </div>
   );
 };
