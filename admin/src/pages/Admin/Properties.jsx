@@ -10,7 +10,7 @@ const Properties = () => {
 
   return (
     <div className="container mx-auto space-y-6">
-      <div className="bg-white w-[100%] shadow-md rounded-lg p-6">
+      <div className="bg-white w-[100%] h-[100vh] shadow-md rounded-lg p-6">
         <h2 className="text-2xl font-semibold text-gray-700">Properties</h2>
         <div className="mt-6 grid gap-6">
           {/* Header Row */}
