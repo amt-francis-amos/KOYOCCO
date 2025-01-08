@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+const jwt = require ("jsonwebtoken");
 
 //  ADMIN AUTHENTICATION MIDDLEWARE
 
@@ -20,4 +20,4 @@ const authAdmin = async (req, res, next) => {
   }
 };
 
-export default authAdmin;
+module.exports ={authAdmin} 
