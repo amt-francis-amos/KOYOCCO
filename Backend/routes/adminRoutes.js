@@ -10,7 +10,7 @@ const authAdmin = require('../middleware/authAdmin')
 router.post('/signup', registerUser);
 
 // Login user
-router.post('/login', authAdmin , loginAdmin, loginUser);
+router.post('/login', authAdmin, loginAdmin, loginUser);
 
 
 module.exports = router;
