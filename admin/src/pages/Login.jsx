@@ -13,23 +13,24 @@ const Login = () => {
     event.preventDefault();
   
     try {
-      const { data } = await axios.post(
+      const response = await axios.post(
         "https://koyocco-backend.onrender.com/api/admin/login",
-        { email, password }
+        { email, password } // Ensure this matches the backend
       );
   
-      if (data.success) {
-        localStorage.setItem("token", data.token);
-        toast.success(data.message);
+      if (response.data.success) {
+        localStorage.setItem("token", response.data.token);
+        toast.success(response.data.message);
         navigate("/admin-dashboard");
       } else {
-        toast.error(data.message);
+        toast.error(response.data.message);
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Login failed. Please try again.");
       console.error(error);
     }
   };
+  
   
   // Axios instance with Authorization header
   const axiosInstance = axios.create({
