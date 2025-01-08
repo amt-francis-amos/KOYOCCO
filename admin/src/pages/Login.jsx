@@ -20,7 +20,7 @@ const Login = () => {
     try {
       const response = await axios.post(
         "https://koyocco-backend.onrender.com/api/admin/login",
-        { email, password } // Ensure you're sending the correct values
+        { email, password } 
       );
   
       const { data } = response;
@@ -67,7 +67,7 @@ const Login = () => {
               value={password}
             />
           </div>
-          <button className="bg-red-500 w-full py-2 text-white rounded text-base">
+          <button type="submit" className="bg-red-500 w-full py-2 text-white rounded text-base">
             Login
           </button>
           {state === "Admin" ? (
