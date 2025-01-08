@@ -6,15 +6,21 @@ import Dashboard from "./pages/Admin/Dashboard";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Login from "./pages/Login";
+import axios from "axios";
 
 const App = () => {
-  
   const [aToken, setAToken] = useState(null);
 
   useEffect(() => {
-  
     const token = localStorage.getItem("token");
     setAToken(token);
+
+
+    if (token) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    } else {
+      delete axios.defaults.headers.common["Authorization"];
+    }
   }, []);
 
   return aToken ? (
@@ -25,7 +31,6 @@ const App = () => {
         <Sidebar />
         <Routes>
           <Route path="/admin-dashboard" element={<Dashboard />} />
-     
         </Routes>
       </div>
     </div>

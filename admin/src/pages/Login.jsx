@@ -11,31 +11,28 @@ const Login = () => {
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
-
+  
     try {
-    
-      const {data} = await axios.post(
+      const { data } = await axios.post(
         "https://koyocco-backend.onrender.com/api/admin/login",
         { email, password }
       );
-
+  
       // Handle successful login
-     if(data.success){
-      localStorage.setItem("token", token);  
-      toast.success(data.message);
-     }
-     
-
-      // Redirect to the admin dashboard
-      navigate("/admin-dashboard");
-      
+      if (data.success) {
+        const token = data.token; 
+        localStorage.setItem("token", token);  
+        toast.success(data.message);
+  
+        // Redirect to the admin dashboard
+        navigate("/admin-dashboard");
+      }
     } catch (error) {
       // Handle failed login
-      toast.error(error.message)
-      console.error(error);  
+      toast.error(error.message || "Login failed. Please try again.");
+      console.error(error);
     }
   };
-
   
   return (
     <div>
