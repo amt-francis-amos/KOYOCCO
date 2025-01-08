@@ -33,27 +33,7 @@ const Login = () => {
     }
   };
 
-  const fetchProtectedData = async () => {
-    try {
-      const token = localStorage.getItem("token");
-
-      // Send token in Authorization header for protected routes
-      const response = await axios.get(
-        "https://koyocco-backend.onrender.com/api/protected-endpoint",  // Replace with your protected route
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,  // Send token in Authorization header
-          },
-        }
-      );
-
-      console.log("Protected Data:", response.data);
-    } catch (error) {
-      console.error("Error fetching protected data:", error);
-      toast.error("Access Denied");
-    }
-  };
-
+  
   return (
     <div>
       <form onSubmit={onSubmitHandler} className="min-h-[80vh] flex items-center">
