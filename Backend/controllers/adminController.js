@@ -25,7 +25,7 @@ const loginAdmin = async (req, res) => {
       success: true,
       message: "Login successful",
       token,
-      redirectTo: "/admin/dashboard", // Include redirect URL
+      redirectTo: "/Admin/dashboard", // Include redirect URL
     });
   }
 
