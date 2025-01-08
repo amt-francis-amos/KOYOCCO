@@ -97,8 +97,8 @@ router.post('/', authenticateToken, async (req, res) => {
 // Booking route to fetch all bookings or specific booking
 router.get('/', authenticateToken, async (req, res) => {
   try {
-    const { userId } = req.user; // User ID from token
-    const { bookingId, page = 1, limit = 10 } = req.query;
+    const { userId } = req.user; // Assume userId is retrieved from the token
+    const { bookingId } = req.query;
 
     if (bookingId) {
       // Fetch a specific booking
@@ -108,11 +108,8 @@ router.get('/', authenticateToken, async (req, res) => {
       }
       res.status(200).json(booking);
     } else {
-      // Fetch all bookings for the user with pagination
-      const bookings = await Booking.find({ userId })
-        .sort({ date: -1 }) // Sort by date (most recent first)
-        .skip((page - 1) * limit)
-        .limit(Number(limit));
+      // Fetch all bookings for the user
+      const bookings = await Booking.find({ userId });
       res.status(200).json(bookings);
     }
   } catch (error) {
@@ -120,7 +117,6 @@ router.get('/', authenticateToken, async (req, res) => {
     res.status(500).json({ message: "Error fetching bookings." });
   }
 });
-
 
 
 
