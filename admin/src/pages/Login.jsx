@@ -12,15 +12,14 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { setAToken } = useContext(AdminContext);
+  const { setAToken, backendUrl } = useContext(AdminContext);
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
   
     try {
       if (state === "Admin") {
-
-        const response = await axios.post("https://koyocco-backend.onrender.com/api/admin/signin", { email, password });
+        const response = await axios.post("https://koyocco-backend.onrender.com/api/admin/login", { email, password });
   
         const { data } = response;
   
