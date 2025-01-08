@@ -18,20 +18,26 @@ const Login = () => {
         { email, password }
       );
   
-      // Ensure the token is returned in the data object
-      console.log(data);  // Add this line to check the response
-  
       if (data.success) {
-        const token = data.token;  // Make sure this matches the response from the backend
-        localStorage.setItem("token", token);  // Store token in localStorage
+        localStorage.setItem("token", data.token);
         toast.success(data.message);
         navigate("/admin-dashboard");
+      } else {
+        toast.error(data.message);
       }
     } catch (error) {
-      toast.error(error.message || "Login failed. Please try again.");
+      toast.error(error.response?.data?.message || "Login failed. Please try again.");
       console.error(error);
     }
   };
+  
+  // Axios instance with Authorization header
+  const axiosInstance = axios.create({
+    baseURL: "https://koyocco-backend.onrender.com/api",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
   
   
   return (

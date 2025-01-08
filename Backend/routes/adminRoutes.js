@@ -9,8 +9,12 @@ const authAdmin = require('../middleware/authAdmin')
 // Register a new user
 router.post('/signup', registerUser);
 
-// Login user
-router.post('/login', authAdmin, loginAdmin, loginUser);
+router.post('/login', loginAdmin);
+
+router.get('/protected-route', authAdmin, (req, res) => {
+  res.json({ success: true, message: "Access granted to admin route." });
+});
+
 
 
 module.exports = router;
