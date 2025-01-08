@@ -2,14 +2,14 @@
 const jwt = require ("jsonwebtoken");
 const validator = require("validator");
 const bcrypt = require('bcryptjs');
-
 const User = require("../models/User.js");
 
 const loginAdmin = async (req, res) => {
+
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.status(400).json({ success: false, message: "Email and password are required." });
+    return res.json({ success: false, message: "Email and password are required." });
   }
 
   // Check credentials
