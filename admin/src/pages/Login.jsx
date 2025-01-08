@@ -12,7 +12,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { setAToken, backendUrl } = useContext(AdminContext);
+  const { setAToken} = useContext(AdminContext);
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
