@@ -5,14 +5,15 @@ const bcrypt = require('bcryptjs');
 const User = require("../models/User.js");
 
 const loginAdmin = async (req, res) => {
-
   const { email, password } = req.body;
 
   if (!email || !password) {
     return res.json({ success: false, message: "Email and password are required." });
   }
 
-  // Check credentials
+  // Debug: Log inputs and expected values
+  console.log("Login Attempt:", { email, password });
+
   if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
     const token = jwt.sign(
       { email, role: "admin" },
@@ -20,9 +21,11 @@ const loginAdmin = async (req, res) => {
       { expiresIn: "1h" }
     );
 
+    console.log("Admin Login Successful");
     return res.json({ success: true, message: "Login successful", token });
   }
 
+  console.log("Invalid Admin Credentials");
   res.status(401).json({ success: false, message: "Invalid Credentials" });
 };
 
