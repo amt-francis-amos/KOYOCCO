@@ -4,13 +4,12 @@ const Dashboard = () => {
   return (
     <div className="flex justify-center items-center min-h-screen p-6">
       <div className="space-y-6 w-full max-w-6xl">
-
-        <div className=" flex justify-between items-center">
+        <div className="flex justify-between items-center">
           <h1 className="text-2xl font-semibold text-gray-700">Admin Dashboard</h1>
-        
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Updated Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <div className="bg-white shadow-md rounded-lg p-6 text-center">
             <h3 className="text-lg font-semibold text-gray-600">Total Properties</h3>
             <p className="text-4xl font-bold text-gray-800">150</p>
@@ -77,7 +76,6 @@ const Dashboard = () => {
             </button>
           </div>
         </div>
-
       </div>
     </div>
   );
