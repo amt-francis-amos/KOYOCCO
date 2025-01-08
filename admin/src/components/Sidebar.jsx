@@ -10,6 +10,7 @@ const Sidebar = () => {
     <div className="min-h-screen bg-white border-r">
       {aToken && (
         <ul className="text-[#515151] mt-5">
+          {/* Dashboard */}
           <NavLink
             to="/admin-dashboard"
             className={({ isActive }) =>
@@ -18,7 +19,7 @@ const Sidebar = () => {
               }`
             }
           >
-            <img src={assets.dashboard_icon} alt="" />
+            <img src={assets.dashboard_icon} alt="Dashboard Icon" />
             <p>Dashboard</p>
           </NavLink>
 
@@ -31,7 +32,7 @@ const Sidebar = () => {
               }`
             }
           >
-            <img src={assets.property_icon} alt="" />
+            <img src={assets.property_icon} alt="Property Icon" />
             <p>Properties</p>
           </NavLink>
           <NavLink
@@ -42,7 +43,7 @@ const Sidebar = () => {
               }`
             }
           >
-            <img src={assets.add_property_icon} alt="" />
+            <img src={assets.add_property_icon} alt="Add Property Icon" />
             <p>Add Property</p>
           </NavLink>
 
@@ -55,7 +56,7 @@ const Sidebar = () => {
               }`
             }
           >
-            <img src={assets.users_icon} alt="" />
+            <img src={assets.users_icon} alt="Users Icon" />
             <p>Users</p>
           </NavLink>
           <NavLink
@@ -66,47 +67,22 @@ const Sidebar = () => {
               }`
             }
           >
-            <img src={assets.agent_icon} alt="" />
-            <p>Agents</p>
+            <img src={assets.agent_icon} alt="Agents Icon" />
+            <p>Agents List</p>
           </NavLink>
 
-          {/* Payment Management */}
+          {/* Booking Management */}
           <NavLink
-            to="/payments"
+            to="/all-bookings"
             className={({ isActive }) =>
               `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${
                 isActive ? 'bg-[#F2F3FF] border-r-4 border-primary' : ''
               }`
             }
           >
-            <img src={assets.payment_icon} alt="" />
-            <p>Payments</p>
-          </NavLink>
-
-          {/* Reports */}
-          <NavLink
-            to="/reports"
-            className={({ isActive }) =>
-              `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${
-                isActive ? 'bg-[#F2F3FF] border-r-4 border-primary' : ''
-              }`
-            }
-          >
-            <img src={assets.reports_icon} alt="" />
-            <p>Reports</p>
-          </NavLink>
-
-          {/* Settings */}
-          <NavLink
-            to="/settings"
-            className={({ isActive }) =>
-              `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${
-                isActive ? 'bg-[#F2F3FF] border-r-4 border-primary' : ''
-              }`
-            }
-          >
-            <img src={assets.settings_icon} alt="" />
-            <p>Settings</p>
+            {/* Updated to use the Booking Icon */}
+            <img src={assets.booking_icon} alt="Booking Icon" />
+            <p>All Bookings</p>
           </NavLink>
         </ul>
       )}
