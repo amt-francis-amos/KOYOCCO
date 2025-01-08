@@ -6,23 +6,28 @@ const bcrypt = require('bcryptjs');
 const User = require("../models/User.js");
 
 const loginAdmin = async (req, res) => {
-  try {
-    const { email, password } = req.body;
+  const { email, password } = req.body;
 
-    if (
-      email === process.env.ADMIN_EMAIL &&
-      password === process.env.ADMIN_PASSWORD
-    ) {
-      const token = jwt.sign(email + password, process.env.JWT_SECRET);
-      res.json({ success: true, message: token });
-    } else {
-      res.json({ success: false, message: "Invalid Credentials" });
-    }
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, message: error.message });
+  if (!email || !password) {
+    return res.status(400).json({ success: false, message: "Email and password are required." });
   }
+
+  // Check credentials
+  if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
+    const token = jwt.sign(
+      { email, role: "admin" },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    return res.json({ success: true, message: "Login successful", token });
+  }
+
+  res.status(401).json({ success: false, message: "Invalid Credentials" });
 };
+
+
+
 
 const registerUser = async (req, res) => {
   try {
