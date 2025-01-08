@@ -1,27 +1,38 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 
 const AllBookings = () => {
-
   const [bookings, setBookings] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-   
     const fetchBookings = async () => {
-    
-      const response = await fetch("/api/bookings");
-      const data = await response.json();
-      setBookings(data);
+      try {
+        const response = await axios.get("/api/bookings", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`, // Include token
+          },
+        });
+        setBookings(response.data);
+      } catch (err) {
+        setError(err.response?.data?.message || "Failed to fetch bookings.");
+      }
     };
 
     fetchBookings();
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#F8F9FD]">
-      <div className="container mx-auto px-4 py-6">
+    <div className="container mx-auto min-h-screen bg-[#F8F9FD]">
+      <div className="px-4 py-6">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">All Bookings</h2>
         <div className="bg-white shadow-md rounded-lg p-4">
+          {error && (
+            <p className="text-red-500 text-sm mb-4">
+              {error}
+            </p>
+          )}
           <table className="w-full text-left table-auto">
             <thead className="bg-[#F2F3FF]">
               <tr>

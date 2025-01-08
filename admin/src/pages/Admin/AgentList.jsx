@@ -2,8 +2,8 @@ import React from "react";
 
 const AgentList = () => {
   return (
-    <div className="space-y-6">
-      <div className="bg-white shadow-md rounded-lg p-6">
+    <div className="container mx-auto space-y-6">
+      <div className="bg-white w-[100%] h-[100vh] shadow-md rounded-lg p-6">
         <h2 className="text-2xl font-semibold text-gray-700">Agents List</h2>
         <div className="mt-4">
           {/* Display agents in a table */}
