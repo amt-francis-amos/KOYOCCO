@@ -10,15 +10,14 @@ const AddProperty = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Logic to handle form submission
     console.log(formData);
   };
 
   return (
-    <div className="space-y-6">
-      <div className="bg-white shadow-md rounded-lg p-6">
+    <div className=" container mx-auto flex justify-center bg-white items-center min-h-screen p-6">
+      <div className="w-[80%] shadow-md rounded-lg p-6  ">
         <h2 className="text-2xl font-semibold text-gray-700">Add New Property</h2>
-        <form className="space-y-4 mt-4" onSubmit={handleSubmit}>
+        <form className=" space-y-2 mt-4" onSubmit={handleSubmit}>
           <div>
             <label className="block text-gray-600">Property Name</label>
             <input
@@ -55,7 +54,9 @@ const AddProperty = () => {
             />
           </div>
           <div>
-            <button className="bg-blue-600 text-white py-3 px-6 rounded-lg">Submit</button>
+            <button className="bg-red-500 text-white py-3 px-8 rounded-lg hover:bg-black transition duration-300">
+              Submit
+            </button>
           </div>
         </form>
       </div>
