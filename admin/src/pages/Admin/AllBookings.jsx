@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { assets } from "../assets/assets"; // Assuming this contains your assets
 import { Link } from "react-router-dom";
 
 const AllBookings = () => {
-  // Sample data for bookings - this can be fetched from an API in a real-world scenario
+
   const [bookings, setBookings] = useState([]);
 
   useEffect(() => {
-    // Fetch bookings from an API (this is a placeholder for your API request)
+   
     const fetchBookings = async () => {
-      // Example: Replace with your actual API call
+    
       const response = await fetch("/api/bookings");
       const data = await response.json();
       setBookings(data);

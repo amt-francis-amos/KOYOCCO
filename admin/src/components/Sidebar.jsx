@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { AdminContext } from '../context/AdminContext';
 import { NavLink } from 'react-router-dom';
-import { assets } from '../assets/assets';
+
 
 const Sidebar = () => {
   const { aToken } = useContext(AdminContext);
@@ -19,7 +19,7 @@ const Sidebar = () => {
               }`
             }
           >
-            <img src={assets.dashboard_icon} alt="Dashboard Icon" />
+         
             <p>Dashboard</p>
           </NavLink>
 
@@ -32,7 +32,7 @@ const Sidebar = () => {
               }`
             }
           >
-            <img src={assets.property_icon} alt="Property Icon" />
+         
             <p>Properties</p>
           </NavLink>
           <NavLink
@@ -43,7 +43,7 @@ const Sidebar = () => {
               }`
             }
           >
-            <img src={assets.add_property_icon} alt="Add Property Icon" />
+         
             <p>Add Property</p>
           </NavLink>
 
@@ -56,7 +56,7 @@ const Sidebar = () => {
               }`
             }
           >
-            <img src={assets.users_icon} alt="Users Icon" />
+      
             <p>Users</p>
           </NavLink>
           <NavLink
@@ -67,7 +67,6 @@ const Sidebar = () => {
               }`
             }
           >
-            <img src={assets.agent_icon} alt="Agents Icon" />
             <p>Agents List</p>
           </NavLink>
 
@@ -81,7 +80,7 @@ const Sidebar = () => {
             }
           >
             {/* Updated to use the Booking Icon */}
-            <img src={assets.booking_icon} alt="Booking Icon" />
+       
             <p>All Bookings</p>
           </NavLink>
         </ul>
