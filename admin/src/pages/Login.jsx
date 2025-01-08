@@ -26,7 +26,7 @@ const Login = () => {
       const { data } = response;
   
       if (data.success) {
-        const token = data.token; // Fix: Corrected token reference
+        const token = data.token; // Correct token assignment
         if (token) {
           localStorage.setItem("aToken", token);
           setAToken(token);
@@ -36,7 +36,8 @@ const Login = () => {
         toast.error(data.message || "Login failed");
       }
     } catch (error) {
-      console.error("Login Error:", error); // Debug: Log the error
+      console.error("Login Error:", error); // Debugging error
+      console.error("Response Data:", error.response?.data); // Log server response
       toast.error(error.response?.data?.message || "Something went wrong");
     }
   };

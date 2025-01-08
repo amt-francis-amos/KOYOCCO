@@ -7,12 +7,13 @@ const User = require("../models/User.js");
 const loginAdmin = async (req, res) => {
   const { email, password } = req.body;
 
+  console.log("Admin Login Attempt:", { email, password });
+  console.log("Expected Email:", process.env.ADMIN_EMAIL);
+  console.log("Expected Password:", process.env.ADMIN_PASSWORD);
+
   if (!email || !password) {
     return res.json({ success: false, message: "Email and password are required." });
   }
-
-  // Debug: Log inputs and expected values
-  console.log("Login Attempt:", { email, password });
 
   if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
     const token = jwt.sign(
@@ -25,10 +26,9 @@ const loginAdmin = async (req, res) => {
     return res.json({ success: true, message: "Login successful", token });
   }
 
-  console.log("Invalid Admin Credentials");
+  console.log("Invalid Credentials");
   res.status(401).json({ success: false, message: "Invalid Credentials" });
 };
-
 
 
 
