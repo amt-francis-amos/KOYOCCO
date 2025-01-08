@@ -14,22 +14,25 @@ const Login = () => {
 
     try {
       // Request to login and get the token
-      const response = await axios.post(
+      const {data} = await axios.post(
         "https://koyocco-backend.onrender.com/api/admin/login",
         { email, password }
       );
 
       // Handle successful login
-      toast.success(response.data.message);
-      localStorage.setItem("token", response.data.token);  // Store token in localStorage
+     if(data.success){
+      localStorage.setItem("token", response.data.token);  
+      toast.success(data.message);
+     }
+     
 
       // Redirect to the admin dashboard
       navigate("/admin-dashboard");
       
     } catch (error) {
       // Handle failed login
-      toast.error(error.response?.data?.message || "Login failed");
-      console.error("Login Error:", error);  // Log full error for debugging
+      toast.error(error.message)
+      console.error(error);  
     }
   };
 
