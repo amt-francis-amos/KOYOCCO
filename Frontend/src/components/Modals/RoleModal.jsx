@@ -35,7 +35,12 @@ const RoleModal = ({ setRole, closeModal }) => {
           >
             Property Owner
           </button>
-        
+          <button
+            onClick={() => handleSelectRole('Admin')}
+            className="bg-red-500 text-white px-4 py-2 rounded-md"
+          >
+            Admin
+          </button>
         </div>
       </div>
     </div>

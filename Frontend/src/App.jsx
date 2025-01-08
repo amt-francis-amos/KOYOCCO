@@ -25,6 +25,7 @@ import Cars from "./pages/Cars/Cars";
 import PropertySales from "./pages/PropertySales/PropertySales";
 import Profile from "./pages/Profile/Profile";
 import ProfileUpdate from "./pages/ProfileUpdate/ProfileUpdate";
+import Dashboard from "../../admin/src/pages/Admin/Dashboard";
 
 
 const getRoleFromLocalStorage = () => {
@@ -57,8 +58,16 @@ function App() {
             />
          
             
-           
-          
+            {/* Admin, Owner, and Agent dashboards */}
+            <Route
+              path="/admin-login"
+              element={
+                <ProtectedRoute role={role} requiredRoles={["admin"]}>
+                  <Dashboard/>
+                </ProtectedRoute>
+              }
+            />
+            
             {/* Additional Routes */}
             <Route path="/property-status" element={<ProtectedRoute role={role}><PropertyStatusPage /></ProtectedRoute>} />
             <Route path="/create-request" element={<CreateRequest />} />

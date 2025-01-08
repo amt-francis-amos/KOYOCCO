@@ -22,7 +22,7 @@ const Login = () => {
       setIsAuthenticated(true);
       const role = localStorage.getItem("role");
       if (role === "Admin") {
-        navigate("/dashboard");
+        navigate("/admin-dashboard");
       } else if (role === "Property Owner") {
         navigate("/");
       } else if (role === "Agent") {
