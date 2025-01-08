@@ -20,27 +20,23 @@ const Login = () => {
     try {
       const response = await axios.post(
         "https://koyocco-backend.onrender.com/api/admin/login",
-        { email, password }
+        { email, password } // Ensure you're sending the correct values
       );
   
       const { data } = response;
-  
       if (data.success) {
-        const token = data.token; // Correct token assignment
-        if (token) {
-          localStorage.setItem("aToken", token);
-          setAToken(token);
-          toast.success("Login successful");
-        }
+        localStorage.setItem("aToken", data.token);
+        setAToken(data.token);
+        toast.success("Login successful");
       } else {
         toast.error(data.message || "Login failed");
       }
     } catch (error) {
-      console.error("Login Error:", error); // Debugging error
-      console.error("Response Data:", error.response?.data); // Log server response
+      console.error("Login Error:", error);
       toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
+  
   
   
 
