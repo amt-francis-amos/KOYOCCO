@@ -29,11 +29,11 @@ const Login = () => {
         setAToken(data.token);
         toast.success("Login successful");
       } else {
-        toast.error(data.message || "Login failed");
+        toast.error(data.message);
       }
     } catch (error) {
-      console.error("Login Error:", error);
-      toast.error(error.response?.data?.message || "Something went wrong");
+      console.error(error);
+      toast.error(error.message);
     }
   };
   
