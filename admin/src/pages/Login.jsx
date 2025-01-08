@@ -70,10 +70,10 @@ const Login = () => {
           </button>
           {state === "Admin" ? (
             <p>
-              Doctor Login?{" "}
+              Property Owner Login?{" "}
               <span
                 className="text-primary underline cursor-pointer"
-                onClick={() => setState("Doctor")}
+                onClick={() => setState("Property Owner")}
               >
                 Click Here
               </span>
