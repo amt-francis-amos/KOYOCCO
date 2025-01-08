@@ -19,7 +19,7 @@ const Login = () => {
   
     try {
       const response = await axios.post(
-        "https://koyocco-backend.onrender.com/admin/login",
+        "https://koyocco-backend.onrender.com/api/login",
         { email, password } 
       );
   
