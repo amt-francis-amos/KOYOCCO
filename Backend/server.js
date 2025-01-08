@@ -1,4 +1,3 @@
-
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
@@ -10,9 +9,6 @@ const requestRoutes = require('./routes/requestRoutes');
 const listingRoutes = require("./routes/listingRoutes");
 const adminRoutes = require('./routes/adminRoutes');
 const profileRoutes = require("./routes/profileRoutes");
-const userRouter = require('./routes/userRoutes');
-
-
 
 dotenv.config();
 
@@ -27,26 +23,19 @@ app.use(express.json());
 mongoDb();
 
 // Routes
-app.use('/api/auth', userRoutes);
+app.use('/api/auth', userRoutes); 
 app.use('/api/properties', propertyRoutes); 
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/requests', requestRoutes);
 app.use('/api/post-listing', listingRoutes);
 app.use('/api/admin', adminRoutes);
-app.use("/api/User", profileRoutes);
-app.use('/api/user', userRouter)
-
-
-
-
-
-
+app.use('/api/user', profileRoutes); 
 
 // Global error handling middleware
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err.stack);
   res.status(500).json({ message: 'Internal Server Error', error: err.message });
-  next()
+  next();
 });
 
 // Default 404 handler
