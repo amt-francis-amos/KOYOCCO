@@ -77,7 +77,7 @@ const Login = () => {
      
       const redirectPath =
         role === "Admin"
-          ? "/dashboard"
+          ? "/admin-dashboard"
           : role === "Property Owner"
           ? "/"
           : role === "Agent"
