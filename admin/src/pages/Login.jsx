@@ -18,21 +18,21 @@ const Login = () => {
         { email, password }
       );
   
-      // Handle successful login
-      if (data.success) {
-        const token = data.token; 
-        localStorage.setItem("token", token);  
-        toast.success(data.message);
+      // Ensure the token is returned in the data object
+      console.log(data);  // Add this line to check the response
   
-        // Redirect to the admin dashboard
+      if (data.success) {
+        const token = data.token;  // Make sure this matches the response from the backend
+        localStorage.setItem("token", token);  // Store token in localStorage
+        toast.success(data.message);
         navigate("/admin-dashboard");
       }
     } catch (error) {
-      // Handle failed login
       toast.error(error.message || "Login failed. Please try again.");
       console.error(error);
     }
   };
+  
   
   return (
     <div>
