@@ -43,7 +43,7 @@ const Login = () => {
       <form onSubmit={onSubmitHandler} className="min-h-[80vh] flex items-center">
         <div className="flex flex-col items-start gap-3 mx-auto p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-[#5E5E5E] text-sm shadow-lg">
           <p className="text-2xl font-semibold mx-auto">
-            <span className="text-primary">{state}</span> Login
+            <span className="text-red-500">{state}</span> Login
           </p>
           <div className="w-full">
             <p>Email</p>
@@ -65,7 +65,7 @@ const Login = () => {
               value={password}
             />
           </div>
-          <button className="bg-primary w-full py-2 text-white rounded text-base">
+          <button className="bg-red-500 w-full py-2 text-white rounded text-base">
             Login
           </button>
           {state === "Admin" ? (
