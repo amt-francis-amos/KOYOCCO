@@ -9,7 +9,7 @@ const { loginAdmin, registerUser, loginUser } = require("../controllers/adminCon
 router.post('/signup', registerUser);
 
 router.post('/login', loginUser);
-router.post('/singin', loginAdmin);
+router.post('/signin', loginAdmin);
 
 
 module.exports = router;
