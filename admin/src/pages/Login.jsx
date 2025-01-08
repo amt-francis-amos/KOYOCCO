@@ -88,10 +88,7 @@ const Login = () => {
         </div>
       </form>
 
-      {/* Example of calling a protected route */}
-      <button onClick={fetchProtectedData} className="bg-green-500 text-white py-2 mt-4 rounded">
-        Fetch Protected Data
-      </button>
+    
     </div>
   );
 };
