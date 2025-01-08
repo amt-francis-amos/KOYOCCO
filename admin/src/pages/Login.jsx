@@ -13,7 +13,7 @@ const Login = () => {
     event.preventDefault();
 
     try {
-      // Request to login and get the token
+    
       const {data} = await axios.post(
         "https://koyocco-backend.onrender.com/api/admin/login",
         { email, password }
