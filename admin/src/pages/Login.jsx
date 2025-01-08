@@ -3,30 +3,33 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const Login = () => {
-
   const [state, setState] = useState("Admin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-
-  
   const onSubmitHandler = async (event) => {
     event.preventDefault();
-  
+
     try {
+      // Request to login and get the token
       const response = await axios.post(
         "https://koyocco-backend.onrender.com/api/admin/login",
         { email, password }
       );
+      
+  
       toast.success(response.data.message);
-      localStorage.setItem("token", response.data.token); 
+      localStorage.setItem("token", response.data.token);
+
+   
+      window.location.href = "/admin-dashboard";  
      
     } catch (error) {
+
       toast.error(error.response?.data?.message || "Login failed");
     }
   };
-  
-    
+
   return (
     <div>
       <form onSubmit={onSubmitHandler} className="min-h-[80vh] flex items-center">
@@ -82,7 +85,6 @@ const Login = () => {
       </form>
     </div>
   );
-}
-
+};
 
 export default Login;

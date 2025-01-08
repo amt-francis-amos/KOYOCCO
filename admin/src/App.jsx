@@ -1,60 +1,38 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
-import axios from "axios";
-import Dashboard from "./pages/Admin/Dashboard"; // Import the Admin Dashboard
-import Login from "./pages/Login";
-import { ToastContainer } from "react-toastify";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
+import { Routes, Route } from "react-router-dom";
+import Dashboard from "./pages/Admin/Dashboard";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Login from "./pages/Login";
 
 const App = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
+  const [aToken, setAToken] = useState(null);
 
   useEffect(() => {
+  
     const token = localStorage.getItem("token");
-
-    if (token) {
-
-      axios
-        .get("https://koyocco-backend.onrender.com/api/admin/dashboard", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((response) => {
-          setIsAuthenticated(true);
-        })
-        .catch((error) => {
-          setIsAuthenticated(false);
-          localStorage.removeItem("token");
-        });
-    }
+    setAToken(token);
   }, []);
 
-  return (
+  return aToken ? (
     <div className="bg-[#F8F9FD]">
       <ToastContainer />
       <Navbar />
       <div className="flex items-start">
         <Sidebar />
         <Routes>
-          {/* Protected Route: Admin Dashboard */}
-          <Route
-            path="/admin-dashboard"
-            element={
-              isAuthenticated ? (
-                <Dashboard />
-              ) : (
-                <Navigate to="/login" replace /> 
-              )
-            }
-          />
-          {/* Login Route */}
-          <Route path="/login" element={<Login />} />
+          <Route path="/admin-dashboard" element={<Dashboard />} />
+     
         </Routes>
       </div>
     </div>
+  ) : (
+    <>
+      <Login />
+      <ToastContainer />
+    </>
   );
 };
 
