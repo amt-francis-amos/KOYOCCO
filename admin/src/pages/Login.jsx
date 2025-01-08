@@ -21,7 +21,7 @@ const Login = () => {
 
       // Handle successful login
      if(data.success){
-      localStorage.setItem("token", token);  
+      localStorage.setItem("token", atoken);  
       toast.success(data.message);
      }
      
