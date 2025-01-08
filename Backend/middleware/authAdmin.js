@@ -1,26 +1,23 @@
-const jwt = require("jsonwebtoken");
+const jwt  = require ('jsonwebtoken');
 
-const verifyToken = (req, res, next) => {
- 
-  const token = req.header("Authorization")?.split(" ")[1]; 
+//  ADMIN AUTHENTICATION MIDDLEWARE
 
-  if (!token) {
-    return res.status(401).json({ success: false, message: "Unauthorized: No token provided" });
-  }
-
+const authAdmin = async (req, res, next) => {
   try {
-    // Verify the token using the JWT secret
-    const decoded = jwt.verify(token, process.env.JWT_SECRET); 
+    const { atoken } = req.headers;
 
-    // Attach the decoded user data to the request object
-    req.user = decoded;
-
-    // Proceed to the next middleware or route handler
-    next();
+    if (!atoken) {
+      return res.json({ success: false, message: "Not Authorized Login Again" });
+    }
+     const token_decode = jwt.verify(atoken, process.env.JWT_SECRET);
+    if(token_decode !== process.env.ADMIN_EMAIL+process.env.ADMIN_PASSWORD) {
+        return res.json({ success: false, message: "Not Authorized Login Again" });       
+    }
+     next();
   } catch (error) {
-    // Handle invalid or expired token
-    res.status(403).json({ success: false, message: "Unauthorized: Invalid token" });
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
-module.exports = verifyToken;
+export default authAdmin;
