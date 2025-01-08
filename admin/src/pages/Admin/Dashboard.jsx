@@ -5,16 +5,9 @@ const Dashboard = () => {
     <div className="flex justify-center items-center min-h-screen p-6">
       <div className="space-y-6 w-full max-w-6xl">
 
-        <div className="bg-white shadow-md rounded-lg p-6 flex justify-between items-center">
+        <div className=" flex justify-between items-center">
           <h1 className="text-2xl font-semibold text-gray-700">Admin Dashboard</h1>
-          <div className="flex items-center gap-4">
-            <button className="bg-blue-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-blue-700">
-              View Reports
-            </button>
-            <button className="bg-green-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-green-700">
-              Manage Users
-            </button>
-          </div>
+        
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
