@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom"; 
 
 const Login = () => {
   const [state, setState] = useState("Admin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate(); 
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
@@ -16,17 +18,39 @@ const Login = () => {
         "https://koyocco-backend.onrender.com/api/admin/login",
         { email, password }
       );
-      
-  
+
+      // Handle successful login
       toast.success(response.data.message);
-      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("token", response.data.token);  // Store token in localStorage
 
-   
-      window.location.href = "/admin-dashboard";  
-     
+      // Redirect to the admin dashboard
+      navigate("/admin-dashboard");
+      
     } catch (error) {
-
+      // Handle failed login
       toast.error(error.response?.data?.message || "Login failed");
+      console.error("Login Error:", error);  // Log full error for debugging
+    }
+  };
+
+  const fetchProtectedData = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      // Send token in Authorization header for protected routes
+      const response = await axios.get(
+        "https://koyocco-backend.onrender.com/api/protected-endpoint",  // Replace with your protected route
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,  // Send token in Authorization header
+          },
+        }
+      );
+
+      console.log("Protected Data:", response.data);
+    } catch (error) {
+      console.error("Error fetching protected data:", error);
+      toast.error("Access Denied");
     }
   };
 
@@ -83,6 +107,11 @@ const Login = () => {
           )}
         </div>
       </form>
+
+      {/* Example of calling a protected route */}
+      <button onClick={fetchProtectedData} className="bg-green-500 text-white py-2 mt-4 rounded">
+        Fetch Protected Data
+      </button>
     </div>
   );
 };
