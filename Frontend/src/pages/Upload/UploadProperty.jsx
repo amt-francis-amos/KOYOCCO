@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const UploadProperty = () => {
   const [propertyData, setPropertyData] = useState({
@@ -11,7 +13,6 @@ const UploadProperty = () => {
     images: [],
     video: null,
   });
-  const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -47,7 +48,7 @@ const UploadProperty = () => {
         },
       });
       console.log('Upload successful:', response.data);
-    
+      toast.success('Property uploaded successfully!');
       setPropertyData({
         name: '',
         description: '',
@@ -56,18 +57,17 @@ const UploadProperty = () => {
         images: [],
         video: null,
       });
-      setMessage('Property uploaded successfully!'); 
-      navigate('/property-list'); 
+      navigate('/property-list');
     } catch (error) {
       console.error('Error uploading property:', error.response ? error.response.data : error.message);
-      setMessage('Failed to upload property. Please try again.'); 
+      toast.error('Failed to upload property. Please try again.');
     }
   };
 
   return (
     <div className="max-w-[500px] mx-auto mt-10 mb-20 p-5 bg-white shadow-md rounded-lg">
+      <ToastContainer />
       <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">Upload Property</h2>
-      {message && <div className="mb-4 text-red-500">{message}</div>} 
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
