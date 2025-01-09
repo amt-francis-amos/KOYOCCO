@@ -64,11 +64,11 @@ router.post('/create', async (req, res) => {
       location,
     });
 
-    // const savedRequest = await newRequest.save();
+    const savedRequest = await newRequest.save();
 
     // await sendConfirmationEmails(savedRequest);
 
-    res.status(201).json({ success: true, data: savedRequest });
+    // res.status(201).json({ success: true, data: savedRequest });
   } catch (err) {
     console.error('Error creating request:', err);
     res.status(500).json({ message: 'Internal Server Error', error: err.message });
