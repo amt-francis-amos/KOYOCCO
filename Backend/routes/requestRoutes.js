@@ -45,10 +45,10 @@ const sendConfirmationEmails = async (userEmail, request) => {
   }
 };
 
-// --POST request to create a new service request
+// -POST request to create a new service request
 router.post('/create', async (req, res) => {
   try {
-    const { userName, phone, serviceType, details, vehicleId, date, location } = req.body;
+    const { userName, userEmail, phone, serviceType, details, vehicleId, date, location } = req.body;
 
     if (!userName || !userEmail || !phone || !serviceType || !details || !date || !location) {
       return res.status(400).json({ error: 'All fields are required.' });
