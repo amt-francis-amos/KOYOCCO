@@ -7,19 +7,19 @@ import { useProperty } from '../../context/PropertyContext';
 const PropertyList = () => {
   const { property, setProperty } = useProperty();
 
-  
+
 
   const handleDelete = async (id) => {
-    console.log("Deleting property with ID:", id); // Log the ID being sent
+    console.log("Deleting property with ID:", id); 
     try {
       const response = await axios.delete(`https://koyocco-backend.onrender.com/api/properties/${id}`);
       if (response.status === 200) {
-        setProperty(property.filter((item) => item._id !== id));
-        toast.success('Property deleted successfully');
+        setProperty(property.filter((item) => item._id !== id)); // Update the state to reflect the deleted property
+        toast.success('Property deleted successfully'); // Show success toast
       }
     } catch (error) {
       console.error("Error deleting property:", error.message);
-      toast.error('Failed to delete the property. Please try again.');
+      toast.error('Failed to delete the property. Please try again.'); // Show error toast if deletion fails
     }
   };
 
