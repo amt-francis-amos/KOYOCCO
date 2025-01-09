@@ -217,29 +217,14 @@ const PropertySales = () => {
           </div>
 
           <div className="text-center">
-            {isPropertyOwner ? (
-              <>
-                <h3 className="text-lg font-semibold text-gray-700 mb-4">
-                  Promotion Fee: <span className="text-green-500">₵50</span>
-                </h3>
-                <button
-                  onClick={() => {
-                    setShowPaymentForm(true);
-                    initializePayment();
-                  }}
-                  className="bg-red-500 text-white py-3 px-8 rounded-lg w-full sm:w-auto"
-                >
-                  Pay and Post Property
-                </button>
-              </>
-            ) : (
+          
               <button
                 onClick={handlePostListing}
                 className="bg-red-500 text-white py-3 px-8 rounded-lg w-full sm:w-auto"
               >
                 Post Property
               </button>
-            )}
+           
           </div>
         </div>
       </div>
