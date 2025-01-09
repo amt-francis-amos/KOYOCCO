@@ -13,7 +13,7 @@ const PropertyList = () => {
         setProperty(property.filter((item) => item._id !== id)); 
         alert('Property deleted successfully');
       } else {
-        alert('Failed to delete property');
+        toast.error(error.message)
       }
     } catch (error) {
       console.error('Error deleting property:', error.message);
