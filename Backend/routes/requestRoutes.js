@@ -1,6 +1,6 @@
 const express = require('express');
 const Request = require('../models/Request');
-const nodemailer = require('nodemailer');
+// const nodemailer = require('nodemailer');
 const router = express.Router();
 const path = require('path');
 
@@ -64,9 +64,9 @@ router.post('/create', async (req, res) => {
       location,
     });
 
-    const savedRequest = await newRequest.save();
+    // const savedRequest = await newRequest.save();
 
-    await sendConfirmationEmails(savedRequest);
+    // await sendConfirmationEmails(savedRequest);
 
     res.status(201).json({ success: true, data: savedRequest });
   } catch (err) {
