@@ -125,7 +125,7 @@ const Home = () => {
                         {prop.description}
                       </p>
                       <p className="text-red-500 font-bold text-sm md:text-base">
-                      ₵{prop.price}
+                      \`/{prop.price}
                       </p>
                       <p className="text-gray-500 text-xs md:text-sm">
                         {prop.location}
