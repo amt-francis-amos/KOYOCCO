@@ -50,12 +50,13 @@ router.post('/create', async (req, res) => {
   try {
     const { userName, phone, serviceType, details, vehicleId, date, location } = req.body;
 
-    if (!userName || !phone || !serviceType || !details || !date || !location) {
+    if (!userName || !userEmail || !phone || !serviceType || !details || !date || !location) {
       return res.status(400).json({ error: 'All fields are required.' });
     }
 
     const newRequest = new Request({
       userName,
+      userEmail,
       phone,
       serviceType,
       details,
@@ -66,7 +67,7 @@ router.post('/create', async (req, res) => {
 
     const savedRequest = await newRequest.save();
 
-    await sendConfirmationEmails(savedRequest);
+    await sendConfirmationEmails(userEmail, savedRequest);
 
     res.status(201).json({ success: true, data: savedRequest });
   } catch (err) {
