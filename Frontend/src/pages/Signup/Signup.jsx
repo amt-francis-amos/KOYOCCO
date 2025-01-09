@@ -47,7 +47,7 @@ const Signup = () => {
         
         console.log(response.data.role)
         if(response.data.role == 'Admin'){
-          navigate('/admin-login');
+          navigate('https://koyocco-admin.onrender.com/admin-login');
         }else{
           navigate('/login');
         }
