@@ -16,7 +16,7 @@ const Footer = () => (
           <ul className="space-y-2">
             <li><Link to="/" className="text-gray-400 hover:text-white block">Home</Link></li>
             <li><Link to="/about" className="text-gray-400 hover:text-white block">About Us</Link></li>
-            <li><Link to="/booking" className="text-gray-400 hover:text-white block">Services</Link></li>
+            <li><Link to="/booking" className="text-gray-400 hover:text-white block">Booking Now</Link></li>
             
           </ul>
         </div>
@@ -30,7 +30,9 @@ const Footer = () => (
             </li>
             <li className="flex items-center">
               <FaEnvelope className="mr-2" />
-              <a href="mailto:info@koyocco.com" className="hover:text-white">info@koyocco.com</a>
+              <a href="mailto:koyoccoincltd@gmail.com
+" className="hover:text-white">koyoccoincltd@gmail.com
+</a>
             </li>
             <li className="flex items-center">
               <FaPhone className="mr-2" />
@@ -38,7 +40,7 @@ const Footer = () => (
             </li>
             <li className="flex items-center">
               <FaGlobe className="mr-2" />
-              <a href="http://www.koyocco.com" className="hover:text-white">www.koyocco.com</a>
+              <a href="http://www.koyoco.com" className="hover:text-white">www.koyoco.com</a>
             </li>
           </ul>
         </div>
