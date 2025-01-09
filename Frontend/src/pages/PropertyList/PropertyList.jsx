@@ -7,9 +7,7 @@ import { useProperty } from '../../context/PropertyContext';
 const PropertyList = () => {
   const { property, setProperty } = useProperty();
 
-  useEffect(() => {
-    toast.configure(); // Initialize toast notifications
-  }, []);
+  
 
   const handleDelete = async (id) => {
     console.log("Deleting property with ID:", id); // Log the ID being sent
