@@ -89,16 +89,16 @@ const PropertySales = () => {
     }
   };
 
-  const handlePaymentSuccess = () => {
-    toast.success("Payment Successful! Your property has been posted.");
-    setShowPaymentForm(false);
-    handlePostListing();
-  };
+  // const handlePaymentSuccess = () => {
+  //   toast.success("Payment Successful! Your property has been posted.");
+  //   setShowPaymentForm(false);
+  //   handlePostListing();
+  // };
 
-  const handlePaymentFailure = () => {
-    toast.error("Payment Failed! Please try again.");
-    setShowPaymentForm(false);
-  };
+  // const handlePaymentFailure = () => {
+  //   toast.error("Payment Failed! Please try again.");
+  //   setShowPaymentForm(false);
+  // };
 
   // const initializePayment = () => {
   //   const handler = window.PaystackPop.setup({
