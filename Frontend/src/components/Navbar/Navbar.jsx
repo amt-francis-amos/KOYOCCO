@@ -121,7 +121,7 @@ const Navbar = () => {
             <Link to="/" onClick={closeMenuOnLinkClick}>
               <img
                 src={assets.koyoccoLogo}
-                className="w-[80px]"
+                className="w-[50px]"
                 alt="Koyocco Logo"
               />
             </Link>
