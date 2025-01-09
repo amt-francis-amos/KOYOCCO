@@ -1,23 +1,23 @@
-import React from 'react';
+import { Link } from 'react-router-dom';
+import { assets } from '../../assets/assets';
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaMapMarkerAlt, FaEnvelope, FaPhone, FaGlobe } from 'react-icons/fa';
-import logoImg from '../../assets/koyocco-logo.jpeg';
 
 const Footer = () => (
   <footer className="bg-gray-800 text-white py-[100px] ">
     <div className="container mx-auto px-4">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
         <div>
-          <img src={logoImg} alt="Logo" className="h-12 mb-5" />
+          <img src={assets.koyoccoLogo} alt="Logo" className="h-12 mb-5" />
           <p className="text-gray-400 text-[14px]">With Koyocco, our platform is designed to make finding and renting a property easy and hassle-free for everyone involved. You can streamline the entire real estate transaction process from start to finish. KOYOCCO!!! YOUR NEXT LEVEL OF HAPPINESS</p>
         </div>
         <div>
           <h2 className="text-2xl font-bold mb-2">Quick Links</h2>
           <div className="h-1 bg-red-500 w-24 mb-4"></div>
           <ul className="space-y-2">
-            <li><a href="#" className="text-gray-400 hover:text-white block">Home</a></li>
-            <li><a href="#" className="text-gray-400 hover:text-white block">About Us</a></li>
-            <li><a href="#" className="text-gray-400 hover:text-white block">Services</a></li>
-            <li><a href="#" className="text-gray-400 hover:text-white block">Contact</a></li>
+            <li><Link to="/" className="text-gray-400 hover:text-white block">Home</Link></li>
+            <li><Link to="/about" className="text-gray-400 hover:text-white block">About Us</Link></li>
+            <li><Link to="/booking" className="text-gray-400 hover:text-white block">Services</Link></li>
+            
           </ul>
         </div>
         <div>
