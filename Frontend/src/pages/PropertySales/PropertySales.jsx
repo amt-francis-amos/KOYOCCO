@@ -100,18 +100,18 @@ const PropertySales = () => {
     setShowPaymentForm(false);
   };
 
-  const initializePayment = () => {
-    const handler = window.PaystackPop.setup({
-      key: "pk_live_be305faba4d35f18862ba2e58aeaff4a1aadbaa5",
-      email: "francismarkamos71@gmail.com",
-      amount: 5000, // Amount in Ghana cedis (₵)
-      currency: "GHS", // Set currency to Ghanaian Cedis
-      callback: handlePaymentSuccess,
-      onClose: handlePaymentFailure,
-    });
+  // const initializePayment = () => {
+  //   const handler = window.PaystackPop.setup({
+  //     key: "pk_live_be305faba4d35f18862ba2e58aeaff4a1aadbaa5",
+  //     email: "francismarkamos71@gmail.com",
+  //     amount: 5000, // Amount in Ghana cedis (₵)
+  //     currency: "GHS", // Set currency to Ghanaian Cedis
+  //     callback: handlePaymentSuccess,
+  //     onClose: handlePaymentFailure,
+  //   });
 
-    handler.openIframe();
-  };
+  //   handler.openIframe();
+  // };
 
   return (
     <div className="min-h-screen bg-gray-50 py-10">
