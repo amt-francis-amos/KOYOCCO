@@ -166,40 +166,45 @@ const AboutPage = () => {
         </section>
 
         <section className="container mx-auto px-4 mb-12">
-          <h2 className="text-xl md:text-2xl font-semibold text-gray-800 mb-6 text-center">
-            Follow Us
-          </h2>
-          <div className="flex justify-center space-x-6">
-            <a
-              href="https://www.facebook.com/"
-              target_blank
-              className="w-12 h-12 flex items-center justify-center bg-red-500 text-white rounded-full hover:bg-blue-700 transform transition duration-300"
-            >
-              <FaFacebookF />
-            </a>
-            <a
-              href="https://x.com/home"
-              target_blank
-              className="w-12 h-12 flex items-center justify-center bg-red-500 text-white rounded-full hover:bg-blue-500 transform transition duration-300"
-            >
-              <FaTwitter />
-            </a>
-            <a
-              href="https://www.instagram.com/koyocco_inc/profilecard/?igsh=MWN1d20xOW9rd2U0Ng=="
-              target_blank
-              className="w-12 h-12 flex items-center justify-center bg-red-500 text-white rounded-full hover:bg-pink-700 transform transition duration-300"
-            >
-              <FaInstagram />
-            </a>
-            <a
-              href="https://www.linkedin.com/in/koyocco-real-estate-ltd-b01440244?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app"
-              target_blank
-              className="w-12 h-12 flex items-center justify-center bg-red-500 text-white rounded-full hover:bg-blue-800 transform transition duration-300"
-            >
-              <FaLinkedinIn />
-            </a>
-          </div>
-        </section>
+  <h2 className="text-xl md:text-2xl font-semibold text-gray-800 mb-6 text-center">
+    Follow Us
+  </h2>
+  <div className="flex justify-center space-x-6">
+    <a
+      href="https://www.facebook.com/"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="w-12 h-12 flex items-center justify-center bg-red-500 text-white rounded-full hover:bg-blue-700 transform transition duration-300"
+    >
+      <FaFacebookF />
+    </a>
+    <a
+      href="https://x.com/home"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="w-12 h-12 flex items-center justify-center bg-red-500 text-white rounded-full hover:bg-blue-500 transform transition duration-300"
+    >
+      <FaTwitter />
+    </a>
+    <a
+      href="https://www.instagram.com/koyocco_inc/profilecard/?igsh=MWN1d20xOW9rd2U0Ng=="
+      target="_blank"
+      rel="noopener noreferrer"
+      className="w-12 h-12 flex items-center justify-center bg-red-500 text-white rounded-full hover:bg-pink-700 transform transition duration-300"
+    >
+      <FaInstagram />
+    </a>
+    <a
+      href="https://www.linkedin.com/in/koyocco-real-estate-ltd-b01440244?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="w-12 h-12 flex items-center justify-center bg-red-500 text-white rounded-full hover:bg-blue-800 transform transition duration-300"
+    >
+      <FaLinkedinIn />
+    </a>
+  </div>
+</section>
+
 
         <section className="container mx-auto px-4">
           <div className="text-center">
