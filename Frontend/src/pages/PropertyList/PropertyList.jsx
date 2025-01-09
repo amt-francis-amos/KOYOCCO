@@ -1,23 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useProperty } from '../../context/PropertyContext';
 
 const PropertyList = () => {
   const { property, setProperty } = useProperty();
+
+  useEffect(() => {
+    toast.configure(); // Initialize toast notifications
+  }, []);
 
   const handleDelete = async (id) => {
     console.log("Deleting property with ID:", id); // Log the ID being sent
     try {
       const response = await axios.delete(`https://koyocco-backend.onrender.com/api/properties/${id}`);
       if (response.status === 200) {
-        setProperty(property.filter((item) => item._id !== id)); 
-        alert('Property deleted successfully');
-      } 
+        setProperty(property.filter((item) => item._id !== id));
+        toast.success('Property deleted successfully');
+      }
     } catch (error) {
-      toast.error(error.message)
+      console.error("Error deleting property:", error.message);
+      toast.error('Failed to delete the property. Please try again.');
     }
   };
-  
 
   return (
     <div className="max-w-[1200px] mx-auto p-5">
