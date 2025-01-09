@@ -161,7 +161,7 @@ const CreateRequest = () => {
                     type="submit"
                     disabled={isSubmitting}
                     className={`w-full py-2 px-4 rounded-lg text-white ${
-                        isSubmitting ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-700'
+                        isSubmitting ? 'bg-gray-400' : 'bg-blue-red hover:bg-black'
                     }`}
                 >
                     {isSubmitting ? 'Submitting...' : 'Submit Request'}
