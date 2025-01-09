@@ -43,7 +43,7 @@ const Login = () => {
   return (
     <div>
       <form onSubmit={onSubmitHandler} className="min-h-[80vh] flex items-center">
-      <img className="w-36" src={assets.koyoccoLogo} alt="" />
+      <img className="w-20" src={assets.koyoccoLogo} alt="" />
         <div className="flex flex-col items-start gap-3 mx-auto p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-[#5E5E5E] text-sm shadow-lg">
          
           <p className="text-2xl font-semibold mx-auto">
