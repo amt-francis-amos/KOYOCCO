@@ -45,7 +45,7 @@ const Login = () => {
       <form onSubmit={onSubmitHandler} className="min-h-[80vh] flex items-center">
       
         <div className="flex flex-col items-start gap-3 mx-auto p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-[#5E5E5E] text-sm shadow-lg">
-        <img className="w-20 text-center" src={assets.koyoccoLogo} alt="" />
+        <img className="w-20 text-center mx-auto" src={assets.koyoccoLogo} alt="" />
           <p className="text-2xl font-semibold mx-auto">
             <span className="text-red-500">{state}</span> Login
           </p>
