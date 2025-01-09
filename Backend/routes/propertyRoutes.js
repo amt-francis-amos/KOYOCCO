@@ -106,13 +106,22 @@ router.get('/', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     const propertyId = req.params.id;
+
+    // Validate the provided ID
+    if (!mongoose.Types.ObjectId.isValid(propertyId)) {
+      return res.status(400).json({ message: 'Invalid property ID' });
+    }
+
     console.log("Deleting property with ID:", propertyId); 
+    
+    // Delete the property
     const property = await Property.findByIdAndDelete(propertyId);
     
     if (!property) {
       return res.status(404).json({ message: 'Property not found' });
     }
 
+    console.log(`Property with ID ${propertyId} deleted successfully.`);
     res.status(200).json({ message: 'Property deleted successfully' });
   } catch (error) {
     console.error('Error deleting property:', error.message);
