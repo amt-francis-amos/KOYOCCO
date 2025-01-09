@@ -89,29 +89,29 @@ const PropertySales = () => {
     }
   };
 
-  // const handlePaymentSuccess = () => {
-  //   toast.success("Payment Successful! Your property has been posted.");
-  //   setShowPaymentForm(false);
-  //   handlePostListing();
-  // };
+  const handlePaymentSuccess = () => {
+    toast.success("Payment Successful! Your property has been posted.");
+    setShowPaymentForm(false);
+    handlePostListing();
+  };
 
-  // const handlePaymentFailure = () => {
-  //   toast.error("Payment Failed! Please try again.");
-  //   setShowPaymentForm(false);
-  // };
+  const handlePaymentFailure = () => {
+    toast.error("Payment Failed! Please try again.");
+    setShowPaymentForm(false);
+  };
 
-  // const initializePayment = () => {
-  //   const handler = window.PaystackPop.setup({
-  //     key: "pk_live_be305faba4d35f18862ba2e58aeaff4a1aadbaa5",
-  //     email: "francismarkamos71@gmail.com",
-  //     amount: 5000, // Amount in Ghana cedis (₵)
-  //     currency: "GHS", // Set currency to Ghanaian Cedis
-  //     callback: handlePaymentSuccess,
-  //     onClose: handlePaymentFailure,
-  //   });
+  const initializePayment = () => {
+    const handler = window.PaystackPop.setup({
+      key: "pk_live_be305faba4d35f18862ba2e58aeaff4a1aadbaa5",
+      email: "francismarkamos71@gmail.com",
+      amount: 5000, // Amount in Ghana cedis (₵)
+      currency: "GH₵", // Set currency to Ghanaian Cedis
+      callback: handlePaymentSuccess,
+      onClose: handlePaymentFailure,
+    });
 
-  //   handler.openIframe();
-  // };
+    handler.openIframe();
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 py-10">
@@ -217,14 +217,29 @@ const PropertySales = () => {
           </div>
 
           <div className="text-center">
-          
+            {isPropertyOwner ? (
+              <>
+                <h3 className="text-lg font-semibold text-gray-700 mb-4">
+                  Promotion Fee: <span className="text-green-500">₵50</span>
+                </h3>
+                <button
+                  onClick={() => {
+                    setShowPaymentForm(true);
+                    initializePayment();
+                  }}
+                  className="bg-red-500 text-white py-3 px-8 rounded-lg w-full sm:w-auto"
+                >
+                  Pay and Post Property
+                </button>
+              </>
+            ) : (
               <button
                 onClick={handlePostListing}
                 className="bg-red-500 text-white py-3 px-8 rounded-lg w-full sm:w-auto"
               >
                 Post Property
               </button>
-           
+            )}
           </div>
         </div>
       </div>
