@@ -115,7 +115,7 @@ router.post("/signup", async (req, res) => {
 
     // Send the confirmation email
     await sendConfirmationEmail(user);
-    res.status(201).json({ message: "Signup successful! Confirmation email sent." });
+    res.status(201).json({ message: "Signup successful! Confirmation email sent.",role: user.role });
   } catch (error) {
     console.error("Signup error:", error);
     res.status(500).json({ message: "Internal server error" });

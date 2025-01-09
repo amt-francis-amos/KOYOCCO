@@ -44,7 +44,13 @@ const Signup = () => {
   
       if (response.status === 201) {
         toast.success('Signup successful!'); 
-        navigate('/login');
+        
+        console.log(response)
+        if(response.data.role === 'Admin'){
+          navigate('/admin-login');
+        }else{
+          navigate('/login');
+        }
       } else {
         setMessage('Unexpected response from server');
       }
