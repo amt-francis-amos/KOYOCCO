@@ -7,7 +7,7 @@ const Footer = () => (
     <div className="container mx-auto px-4">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
         <div>
-          <img src={assets.koyoccoLogo} alt="Logo" className="h-12 mb-5" />
+          <Link to="/"><img src={assets.koyoccoLogo} alt="Logo" className="h-12 mb-5" /></Link>
           <p className="text-gray-400 text-[14px]">With Koyocco, our platform is designed to make finding and renting a property easy and hassle-free for everyone involved. You can streamline the entire real estate transaction process from start to finish. KOYOCCO!!! YOUR NEXT LEVEL OF HAPPINESS</p>
         </div>
         <div>
