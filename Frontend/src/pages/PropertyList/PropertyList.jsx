@@ -1,12 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { useProperty } from '../../context/PropertyContext';
 
 const PropertyList = () => {
   const { property, setProperty } = useProperty();
+  const [toastMessage, setToastMessage] = useState(null);
 
+  // Effect to trigger toast notifications when toastMessage changes
+  useEffect(() => {
+    if (toastMessage) {
+      toast(toastMessage); // Trigger toast based on the message
+    }
+  }, [toastMessage]); // This will run whenever toastMessage changes
 
   const handleDelete = async (id) => {
     console.log("Deleting property with ID:", id); // Log the ID being sent
@@ -19,16 +25,16 @@ const PropertyList = () => {
         // Filter out the deleted property from the state
         setProperty(prevProperty => prevProperty.filter((item) => item._id !== id));
 
-        // Show success toast
-        toast.success('Property deleted successfully');
+        // Set the success message to trigger the success toast
+        setToastMessage('Property deleted successfully');
       } else {
-        // Handle unexpected response status
-        toast.error('Failed to delete the property. Please try again.');
+        // Set the error message if response status isn't 200
+        setToastMessage('Failed to delete the property. Please try again.');
       }
     } catch (error) {
       // Catch any errors (e.g., network issues, server errors)
       console.error("Error deleting property:", error);
-      toast.error('Failed to delete the property. Please try again.');
+      setToastMessage('Failed to delete the property. Please try again.');
     }
   };
 
