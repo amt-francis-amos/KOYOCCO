@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import { redirect, useNavigate } from 'react-router-dom'; 
 import axios from 'axios';
 import logoImg from '../../assets/koyocco-logo.jpeg'; 
 import RoleModal from '../../components/Modals/RoleModal';
@@ -47,7 +47,7 @@ const Signup = () => {
         
         console.log(response.data.role)
         if(response.data.role == 'Admin'){
-          navigate('https://koyocco-admin.onrender.com/admin-login');
+          window.location.href = 'https://koyocco-admin.onrender.com/admin-login'
         }else{
           navigate('/login');
         }
