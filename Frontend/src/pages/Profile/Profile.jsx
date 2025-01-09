@@ -33,7 +33,7 @@ const Profile = () => {
     };
 
     fetchProfile();
-  }, []);
+  }, [localStorage.getItem("authToken")]);
 
   // Handle profile save (including image upload)
   // Inside Profile.js
