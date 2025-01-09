@@ -45,8 +45,8 @@ const Signup = () => {
       if (response.status === 201) {
         toast.success('Signup successful!'); 
         
-        console.log(response)
-        if(response.data.data.role === 'Admin'){
+        console.log(response.data.role)
+        if(response.data.role === 'Admin'){
           navigate('/admin-login');
         }else{
           navigate('/login');
