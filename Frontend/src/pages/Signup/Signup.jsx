@@ -47,7 +47,7 @@ const Signup = () => {
         
         console.log(response.data.role)
         if(response.data.role == 'Admin'){
-          window.location.href = 'https://koyocco-admin.onrender.com/admin-login'
+          window.location.href = 'https://koyocco-admin.onrender.com'
         }else{
           navigate('/login');
         }
