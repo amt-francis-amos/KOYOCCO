@@ -66,7 +66,7 @@ const handleSave = async () => {
 
       // Notify the Navbar component to update the profile picture
       // This could be done via Context API or re-fetching logic
-      setProfilePic(imageUploadResponse.data.profileImage);  // Assuming you have a setter in Navbar
+      // setProfilePic(imageUploadResponse.data.profileImage);  // Assuming you have a setter in Navbar
     }
 
     // Handle profile update (excluding password)

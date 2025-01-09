@@ -47,7 +47,7 @@ const Navbar = () => {
           const data = response.data;
           console.log(response.data);
           setUserProfile({
-            profileImage: data.profileImage || assets.defaultProfilePic, 
+            profileImage: data.profileImage || assets.uploadImg, 
             role: data.role || "User", 
           });
         } catch (error) {
@@ -57,7 +57,7 @@ const Navbar = () => {
   
       fetchUserData();
     }
-  }, [isLoggedIn]);
+  }, [localStorage.getItem("authToken"),userProfile]);
   
 
   const updateLoginStatus = () => {

@@ -13,11 +13,13 @@ import rentImg3 from './rentImg3.jpeg'
 import carImg1 from './car-1.png';
 import carImg2 from './car-2.png';
 import carImg3 from './car-3.png';
+import uploadImg from './upload_area.svg'
 
 
 
 export const assets = {
   koyoccoLogo,
+  uploadImg,
   aboutImg,
   houseImg1,
   houseImg2,
