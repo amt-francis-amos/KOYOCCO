@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const CreateRequest = () => {
     const [formData, setFormData] = useState({
@@ -24,7 +25,6 @@ const CreateRequest = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
-        console.log('Sending request with data:', formData);
 
         const { userName, phone, serviceType, date, location } = formData;
         if (!userName || !phone || !serviceType || !date || !location) {
@@ -34,7 +34,10 @@ const CreateRequest = () => {
         }
 
         try {
-            const response = await axios.post('https://koyocco-backend.onrender.com/api/requests/create', formData);
+            const response = await axios.post(
+                'https://koyocco-backend.onrender.com/api/requests/create',
+                formData
+            );
 
             if (response.status === 201) {
                 toast.success('Request submitted successfully!');
@@ -47,13 +50,16 @@ const CreateRequest = () => {
                     location: '',
                 });
 
-                navigate('/cars');
+               
+                setTimeout(() => navigate('/cars'), 1000);
             } else {
-                toast.error('Failed to submit request.');
+                toast.error('Failed to submit the request.');
             }
         } catch (error) {
             console.error('Error submitting request:', error);
-            toast.error('An error occurred while submitting the request.');
+            toast.error(
+                error.response?.data?.message || 'An error occurred while submitting the request.'
+            );
         } finally {
             setIsSubmitting(false);
         }
@@ -62,7 +68,10 @@ const CreateRequest = () => {
     return (
         <div className="container mx-auto p-6">
             <h1 className="text-3xl font-bold text-center mb-6">Create a Request</h1>
-            <form onSubmit={handleSubmit} className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
+            <form
+                onSubmit={handleSubmit}
+                className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md"
+            >
                 <div className="mb-4">
                     <label htmlFor="userName" className="block text-gray-700 font-bold mb-2">
                         Full Name
@@ -88,6 +97,7 @@ const CreateRequest = () => {
                         value={formData.phone}
                         onChange={handleChange}
                         required
+                        pattern="[0-9]{10}" // Validates a 10-digit phone number
                         className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                     />
                 </div>
@@ -150,7 +160,9 @@ const CreateRequest = () => {
                 <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-black"
+                    className={`w-full py-2 px-4 rounded-lg text-white ${
+                        isSubmitting ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-700'
+                    }`}
                 >
                     {isSubmitting ? 'Submitting...' : 'Submit Request'}
                 </button>
