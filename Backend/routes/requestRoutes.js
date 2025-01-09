@@ -1,9 +1,9 @@
 const express = require('express');
-const Request = require('../models/Request');
+const Request = require('../models/Request'); 
 const nodemailer = require('nodemailer');
 const router = express.Router();
-const path = require('path');
 
+// Function to create transporter for sending emails
 const createTransporter = () => {
   return nodemailer.createTransport({
     service: 'gmail',
@@ -15,18 +15,18 @@ const createTransporter = () => {
 };
 
 // Function to send confirmation emails
-const sendConfirmationEmails = async (userEmail, request) => {
+const sendConfirmationEmails = async (email, request) => {
   const transporter = createTransporter();
 
   const userMailOptions = {
     from: '"Koyocco Ghana Team" <no-reply@app.com>',
-    to: userEmail,
+    to: email,
     subject: 'Your Request for Airport Pickup Has Been Received',
     html: `
       <div style="text-align: center;">
         <h2>Hello ${request.userName},</h2>
         <p>Thank you for your request. Your request for an airport pickup service has been successfully received.</p>
-        <p><strong>Vehicle:</strong> ${request.vehicleId.name}</p>
+        <p><strong>Vehicle:</strong> ${request.vehicleId?.name || 'N/A'}</p>
         <p><strong>Location:</strong> ${request.location}</p>
         <p><strong>Service Type:</strong> ${request.serviceType}</p>
         <p><strong>Date:</strong> ${new Date(request.date).toLocaleString()}</p>
@@ -37,15 +37,14 @@ const sendConfirmationEmails = async (userEmail, request) => {
   };
 
   try {
-    // Send email to the user
     await transporter.sendMail(userMailOptions);
-    console.log('Emails sent successfully');
+    console.log('Email sent successfully');
   } catch (error) {
-    console.error('Error sending emails:', error);
+    console.error('Error sending email:', error);
   }
 };
 
-// -POST request to create a new service request
+// POST request to create a new service request
 router.post('/create', async (req, res) => {
   try {
     const { userName, userEmail, phone, serviceType, details, vehicleId, date, location } = req.body;
