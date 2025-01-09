@@ -39,7 +39,7 @@ const Login = () => {
       <form onSubmit={onSubmitHandler} className="min-h-[80vh] flex items-center">
         <div className="flex flex-col items-start gap-3 mx-auto p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-[#5E5E5E] text-sm shadow-lg">
           <a href="https://koyocco.onrender.com" target="_blank" rel="noopener noreferrer">
-            <img className="w-20 text-center mx-auto" src={assets.koyoccoLogo} alt="Koyocco Logo" />
+            <img className="w-20 text-center mx-auto cursor-pointer" src={assets.koyoccoLogo} alt="Koyocco Logo" />
           </a>
           <p className="text-2xl font-semibold mx-auto">
             <span className="text-red-500">{state}</span> Login
