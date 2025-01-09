@@ -46,16 +46,16 @@ const Footer = () => (
           <h2 className="text-2xl font-bold mb-2">Follow Us</h2>
           <div className="h-1 bg-red-500 w-24 mb-4"></div>
           <div className="flex justify-center lg:justify-start space-x-4">
-            <a href="https://www.facebook.com/" className="text-gray-400 hover:text-white">
+            <a href="https://www.facebook.com/" target="_blank" className="text-gray-400 hover:text-white">
               <FaFacebookF />
             </a>
-            <a href="https://x.com/home" className="text-gray-400 hover:text-white">
+            <a href="https://x.com/home" target="_blank" className="text-gray-400 hover:text-white">
               <FaTwitter />
             </a>
-            <a href="https://www.instagram.com/koyocco_inc/profilecard/?igsh=MWN1d20xOW9rd2U0Ng==" className="text-gray-400 hover:text-white">
+            <a href="https://www.instagram.com/koyocco_inc/profilecard/?igsh=MWN1d20xOW9rd2U0Ng=="  target="_blank" className="text-gray-400 hover:text-white">
               <FaInstagram />
             </a>
-            <a href="https://www.linkedin.com/in/koyocco-real-estate-ltd-b01440244?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" className="text-gray-400 hover:text-white">
+            <a href="https://www.linkedin.com/in/koyocco-real-estate-ltd-b01440244?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank" className="text-gray-400 hover:text-white">
               <FaLinkedinIn />
             </a>
           </div>
