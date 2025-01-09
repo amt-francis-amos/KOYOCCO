@@ -152,7 +152,7 @@ const CreateRequest = () => {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
+          className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-red-500"
         >
           {isSubmitting ? 'Submitting...' : 'Submit Request'}
         </button>

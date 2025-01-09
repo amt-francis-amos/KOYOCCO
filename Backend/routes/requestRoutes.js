@@ -75,7 +75,7 @@ router.post('/create', async (req, res) => {
   }
 });
 
-// GET request to fetch all requests
+// --GET request to fetch all requests
 router.get('/', async (req, res) => {
   try {
     const requests = await Request.find().populate('vehicleId');
