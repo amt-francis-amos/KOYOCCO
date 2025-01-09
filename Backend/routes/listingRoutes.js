@@ -66,7 +66,7 @@ router.post('/upload', upload.fields([{ name: 'photos', maxCount: 10 }, { name: 
       description,
       location,
       price,
-      photos,
+      images: photos,
       video,
     });
 
