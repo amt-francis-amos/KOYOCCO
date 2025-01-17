@@ -4,11 +4,12 @@ const Agent = require('../models/Agent');
 // Contact Agent Function
 const contactAgent = async (req, res) => {
   try {
+    // Destructure the required fields from the request body
     const { agentId, userName, userEmail, message, propertyId } = req.body;
 
     // Check if all required fields are provided
-    if (!agentId || !userName || !userEmail || !message) {
-      return res.status(400).json({ message: 'All fields are required: agentId, userName, userEmail, message' });
+    if (!agentId || !userName || !userEmail || !message || !propertyId) {
+      return res.status(400).json({ message: 'All fields are required: agentId, userName, userEmail, message, propertyId' });
     }
 
     // Log propertyId for debugging (you can remove this in production)
@@ -37,7 +38,14 @@ const contactAgent = async (req, res) => {
       from: userEmail,
       to: agentEmail,
       subject: `Contact from ${userName}`,
-      text: message,
+      text: `
+        You have received a message from ${userName} (${userEmail}).
+        
+        Message: 
+        ${message}
+        
+        Property ID: ${propertyId}
+      `,
     };
 
     // Send the email
