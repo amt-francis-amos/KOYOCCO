@@ -13,10 +13,12 @@ const PropertyRentals = () => {
     message: '',
   });
 
+  // Fetch properties on component mount
   useEffect(() => {
     const fetchProperties = async () => {
       try {
         const { data } = await axios.get('https://koyocco-backend.onrender.com/api/properties');
+        console.log('Fetched Properties:', data);  // Log fetched data to check for agent info
         setProperties(data);
       } catch (error) {
         setError(error.response?.data?.message || error.message || 'Failed to fetch properties');
@@ -28,6 +30,7 @@ const PropertyRentals = () => {
     fetchProperties();
   }, []);
 
+  // Handle property selection for contacting the agent
   const handleContact = (property) => {
     setSelectedProperty(property);
     setFormData({
@@ -37,6 +40,7 @@ const PropertyRentals = () => {
     });
   };
 
+  // Handle form input change
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -45,32 +49,32 @@ const PropertyRentals = () => {
     }));
   };
 
+  // Handle the form submission (send message to the agent)
   const handleContactSubmit = async (e) => {
     e.preventDefault();
     const { fullName, email, message } = formData;
-  
+
+    // Prepare the contact data
     const contactData = {
-      agentId: selectedProperty.agentId, 
-      agentEmail: selectedProperty.agentEmail, // Fallback for agentEmail
-      propertyId: selectedProperty._id,
+      agentId: selectedProperty?.agentId || 'default-agent-id',  // Fallback for agentId if undefined
+      agentEmail: selectedProperty?.agentEmail || 'default-agent-email@example.com',  // Fallback for agentEmail
+      propertyId: selectedProperty?._id,
       userName: fullName,
       userEmail: email,
       message: message,
     };
-  
-    console.log('Form data being sent:', contactData);
-  
+
+    console.log('Form data being sent:', contactData);  // Log the data being sent to ensure it's correct
+
     try {
       const response = await axios.post('https://koyocco-backend.onrender.com/api/contact-agent', contactData);
-  
-      setContactMessage(`Your message has been sent to the agent for ${selectedProperty.name}.`);
+      setContactMessage(`Your message has been sent to the agent for ${selectedProperty?.name}.`);
       setSelectedProperty(null);
     } catch (error) {
       console.error('Contact error:', error.response?.data?.message || error.message);
       setContactMessage('Failed to send message. Please try again.');
     }
   };
-  
 
   return (
     <div className="max-w-[1200px] mx-auto py-6 sm:py-12">
@@ -82,7 +86,7 @@ const PropertyRentals = () => {
 
       {selectedProperty ? (
         <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg">
-          <h2 className="text-2xl font-semibold mb-4">{`Contact Agent for ${selectedProperty.name}`}</h2>
+          <h2 className="text-2xl font-semibold mb-4">{`Contact Agent for ${selectedProperty?.name}`}</h2>
           <form onSubmit={handleContactSubmit}>
             <div className="mb-4">
               <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
