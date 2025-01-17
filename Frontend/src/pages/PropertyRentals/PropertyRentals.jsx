@@ -4,16 +4,18 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const PropertyRentals = () => {
-  const [properties, setProperties] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [selectedProperty, setSelectedProperty] = useState(null);
+  const [properties, setProperties] = useState([]); 
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(null); 
+  const [selectedProperty, setSelectedProperty] = useState(null); 
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
+    phone: '',
     message: '',
   });
 
+  // Fetch properties on component mount
   useEffect(() => {
     const fetchProperties = async () => {
       try {
@@ -30,15 +32,18 @@ const PropertyRentals = () => {
     fetchProperties();
   }, []);
 
+
   const handleContact = (property) => {
     setSelectedProperty(property);
     setFormData({
       fullName: '',
       email: '',
+      phone: '',
       message: '',
     });
   };
 
+ 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -47,9 +52,10 @@ const PropertyRentals = () => {
     }));
   };
 
+
   const handleContactSubmit = async (e) => {
     e.preventDefault();
-    const { fullName, email, message } = formData;
+    const { fullName, email, phone, message } = formData;
 
     const contactData = {
       agentId: selectedProperty?.agentId || 'default-agent-id',
@@ -57,13 +63,14 @@ const PropertyRentals = () => {
       propertyId: selectedProperty?._id,
       userName: fullName,
       userEmail: email,
+      userPhone: phone,
       message: message,
     };
 
     try {
-      const response = await axios.post('https://koyocco-backend.onrender.com/api/contact-agent', contactData);
+      await axios.post('https://koyocco-backend.onrender.com/api/contact-agent', contactData);
       toast.success(`Message sent to the agent for ${selectedProperty?.name}.`);
-      setSelectedProperty(null);
+      setSelectedProperty(null); 
     } catch (error) {
       toast.error('Failed to send message. Please try again.');
     }
@@ -75,6 +82,7 @@ const PropertyRentals = () => {
       <h1 className="text-3xl font-bold text-center mb-8">Property Rentals</h1>
 
       {selectedProperty ? (
+        
         <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg">
           <h2 className="text-2xl font-semibold mb-4">{`Contact Agent for ${selectedProperty?.name}`}</h2>
           <form onSubmit={handleContactSubmit}>
@@ -89,6 +97,7 @@ const PropertyRentals = () => {
                 value={formData.fullName}
                 onChange={handleInputChange}
                 className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                required
               />
             </div>
             <div className="mb-4">
@@ -102,6 +111,21 @@ const PropertyRentals = () => {
                 value={formData.email}
                 onChange={handleInputChange}
                 className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                Phone Number
+              </label>
+              <input
+                type="text"
+                id="phone"
+                name="phone"
+                value={formData.phone}
+                onChange={handleInputChange}
+                className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                required
               />
             </div>
             <div className="mb-4">
@@ -114,6 +138,7 @@ const PropertyRentals = () => {
                 value={formData.message}
                 onChange={handleInputChange}
                 className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                required
               />
             </div>
             <button
@@ -124,7 +149,12 @@ const PropertyRentals = () => {
             </button>
           </form>
         </div>
+      ) : loading ? (
+        <p className="text-center">Loading properties...</p>
+      ) : error ? (
+        <p className="text-center text-red-500">{error}</p>
       ) : (
+        // Property Listings
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {properties.map((property) => (
             <div
