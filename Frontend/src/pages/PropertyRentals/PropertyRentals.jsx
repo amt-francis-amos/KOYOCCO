@@ -66,8 +66,9 @@ const PropertyRentals = () => {
       return;
     }
 
+   
     const contactData = {
-      agentId: selectedProperty?.agentId || 'default-agent-id',
+      agentId: selectedProperty?.agentId || 'default-agent-id', 
       agentEmail: selectedProperty?.agentEmail || 'francismarkamos71@gmail.com',
       propertyId: selectedProperty?._id,
       userName: fullName,
@@ -88,7 +89,8 @@ const PropertyRentals = () => {
     } finally {
       setIsSubmitting(false); 
     }
-  };
+};
+
 
   return (
     <div className="max-w-[1200px] mx-auto py-6 sm:py-12">
