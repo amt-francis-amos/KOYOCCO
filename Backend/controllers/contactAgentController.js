@@ -13,14 +13,22 @@ const contactAgent = async (req, res) => {
             });
         }
 
-        // Fetch agent details using agentId
-        const agent = await Agent.findById(agentId);
-        if (!agent) {
-            return res.status(404).json({ message: 'Agent not found for the provided agentId' });
-        }
+        let recipientEmail = null;
+        let recipientPhone = null;
 
-        const recipientEmail = agent.email;  // Now the agent's email is coming from the database
-        const recipientPhone = agent.phone;
+        // Check if agentId is valid
+        if (agentId && agentId !== 'default-agent-id') {
+            const agent = await Agent.findById(agentId);
+            if (!agent) {
+                return res.status(404).json({ message: 'Agent not found for the provided agentId' });
+            }
+            recipientEmail = agent.email;
+            recipientPhone = agent.phone;
+        } else {
+            // If agentId is 'default-agent-id', use a fallback email
+            // Here, you can set a default email (e.g., a general email or admin email)
+            recipientEmail = 'default-agent@example.com';  // Replace with actual fallback email
+        }
 
         // Check if we have a valid email to send the message
         if (!recipientEmail) {
