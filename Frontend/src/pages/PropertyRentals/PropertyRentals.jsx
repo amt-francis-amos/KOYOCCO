@@ -48,14 +48,7 @@ const PropertyRentals = () => {
 
   const handleContactSubmit = async (e) => {
     e.preventDefault();
-    
     const { fullName, email, message } = formData;
-    
-    // Check if all fields are filled out and selectedProperty is set
-    if (!fullName || !email || !message || !selectedProperty || !selectedProperty._id || !selectedProperty.agentId) {
-      setContactMessage('All fields are required.');
-      return;
-    }
   
     console.log('Form data being sent:', { 
       propertyId: selectedProperty._id,
@@ -75,13 +68,7 @@ const PropertyRentals = () => {
       });
   
       setContactMessage(`Your message has been sent to the agent for ${selectedProperty.name}.`);
-      setSelectedProperty(null);  // Clear the selected property after successful submission
-      setFormData({
-        fullName: '',
-        email: '',
-        message: '',
-      });  // Clear form after submission
-  
+      setSelectedProperty(null);
     } catch (error) {
       console.error('Contact error:', error);
       setContactMessage('Failed to send message. Please try again.');
