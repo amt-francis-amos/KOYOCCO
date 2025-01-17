@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
+const mongoose = require('mongoose');
 const Agent = require('../models/Agent');
 const ContactMessage = require('../models/ContactMessage');
-const mongoose = require('mongoose'); // Ensure mongoose is required
 
 const contactAgent = async (req, res) => {
     try {
@@ -17,14 +17,16 @@ const contactAgent = async (req, res) => {
         let recipientEmail = null;
         let recipientPhone = null;
 
-        // Check if the agentId is not 'default-agent-id'
-        if (agentId && agentId !== 'default-agent-id') {
-            // Validate the agentId as a valid ObjectId
+        // Check if agentId is 'default-agent-id' for fallback email
+        if (agentId === 'default-agent-id') {
+            recipientEmail = process.env.FALLBACK_EMAIL;
+            console.log('Fallback email used:', recipientEmail);
+        } else {
+            // Validate agentId and check if it exists in the database
             if (!mongoose.Types.ObjectId.isValid(agentId)) {
                 return res.status(400).json({ message: 'Invalid agentId format' });
             }
 
-            // Fetch the agent details from the database
             const agent = await Agent.findById(agentId);
             if (!agent) {
                 return res.status(404).json({ message: 'Agent not found for the provided agentId' });
@@ -32,13 +34,12 @@ const contactAgent = async (req, res) => {
 
             recipientEmail = agent.email;
             recipientPhone = agent.phone;
-        } else {
-            // If agentId is 'default-agent-id', use the fallback email
-            recipientEmail = process.env.FALLBACK_EMAIL; // Get fallback email from the .env file
+            console.log('Agent email used:', recipientEmail);
         }
 
-        // Check if we have a valid email to send the message
+        // Ensure a valid recipient email exists
         if (!recipientEmail) {
+            console.error('Recipient email missing:', { recipientEmail });
             return res.status(400).json({ message: 'Recipient email is missing or invalid' });
         }
 
