@@ -1,27 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const PropertyRentals = () => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedProperty, setSelectedProperty] = useState(null);
-  const [contactMessage, setContactMessage] = useState('');
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
     message: '',
   });
 
-  // Fetch properties on component mount
   useEffect(() => {
     const fetchProperties = async () => {
       try {
         const { data } = await axios.get('https://koyocco-backend.onrender.com/api/properties');
-        console.log('Fetched Properties:', data);  // Log fetched data to check for agent info
         setProperties(data);
       } catch (error) {
         setError(error.response?.data?.message || error.message || 'Failed to fetch properties');
+        toast.error('Failed to fetch properties!');
       } finally {
         setLoading(false);
       }
@@ -30,7 +30,6 @@ const PropertyRentals = () => {
     fetchProperties();
   }, []);
 
-  // Handle property selection for contacting the agent
   const handleContact = (property) => {
     setSelectedProperty(property);
     setFormData({
@@ -40,7 +39,6 @@ const PropertyRentals = () => {
     });
   };
 
-  // Handle form input change
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -49,40 +47,32 @@ const PropertyRentals = () => {
     }));
   };
 
-  // Handle the form submission (send message to the agent)
   const handleContactSubmit = async (e) => {
     e.preventDefault();
     const { fullName, email, message } = formData;
 
-    // Prepare the contact data
     const contactData = {
-      agentId: selectedProperty?.agentId || 'default-agent-id',  // Fallback for agentId if undefined
-      agentEmail: selectedProperty?.agentEmail || 'default-agent-email@example.com',  // Fallback for agentEmail
+      agentId: selectedProperty?.agentId || 'default-agent-id',
+      agentEmail: selectedProperty?.agentEmail || 'default-agent-email@example.com',
       propertyId: selectedProperty?._id,
       userName: fullName,
       userEmail: email,
       message: message,
     };
 
-    console.log('Form data being sent:', contactData);  // Log the data being sent to ensure it's correct
-
     try {
       const response = await axios.post('https://koyocco-backend.onrender.com/api/contact-agent', contactData);
-      setContactMessage(`Your message has been sent to the agent for ${selectedProperty?.name}.`);
+      toast.success(`Message sent to the agent for ${selectedProperty?.name}.`);
       setSelectedProperty(null);
     } catch (error) {
-      console.error('Contact error:', error.response?.data?.message || error.message);
-      setContactMessage('Failed to send message. Please try again.');
+      toast.error('Failed to send message. Please try again.');
     }
   };
 
   return (
     <div className="max-w-[1200px] mx-auto py-6 sm:py-12">
+      <ToastContainer />
       <h1 className="text-3xl font-bold text-center mb-8">Property Rentals</h1>
-
-      {contactMessage && (
-        <p className="text-center py-2 text-green-500">{contactMessage}</p>
-      )}
 
       {selectedProperty ? (
         <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg">

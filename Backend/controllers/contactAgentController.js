@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer');
-const Agent = require('../models/Agent'); // Ensure the correct import
+const Agent = require('../models/Agent'); 
 
 const contactAgent = async (req, res) => {
   try {
