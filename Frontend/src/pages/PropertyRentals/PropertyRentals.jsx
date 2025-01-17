@@ -13,10 +13,12 @@ const PropertyRentals = () => {
     message: '',
   });
 
+  // Fetch properties from backend
   useEffect(() => {
     const fetchProperties = async () => {
       try {
         const { data } = await axios.get('https://koyocco-backend.onrender.com/api/properties');
+        console.log('Fetched properties:', data); // Log to debug `agentId`
         setProperties(data);
       } catch (error) {
         setError(error.response?.data?.message || error.message || 'Failed to fetch properties');
@@ -29,6 +31,11 @@ const PropertyRentals = () => {
   }, []);
 
   const handleContact = (property) => {
+    if (!property.agentId) {
+      setContactMessage('Agent information is not available for this property.');
+      return;
+    }
+
     setSelectedProperty(property);
     setFormData({
       fullName: '',
@@ -48,24 +55,21 @@ const PropertyRentals = () => {
   const handleContactSubmit = async (e) => {
     e.preventDefault();
     const { fullName, email, message } = formData;
-  
-    console.log('Form data being sent:', {
-      agentId: selectedProperty.agentId,  // Ensure agentId is included
-      propertyId: selectedProperty._id,
-      userName: fullName,
-      userEmail: email,
-      message: message,
-    });
-  
+
+    if (!selectedProperty.agentId) {
+      setContactMessage('Agent information is missing. Cannot send message.');
+      return;
+    }
+
     try {
-      const response = await axios.post('https://koyocco-backend.onrender.com/api/contact-agent', {
-        agentId: selectedProperty.agentId,  // Ensure agentId is included here
+      await axios.post('https://koyocco-backend.onrender.com/api/contact-agent', {
+        agentId: selectedProperty.agentId,
         propertyId: selectedProperty._id,
         userName: fullName,
         userEmail: email,
         message: message,
       });
-  
+
       setContactMessage(`Your message has been sent to the agent for ${selectedProperty.name}.`);
       setSelectedProperty(null);
     } catch (error) {
@@ -73,7 +77,7 @@ const PropertyRentals = () => {
       setContactMessage('Failed to send message. Please try again.');
     }
   };
-  
+
   if (loading) {
     return <p className="text-center py-4">Loading properties...</p>;
   }
