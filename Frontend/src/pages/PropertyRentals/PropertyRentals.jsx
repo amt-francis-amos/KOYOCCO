@@ -4,18 +4,19 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const PropertyRentals = () => {
-  const [properties, setProperties] = useState([]); 
-  const [loading, setLoading] = useState(true); 
-  const [error, setError] = useState(null); 
-  const [selectedProperty, setSelectedProperty] = useState(null); 
+  const [properties, setProperties] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedProperty, setSelectedProperty] = useState(null);
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
     phone: '',
     message: '',
   });
+  const [isSubmitting, setIsSubmitting] = useState(false); 
 
-  // Fetch properties on component mount
+
   useEffect(() => {
     const fetchProperties = async () => {
       try {
@@ -32,14 +33,13 @@ const PropertyRentals = () => {
     fetchProperties();
   }, []);
 
-
   const handleContact = (property) => {
     setSelectedProperty({
       ...property,
       agentId: property.agentId || 'default-agent-id',
       agentEmail: property.agentEmail || 'francismarkamos71@gmail.com',
     });
-  
+
     setFormData({
       fullName: '',
       email: '',
@@ -47,9 +47,7 @@ const PropertyRentals = () => {
       message: '',
     });
   };
-  
 
- 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -57,7 +55,6 @@ const PropertyRentals = () => {
       [name]: value,
     }));
   };
-
 
   const handleContactSubmit = async (e) => {
     e.preventDefault();
@@ -79,12 +76,17 @@ const PropertyRentals = () => {
       message: message,
     };
 
+    setIsSubmitting(true); 
+
     try {
       await axios.post('https://koyocco-backend.onrender.com/api/contact-agent', contactData);
       toast.success(`Message sent to the agent for ${selectedProperty?.name}.`);
-      setSelectedProperty(null); 
+      setSelectedProperty(null);
+      setFormData({ fullName: '', email: '', phone: '', message: '' });
     } catch (error) {
       toast.error('Failed to send message. Please try again.');
+    } finally {
+      setIsSubmitting(false); 
     }
   };
 
@@ -154,9 +156,10 @@ const PropertyRentals = () => {
             </div>
             <button
               type="submit"
-              className="w-full bg-red-500 text-white py-2 rounded hover:bg-black transition duration-300"
+              disabled={isSubmitting} 
+              className={`w-full py-2 rounded transition duration-300 ${isSubmitting ? 'bg-gray-400' : 'bg-red-500 text-white hover:bg-black'}`}
             >
-              Send Message
+              {isSubmitting ? 'Sending...' : 'Send Message'}
             </button>
           </form>
         </div>
