@@ -4,10 +4,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const PropertyRentals = () => {
-  const [properties, setProperties] = useState([]); 
-  const [loading, setLoading] = useState(true); 
-  const [error, setError] = useState(null); 
-  const [selectedProperty, setSelectedProperty] = useState(null); 
+  const [properties, setProperties] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedProperty, setSelectedProperty] = useState(null);
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -32,7 +32,6 @@ const PropertyRentals = () => {
     fetchProperties();
   }, []);
 
-
   const handleContact = (property) => {
     setSelectedProperty(property);
     setFormData({
@@ -43,7 +42,6 @@ const PropertyRentals = () => {
     });
   };
 
- 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -52,15 +50,20 @@ const PropertyRentals = () => {
     }));
   };
 
-
   const handleContactSubmit = async (e) => {
     e.preventDefault();
     const { fullName, email, phone, message } = formData;
 
+    // Ensure the selected property and agent email are valid
+    if (!selectedProperty?.agentId || !selectedProperty?.agentEmail) {
+      toast.error('Agent details are missing for this property.');
+      return;
+    }
+
     const contactData = {
-      agentId: selectedProperty?.agentId || 'default-agent-id',
-      agentEmail: selectedProperty?.agentEmail || 'default-agent-email@example.com',
-      propertyId: selectedProperty?._id,
+      agentId: selectedProperty.agentId, // Use the actual agent ID
+      agentEmail: selectedProperty.agentEmail, // Use the actual agent email
+      propertyId: selectedProperty._id,
       userName: fullName,
       userEmail: email,
       userPhone: phone,
@@ -68,11 +71,21 @@ const PropertyRentals = () => {
     };
 
     try {
-      await axios.post('https://koyocco-backend.onrender.com/api/contact-agent', contactData);
-      toast.success(`Message sent to the agent for ${selectedProperty?.name}.`);
-      setSelectedProperty(null); 
+      const response = await axios.post(
+        'https://koyocco-backend.onrender.com/api/contact-agent',
+        contactData
+      );
+
+      if (response.status === 200) {
+        toast.success(`Message sent to the agent for ${selectedProperty?.name}.`);
+        setSelectedProperty(null);
+      } else {
+        throw new Error('Unexpected response from the server.');
+      }
     } catch (error) {
-      toast.error('Failed to send message. Please try again.');
+      toast.error(
+        error.response?.data?.message || 'Failed to send message. Please try again.'
+      );
     }
   };
 
@@ -82,7 +95,6 @@ const PropertyRentals = () => {
       <h1 className="text-3xl font-bold text-center mb-8">Property Rentals</h1>
 
       {selectedProperty ? (
-        
         <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg">
           <h2 className="text-2xl font-semibold mb-4">{`Contact Agent for ${selectedProperty?.name}`}</h2>
           <form onSubmit={handleContactSubmit}>
@@ -154,7 +166,6 @@ const PropertyRentals = () => {
       ) : error ? (
         <p className="text-center text-red-500">{error}</p>
       ) : (
-        // Property Listings
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {properties.map((property) => (
             <div
