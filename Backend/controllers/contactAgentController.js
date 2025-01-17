@@ -1,12 +1,13 @@
 const nodemailer = require('nodemailer');
 const Agent = require('../models/Agent');
-const ContactMessage = require('../models/ContactMessage'); // Add ContactMessage model
+const ContactMessage = require('../models/ContactMessage');
+const mongoose = require('mongoose');
 
 const contactAgent = async (req, res) => {
     try {
         const { agentId, userName, userEmail, message, propertyId } = req.body;
 
-        // Ensure all required fields are provided
+       
         if (!userName || !userEmail || !message || !propertyId || !agentId) {
             return res.status(400).json({
                 message: 'All fields are required: userName, userEmail, message, propertyId, and agentId',
@@ -16,9 +17,9 @@ const contactAgent = async (req, res) => {
         let recipientEmail = null;
         let recipientPhone = null;
 
-        // If agentId is not 'default-agent-id', fetch the agent details
+       
         if (agentId && agentId !== 'default-agent-id') {
-            // Validate agentId and check if it exists in the database
+          
             if (!mongoose.Types.ObjectId.isValid(agentId)) {
                 return res.status(400).json({ message: 'Invalid agentId format' });
             }
@@ -31,16 +32,16 @@ const contactAgent = async (req, res) => {
             recipientEmail = agent.email;
             recipientPhone = agent.phone;
         } else {
-            // If agentId is 'default-agent-id', use a fallback email
-            recipientEmail = 'francismarkamos71@gmail.com'; // Replace with your fallback email
+           
+            recipientEmail = process.env.FALLBACK_EMAIL;
         }
 
-        // Check if we have a valid email to send the message
+     
         if (!recipientEmail) {
             return res.status(400).json({ message: 'Recipient email is missing or invalid' });
         }
 
-        // Create a transporter for sending email
+     
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
@@ -49,7 +50,6 @@ const contactAgent = async (req, res) => {
             },
         });
 
-        // Send the email
         await transporter.sendMail({
             from: userEmail,
             to: recipientEmail,
@@ -66,7 +66,7 @@ const contactAgent = async (req, res) => {
             `,
         });
 
-        // Save the contact message to the database
+       
         const newMessage = new ContactMessage({
             agentId,
             userName,
