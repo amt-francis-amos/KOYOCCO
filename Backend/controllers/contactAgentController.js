@@ -6,35 +6,30 @@ const contactAgent = async (req, res) => {
   try {
     const { agentId, userName, userEmail, message, propertyId, agentEmail } = req.body;
 
+    // Check for required fields
     if (!userName || !userEmail || !message || !propertyId || (!agentId && !agentEmail)) {
       return res.status(400).json({
         message: 'All fields are required: userName, userEmail, message, propertyId, and either agentId or agentEmail',
       });
     }
 
-    console.log('Request Body:', req.body);
-
-    let recipientEmail = agentEmail;
+    let recipientEmail = agentEmail;  // Default to the agentEmail from the body
     let recipientPhone = null;
 
-    // Fetch agent details if agentId is provided
+    // If agentId is provided, find the agent and use their details
     if (agentId && agentId !== 'default-agent-id') {
-      console.log('Agent ID:', agentId);
       const agent = await Agent.findById(agentId);
       if (!agent) {
         return res.status(404).json({ message: 'Agent not found for the provided agentId' });
       }
       recipientEmail = agent.email;
       recipientPhone = agent.phone;
-    }
-
-    // Check if recipient email exists
-    if (!recipientEmail) {
+    } else if (!recipientEmail) {
+      // If agentEmail is also not provided, return an error
       return res.status(400).json({ message: 'Recipient email is missing or invalid' });
     }
 
-    console.log(`Sending email to ${recipientEmail}, Phone: ${recipientPhone || 'Not provided'}`);
-
+    // Sending the email to the agent
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -59,7 +54,7 @@ const contactAgent = async (req, res) => {
       `,
     });
 
-    // Save the message in the database
+    // Save the contact message
     const savedMessage = new ContactMessage({
       userName,
       userEmail,

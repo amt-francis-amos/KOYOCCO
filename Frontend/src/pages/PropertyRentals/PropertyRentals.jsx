@@ -43,10 +43,10 @@ const PropertyRentals = () => {
   const handleContact = (property) => {
     setSelectedProperty({
       ...property,
-      agentId: property.agent?._id || 'default-agent-id', // Use the agent object and its _id if present
-      agentEmail: property.agent?.email || 'francismarkamos71@gmail.com', // Extract email from the agent if available
+      agentId: property.agent?._id || 'default-agent-id',  
+      agentEmail: property.agent?.email || 'default-agent-email@example.com',  
     });
-
+  
     setFormData({
       fullName: '',
       email: '',
@@ -54,6 +54,7 @@ const PropertyRentals = () => {
       message: '',
     });
   };
+  
 
   const handleContactSubmit = async (e) => {
     e.preventDefault();
@@ -67,7 +68,7 @@ const PropertyRentals = () => {
 
     const contactData = {
       agentId: selectedProperty?.agentId || 'default-agent-id',
-      agentEmail: selectedProperty?.agentEmail || 'francismarkamos71@gmail.com',
+      agentEmail: selectedProperty?.agentEmail || 'default-agent-email@example.com',
       propertyId: selectedProperty?._id,
       userName: fullName,
       userEmail: email,
