@@ -49,16 +49,24 @@ const PropertyRentals = () => {
   const handleContactSubmit = async (e) => {
     e.preventDefault();
     const { fullName, email, message } = formData;
-
+  
+    console.log('Form data being sent:', { 
+      propertyId: selectedProperty._id,
+      agentId: selectedProperty.agentId,
+      fullName,
+      email,
+      message
+    }); // Log the data
+  
     try {
       await axios.post('https://koyocco-backend.onrender.com/api/contact-agent', {
         propertyId: selectedProperty._id,
-        agentId: selectedProperty.agentId, // Assuming the property object includes the agent's ID
+        agentId: selectedProperty.agentId, 
         fullName,
         email,
         message,
       });
-
+  
       setContactMessage(`Your message has been sent to the agent for ${selectedProperty.name}.`);
       setSelectedProperty(null);
     } catch (error) {
@@ -66,6 +74,7 @@ const PropertyRentals = () => {
       setContactMessage('Failed to send message. Please try again.');
     }
   };
+  
 
   if (loading) {
     return <p className="text-center py-4">Loading properties...</p>;
