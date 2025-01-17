@@ -15,7 +15,7 @@ const PropertyRentals = () => {
     message: '',
   });
 
-  // Fetch properties on component mount
+ 
   useEffect(() => {
     const fetchProperties = async () => {
       try {
@@ -54,15 +54,15 @@ const PropertyRentals = () => {
     e.preventDefault();
     const { fullName, email, phone, message } = formData;
 
-    // Ensure the selected property and agent email are valid
+   
     if (!selectedProperty?.agentId || !selectedProperty?.agentEmail) {
       toast.error('Agent details are missing for this property.');
       return;
     }
 
     const contactData = {
-      agentId: selectedProperty.agentId, // Use the actual agent ID
-      agentEmail: selectedProperty.agentEmail, // Use the actual agent email
+      agentId: selectedProperty.agentId, 
+      agentEmail: selectedProperty.agentEmail, 
       propertyId: selectedProperty._id,
       userName: fullName,
       userEmail: email,
