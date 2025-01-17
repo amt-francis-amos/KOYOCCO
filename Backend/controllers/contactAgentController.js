@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 const Agent = require('../models/Agent');
-const ContactMessage = require('../models/ContactMessage');  // New schema to save messages
+const ContactMessage = require('../models/ContactMessage'); // Add ContactMessage model
 
 const contactAgent = async (req, res) => {
     try {
@@ -16,18 +16,23 @@ const contactAgent = async (req, res) => {
         let recipientEmail = null;
         let recipientPhone = null;
 
-        // Check if agentId is valid
+        // If agentId is not 'default-agent-id', fetch the agent details
         if (agentId && agentId !== 'default-agent-id') {
+            // Validate agentId and check if it exists in the database
+            if (!mongoose.Types.ObjectId.isValid(agentId)) {
+                return res.status(400).json({ message: 'Invalid agentId format' });
+            }
+
             const agent = await Agent.findById(agentId);
             if (!agent) {
                 return res.status(404).json({ message: 'Agent not found for the provided agentId' });
             }
+
             recipientEmail = agent.email;
             recipientPhone = agent.phone;
         } else {
             // If agentId is 'default-agent-id', use a fallback email
-            // Here, you can set a default email (e.g., a general email or admin email)
-            recipientEmail = 'default-agent@example.com';  // Replace with actual fallback email
+            recipientEmail = 'francismarkamos71@gmail.com'; // Replace with your fallback email
         }
 
         // Check if we have a valid email to send the message
@@ -44,7 +49,7 @@ const contactAgent = async (req, res) => {
             },
         });
 
-        // Send the email to the agent
+        // Send the email
         await transporter.sendMail({
             from: userEmail,
             to: recipientEmail,
@@ -61,7 +66,7 @@ const contactAgent = async (req, res) => {
             `,
         });
 
-        // Save the contact message to the database (new ContactMessage model)
+        // Save the contact message to the database
         const newMessage = new ContactMessage({
             agentId,
             userName,

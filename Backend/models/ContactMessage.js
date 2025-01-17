@@ -1,3 +1,4 @@
+
 const mongoose = require('mongoose');
 
 const ContactMessageSchema = new mongoose.Schema({
@@ -7,8 +8,7 @@ const ContactMessageSchema = new mongoose.Schema({
     message: { type: String, required: true },
     propertyId: { type: String, required: true },
     recipientEmail: { type: String, required: true },
-}, {
-    timestamps: true,
+    createdAt: { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model('ContactMessage', ContactMessageSchema);
