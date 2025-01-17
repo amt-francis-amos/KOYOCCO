@@ -31,7 +31,7 @@ app.use('/api/requests', requestRoutes);
 app.use('/api/post-listing', listingRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/user', profileRoutes); 
-app.use('/api/contact-agent', contactAgentRoutes); 
+app.use('/api/contact', contactAgentRoutes); 
 
 // Global error handling middleware
 app.use((err, req, res, next) => {
