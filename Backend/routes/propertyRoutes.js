@@ -152,4 +152,54 @@ router.put('/:id/status', async (req, res) => {
 });
 
 
+// Add route for contacting an agent
+router.post('/contact-agent', async (req, res) => {
+  const { name, email, message, propertyId } = req.body;
+
+  // Validate required fields
+  if (!name || !email || !message) {
+    return res.status(400).json({ message: 'Name, email, and message are required' });
+  }
+
+  try {
+    // Optionally fetch the property details if a property ID is provided
+    let propertyDetails = null;
+    if (propertyId) {
+      propertyDetails = await Property.findById(propertyId);
+      if (!propertyDetails) {
+        return res.status(404).json({ message: 'Property not found' });
+      }
+    }
+
+    // Simulate sending an email or saving the contact request to the database
+    // Replace the following code with your email-sending logic or database logic
+    console.log('Contact Request Received:', {
+      name,
+      email,
+      message,
+      property: propertyDetails ? propertyDetails.name : 'N/A',
+    });
+
+    res.status(200).json({
+      message: 'Contact request sent successfully',
+      details: {
+        name,
+        email,
+        message,
+        property: propertyDetails ? propertyDetails.name : 'N/A',
+      },
+    });
+  } catch (error) {
+    console.error('Error handling contact request:', error);
+    res.status(500).json({ message: 'Failed to process contact request', error: error.message });
+  }
+});
+
+
+
+
+
+
+
+
 module.exports = router;
