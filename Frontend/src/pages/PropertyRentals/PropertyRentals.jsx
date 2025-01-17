@@ -36,10 +36,10 @@ const PropertyRentals = () => {
   const handleContact = (property) => {
     setSelectedProperty({
       ...property,
-      agentId: property.agentId || 'default-agent-id',
-      agentEmail: property.agentEmail || 'francismarkamos71@gmail.com',
+      agentId: property.agent?._id || 'default-agent-id', // Use the agent object and its _id if present
+      agentEmail: property.agent?.email || 'francismarkamos71@gmail.com', // Extract email from the agent if available
     });
-
+  
     setFormData({
       fullName: '',
       email: '',
@@ -47,26 +47,18 @@ const PropertyRentals = () => {
       message: '',
     });
   };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
+  
+  // When submitting the form, make sure to reference agentId and agentEmail from selectedProperty
   const handleContactSubmit = async (e) => {
     e.preventDefault();
     const { fullName, email, phone, message } = formData;
-
+  
     // Simple form validation
     if (!fullName || !email || !phone || !message) {
       toast.error('All fields are required.');
       return;
     }
-
-   
+  
     const contactData = {
       agentId: selectedProperty?.agentId || 'default-agent-id', 
       agentEmail: selectedProperty?.agentEmail || 'francismarkamos71@gmail.com',
@@ -76,9 +68,9 @@ const PropertyRentals = () => {
       userPhone: phone,
       message: message,
     };
-
-    setIsSubmitting(true); 
-
+  
+    setIsSubmitting(true);
+  
     try {
       await axios.post('https://koyocco-backend.onrender.com/api/contact-agent', contactData);
       toast.success(`Message sent to the agent for ${selectedProperty?.name}.`);
@@ -87,9 +79,10 @@ const PropertyRentals = () => {
     } catch (error) {
       toast.error('Failed to send message. Please try again.');
     } finally {
-      setIsSubmitting(false); 
+      setIsSubmitting(false);
     }
-};
+  };
+  
 
 
   return (
