@@ -52,19 +52,19 @@ const PropertyRentals = () => {
   
     console.log('Form data being sent:', { 
       propertyId: selectedProperty._id,
-      agentId: selectedProperty.agentId,
+      agentId: selectedProperty.agentId, 
       fullName,
       email,
       message
-    }); // Log the data
+    }); // Log the data for debugging
   
     try {
       await axios.post('https://koyocco-backend.onrender.com/api/contact-agent', {
-        propertyId: selectedProperty._id,
+        propertyId: selectedProperty._id,  
         agentId: selectedProperty.agentId, 
-        fullName,
-        email,
-        message,
+        userName: fullName,  
+        userEmail: email,    
+        message: message,  
       });
   
       setContactMessage(`Your message has been sent to the agent for ${selectedProperty.name}.`);
