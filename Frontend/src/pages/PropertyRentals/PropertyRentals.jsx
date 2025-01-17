@@ -37,7 +37,7 @@ const PropertyRentals = () => {
     setSelectedProperty({
       ...property,
       agentId: property.agentId || 'default-agent-id',
-      agentEmail: property.agentEmail || 'default-agent-email@example.com',
+      agentEmail: property.agentEmail || 'francismarkamos71@gmail.com',
     });
   
     setFormData({
