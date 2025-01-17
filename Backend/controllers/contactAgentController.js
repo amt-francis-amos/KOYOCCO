@@ -14,7 +14,7 @@ const contactAgent = async (req, res) => {
       console.log('Request Body:', req.body);
   
       let recipientEmail = agentEmail; 
-      let recipientPhone = null; // New field for the agent's phone number
+      let recipientPhone = null; 
   
       if (agentId && agentId !== 'default-agent-id') {
         console.log('Agent ID:', agentId);
@@ -23,7 +23,7 @@ const contactAgent = async (req, res) => {
           return res.status(404).json({ message: 'Agent not found for the provided agentId' });
         }
         recipientEmail = agent.email;
-        recipientPhone = agent.phone; // Fetch the agent's phone number
+        recipientPhone = agent.phone; 
       }
   
       if (!recipientEmail) {
