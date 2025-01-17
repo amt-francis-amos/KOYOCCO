@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
 const PropertyRentals = () => {
   const [properties, setProperties] = useState([]);
@@ -74,7 +73,6 @@ const PropertyRentals = () => {
       setContactMessage('Failed to send message. Please try again.');
     }
   };
-  
 
   if (loading) {
     return <p className="text-center py-4">Loading properties...</p>;
