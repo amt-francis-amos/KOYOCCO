@@ -66,7 +66,7 @@ const PropertyRentals = () => {
     }); // Log the data for debugging
   
     try {
-      await axios.post('https://koyocco-backend.onrender.com/api/contact-agent', {
+      await axios.post('https://koyocco-backend.onrender.com/api', {
         propertyId: selectedProperty._id,  
         agentId: selectedProperty.agentId, 
         userName: fullName,  
@@ -173,12 +173,11 @@ const PropertyRentals = () => {
                 <p className="text-gray-800 font-bold text-lg mt-1">${property.price}</p>
               </div>
               <button
-  onClick={() => handleContact(property)}
-  className="mt-4 w-full bg-red-500 text-white py-2 rounded hover:bg-black transition duration-300"
->
-  Contact Agent
-</button>
-
+                onClick={() => handleContact(property)}
+                className="mt-4 w-full bg-red-500 text-white py-2 rounded hover:bg-black transition duration-300"
+              >
+                Contact Agent
+              </button>
             </div>
           ))}
         </div>
