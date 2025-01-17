@@ -63,6 +63,12 @@ const PropertyRentals = () => {
     e.preventDefault();
     const { fullName, email, phone, message } = formData;
 
+    // Simple form validation
+    if (!fullName || !email || !phone || !message) {
+      toast.error('All fields are required.');
+      return;
+    }
+
     const contactData = {
       agentId: selectedProperty?.agentId || 'default-agent-id',
       agentEmail: selectedProperty?.agentEmail || 'default-agent-email@example.com',
@@ -88,7 +94,6 @@ const PropertyRentals = () => {
       <h1 className="text-3xl font-bold text-center mb-8">Property Rentals</h1>
 
       {selectedProperty ? (
-        
         <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg">
           <h2 className="text-2xl font-semibold mb-4">{`Contact Agent for ${selectedProperty?.name}`}</h2>
           <form onSubmit={handleContactSubmit}>
