@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 const Agent = require('../models/Agent');
-
+const Contact = require('../models/ContactModel'); 
 
 const contactAgent = async (req, res) => {
     try {
@@ -31,6 +31,16 @@ const contactAgent = async (req, res) => {
             return res.status(400).json({ message: 'Recipient email is missing or invalid' });
         }
 
+        // Save the contact request in the database
+        const contactRequest = new Contact({
+            customerName: userName,
+            customerEmail: userEmail,
+            message,
+            propertyId,
+            agentId,
+        });
+        await contactRequest.save();
+
         // Create a transporter for sending email
         const transporter = nodemailer.createTransport({
             service: 'gmail',
@@ -55,11 +65,18 @@ const contactAgent = async (req, res) => {
 
                 Phone (if available): ${recipientPhone || 'Not provided'}
             `,
+            html: `
+                <p>You have received a message from <strong>${userName}</strong> (${userEmail}).</p>
+                <p><strong>Message:</strong></p>
+                <p>${message}</p>
+                <p><strong>Property ID:</strong> ${propertyId}</p>
+                <p><strong>Phone (if available):</strong> ${recipientPhone || 'Not provided'}</p>
+            `,
         });
 
-        res.status(200).json({ message: 'Message sent successfully' });
+        res.status(200).json({ message: `Message sent to ${recipientEmail} successfully.` });
     } catch (error) {
-        console.error('Error in contactAgent:', error.message);
+        console.error('Error in contactAgent:', error.stack);
         res.status(500).json({ message: 'Failed to contact agent', error: error.message });
     }
 };

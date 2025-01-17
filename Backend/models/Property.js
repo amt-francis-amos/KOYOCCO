@@ -10,8 +10,7 @@ const PropertySchema = new mongoose.Schema({
   status: { type: String, enum: ['Available', 'Sold', 'Rented'], default: 'Available' }, 
   owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, 
   agent: { type: mongoose.Schema.Types.ObjectId, ref: 'Agent' } ,
-  agentId: { type: mongoose.Schema.Types.ObjectId, ref: 'Agent', required: true },
-  agentEmail: { type: String, required: true },
+ 
 });
 
 module.exports = mongoose.model('Property', PropertySchema);
