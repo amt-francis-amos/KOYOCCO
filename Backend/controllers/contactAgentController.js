@@ -15,32 +15,32 @@ const contactAgent = async (req, res) => {
   
       console.log('Request Body:', req.body);
   
-      // Default to agentEmail if no agentId is provided
+   
       let recipientEmail = agentEmail;
       let recipientPhone = null;
   
-      // If agentId is provided, try to find the agent in the database
+    
       if (agentId && agentId !== 'default-agent-id') {
         console.log('Agent ID:', agentId);
         const agent = await Agent.findById(agentId);
   
-        // If no agent is found, return an error
+     
         if (!agent) {
           return res.status(404).json({ message: 'Agent not found for the provided agentId' });
         }
-        // Use the found agent's email and phone
+      
         recipientEmail = agent.email;
         recipientPhone = agent.phone;
       }
   
-      // Ensure a valid recipientEmail is set
+  
       if (!recipientEmail) {
         return res.status(400).json({ message: 'Recipient email is missing or invalid' });
       }
   
       console.log(`Sending email to ${recipientEmail}, Phone: ${recipientPhone || 'Not provided'}`);
   
-      // Create the email transporter using nodemailer
+     
       const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -49,7 +49,6 @@ const contactAgent = async (req, res) => {
         },
       });
   
-      // Send the email
       await transporter.sendMail({
         from: userEmail,
         to: recipientEmail,
@@ -66,7 +65,7 @@ const contactAgent = async (req, res) => {
         `,
       });
   
-      // Save the contact message to the database
+    
       const savedMessage = new ContactMessage({
         userName,
         userEmail,
