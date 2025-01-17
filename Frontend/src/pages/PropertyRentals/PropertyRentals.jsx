@@ -50,8 +50,8 @@ const PropertyRentals = () => {
     const { fullName, email, message } = formData;
   
     console.log('Form data being sent:', {
+      agentId: selectedProperty.agentId,  // Ensure agentId is included
       propertyId: selectedProperty._id,
-      agentId: selectedProperty.agentId,
       userName: fullName,
       userEmail: email,
       message: message,
@@ -59,8 +59,8 @@ const PropertyRentals = () => {
   
     try {
       const response = await axios.post('https://koyocco-backend.onrender.com/api/contact-agent', {
+        agentId: selectedProperty.agentId,  // Ensure agentId is included here
         propertyId: selectedProperty._id,
-        agentId: selectedProperty.agentId,
         userName: fullName,
         userEmail: email,
         message: message,

@@ -4,7 +4,6 @@ const Agent = require('../models/Agent');
 // Contact Agent Function
 const contactAgent = async (req, res) => {
   try {
-    // Destructure the required fields from the request body
     const { agentId, userName, userEmail, message, propertyId } = req.body;
 
     // Check if all required fields are provided
