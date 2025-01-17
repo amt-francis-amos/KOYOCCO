@@ -173,11 +173,12 @@ const PropertyRentals = () => {
                 <p className="text-gray-800 font-bold text-lg mt-1">${property.price}</p>
               </div>
               <button
-                onClick={() => handleContact(property)}
-                className="mt-4 w-full bg-red-500 text-white py-2 rounded hover:bg-black transition duration-300"
-              >
-                Contact Agent
-              </button>
+  onClick={() => handleContact(property)}
+  className="mt-4 w-full bg-red-500 text-white py-2 rounded hover:bg-black transition duration-300"
+>
+  Contact Agent
+</button>
+
             </div>
           ))}
         </div>
