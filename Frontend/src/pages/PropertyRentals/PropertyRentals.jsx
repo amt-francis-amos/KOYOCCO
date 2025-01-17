@@ -66,7 +66,7 @@ const PropertyRentals = () => {
     }); // Log the data for debugging
   
     try {
-      await axios.post('https://koyocco-backend.onrender.com/api', {
+      await axios.post('https://koyocco-backend.onrender.com/api/contact-agent', {
         propertyId: selectedProperty._id,  
         agentId: selectedProperty.agentId, 
         userName: fullName,  
