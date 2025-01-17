@@ -1,27 +1,35 @@
 const nodemailer = require('nodemailer');
-const Agent = require('../models/Agent');
 
 // Contact Agent Function
 const contactAgent = async (req, res) => {
   try {
-    const { agentId, userName, userEmail, message, propertyId } = req.body;
+    const { agentId, userName, userEmail, message, propertyId, agentEmail } = req.body;
 
     // Check if all required fields are provided
-    if (!agentId || !userName || !userEmail || !message || !propertyId) {
-      return res.status(400).json({ message: 'All fields are required: agentId, userName, userEmail, message, propertyId' });
+    if (!userName || !userEmail || !message || !propertyId || (!agentId && !agentEmail)) {
+      return res.status(400).json({
+        message: 'All fields are required: userName, userEmail, message, propertyId, and either agentId or agentEmail',
+      });
     }
 
-    // Log propertyId for debugging
+    // Log the incoming request for debugging
     console.log('Request Body:', req.body);
 
-    // Find the agent by agentId
-    const agent = await Agent.findById(agentId);
-    if (!agent) {
-      return res.status(404).json({ message: 'Agent not found' });
+    // Determine the agent email
+    let recipientEmail = agentEmail; // Default to the agentEmail provided in the request
+    if (agentId) {
+      // Fetch agent email from the database if agentId is provided
+      const agent = await Agent.findById(agentId);
+      if (!agent) {
+        return res.status(404).json({ message: 'Agent not found for the provided agentId' });
+      }
+      recipientEmail = agent.email;
     }
 
-    // Extract the agent's email
-    const agentEmail = agent.email;
+    // Check if the recipient email is valid
+    if (!recipientEmail) {
+      return res.status(400).json({ message: 'Recipient email is missing or invalid' });
+    }
 
     // Setup nodemailer transporter
     const transporter = nodemailer.createTransport({
@@ -44,7 +52,7 @@ const contactAgent = async (req, res) => {
     // Define the email options
     const mailOptions = {
       from: userEmail,
-      to: agentEmail,
+      to: recipientEmail,
       subject: `Contact from ${userName}`,
       text: `
         You have received a message from ${userName} (${userEmail}).
