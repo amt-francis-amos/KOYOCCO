@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const AgentSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  email: { type: String, required: true, unique: true, match: /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/ }, 
+  email: { type: String, required: true, unique: true, match: /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/ }, // Added email regex validation
   phone: { 
     type: String, 
     required: true, 
