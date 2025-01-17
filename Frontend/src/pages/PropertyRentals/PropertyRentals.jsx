@@ -14,8 +14,7 @@ const PropertyRentals = () => {
     phone: '',
     message: '',
   });
-  const [isSubmitting, setIsSubmitting] = useState(false); 
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -33,13 +32,21 @@ const PropertyRentals = () => {
     fetchProperties();
   }, []);
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
   const handleContact = (property) => {
     setSelectedProperty({
       ...property,
       agentId: property.agent?._id || 'default-agent-id', // Use the agent object and its _id if present
       agentEmail: property.agent?.email || 'francismarkamos71@gmail.com', // Extract email from the agent if available
     });
-  
+
     setFormData({
       fullName: '',
       email: '',
@@ -47,20 +54,19 @@ const PropertyRentals = () => {
       message: '',
     });
   };
-  
-  // When submitting the form, make sure to reference agentId and agentEmail from selectedProperty
+
   const handleContactSubmit = async (e) => {
     e.preventDefault();
     const { fullName, email, phone, message } = formData;
-  
+
     // Simple form validation
     if (!fullName || !email || !phone || !message) {
       toast.error('All fields are required.');
       return;
     }
-  
+
     const contactData = {
-      agentId: selectedProperty?.agentId || 'default-agent-id', 
+      agentId: selectedProperty?.agentId || 'default-agent-id',
       agentEmail: selectedProperty?.agentEmail || 'francismarkamos71@gmail.com',
       propertyId: selectedProperty?._id,
       userName: fullName,
@@ -68,9 +74,9 @@ const PropertyRentals = () => {
       userPhone: phone,
       message: message,
     };
-  
+
     setIsSubmitting(true);
-  
+
     try {
       await axios.post('https://koyocco-backend.onrender.com/api/contact-agent', contactData);
       toast.success(`Message sent to the agent for ${selectedProperty?.name}.`);
@@ -82,8 +88,6 @@ const PropertyRentals = () => {
       setIsSubmitting(false);
     }
   };
-  
-
 
   return (
     <div className="max-w-[1200px] mx-auto py-6 sm:py-12">
@@ -151,7 +155,7 @@ const PropertyRentals = () => {
             </div>
             <button
               type="submit"
-              disabled={isSubmitting} 
+              disabled={isSubmitting}
               className={`w-full py-2 rounded transition duration-300 ${isSubmitting ? 'bg-gray-400' : 'bg-red-500 text-white hover:bg-black'}`}
             >
               {isSubmitting ? 'Sending...' : 'Send Message'}
