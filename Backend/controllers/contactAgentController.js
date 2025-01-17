@@ -11,8 +11,8 @@ const contactAgent = async (req, res) => {
       return res.status(400).json({ message: 'All fields are required: agentId, userName, userEmail, message, propertyId' });
     }
 
-    // Log propertyId for debugging (you can remove this in production)
-    console.log('Property ID:', propertyId);
+    // Log propertyId for debugging
+    console.log('Request Body:', req.body);
 
     // Find the agent by agentId
     const agent = await Agent.findById(agentId);
@@ -32,6 +32,15 @@ const contactAgent = async (req, res) => {
       },
     });
 
+    // Verify transporter configuration
+    transporter.verify((error, success) => {
+      if (error) {
+        console.error('Transporter verification failed:', error);
+        return res.status(500).json({ message: 'Error configuring email service', error: error.message });
+      }
+      console.log('Transporter is ready:', success);
+    });
+
     // Define the email options
     const mailOptions = {
       from: userEmail,
@@ -49,9 +58,11 @@ const contactAgent = async (req, res) => {
 
     // Send the email
     await transporter.sendMail(mailOptions);
+
+    // Send success response
     res.status(200).json({ message: 'Message sent successfully' });
   } catch (error) {
-    console.error(error);
+    console.error('Error in contactAgent:', error.message);
     res.status(500).json({ message: 'Failed to contact agent', error: error.message });
   }
 };
