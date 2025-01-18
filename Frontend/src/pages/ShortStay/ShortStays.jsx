@@ -5,13 +5,13 @@ import axios from "axios";
 const ShortStays = () => {
   const navigate = useNavigate();
   const [listings, setListings] = useState([]);
-  const exchangeRate = 10; // Example exchange rate (1 USD = 10 GHS)
+  const exchangeRate = 10; 
 
   useEffect(() => {
-    // Fetch listings from the backend
+    
     axios.get("https://koyocco-backend.onrender.com/api/listings")
       .then(response => {
-        setListings(response.data); // Set the fetched listings to state
+        setListings(response.data); 
       })
       .catch(error => {
         console.error("There was an error fetching the listings:", error);
@@ -25,9 +25,9 @@ const ShortStays = () => {
   const convertToGHS = (priceInUSD) => {
     const price = parseFloat(priceInUSD.replace(/[^0-9.-]+/g, ""));
     if (isNaN(price)) {
-      return "Invalid Price"; // Handle invalid price data
+      return "Invalid Price"; 
     }
-    return `₵ ${(price * exchangeRate).toLocaleString()}`; // Convert and format the price with ₵ symbol
+    return `₵ ${(price * exchangeRate).toLocaleString()}`;
   };
 
   return (
@@ -48,7 +48,7 @@ const ShortStays = () => {
               <div className="flex-grow">
                 <h2 className="text-xl sm:text-2xl font-semibold mb-2">{listing.name}</h2>
                 <p className="text-gray-600">{listing.location}</p>
-                {/* Convert price from USD to GHS */}
+              
                 <p className="text-gray-800 font-bold text-lg mt-1">
                   {convertToGHS(listing.price)}
                 </p>
