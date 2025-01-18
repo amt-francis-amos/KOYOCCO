@@ -10,11 +10,10 @@ const UploadProperty = () => {
     description: '',
     price: '',
     location: '',
-    propertyType: '', // Add property type
+    type: '', 
     images: [],
     video: null,
   });
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -54,7 +53,7 @@ const UploadProperty = () => {
         description: '',
         price: '',
         location: '',
-        propertyType: '',
+        type: '', // Reset field
         images: [],
         video: null,
       });
@@ -108,41 +107,44 @@ const UploadProperty = () => {
           className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
         />
         <select
-          name="propertyType"
-          value={propertyData.propertyType}
+          name="type" // Changed from propertyType to type
+          value={propertyData.type}
           onChange={handleChange}
           required
           className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
         >
           <option value="">Select Property Type</option>
           <option value="Apartment">Apartment</option>
-          <option value="Condos">Condos</option>
-          <option value="Houses Duplex">Houses Duplex</option>
+          <option value="House">House</option>
+          <option value="Land">Land</option>
           <option value="Office">Office</option>
-          <option value="Shop">Shop</option>
+          <option value="Other">Other</option>
         </select>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Upload Images:</label>
+          <label className="block text-sm font-medium text-gray-700">Upload Images</label>
           <input
             type="file"
             name="images"
-            multiple
             accept="image/*"
+            multiple
             onChange={handleChange}
-            className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+            className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-800 hover:file:bg-gray-200"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Upload Video:</label>
+          <label className="block text-sm font-medium text-gray-700">Upload Video</label>
           <input
             type="file"
             name="video"
             accept="video/*"
             onChange={handleChange}
-            className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+            className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-800 hover:file:bg-gray-200"
           />
         </div>
-        <button type="submit" className="w-full bg-red-600 text-white font-bold rounded-md p-2 hover:bg-red-700 transition duration-200">
+        <button
+          type="submit"
+          className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
+        >
           Upload Property
         </button>
       </form>
