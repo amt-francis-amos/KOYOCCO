@@ -39,34 +39,9 @@ const Home = () => {
                 style={{ backgroundImage: `url(${img})` }}
               >
                 <div className="bg-black bg-opacity-50 h-full flex flex-col justify-center items-center px-4 text-center">
-                  {index === 0 ? (
-                    <>
-                      <h1 className="text-white text-3xl md:text-5xl font-bold mb-4">
-                        Find Your Dream Home
-                      </h1>
-                      <p className="text-white text-base md:text-lg mb-8">
-                        Browse through the best properties available.
-                      </p>
-                    </>
-                  ) : index === 1 ? (
-                    <>
-                      <h1 className="text-white text-3xl md:text-5xl font-bold mb-4">
-                        Luxury Living Awaits
-                      </h1>
-                      <p className="text-white text-base md:text-lg mb-8">
-                        Experience the finest homes in the market.
-                      </p>
-                    </>
-                  ) : (
-                    <>
-                      <h1 className="text-white text-3xl md:text-5xl font-bold mb-4">
-                        Affordable Homes for Everyone
-                      </h1>
-                      <p className="text-white text-base md:text-lg mb-8">
-                        Find a home that fits your budget.
-                      </p>
-                    </>
-                  )}
+                  <h1 className="text-white text-3xl md:text-5xl font-bold mb-4">
+                    Find Your Dream Home
+                  </h1>
                   <Link
                     to="/login"
                     className="bg-red-500 text-white px-6 py-3 rounded-md text-sm md:text-base"
@@ -131,8 +106,14 @@ const Home = () => {
                         {prop.location}
                       </p>
                       <p className="text-red-600 text-xl font-bold md:text-sm mt-2">
-                         {prop.propertyType}
+                        {prop.propertyType}
                       </p>
+                      {/* Status Circle */}
+                      <div
+                        className={`w-4 h-4 rounded-full ${
+                          prop.status === "Available" ? "bg-green-500" : "bg-gray-500"
+                        }`}
+                      ></div>
                     </div>
                   </div>
                 </Link>
