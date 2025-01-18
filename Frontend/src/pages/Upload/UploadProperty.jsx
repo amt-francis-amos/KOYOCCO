@@ -5,16 +5,15 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const UploadProperty = () => {
-  const navigate = useNavigate(); 
   const [propertyData, setPropertyData] = useState({
     name: '',
     description: '',
     price: '',
     location: '',
-    type: '', 
     images: [],
     video: null,
   });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -35,8 +34,8 @@ const UploadProperty = () => {
         propertyData.images.forEach((image) => {
           formData.append('images', image);
         });
-      } else if (key === 'video' && propertyData.video) {
-        formData.append('video', propertyData.video);
+      } else if (key === 'video') {
+        formData.append('video', propertyData[key]);
       } else {
         formData.append(key, propertyData[key]);
       }
@@ -48,19 +47,19 @@ const UploadProperty = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
+      console.log('Upload successful:', response.data);
       toast.success('Property uploaded successfully!');
       setPropertyData({
         name: '',
         description: '',
         price: '',
         location: '',
-        type: '',
         images: [],
         video: null,
       });
       navigate('/property-list');
     } catch (error) {
-      console.error("Upload failed:", error);
+      console.error('Error uploading property:', error.response ? error.response.data : error.message);
       toast.error('Failed to upload property. Please try again.');
     }
   };
@@ -108,45 +107,28 @@ const UploadProperty = () => {
           required
           className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
         />
-        <select
-          name="type"
-          value={propertyData.type}
-          onChange={handleChange}
-          required
-          className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
-        >
-          <option value="">Select Property Type</option>
-          <option value="Apartment">Apartment</option>
-          <option value="House">House</option>
-          <option value="Land">Land</option>
-          <option value="Office">Office</option>
-          <option value="Other">Other</option>
-        </select>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Upload Images</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Upload Images:</label>
           <input
             type="file"
             name="images"
-            accept="image/*"
             multiple
+            accept="image/*"
             onChange={handleChange}
-            className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-800 hover:file:bg-gray-200"
+            className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Upload Video</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Upload Video:</label>
           <input
             type="file"
             name="video"
             accept="video/*"
             onChange={handleChange}
-            className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-800 hover:file:bg-gray-200"
+            className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
           />
         </div>
-        <button
-          type="submit"
-          className="w-full bg-red-500 text-white py-2 px-4 rounded-md hover:bg-black"
-        >
+        <button type="submit" className="w-full bg-red-600 text-white font-bold rounded-md p-2 hover:bg-red-700 transition duration-200">
           Upload Property
         </button>
       </form>
