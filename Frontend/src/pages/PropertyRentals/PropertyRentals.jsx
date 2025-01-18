@@ -89,6 +89,19 @@ const PropertyRentals = () => {
     }
   };
 
+  const getStatusClass = (status) => {
+    switch (status) {
+      case 'available':
+        return 'bg-green-500 text-white'; 
+      case 'sold':
+        return 'bg-gray-500 text-white'; 
+      case 'rented':
+        return 'bg-blue-500 text-white'; 
+      default:
+        return 'bg-gray-300 text-black'; 
+    }
+  };
+
   return (
     <div className="max-w-[1200px] mx-auto py-6 sm:py-12">
       <ToastContainer />
@@ -182,8 +195,12 @@ const PropertyRentals = () => {
               <div className="flex-grow">
                 <h2 className="text-xl sm:text-2xl font-semibold mb-2">{property.name}</h2>
                 <p className="text-gray-600">{property.location}</p>
-                <p className="text-red-600 text-xl font-bold">{property.propertyType}</p> 
+                <p className="text-red-600 text-xl font-bold">{property.propertyType}</p>
                 <p className="text-gray-800 font-bold text-lg mt-1">₵{property.price}</p>
+                {/* Status Badge */}
+                <p className={`text-center mt-2 py-1 px-4 rounded-full ${getStatusClass(property.status)}`}>
+                  {property.status.toUpperCase()}
+                </p>
               </div>
               <button
                 onClick={() => handleContact(property)}
