@@ -9,7 +9,7 @@ const PropertySchema = new mongoose.Schema({
   images: [{ type: String }],
   video: { type: String, default: "" },
   status: { type: String, enum: ['Available', 'Sold', 'Rented'], default: 'Available' },
-  owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+
   agent: { type: mongoose.Schema.Types.ObjectId, ref: 'Agent' },
 }, { timestamps: true });
 
