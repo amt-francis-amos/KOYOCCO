@@ -11,6 +11,7 @@ const adminRoutes = require('./routes/adminRoutes');
 const profileRoutes = require("./routes/profileRoutes");
 const contactAgentRoutes = require("./routes/contactAgentRoutes");
 
+
 dotenv.config();
 
 const app = express();
@@ -32,6 +33,7 @@ app.use('/api/post-listing', listingRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/user', profileRoutes); 
 app.use('/api', contactAgentRoutes); 
+app.use('/api', listingRoutes);
 
 // Global error handling middleware
 app.use((err, req, res, next) => {

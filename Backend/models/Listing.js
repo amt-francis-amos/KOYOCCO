@@ -1,17 +1,13 @@
-const mongoose = require("mongoose");
 
-const listingSchema = new mongoose.Schema(
-  {
-    name: { type: String, required: true },
-    description: { type: String, required: true },
-    photos: [{ type: String, required: true }],
-    video: { type: String, required: true },
-    isPropertyOwner: { type: Boolean, required: true },
-    promotionFeePaid: { type: Boolean, default: false },
-    agentSubscription: { type: Boolean, default: false }, 
-    createdAt: { type: Date, default: Date.now },
-  },
-  { timestamps: true }
-);
+const mongoose = require('mongoose');
 
-module.exports = mongoose.model("Listing", listingSchema);
+const listingSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  location: { type: String, required: true },
+  price: { type: String, required: true }, 
+  image: { type: String, required: true },
+});
+
+const Listing = mongoose.model('Listing', listingSchema);
+
+module.exports = Listing;
