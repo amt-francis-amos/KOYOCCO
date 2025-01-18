@@ -225,7 +225,7 @@ const Navbar = () => {
           </li>
           <li>
             <Link
-              to="/property-listing"
+              to="/property-list"
               className="hover:text-gray-700 block py-2 lg:py-0"
               onClick={closeMenuOnLinkClick}
             >
