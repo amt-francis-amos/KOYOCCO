@@ -1,5 +1,10 @@
 const jwt = require('jsonwebtoken');
 
+// Token creation example with 7-day expiration
+const generateToken = (user) => {
+  return jwt.sign(user, process.env.JWT_SECRET, { expiresIn: '7d' });
+};
+
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -28,4 +33,4 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
-module.exports = authenticateToken;
+module.exports = { authenticateToken, generateToken };
