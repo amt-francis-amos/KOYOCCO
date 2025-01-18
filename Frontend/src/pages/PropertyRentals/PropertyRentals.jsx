@@ -68,8 +68,8 @@ const PropertyRentals = () => {
     }
 
     const contactData = {
-      agentId: selectedProperty?.agentId || 'default-agent-id',
-      agentEmail: selectedProperty?.agentEmail || 'default-agent-email@example.com',
+      agentId: selectedProperty?._agentId || 'default-agent-id',
+      agentEmail: selectedProperty?._agentEmail || 'francismarkamos71@gmail.com',
       propertyId: selectedProperty?._id,
       userName: fullName,
       userEmail: email,

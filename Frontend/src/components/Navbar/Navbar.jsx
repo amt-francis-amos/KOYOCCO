@@ -203,71 +203,11 @@ const Navbar = () => {
               onClick={() => toggleDropdown("rental")}
             >
               <span className="flex items-center">
-                Property Rentals <FaChevronDown size={13} className="ml-2" />
+                Property Rentals 
               </span>
             </Link>
 
-            {/* Dropdown Content */}
-            <ul
-              className={`absolute z-10 left-0 bg-white shadow-lg rounded-md py-2 w-48 ${
-                dropdownOpen.rental ? "block" : "hidden"
-              } transition-opacity ease-in-out duration-300`}
-            >
-              <li>
-                <Link
-                  to="/apartments"
-                  className="block px-4 py-2 hover:bg-gray-100"
-                  onClick={closeMenuOnLinkClick}
-                >
-                  Apartments
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/condos"
-                  className="block px-4 py-2 hover:bg-gray-100"
-                  onClick={closeMenuOnLinkClick}
-                >
-                  Condos
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/houses"
-                  className="block px-4 py-2 hover:bg-gray-100"
-                  onClick={closeMenuOnLinkClick}
-                >
-                  Houses
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/duplex"
-                  className="block px-4 py-2 hover:bg-gray-100"
-                  onClick={closeMenuOnLinkClick}
-                >
-                  Duplex
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/office"
-                  className="block px-4 py-2 hover:bg-gray-100"
-                  onClick={closeMenuOnLinkClick}
-                >
-                  Office
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/shop"
-                  className="block px-4 py-2 hover:bg-gray-100"
-                  onClick={closeMenuOnLinkClick}
-                >
-                  Shop
-                </Link>
-              </li>
-            </ul>
+         
           </li>
           {/* Property Sales Dropdown */}
           <li
@@ -280,41 +220,11 @@ const Navbar = () => {
               onClick={() => toggleDropdown("propertySales")}
             >
               <span className="flex items-center">
-                Property Sales <FaChevronDown size={13} className="ml-2" />
+                Property Sales 
               </span>
             </Link>
 
-            {dropdownOpen.propertySales && (
-              <ul className="absolute left-0 mt-1 bg-white shadow-lg rounded-md py-2 w-48 transition-opacity ease-in-out duration-300">
-                <li>
-                  <Link
-                    to="/houses"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                    onClick={closeMenuOnLinkClick}
-                  >
-                    Houses
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/land"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                    onClick={closeMenuOnLinkClick}
-                  >
-                    Land
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/commercial"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                    onClick={closeMenuOnLinkClick}
-                  >
-                    Commercial
-                  </Link>
-                </li>
-              </ul>
-            )}
+           
           </li>
 
           {/* Other Links */}
