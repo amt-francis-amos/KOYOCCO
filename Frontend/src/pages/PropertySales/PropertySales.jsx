@@ -35,34 +35,37 @@ const PropertySales = () => {
 
   const handlePostListing = async () => {
     const { name, description, location, price, photos, video, propertyType } = formData;
-
+  
     if (!name || !description || !location || !price || !propertyType) {
       setError("All fields are required.");
       toast.error("All fields are required!");
       return;
     }
-
+  
     if (photos.length === 0) {
       setError("Please upload at least one photo.");
       toast.error("Please upload at least one photo!");
       return;
     }
-
+  
     if (!video) {
       setError("Please upload a video.");
       toast.error("Please upload a video!");
       return;
     }
-
+  
+    // Log the form data to check that propertyType is correctly set
+    console.log("Form Data to Send:", formData);
+  
     const formDataToSend = new FormData();
     formDataToSend.append("name", name);
     formDataToSend.append("description", description);
     formDataToSend.append("location", location);
     formDataToSend.append("price", price);
-    formDataToSend.append("propertyType", propertyType);  
+    formDataToSend.append("propertyType", propertyType);  // Ensure propertyType is included
     photos.forEach((photo) => formDataToSend.append("photos", photo));
     formDataToSend.append("video", video);
-
+  
     if (isPropertyOwner) {
       formDataToSend.append("promotionFeePaid", true);
       formDataToSend.append("isPropertyOwner", true);
@@ -70,7 +73,7 @@ const PropertySales = () => {
       formDataToSend.append("agentSubscription", true);
       formDataToSend.append("isPropertyOwner", false);
     }
-
+  
     try {
       const response = await axios.post(
         "https://koyocco-backend.onrender.com/api/post-listing/upload",
@@ -85,14 +88,14 @@ const PropertySales = () => {
         price: "",
         photos: [],
         video: null,
-        propertyType: "",  
+        propertyType: "",  // Reset propertyType
       });
     } catch (error) {
+      console.error("Error uploading property:", error);
       toast.error("Failed to upload property. Please try again.");
     }
   };
-
-  const handlePaymentSuccess = () => {
+    const handlePaymentSuccess = () => {
     toast.success("Payment Successful! Your property has been posted.");
     setShowPaymentForm(false);
     handlePostListing();
