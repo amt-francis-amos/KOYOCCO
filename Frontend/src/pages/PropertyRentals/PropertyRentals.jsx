@@ -182,7 +182,7 @@ const PropertyRentals = () => {
               <div className="flex-grow">
                 <h2 className="text-xl sm:text-2xl font-semibold mb-2">{property.name}</h2>
                 <p className="text-gray-600">{property.location}</p>
-                <p className="text-gray-600 italic">{property.propertyType}</p> {/* Display property type */}
+                <p className="text-red-600 text-xl font-bold">{property.propertyType}</p> 
                 <p className="text-gray-800 font-bold text-lg mt-1">${property.price}</p>
               </div>
               <button
