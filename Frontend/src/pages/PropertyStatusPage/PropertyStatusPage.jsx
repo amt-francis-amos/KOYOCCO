@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const PropertyStatusPage = () => {
   const [properties, setProperties] = useState([]);
@@ -17,12 +19,13 @@ const PropertyStatusPage = () => {
       })
       .catch(error => {
         console.error('Error fetching properties:', error);
+        toast.error('Failed to fetch properties');
       });
   }, []);
 
   const handleStatusUpdate = (propertyId) => {
     if (!status) {
-      alert('Please select a status.');
+      toast.warning('Please select a status.');
       return;
     }
 
@@ -35,12 +38,12 @@ const PropertyStatusPage = () => {
           )
         );
         setSelectedProperty(null);
-        setStatus(''); 
-        alert('Property status updated successfully!');
+        setStatus('');
+        toast.success('Property status updated successfully!');
       })
       .catch(error => {
         console.error('Error updating status:', error);
-        alert('Failed to update property status');
+        toast.error('Failed to update property status');
       });
   };
 
@@ -92,6 +95,9 @@ const PropertyStatusPage = () => {
       ) : (
         <p>No properties found.</p>
       )}
+      
+     
+      <ToastContainer />
     </div>
   );
 };
