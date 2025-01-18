@@ -26,7 +26,8 @@ const PropertyStatusPage = () => {
       return;
     }
 
-    axios.put(`https://koyocco-backend.onrender.com/api/properties${propertyId}`, { status })
+    // Corrected PUT request URL with a '/' before the property ID
+    axios.put(`https://koyocco-backend.onrender.com/api/properties/${propertyId}/status`, { status })
       .then(response => {
         setProperties((prevProps) =>
           prevProps.map((property) =>
