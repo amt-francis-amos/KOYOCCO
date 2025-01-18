@@ -110,7 +110,7 @@ const Home = () => {
                       </p>
                       {/* Status Circle */}
                       <div
-                        className={`w-4 h-4 rounded-full ${
+                        className={`w-4 h-4 mt-4 rounded-full ${
                           prop.status === "Available" ? "bg-green-500" : "bg-gray-500"
                         }`}
                       ></div>
