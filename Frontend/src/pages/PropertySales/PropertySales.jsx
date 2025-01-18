@@ -63,7 +63,7 @@ const PropertySales = () => {
     formDataToSend.append("description", description);
     formDataToSend.append("location", location);
     formDataToSend.append("price", price);
-    formDataToSend.append("propertyType", propertyType);  // Ensure propertyType is included here
+    formDataToSend.append("propertyType", propertyType);  
     photos.forEach((photo) => formDataToSend.append("photos", photo));
     formDataToSend.append("video", video);
   
@@ -98,8 +98,7 @@ const PropertySales = () => {
     }
   };
 
-  
-    const handlePaymentSuccess = () => {
+  const handlePaymentSuccess = () => {
     toast.success("Payment Successful! Your property has been posted.");
     setShowPaymentForm(false);
     handlePostListing();
