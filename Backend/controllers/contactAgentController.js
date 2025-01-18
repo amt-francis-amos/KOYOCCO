@@ -6,16 +6,18 @@ const contactAgent = async (req, res) => {
     try {
       const { agentId, userName, userEmail, message, propertyId, agentEmail, agentPhone } = req.body;
   
-      if (!userName || !userEmail || !agentPhone || !message || !propertyId || (!agentId && !agentEmail)) {
+      // Check if essential fields are present, and ensure that either agentId or agentEmail is provided
+      if (!userName || !userEmail || !message || !propertyId || (!agentId && !agentEmail)) {
         return res.status(400).json({
           message: 'All fields are required: userName, userEmail, message, propertyId, and either agentId or agentEmail',
         });
       }
   
+      // Log the request body for debugging
       console.log('Request Body:', req.body);
   
-      let recipientEmail = agentEmail;
-      let recipientPhone = null;
+      let recipientEmail = agentEmail;  // Default to agentEmail if provided
+      let recipientPhone = null;        // Initialize phone number as null
   
       if (agentId && agentId !== 'default-agent-id') {
         console.log('Agent ID:', agentId);
@@ -25,17 +27,17 @@ const contactAgent = async (req, res) => {
           return res.status(404).json({ message: 'Agent not found for the provided agentId' });
         }
   
-        recipientEmail = agentEmail;
-        recipientPhone =  agentPhone;
+        recipientEmail = agentEmail; // Use the provided agentEmail if agentId is valid
+        recipientPhone = agentPhone; // Use provided phone number if agentId exists
       }
   
       if (!recipientEmail) {
-        recipientEmail = 'francismarkamos71@gmail.com';  
+        recipientEmail = 'francismarkamos71@gmail.com';  // Default email if no agent email is found
       }
   
       console.log(`Sending email to ${recipientEmail}, Phone: ${recipientPhone || 'Not provided'}`);
   
-      // Set up email transporter
+      // Set up email transporter using Nodemailer
       const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -44,24 +46,24 @@ const contactAgent = async (req, res) => {
         },
       });
   
-      // Send email to the agent
+      // Send the email to the agent
       await transporter.sendMail({
         from: userEmail,
         to: recipientEmail,
         subject: `Contact from ${userName}`,
         text: `
           You have received a message from ${userName} (${userEmail}).
-  
+      
           Message: 
           ${message}
-  
+      
           Property ID: ${propertyId}
-  
+      
           Phone (if available): ${recipientPhone || 'Not provided'}
         `,
       });
   
-      // Save contact message to the database
+      // Save the contact message to the database
       const savedMessage = new ContactMessage({
         userName,
         userEmail,
@@ -80,6 +82,7 @@ const contactAgent = async (req, res) => {
       res.status(500).json({ message: 'Failed to contact agent', error: error.message });
     }
   };
+  
   
 
 module.exports = {
