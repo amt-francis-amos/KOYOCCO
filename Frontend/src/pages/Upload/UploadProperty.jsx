@@ -58,7 +58,7 @@ const UploadProperty = () => {
         description: '',
         price: '',
         location: '',
-        propertyType: '',
+        type: '',
         images: [],
         video: null,
       });
