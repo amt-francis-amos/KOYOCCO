@@ -12,6 +12,7 @@ const PropertySales = () => {
     price: "",
     photos: [],
     video: null,
+    propertyType: "",  // New field to hold the property type
   });
   const [error, setError] = useState("");
   const [showPaymentForm, setShowPaymentForm] = useState(false);
@@ -33,9 +34,9 @@ const PropertySales = () => {
   };
 
   const handlePostListing = async () => {
-    const { name, description, location, price, photos, video } = formData;
+    const { name, description, location, price, photos, video, propertyType } = formData;
 
-    if (!name || !description || !location || !price) {
+    if (!name || !description || !location || !price || !propertyType) {
       setError("All fields are required.");
       toast.error("All fields are required!");
       return;
@@ -58,6 +59,7 @@ const PropertySales = () => {
     formDataToSend.append("description", description);
     formDataToSend.append("location", location);
     formDataToSend.append("price", price);
+    formDataToSend.append("propertyType", propertyType);  // Add property type to the form data
     photos.forEach((photo) => formDataToSend.append("photos", photo));
     formDataToSend.append("video", video);
 
@@ -83,6 +85,7 @@ const PropertySales = () => {
         price: "",
         photos: [],
         video: null,
+        propertyType: "",  // Reset property type after posting
       });
     } catch (error) {
       toast.error("Failed to upload property. Please try again.");
@@ -192,6 +195,21 @@ const PropertySales = () => {
               value={formData.price}
               onChange={(e) => setFormData({ ...formData, price: e.target.value })}
             />
+          </div>
+
+          {/* New Property Type Dropdown */}
+          <div className="mb-6">
+            <label className="block text-lg font-medium text-gray-700 mb-2">Property Type</label>
+            <select
+              className="w-full p-3 border border-gray-300 rounded-lg"
+              value={formData.propertyType}
+              onChange={(e) => setFormData({ ...formData, propertyType: e.target.value })}
+            >
+              <option value="">Select Property Type</option>
+              <option value="House">House</option>
+              <option value="Land">Land</option>
+              <option value="Commercial">Commercial</option>
+            </select>
           </div>
 
           <div className="mb-6">
