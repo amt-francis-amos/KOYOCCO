@@ -1,8 +1,8 @@
-require('dotenv').config(); 
+require('dotenv').config();
 const express = require('express');
 const multer = require('multer');
 const Property = require('../models/Property');
-const cloudinary = require('cloudinary').v2; 
+const cloudinary = require('cloudinary').v2;
 
 const router = express.Router();
 
@@ -70,7 +70,7 @@ router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 
       description,
       price,
       location,
-      type, // Save the type field
+      type,
       images,
       video,
     });
@@ -82,12 +82,11 @@ router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 
   }
 });
 
-// --GET route to retrieve all properties
+// Get all properties with optional type filtering
 router.get('/', async (req, res) => {
   try {
     const { type } = req.query;
 
-    
     const query = {};
     if (type) {
       query.type = type;
@@ -100,14 +99,13 @@ router.get('/', async (req, res) => {
   }
 });
 
-
-// Add delete property route
+// Delete a property by ID
 router.delete('/:id', async (req, res) => {
   try {
     const propertyId = req.params.id;
-    console.log("Deleting property with ID:", propertyId); 
+    console.log('Deleting property with ID:', propertyId);
     const property = await Property.findByIdAndDelete(propertyId);
-    
+
     if (!property) {
       return res.status(404).json({ message: 'Property not found' });
     }
@@ -119,36 +117,47 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-
-
-
+// Update property status
 router.put('/:id/status', async (req, res) => {
-  const { id } = req.params; 
-  const { status } = req.body; 
+  const { id } = req.params;
+  const { status } = req.body;
 
-  // Check if a valid status is provided
   if (!status) {
     return res.status(400).json({ message: 'Status is required' });
   }
 
   try {
-    // Update the property status
     const updatedProperty = await Property.findByIdAndUpdate(
       id,
       { status },
-      { new: true } 
+      { new: true }
     );
 
     if (!updatedProperty) {
       return res.status(404).json({ message: 'Property not found' });
     }
 
-    res.status(200).json(updatedProperty); 
+    res.status(200).json(updatedProperty);
   } catch (error) {
     console.error('Error updating property status:', error);
     res.status(500).json({ message: 'Failed to update property status' });
   }
 });
 
+// Fetch a single property by ID
+router.get('/:id', async (req, res) => {
+  try {
+    const property = await Property.findById(req.params.id);
+
+    if (!property) {
+      return res.status(404).json({ message: 'Property not found' });
+    }
+
+    res.status(200).json(property);
+  } catch (error) {
+    console.error('Error fetching property:', error.message);
+    res.status(500).json({ message: 'Failed to fetch property', error: error.message });
+  }
+});
 
 module.exports = router;
