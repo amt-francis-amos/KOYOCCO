@@ -63,7 +63,13 @@ const PropertyStatusPage = () => {
             {properties.map((property) => (
               <tr key={property._id}>
                 <td className="px-6 py-4 border-b">{property.name}</td>
-                <td className="px-6 py-4 border-b">{property.status}</td>
+                <td
+                  className={`px-6 py-4 border-b ${
+                    property.status === 'Rented' ? 'text-blue-500' : ''
+                  }`}
+                >
+                  {property.status}
+                </td>
                 <td className="px-6 py-4 border-b">
                   <select
                     value={selectedProperty === property._id ? status : ''}
@@ -95,8 +101,7 @@ const PropertyStatusPage = () => {
       ) : (
         <p>No properties found.</p>
       )}
-      
-     
+
       <ToastContainer />
     </div>
   );
