@@ -10,6 +10,7 @@ const UploadProperty = () => {
     description: '',
     price: '',
     location: '',
+    propertyType: '', 
     images: [],
     video: null,
   });
@@ -47,19 +48,18 @@ const UploadProperty = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log('Upload successful:', response.data);
       toast.success('Property uploaded successfully!');
       setPropertyData({
         name: '',
         description: '',
         price: '',
         location: '',
+        propertyType: '',
         images: [],
         video: null,
       });
       navigate('/property-list');
     } catch (error) {
-      console.error('Error uploading property:', error.response ? error.response.data : error.message);
       toast.error('Failed to upload property. Please try again.');
     }
   };
@@ -107,6 +107,20 @@ const UploadProperty = () => {
           required
           className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
         />
+        <select
+          name="propertyType"
+          value={propertyData.propertyType}
+          onChange={handleChange}
+          required
+          className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+        >
+          <option value="">Select Property Type</option>
+          <option value="Apartment">Apartment</option>
+          <option value="Condos">Condos</option>
+          <option value="Houses Duplex">Houses Duplex</option>
+          <option value="Office">Office</option>
+          <option value="Shop">Shop</option>
+        </select>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Upload Images:</label>
           <input
