@@ -149,10 +149,10 @@ const Navbar = () => {
             <Link
               to="/short-stays"
               className="hover:text-gray-700 py-2 lg:py-0 flex items-center focus:outline-none"
-              onClick={() => toggleDropdown("shortStays")}
+              onClick={closeMenuOnLinkClick}
             >
-              <span className="flex items-center">
-                Short-Stays <FaChevronDown size={13} className="ml-2" />
+              <span>
+                Short-Stays
               </span>
             </Link>
 
@@ -167,26 +167,27 @@ const Navbar = () => {
             <Link
               to="/property-rentals"
               className="hover:text-gray-700 py-2 lg:py-0 flex items-center focus:outline-none"
-              onClick={() => toggleDropdown("rental")}
+              onClick={closeMenuOnLinkClick}
             >
-              <span className="flex items-center">
+              <span>
                 Property Rentals 
               </span>
             </Link>
 
          
           </li>
-          {/* Property Sales Dropdown */}
+      
           <li
             className="relative"
             onMouseLeave={() => handleMouseLeave("propertySales")}
           >
             <Link
               to="/sales"
+              onClick={closeMenuOnLinkClick}
               className="hover:text-gray-700 py-2 lg:py-0 flex items-center focus:outline-none"
-              onClick={() => toggleDropdown("propertySales")}
+            
             >
-              <span className="flex items-center">
+              <span>
                 Property Sales 
               </span>
             </Link>
