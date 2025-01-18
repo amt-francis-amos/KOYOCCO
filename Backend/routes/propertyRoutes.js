@@ -25,15 +25,17 @@ const upload = multer({ storage: storage });
 
 // Upload property route
 router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 'video', maxCount: 1 }]), async (req, res) => {
-  console.log('Request Body:', req.body);
-  console.log('Request Files:', req.files);
-
   try {
-    const { name, description, price, location } = req.body;
+    const { name, description, price, location, type } = req.body;
 
-    // Check if the required fields are present
-    if (!name || !price || !location) {
-      return res.status(400).json({ message: 'Missing required fields: name, price, or location' });
+    if (!name || !price || !location || !type) {
+      return res.status(400).json({ message: 'Missing required fields: name, price, location, or type' });
+    }
+
+    // Validate type
+    const validTypes = ['Apartment', 'House', 'Land', 'Office', 'Other'];
+    if (!validTypes.includes(type)) {
+      return res.status(400).json({ message: 'Invalid property type' });
     }
 
     // Handle image uploads
@@ -42,14 +44,9 @@ router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 
       images = await Promise.all(
         req.files.images.map((image) =>
           new Promise((resolve, reject) => {
-            console.log('Uploading image...');
             cloudinary.uploader.upload_stream({ resource_type: 'image' }, (error, result) => {
-              if (error) {
-                console.error('Cloudinary image upload error:', error);
-                return reject(`Image upload failed: ${error.message}`);
-              }
-              console.log('Image uploaded:', result.secure_url);
-              resolve(result.secure_url);
+              if (error) reject(error);
+              else resolve(result.secure_url);
             }).end(image.buffer);
           })
         )
@@ -60,47 +57,49 @@ router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 
     let video = null;
     if (req.files.video && req.files.video.length > 0) {
       video = await new Promise((resolve, reject) => {
-        console.log('Uploading video...');
         cloudinary.uploader.upload_stream({ resource_type: 'video' }, (error, result) => {
-          if (error) {
-            console.error('Cloudinary video upload error:', error);
-            return reject(`Video upload failed: ${error.message}`);
-          }
-          console.log('Video uploaded:', result.secure_url);
-          resolve(result.secure_url);
+          if (error) reject(error);
+          else resolve(result.secure_url);
         }).end(req.files.video[0].buffer);
       });
     }
 
-    // Create a new property document
+    // Create a new property
     const property = new Property({
       name,
       description,
       price,
       location,
+      type, // Save the type field
       images,
       video,
     });
 
-    // Save the property to the database
     await property.save();
     res.status(200).json({ message: 'Property uploaded successfully', property });
   } catch (error) {
-    console.error('Error uploading property:', error);
-    res.status(500).json({ message: 'Failed to upload property', error: error.message || error });
+    res.status(500).json({ message: 'Failed to upload property', error: error.message });
   }
 });
 
 // --GET route to retrieve all properties
 router.get('/', async (req, res) => {
   try {
-    const properties = await Property.find(); 
+    const { type } = req.query;
+
+    
+    const query = {};
+    if (type) {
+      query.type = type;
+    }
+
+    const properties = await Property.find(query);
     res.status(200).json(properties);
   } catch (error) {
-    console.error('Error fetching properties:', error);
-    res.status(500).json({ message: 'Failed to fetch properties', error: error.message || error });
+    res.status(500).json({ message: 'Failed to fetch properties', error: error.message });
   }
 });
+
 
 // Add delete property route
 router.delete('/:id', async (req, res) => {
