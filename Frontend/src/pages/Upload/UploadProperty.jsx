@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const UploadProperty = () => {
+  const navigate = useNavigate(); 
   const [propertyData, setPropertyData] = useState({
     name: '',
     description: '',
@@ -30,20 +31,17 @@ const UploadProperty = () => {
     e.preventDefault();
     const formData = new FormData();
     Object.keys(propertyData).forEach((key) => {
-      
       if (key === 'images') {
         propertyData.images.forEach((image) => {
           formData.append('images', image);
         });
-      } else if (key === 'video') {
-        if (propertyData.video) {
-          formData.append('video', propertyData.video);
-        }
+      } else if (key === 'video' && propertyData.video) {
+        formData.append('video', propertyData.video);
       } else {
         formData.append(key, propertyData[key]);
       }
     });
-  
+
     try {
       const response = await axios.post('https://koyocco-backend.onrender.com/api/properties/upload', formData, {
         headers: {
@@ -66,7 +64,8 @@ const UploadProperty = () => {
       toast.error('Failed to upload property. Please try again.');
     }
   };
-    return (
+
+  return (
     <div className="max-w-[500px] mx-auto mt-10 mb-20 p-5 bg-white shadow-md rounded-lg">
       <ToastContainer />
       <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">Upload Property</h2>
@@ -110,7 +109,7 @@ const UploadProperty = () => {
           className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
         />
         <select
-          name="type" // Changed from propertyType to type
+          name="type"
           value={propertyData.type}
           onChange={handleChange}
           required

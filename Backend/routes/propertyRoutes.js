@@ -13,12 +13,6 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-console.log('Cloudinary Config:', {
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
 // Set up multer for file uploads
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -79,84 +73,6 @@ router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 
     res.status(200).json({ message: 'Property uploaded successfully', property });
   } catch (error) {
     res.status(500).json({ message: 'Failed to upload property', error: error.message });
-  }
-});
-
-// Get all properties with optional type filtering
-router.get('/', async (req, res) => {
-  try {
-    const { type } = req.query;
-
-    const query = {};
-    if (type) {
-      query.type = type;
-    }
-
-    const properties = await Property.find(query);
-    res.status(200).json(properties);
-  } catch (error) {
-    res.status(500).json({ message: 'Failed to fetch properties', error: error.message });
-  }
-});
-
-// Delete a property by ID
-router.delete('/:id', async (req, res) => {
-  try {
-    const propertyId = req.params.id;
-    console.log('Deleting property with ID:', propertyId);
-    const property = await Property.findByIdAndDelete(propertyId);
-
-    if (!property) {
-      return res.status(404).json({ message: 'Property not found' });
-    }
-
-    res.status(200).json({ message: 'Property deleted successfully' });
-  } catch (error) {
-    console.error('Error deleting property:', error.message);
-    res.status(500).json({ message: 'Failed to delete property', error: error.message });
-  }
-});
-
-// Update property status
-router.put('/:id/status', async (req, res) => {
-  const { id } = req.params;
-  const { status } = req.body;
-
-  if (!status) {
-    return res.status(400).json({ message: 'Status is required' });
-  }
-
-  try {
-    const updatedProperty = await Property.findByIdAndUpdate(
-      id,
-      { status },
-      { new: true }
-    );
-
-    if (!updatedProperty) {
-      return res.status(404).json({ message: 'Property not found' });
-    }
-
-    res.status(200).json(updatedProperty);
-  } catch (error) {
-    console.error('Error updating property status:', error);
-    res.status(500).json({ message: 'Failed to update property status' });
-  }
-});
-
-// Fetch a single property by ID
-router.get('/:id', async (req, res) => {
-  try {
-    const property = await Property.findById(req.params.id);
-
-    if (!property) {
-      return res.status(404).json({ message: 'Property not found' });
-    }
-
-    res.status(200).json(property);
-  } catch (error) {
-    console.error('Error fetching property:', error.message);
-    res.status(500).json({ message: 'Failed to fetch property', error: error.message });
   }
 });
 
