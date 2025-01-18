@@ -29,18 +29,16 @@ const UploadProperty = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-  
-    // Ensure the owner field is added to the form data if needed.
-    formData.append('owner', userId);  // Assuming `userId` is available in your state or context
-  
-    // Add the rest of the property data to formData
     Object.keys(propertyData).forEach((key) => {
+      
       if (key === 'images') {
         propertyData.images.forEach((image) => {
           formData.append('images', image);
         });
-      } else if (key === 'video' && propertyData.video) {
-        formData.append('video', propertyData.video);
+      } else if (key === 'video') {
+        if (propertyData.video) {
+          formData.append('video', propertyData.video);
+        }
       } else {
         formData.append(key, propertyData[key]);
       }
@@ -68,7 +66,6 @@ const UploadProperty = () => {
       toast.error('Failed to upload property. Please try again.');
     }
   };
-  
     return (
     <div className="max-w-[500px] mx-auto mt-10 mb-20 p-5 bg-white shadow-md rounded-lg">
       <ToastContainer />
