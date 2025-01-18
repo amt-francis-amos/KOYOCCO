@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useProperty } from "../context/PropertyContext";
+import { useProperty } from "../../context/PropertyContext";
 import axios from "axios";
 
 const ShortStays = () => {
