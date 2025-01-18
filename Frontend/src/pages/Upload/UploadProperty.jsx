@@ -10,7 +10,7 @@ const UploadProperty = () => {
     description: '',
     price: '',
     location: '',
-    propertyType: '',  // Add propertyType to the state
+    propertyType: '', 
     images: [],
     video: null,
   });
