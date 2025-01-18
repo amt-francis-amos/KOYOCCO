@@ -4,15 +4,13 @@ import axios from 'axios';
 const PropertyContext = createContext();
 
 export const PropertyProvider = ({ children }) => {
-    const [properties, setProperties] = useState([]);
-    const [listings, setListings] = useState([]);  // Added state for listings
+    const [property, setProperty] = useState([]);
 
-    // Fetch properties
     useEffect(() => {
         const fetchProperties = async () => {
             try {
                 const response = await axios.get('https://koyocco-backend.onrender.com/api/properties'); 
-                setProperties(response.data);
+                setProperty(response.data);
             } catch (error) {
                 console.error('Error fetching properties:', error);
             }
@@ -21,30 +19,12 @@ export const PropertyProvider = ({ children }) => {
         fetchProperties();
     }, []);
 
-    // Fetch listings
-    useEffect(() => {
-        const fetchListings = async () => {
-            try {
-                const response = await axios.get('https://koyocco-backend.onrender.com/api/listings'); 
-                setListings(response.data);
-            } catch (error) {
-                console.error('Error fetching listings:', error);
-            }
-        };
-
-        fetchListings();
-    }, []);
-
     const updateProperty = (newProperty) => {
-        setProperties((prevProperties) => [...prevProperties, newProperty]);  // Add new property to the list
-    };
-
-    const updateListing = (newListing) => {
-        setListings((prevListings) => [...prevListings, newListing]);  
+        setProperty(newProperty);
     };
 
     return (
-        <PropertyContext.Provider value={{ properties, listings, updateProperty, updateListing }}>
+        <PropertyContext.Provider value={{ property, updateProperty }}>
             {children}
         </PropertyContext.Provider>
     );
