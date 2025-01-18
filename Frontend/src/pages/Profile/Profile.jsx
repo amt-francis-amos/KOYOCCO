@@ -8,10 +8,10 @@ const Profile = () => {
   const [message, setMessage] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [uploading, setUploading] = useState(false); // Added state for image uploading
+  const [uploading, setUploading] = useState(false); 
   const [error, setError] = useState(null);
 
-  // Fetching the profile on component mount
+ 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -35,8 +35,6 @@ const Profile = () => {
     fetchProfile();
   }, [localStorage.getItem("authToken")]);
 
-  // Handle profile save (including image upload)
-  // Inside Profile.js
 const handleSave = async () => {
   try {
     const token = localStorage.getItem("authToken");
@@ -58,27 +56,24 @@ const handleSave = async () => {
       );
       setUploading(false);
 
-      // Update profile image in the profile data
       setProfileData((prevData) => ({
         ...prevData,
         profileImage: imageUploadResponse.data.profileImage,
       }));
 
-      // Notify the Navbar component to update the profile picture
-      // This could be done via Context API or re-fetching logic
-      // setProfilePic(imageUploadResponse.data.profileImage);  // Assuming you have a setter in Navbar
+      
     }
 
-    // Handle profile update (excluding password)
+   
     const response = await axios.put(
       "https://koyocco-backend.onrender.com/api/User/profile",
       profileData,
       config
     );
 
-    setMessage(response.data.message); // Display success message
+    setMessage(response.data.message); 
     setEditable(false);
-    setProfileData(response.data.user); // Update state with the latest profile data
+    setProfileData(response.data.user); 
   } catch (error) {
     setUploading(false);
     console.error("Error updating profile:", error);
@@ -86,7 +81,6 @@ const handleSave = async () => {
 };
 
 
-  // Handle image change
   const handleImageChange = (e) => {
     setImageFile(e.target.files[0]);
   };
@@ -102,7 +96,7 @@ const handleSave = async () => {
           <>
             <h1 className="text-3xl font-semibold text-center text-gray-800 mb-6">Your Profile</h1>
 
-            {/* Profile Header Section */}
+         
             <div className="flex flex-col items-center justify-center mb-8">
               <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-blue-500 cursor-pointer">
                 <img
@@ -125,7 +119,6 @@ const handleSave = async () => {
               </div>
             </div>
 
-            {/* Image Upload Input */}
             <input
               id="imageInput"
               type="file"
@@ -134,7 +127,7 @@ const handleSave = async () => {
               onChange={handleImageChange}
             />
 
-            {/* Profile Info */}
+          
             <div>
               <div className="mb-4">
                 <label className="block text-gray-600 font-medium">First Name:</label>
