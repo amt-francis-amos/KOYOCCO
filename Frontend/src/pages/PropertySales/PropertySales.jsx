@@ -12,7 +12,7 @@ const PropertySales = () => {
     price: "",
     photos: [],
     video: null,
-    propertyType: "",  // New field to hold the property type
+    propertyType: "", 
   });
   const [error, setError] = useState("");
   const [showPaymentForm, setShowPaymentForm] = useState(false);
@@ -59,7 +59,7 @@ const PropertySales = () => {
     formDataToSend.append("description", description);
     formDataToSend.append("location", location);
     formDataToSend.append("price", price);
-    formDataToSend.append("propertyType", propertyType);  // Add property type to the form data
+    formDataToSend.append("propertyType", propertyType);  
     photos.forEach((photo) => formDataToSend.append("photos", photo));
     formDataToSend.append("video", video);
 
@@ -85,7 +85,7 @@ const PropertySales = () => {
         price: "",
         photos: [],
         video: null,
-        propertyType: "",  // Reset property type after posting
+        propertyType: "",  
       });
     } catch (error) {
       toast.error("Failed to upload property. Please try again.");
