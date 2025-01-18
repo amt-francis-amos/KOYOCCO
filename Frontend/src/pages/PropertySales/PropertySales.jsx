@@ -36,6 +36,7 @@ const PropertySales = () => {
   const handlePostListing = async () => {
     const { name, description, location, price, photos, video, propertyType } = formData;
   
+    // Validate if all fields are filled, including the propertyType
     if (!name || !description || !location || !price || !propertyType) {
       setError("All fields are required.");
       toast.error("All fields are required!");
@@ -54,15 +55,15 @@ const PropertySales = () => {
       return;
     }
   
-    // Log the form data to check that propertyType is correctly set
-    console.log("Form Data to Send:", formData);
+    // Check the propertyType field explicitly
+    console.log("Property Type Selected:", propertyType);
   
     const formDataToSend = new FormData();
     formDataToSend.append("name", name);
     formDataToSend.append("description", description);
     formDataToSend.append("location", location);
     formDataToSend.append("price", price);
-    formDataToSend.append("propertyType", propertyType);  // Ensure propertyType is included
+    formDataToSend.append("propertyType", propertyType);  // Ensure propertyType is included here
     photos.forEach((photo) => formDataToSend.append("photos", photo));
     formDataToSend.append("video", video);
   
@@ -81,6 +82,7 @@ const PropertySales = () => {
         { headers: { "Content-Type": "multipart/form-data" } }
       );
       toast.success("Property uploaded successfully!");
+      // Reset formData after successful upload
       setFormData({
         name: "",
         description: "",
@@ -88,13 +90,15 @@ const PropertySales = () => {
         price: "",
         photos: [],
         video: null,
-        propertyType: "",  // Reset propertyType
+        propertyType: "",  
       });
     } catch (error) {
       console.error("Error uploading property:", error);
       toast.error("Failed to upload property. Please try again.");
     }
   };
+
+  
     const handlePaymentSuccess = () => {
     toast.success("Payment Successful! Your property has been posted.");
     setShowPaymentForm(false);
