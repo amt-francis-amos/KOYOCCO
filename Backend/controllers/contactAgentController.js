@@ -4,9 +4,9 @@ const nodemailer = require('nodemailer');
 
 const contactAgent = async (req, res) => {
     try {
-      const { agentId, userName, userEmail, message, propertyId, agentEmail } = req.body;
+      const { agentId, userName, userEmail, message, propertyId, agentEmail, agentPhone } = req.body;
   
-      if (!userName || !userEmail || !message || !propertyId || (!agentId && !agentEmail)) {
+      if (!userName || !userEmail || !agentPhone || !message || !propertyId || (!agentId && !agentEmail)) {
         return res.status(400).json({
           message: 'All fields are required: userName, userEmail, message, propertyId, and either agentId or agentEmail',
         });
@@ -25,12 +25,12 @@ const contactAgent = async (req, res) => {
           return res.status(404).json({ message: 'Agent not found for the provided agentId' });
         }
   
-        recipientEmail = agent.email;
-        recipientPhone = agent.phone;
+        recipientEmail = agentEmail;
+        recipientPhone =  agentPhone;
       }
   
       if (!recipientEmail) {
-        recipientEmail = 'francismarkamos71@gmail.com';  // Use a default email in case the agent email is missing
+        recipientEmail = 'francismarkamos71@gmail.com';  
       }
   
       console.log(`Sending email to ${recipientEmail}, Phone: ${recipientPhone || 'Not provided'}`);
