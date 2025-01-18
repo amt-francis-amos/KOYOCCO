@@ -7,6 +7,7 @@ const ContactMessageSchema = new mongoose.Schema({
   propertyId: { type: String, required: true },
   agentId: { type: mongoose.Schema.Types.ObjectId, ref: 'Agent', required: false },
   agentEmail: { type: String, required: false },
+  agentPhone: { type: String, required: false }, 
   sentAt: { type: Date, default: Date.now },
 });
 
