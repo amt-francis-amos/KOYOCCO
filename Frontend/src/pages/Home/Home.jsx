@@ -130,7 +130,7 @@ const Home = () => {
                       <p className="text-gray-500 text-xs md:text-sm">
                         {prop.location}
                       </p>
-                      <p className="text-red-700 text-2xl font-semibold md:text-sm mt-2">
+                      <p className="text-red-600 text-xl font-bold md:text-sm mt-2">
                          {prop.propertyType}
                       </p>
                     </div>
