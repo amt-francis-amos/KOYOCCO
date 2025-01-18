@@ -156,40 +156,7 @@ const Navbar = () => {
               </span>
             </Link>
 
-            {/* Dropdown Content */}
-            <ul
-              className={`absolute left-0 z-10 mt-1 bg-white shadow-lg rounded-md py-2 w-48 ${
-                dropdownOpen.shortStays ? "block" : "hidden"
-              } transition-opacity ease-in-out duration-300`}
-            >
-              <li>
-                <Link
-                  to="/hotels"
-                  className="block px-4 py-2 hover:bg-gray-100"
-                  onClick={closeMenuOnLinkClick}
-                >
-                  Hotels
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/movie-house"
-                  className="block px-4 py-2 hover:bg-gray-100"
-                  onClick={closeMenuOnLinkClick}
-                >
-                  Movie House
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/guest-house"
-                  className="block px-4 py-2 hover:bg-gray-100"
-                  onClick={closeMenuOnLinkClick}
-                >
-                  Guest House
-                </Link>
-              </li>
-            </ul>
+          
           </li>
 
           {/* Rental Dropdown */}
