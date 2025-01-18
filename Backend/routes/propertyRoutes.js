@@ -29,11 +29,11 @@ router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 
   console.log('Request Files:', req.files);
 
   try {
-    const { name, description, price, location } = req.body;
+    const { name, description, price, location, propertyType } = req.body;
 
     // Check if the required fields are present
-    if (!name || !price || !location) {
-      return res.status(400).json({ message: 'Missing required fields: name, price, or location' });
+    if (!name || !price || !location || !propertyType) {
+      return res.status(400).json({ message: 'Missing required fields: name, price, location, or propertyType' });
     }
 
     // Handle image uploads
@@ -72,12 +72,13 @@ router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 
       });
     }
 
-    // Create a new property document
+    // Create a new property document with propertyType included
     const property = new Property({
       name,
       description,
       price,
       location,
+      propertyType,  // Add the propertyType here
       images,
       video,
     });

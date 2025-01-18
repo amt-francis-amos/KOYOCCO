@@ -5,12 +5,13 @@ const PropertySchema = new mongoose.Schema({
   description: { type: String },
   price: { type: Number, required: true },
   location: { type: String, required: true },
+  propertyType: { type: String, required: true },  // Add the propertyType field here
   images: [{ type: String }], 
   video: { type: String }, 
   status: { type: String, enum: ['Available', 'Sold', 'Rented'], default: 'Available' }, 
   owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, 
   agent: { type: mongoose.Schema.Types.ObjectId, ref: 'Agent' } ,
- 
 });
 
 module.exports = mongoose.model('Property', PropertySchema);
+
