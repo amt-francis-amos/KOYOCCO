@@ -43,10 +43,10 @@ const PropertyRentals = () => {
   const handleContact = (property) => {
     setSelectedProperty({
       ...property,
-      agentId: property.agent?._id || 'default-agent-id', 
-      agentEmail: property.agent?.email || 'francismarkamos71@gmail.com',  
+      agentId: property.agent?._id || 'default-agent-id',
+      agentEmail: property.agent?.email || 'francismarkamos71@gmail.com',
     });
-  
+
     setFormData({
       fullName: '',
       email: '',
@@ -54,8 +54,6 @@ const PropertyRentals = () => {
       message: '',
     });
   };
-  
-  
 
   const handleContactSubmit = async (e) => {
     e.preventDefault();
@@ -184,6 +182,7 @@ const PropertyRentals = () => {
               <div className="flex-grow">
                 <h2 className="text-xl sm:text-2xl font-semibold mb-2">{property.name}</h2>
                 <p className="text-gray-600">{property.location}</p>
+                <p className="text-gray-600 italic">{property.propertyType}</p> {/* Display property type */}
                 <p className="text-gray-800 font-bold text-lg mt-1">${property.price}</p>
               </div>
               <button
