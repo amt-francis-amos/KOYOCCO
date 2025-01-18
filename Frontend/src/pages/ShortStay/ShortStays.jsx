@@ -1,22 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useProperty } from "../context/PropertyContext";
 import axios from "axios";
 
 const ShortStays = () => {
   const navigate = useNavigate();
-  const [listings, setListings] = useState([]);
+  const { listings, properties } = useProperty();  
   const exchangeRate = 10; 
-
-  useEffect(() => {
-    
-    axios.get("https://koyocco-backend.onrender.com/api/listings")
-      .then(response => {
-        setListings(response.data); 
-      })
-      .catch(error => {
-        console.error("There was an error fetching the listings:", error);
-      });
-  }, []);
 
   const handleBooking = (listing) => {
     navigate("/booking", { state: listing });
@@ -48,7 +38,7 @@ const ShortStays = () => {
               <div className="flex-grow">
                 <h2 className="text-xl sm:text-2xl font-semibold mb-2">{listing.name}</h2>
                 <p className="text-gray-600">{listing.location}</p>
-              
+                <p className="text-gray-600">{listing.propertyType}</p> 
                 <p className="text-gray-800 font-bold text-lg mt-1">
                   {convertToGHS(listing.price)}
                 </p>
