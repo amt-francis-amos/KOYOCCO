@@ -51,53 +51,53 @@ const PropertyStatusPage = () => {
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-bold mb-4">Update Property Status</h1>
       {Array.isArray(properties) && properties.length > 0 ? (
-        <table className="min-w-full bg-white border border-gray-300">
-          <thead>
-            <tr>
-              <th className="px-6 py-3 border-b-2">Property Name</th>
-              <th className="px-6 py-3 border-b-2">Current Status</th>
-              <th className="px-6 py-3 border-b-2">Update Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {properties.map((property) => (
-              <tr key={property._id}>
-                <td className="px-6 py-4 border-b">{property.name}</td>
-                <td
-                  className={`px-6 py-4 border-b ${
-                    property.status === 'Rented' ? 'text-blue-500' : ''
-                  }`}
-                >
-                  {property.status}
-                </td>
-                <td className="px-6 py-4 border-b">
-                  <select
-                    value={selectedProperty === property._id ? status : ''}
-                    onChange={(e) => {
-                      setSelectedProperty(property._id);
-                      setStatus(e.target.value);
-                    }}
-                    className="border border-gray-300 rounded p-2"
-                  >
-                    <option value="" disabled>
-                      Select status
-                    </option>
-                    <option value="Available">Available</option>
-                    <option value="Sold">Sold</option>
-                    <option value="Rented">Rented</option>
-                  </select>
-                  <button
-                    onClick={() => handleStatusUpdate(property._id)}
-                    className="ml-4 bg-red-500 hover:bg-black text-white font-bold py-2 px-4 rounded"
-                    disabled={!status || selectedProperty !== property._id}
-                  >
-                    Update
-                  </button>
-                </td>
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white border border-gray-300">
+            <thead>
+              <tr>
+                <th className="px-4 py-3 border-b-2 text-left">Property Name</th>
+                <th className="px-4 py-3 border-b-2 text-left">Current Status</th>
+                <th className="px-4 py-3 border-b-2 text-left">Update Status</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {properties.map((property) => (
+                <tr key={property._id}>
+                  <td className="px-4 py-4 border-b text-sm">{property.name}</td>
+                  <td className={`px-4 py-4 border-b text-sm ${property.status === 'Rented' ? 'text-blue-500' : ''}`}>
+                    {property.status}
+                  </td>
+                  <td className="px-4 py-4 border-b text-sm">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center">
+                      <select
+                        value={selectedProperty === property._id ? status : ''}
+                        onChange={(e) => {
+                          setSelectedProperty(property._id);
+                          setStatus(e.target.value);
+                        }}
+                        className="border border-gray-300 rounded p-2 mb-2 sm:mb-0 sm:mr-4 w-full sm:w-auto"
+                      >
+                        <option value="" disabled>
+                          Select status
+                        </option>
+                        <option value="Available">Available</option>
+                        <option value="Sold">Sold</option>
+                        <option value="Rented">Rented</option>
+                      </select>
+                      <button
+                        onClick={() => handleStatusUpdate(property._id)}
+                        className="ml-4 bg-red-500 hover:bg-black text-white font-bold py-2 px-4 rounded w-full sm:w-auto"
+                        disabled={!status || selectedProperty !== property._id}
+                      >
+                        Update
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       ) : (
         <p>No properties found.</p>
       )}
