@@ -30,17 +30,20 @@ const UploadProperty = () => {
     e.preventDefault();
     const formData = new FormData();
     Object.keys(propertyData).forEach((key) => {
+      // Append images and video differently
       if (key === 'images') {
         propertyData.images.forEach((image) => {
           formData.append('images', image);
         });
       } else if (key === 'video') {
-        formData.append('video', propertyData[key]);
+        if (propertyData.video) {
+          formData.append('video', propertyData.video);
+        }
       } else {
         formData.append(key, propertyData[key]);
       }
     });
-
+  
     try {
       const response = await axios.post('https://koyocco-backend.onrender.com/api/properties/upload', formData, {
         headers: {
@@ -53,17 +56,17 @@ const UploadProperty = () => {
         description: '',
         price: '',
         location: '',
-        type: '', // Reset field
+        propertyType: '',
         images: [],
         video: null,
       });
       navigate('/property-list');
     } catch (error) {
+      console.error("Upload failed:", error);
       toast.error('Failed to upload property. Please try again.');
     }
   };
-
-  return (
+    return (
     <div className="max-w-[500px] mx-auto mt-10 mb-20 p-5 bg-white shadow-md rounded-lg">
       <ToastContainer />
       <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">Upload Property</h2>
