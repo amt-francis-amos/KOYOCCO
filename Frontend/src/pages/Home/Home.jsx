@@ -99,10 +99,10 @@ const Home = () => {
               className="border p-2 rounded-md w-full md:w-1/3"
             >
               <option value="">All Prices</option>
-              <option value="100000">Up to $100,000</option>
-              <option value="200000">Up to $200,000</option>
-              <option value="300000">Up to $300,000</option>
-              <option value="400000">Up to $400,000</option>
+              <option value="100000">Up to ₵100,000</option>
+              <option value="200000">Up to ₵200,000</option>
+              <option value="300000">Up to ₵300,000</option>
+              <option value="400000">Up to ₵400,000</option>
             </select>
           </div>
 

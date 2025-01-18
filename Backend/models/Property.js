@@ -5,7 +5,7 @@ const PropertySchema = new mongoose.Schema({
   description: { type: String },
   price: { type: Number, required: true },
   location: { type: String, required: true },
-  propertyType: { type: String, required: true },  // Add the propertyType field here
+  propertyType: { type: String, required: true },  
   images: [{ type: String }], 
   video: { type: String }, 
   status: { type: String, enum: ['Available', 'Sold', 'Rented'], default: 'Available' }, 
