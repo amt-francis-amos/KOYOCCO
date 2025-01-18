@@ -33,7 +33,7 @@ router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 
 
     // Check if the required fields are present
     if (!name || !price || !location || !propertyType) {
-      return res.status(400).json({ message: 'Missing required fields: name, price, location, or propertyType' });
+      return res.json({ message: 'Missing required fields: name, price, location, or propertyType' });
     }
 
     // Handle image uploads
@@ -78,12 +78,12 @@ router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 
       description,
       price,
       location,
-      propertyType,  // Add the propertyType here
+      propertyType,  
       images,
       video,
     });
 
-    // Save the property to the database
+    
     await property.save();
     res.status(200).json({ message: 'Property uploaded successfully', property });
   } catch (error) {
