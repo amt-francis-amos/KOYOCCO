@@ -223,6 +223,15 @@ const Navbar = () => {
               About
             </Link>
           </li>
+          <li>
+            <Link
+              to="/property-listing"
+              className="hover:text-gray-700 block py-2 lg:py-0"
+              onClick={closeMenuOnLinkClick}
+            >
+              Listing
+            </Link>
+          </li>
 
           {isLoggedIn && (
             <li className="relative">
