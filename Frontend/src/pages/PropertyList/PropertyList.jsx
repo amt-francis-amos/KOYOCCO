@@ -14,12 +14,12 @@ const PropertyList = () => {
     try {
       const response = await axios.delete(`https://koyocco-backend.onrender.com/api/properties/${id}`);
       if (response.status === 200) {
-        setProperty(property.filter((item) => item._id !== id)); // Update the state to reflect the deleted property
-        toast.success('Property deleted successfully'); // Show success toast
+        setProperty(property.filter((item) => item._id !== id)); 
+        toast.success('Property deleted successfully'); 
       }
     } catch (error) {
       console.error("Error deleting property:", error.message);
-      toast.error('Failed to delete the property. Please try again.'); // Show error toast if deletion fails
+      toast.error('Failed to delete the property. Please try again.'); 
     }
   };
 
@@ -48,7 +48,7 @@ const PropertyList = () => {
               <div className="p-4">
                 <h3 className="text-lg font-bold">{item.name}</h3>
                 <p className="text-gray-600">{item.description}</p>
-                <p className="text-xl font-semibold text-red-600">${item.price}</p>
+                <p className="text-xl font-semibold text-red-600">₵{item.price}</p>
                 <p className="text-gray-500">{item.location}</p>
                 <button
                   onClick={() => handleDelete(item._id)}
