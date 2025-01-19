@@ -85,65 +85,59 @@ const Home = () => {
             {filteredProperties.length > 0 ? (
               filteredProperties.map((prop) => (
                 <Link key={prop._id} to={`/property/${prop._id}`}>
-                  <div className="border rounded-lg overflow-hidden shadow-lg transition-transform transform hover:scale-105">
+                  <div className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105">
                     <img
                       src={prop.images[0]}
                       alt={prop.name}
                       className="w-full h-48 object-cover"
                     />
-                    <div className="p-4">
-                      <h3 className="font-bold text-lg md:text-xl mb-2">
-                        {prop.name}
-                      </h3>
-                      <p className="text-gray-600 text-sm md:text-base mb-2">
+                    <div className="p-6">
+                      <div className="flex justify-between mb-4">
+                        <h3 className="text-xl font-bold text-gray-800">
+                          {prop.name}
+                        </h3>
+                        <p className="text-xl font-semibold text-red-500">
+                          ₵{prop.price}
+                        </p>
+                      </div>
+
+                      <p className="text-gray-600 text-sm mb-4">
                         {prop.description}
                       </p>
-                      <div className="flex flex-col md:flex-row md:space-x-4 mb-4">
-                        <div className="flex items-center space-x-2 mb-2 md:mb-0">
-                          <span className="text-gray-600 text-sm md:text-base">
-                            Region:
-                          </span>
-                          <span className="font-medium text-sm md:text-base text-gray-800">
-                            {prop.region}
-                          </span>
+
+                      <div className="grid grid-cols-2 gap-4 text-gray-600 text-sm mb-4">
+                        <div className="flex flex-col">
+                          <span className="font-medium">Region</span>
+                          <span>{prop.region}</span>
                         </div>
-                        <div className="flex items-center space-x-2 mb-2 md:mb-0">
-                          <span className="text-gray-600 text-sm md:text-base">
-                            Address:
-                          </span>
-                          <span className="font-medium text-sm md:text-base text-gray-800">
-                            {prop.address}
-                          </span>
+                        <div className="flex flex-col">
+                          <span className="font-medium">Address</span>
+                          <span>{prop.address}</span>
                         </div>
-                        <div className="flex items-center space-x-2">
-                          <span className="text-gray-600 text-sm md:text-base">
-                            Condition:
-                          </span>
-                          <span className="font-medium text-sm md:text-base text-gray-800">
-                            {prop.condition}
+                        <div className="flex flex-col">
+                          <span className="font-medium">Condition</span>
+                          <span>{prop.condition}</span>
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="font-medium">Status</span>
+                          <span
+                            className={`${
+                              prop.status === "available"
+                                ? "text-green-500"
+                                : prop.status === "rented"
+                                ? "text-blue-500"
+                                : "text-red-500"
+                            }`}
+                          >
+                            {prop.status.charAt(0).toUpperCase() +
+                              prop.status.slice(1)}
                           </span>
                         </div>
                       </div>
-                      <p className="text-red-500 font-bold text-sm md:text-base mb-2">
-                        ₵{prop.price}
-                      </p>
-                      <p className="text-gray-500 text-xs md:text-sm">{prop.location}</p>
-                      <p className="text-red-600 text-xl font-bold md:text-sm mt-2">
-                        {prop.propertyType}
-                      </p>
 
-                      <div className="flex items-center mt-4">
-                        <div
-                          className={`w-3 h-3 rounded-full mr-2 ${
-                            prop.status === "available"
-                              ? "bg-green-500"
-                              : prop.status === "rented"
-                              ? "bg-blue-500"
-                              : "bg-red-500"
-                          }`}
-                        ></div>
-                        <span className="text-sm md:text-base font-medium text-gray-700">
-                          {prop.status.charAt(0).toUpperCase() + prop.status.slice(1)}
+                      <div className="flex justify-end mt-4">
+                        <span className="text-xs text-gray-500">
+                          {prop.propertyType}
                         </span>
                       </div>
                     </div>
