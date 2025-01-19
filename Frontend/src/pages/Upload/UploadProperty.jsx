@@ -44,6 +44,14 @@ const UploadProperty = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validation for missing required fields
+    const { name, price, location, condition, region, propertyType } = propertyData;
+    if (!name || !price || !location || !condition || !region || !propertyType) {
+      toast.error('Please fill in all required fields.');
+      return;
+    }
+
     const formData = new FormData();
 
     // Append all fields to FormData
@@ -109,6 +117,24 @@ const UploadProperty = () => {
           onChange={handleChange}
           className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
           rows="3"
+        />
+        <input
+          type="text"
+          name="location"
+          placeholder="Location"
+          value={propertyData.location}
+          onChange={handleChange}
+          required
+          className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+        />
+        <input
+          type="text"
+          name="propertyType"
+          placeholder="Property Type"
+          value={propertyData.propertyType}
+          onChange={handleChange}
+          required
+          className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
         />
         <div className="flex items-center space-x-2">
           <span className="text-xl">₵</span>
