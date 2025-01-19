@@ -34,9 +34,9 @@ const PropertySales = () => {
   };
 
   const handlePostListing = async () => {
-    
     const { name, description, location, price, photos, video, propertyType } = formData;
   
+    // Validate if all fields are filled, including the propertyType
     if (!name || !description || !location || !price || !propertyType) {
       setError("All fields are required.");
       toast.error("All fields are required!");
@@ -55,6 +55,9 @@ const PropertySales = () => {
       return;
     }
   
+    // Check the propertyType field explicitly
+    console.log("Property Type Selected:", propertyType);
+  
     const formDataToSend = new FormData();
     formDataToSend.append("name", name);
     formDataToSend.append("description", description);
@@ -64,6 +67,14 @@ const PropertySales = () => {
     photos.forEach((photo) => formDataToSend.append("photos", photo));
     formDataToSend.append("video", video);
   
+    if (isPropertyOwner) {
+      formDataToSend.append("promotionFeePaid", true);
+      formDataToSend.append("isPropertyOwner", true);
+    } else {
+      formDataToSend.append("agentSubscription", true);
+      formDataToSend.append("isPropertyOwner", false);
+    }
+  
     try {
       const response = await axios.post(
         "https://koyocco-backend.onrender.com/api/post-listing/upload",
@@ -71,7 +82,7 @@ const PropertySales = () => {
         { headers: { "Content-Type": "multipart/form-data" } }
       );
       toast.success("Property uploaded successfully!");
-  
+      // Reset formData after successful upload
       setFormData({
         name: "",
         description: "",
@@ -86,7 +97,12 @@ const PropertySales = () => {
       toast.error("Failed to upload property. Please try again.");
     }
   };
-  
+
+  const handlePaymentSuccess = () => {
+    toast.success("Payment Successful! Your property has been posted.");
+    setShowPaymentForm(false);
+    handlePostListing();
+  };
 
   const handlePaymentFailure = () => {
     toast.error("Payment Failed! Please try again.");
@@ -97,8 +113,8 @@ const PropertySales = () => {
     const handler = window.PaystackPop.setup({
       key: "pk_live_be305faba4d35f18862ba2e58aeaff4a1aadbaa5",
       email: "francismarkamos71@gmail.com",
-      amount: 5000, 
-      currency: "GH₵", 
+      amount: 5000, // Amount in Ghana cedis (₵)
+      currency: "GH₵", // Set currency to Ghanaian Cedis
       callback: handlePaymentSuccess,
       onClose: handlePaymentFailure,
     });
@@ -187,7 +203,7 @@ const PropertySales = () => {
             />
           </div>
 
-        
+          {/* New Property Type Dropdown */}
           <div className="mb-6">
             <label className="block text-lg font-medium text-gray-700 mb-2">Property Type</label>
             <select

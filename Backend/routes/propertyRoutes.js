@@ -1,8 +1,8 @@
-require('dotenv').config();
+require('dotenv').config(); 
 const express = require('express');
 const multer = require('multer');
 const Property = require('../models/Property');
-const cloudinary = require('cloudinary').v2;
+const cloudinary = require('cloudinary').v2; 
 
 const router = express.Router();
 
@@ -23,10 +23,6 @@ console.log('Cloudinary Config:', {
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-// Middleware to parse JSON and URL-encoded body data
-router.use(express.json()); // To parse JSON data from request body
-router.use(express.urlencoded({ extended: true })); // To parse URL-encoded data from form submissions
-
 // Upload property route
 router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 'video', maxCount: 1 }]), async (req, res) => {
   console.log('Request Body:', req.body);
@@ -37,7 +33,7 @@ router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 
 
     // Check if the required fields are present
     if (!name || !price || !location || !propertyType) {
-      return res.status(400).json({ message: 'Missing required fields: name, price, location, or propertyType' });
+      return res.json({ message: 'Missing required fields: name, price, location, or propertyType' });
     }
 
     // Handle image uploads
@@ -82,11 +78,12 @@ router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 
       description,
       price,
       location,
-      propertyType,
+      propertyType,  
       images,
       video,
     });
 
+    
     await property.save();
     res.status(200).json({ message: 'Property uploaded successfully', property });
   } catch (error) {
@@ -98,7 +95,7 @@ router.post('/upload', upload.fields([{ name: 'images', maxCount: 10 }, { name: 
 // --GET route to retrieve all properties
 router.get('/', async (req, res) => {
   try {
-    const properties = await Property.find();
+    const properties = await Property.find(); 
     res.status(200).json(properties);
   } catch (error) {
     console.error('Error fetching properties:', error);
@@ -110,7 +107,7 @@ router.get('/', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     const propertyId = req.params.id;
-    console.log("Deleting property with ID:", propertyId);
+    console.log("Deleting property with ID:", propertyId); 
     const property = await Property.findByIdAndDelete(propertyId);
     
     if (!property) {
@@ -124,10 +121,12 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-// Route to update property status
+
+
+
 router.put('/:id/status', async (req, res) => {
-  const { id } = req.params;
-  const { status } = req.body;
+  const { id } = req.params; 
+  const { status } = req.body; 
 
   // Check if a valid status is provided
   if (!status) {
@@ -139,18 +138,19 @@ router.put('/:id/status', async (req, res) => {
     const updatedProperty = await Property.findByIdAndUpdate(
       id,
       { status },
-      { new: true }
+      { new: true } 
     );
 
     if (!updatedProperty) {
       return res.status(404).json({ message: 'Property not found' });
     }
 
-    res.status(200).json(updatedProperty);
+    res.status(200).json(updatedProperty); 
   } catch (error) {
     console.error('Error updating property status:', error);
     res.status(500).json({ message: 'Failed to update property status' });
   }
 });
+
 
 module.exports = router;
