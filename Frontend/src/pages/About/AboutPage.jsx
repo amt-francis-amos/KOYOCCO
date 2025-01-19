@@ -102,68 +102,68 @@ const AboutPage = () => {
         </motion.div>
 
         <section
-          className="container mx-auto px-4 mb-12 relative bg-cover bg-center py-12"
-          style={{ backgroundImage: `url(${assets.aboutImg})` }}
-        >
-          <div className="absolute inset-0 bg-red-600 opacity-50"></div>
-          <div className="relative z-10 text-white">
-            <h2 className="text-xl md:text-2xl font-semibold mb-6 text-center">
-              Contact Information
-            </h2>
-            <div className="flex flex-wrap justify-center">
-              <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 text-center">
-                <div className="flex flex-col items-center">
-                  <div className="w-12 h-12 flex items-center justify-center bg-red-600 text-white rounded-full mb-2">
-                    <FaMapMarkerAlt />
-                  </div>
-                  <h3 className="text-lg font-semibold">Address</h3>
-                  <p>Amarh Tettey Street, Ashaiman, Valco Flat</p>
-                </div>
-              </div>
-              <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 text-center">
-                <div className="flex flex-col items-center">
-                  <div className="w-12 h-12 flex items-center justify-center bg-red-600 text-white rounded-full mb-2">
-                    <FaEnvelope />
-                  </div>
-                  <h3 className="text-lg font-semibold">Email</h3>
-                  <p>
-                    <a
-                      href="mailto:info@koyocco.com"
-                      className="text-white hover:underline"
-                    >
-                      info@koyocco.com
-                    </a>
-                  </p>
-                </div>
-              </div>
-              <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 text-center">
-                <div className="flex flex-col items-center">
-                  <div className="w-12 h-12 flex items-center justify-center bg-red-600 text-white rounded-full mb-2">
-                    <FaPhoneAlt />
-                  </div>
-                  <h3 className="text-lg font-semibold">Phone</h3>
-                  <p>+233-241-333-361</p>
-                </div>
-              </div>
-              <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 text-center">
-                <div className="flex flex-col items-center">
-                  <div className="w-12 h-12 flex items-center justify-center bg-red-600 text-white rounded-full mb-2">
-                    <FaGlobe />
-                  </div>
-                  <h3 className="text-lg font-semibold">Website</h3>
-                  <p>
-                    <a
-                      href="http://www.koyocco.com"
-                      className="text-white hover:underline"
-                    >
-                      www.koyocco.com
-                    </a>
-                  </p>
-                </div>
-              </div>
-            </div>
+  className="w-full relative bg-cover bg-center"
+  style={{ backgroundImage: `url(${assets.aboutImg})` }}
+>
+  <div className="absolute inset-0 bg-red-600 opacity-50"></div>
+  <div className="relative z-10 text-white py-12">
+    <h2 className="text-xl md:text-2xl font-semibold mb-6 text-center">
+      Contact Information
+    </h2>
+    <div className="flex flex-wrap justify-center">
+      <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 text-center">
+        <div className="flex flex-col items-center">
+          <div className="w-12 h-12 flex items-center justify-center bg-red-600 text-white rounded-full mb-2">
+            <FaMapMarkerAlt />
           </div>
-        </section>
+          <h3 className="text-lg font-semibold">Address</h3>
+          <p>Amarh Tettey Street, Ashaiman, Valco Flat</p>
+        </div>
+      </div>
+      <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 text-center">
+        <div className="flex flex-col items-center">
+          <div className="w-12 h-12 flex items-center justify-center bg-red-600 text-white rounded-full mb-2">
+            <FaEnvelope />
+          </div>
+          <h3 className="text-lg font-semibold">Email</h3>
+          <p>
+            <a
+              href="mailto:info@koyocco.com"
+              className="text-white hover:underline"
+            >
+              info@koyocco.com
+            </a>
+          </p>
+        </div>
+      </div>
+      <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 text-center">
+        <div className="flex flex-col items-center">
+          <div className="w-12 h-12 flex items-center justify-center bg-red-600 text-white rounded-full mb-2">
+            <FaPhoneAlt />
+          </div>
+          <h3 className="text-lg font-semibold">Phone</h3>
+          <p>+233-241-333-361</p>
+        </div>
+      </div>
+      <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 text-center">
+        <div className="flex flex-col items-center">
+          <div className="w-12 h-12 flex items-center justify-center bg-red-600 text-white rounded-full mb-2">
+            <FaGlobe />
+          </div>
+          <h3 className="text-lg font-semibold">Website</h3>
+          <p>
+            <a
+              href="http://www.koyocco.com"
+              className="text-white hover:underline"
+            >
+              www.koyocco.com
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
         <section className="container mx-auto px-4 mb-12">
   <h2 className="text-xl md:text-2xl font-semibold text-gray-800 mb-6 text-center">
