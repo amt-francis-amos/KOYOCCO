@@ -10,19 +10,24 @@ const UploadProperty = () => {
     description: '',
     price: '',
     location: '',
-    region: '',
     propertyType: '',
-    condition: '', // New field
+    condition: '', // Added condition field
+    region: '', // Added region field
     images: [],
     video: null,
   });
-
+  const [imagePreviews, setImagePreviews] = useState([]); // To store image previews
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === 'images') {
-      setPropertyData({ ...propertyData, images: [...files] });
+      const selectedImages = [...files];
+      setPropertyData({ ...propertyData, images: selectedImages });
+
+      // Generate image previews
+      const previews = selectedImages.map((file) => URL.createObjectURL(file));
+      setImagePreviews(previews);
     } else if (name === 'video') {
       setPropertyData({ ...propertyData, video: files[0] });
     } else {
@@ -46,23 +51,28 @@ const UploadProperty = () => {
     });
 
     try {
-      const response = await axios.post('https://koyocco-backend.onrender.com/api/properties/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const response = await axios.post(
+        'https://koyocco-backend.onrender.com/api/properties/upload',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
       toast.success('Property uploaded successfully!');
       setPropertyData({
         name: '',
         description: '',
         price: '',
         location: '',
-        region: '',
         propertyType: '',
-        condition: '',
+        condition: '', // Reset condition field
+        region: '', // Reset region field
         images: [],
         video: null,
       });
+      setImagePreviews([]); // Clear image previews
       navigate('/property-list');
     } catch (error) {
       toast.error('Failed to upload property. Please try again.');
@@ -103,40 +113,6 @@ const UploadProperty = () => {
             className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
           />
         </div>
-        <input
-          type="text"
-          name="location"
-          placeholder="Address"
-          value={propertyData.location}
-          onChange={handleChange}
-          required
-          className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
-        />
-        <select
-          name="region"
-          value={propertyData.region}
-          onChange={handleChange}
-          required
-          className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
-        >
-          <option value="">Select Region</option>
-          <option value="Greater Accra">Greater Accra</option>
-          <option value="Ashanti">Ashanti</option>
-          <option value="Central">Central</option>
-          <option value="Western">Western</option>
-          <option value="Eastern">Eastern</option>
-          <option value="Volta">Volta</option>
-          <option value="Northern">Northern</option>
-          <option value="Upper East">Upper East</option>
-          <option value="Upper West">Upper West</option>
-          <option value="Bono">Bono</option>
-          <option value="Bono East">Bono East</option>
-          <option value="Ahafo">Ahafo</option>
-          <option value="Oti">Oti</option>
-          <option value="Savannah">Savannah</option>
-          <option value="North East">North East</option>
-          <option value="Western North">Western North</option>
-        </select>
         <select
           name="condition"
           value={propertyData.condition}
@@ -150,18 +126,35 @@ const UploadProperty = () => {
           <option value="Used">Used</option>
         </select>
         <select
-          name="propertyType"
-          value={propertyData.propertyType}
+          name="region"
+          value={propertyData.region}
           onChange={handleChange}
           required
           className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
         >
-          <option value="">Select Property Type</option>
-          <option value="Apartment">Apartment</option>
-          <option value="Condos">Condos</option>
-          <option value="Houses Duplex">Houses Duplex</option>
-          <option value="Office">Office</option>
-          <option value="Shop">Shop</option>
+          <option value="">Select Region</option>
+          {[
+            'Greater Accra',
+            'Ashanti',
+            'Western',
+            'Eastern',
+            'Northern',
+            'Volta',
+            'Central',
+            'Upper East',
+            'Upper West',
+            'Savannah',
+            'Bono',
+            'Bono East',
+            'Ahafo',
+            'Oti',
+            'Western North',
+            'North East',
+          ].map((region) => (
+            <option key={region} value={region}>
+              {region}
+            </option>
+          ))}
         </select>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Upload Images:</label>
@@ -173,6 +166,18 @@ const UploadProperty = () => {
             onChange={handleChange}
             className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
           />
+          {imagePreviews.length > 0 && (
+            <div className="grid grid-cols-3 gap-2 mt-3">
+              {imagePreviews.map((preview, index) => (
+                <img
+                  key={index}
+                  src={preview}
+                  alt={`Preview ${index}`}
+                  className="w-full h-auto object-cover border rounded-md"
+                />
+              ))}
+            </div>
+          )}
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Upload Video:</label>
@@ -184,7 +189,10 @@ const UploadProperty = () => {
             className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
           />
         </div>
-        <button type="submit" className="w-full bg-red-600 text-white font-bold rounded-md p-2 hover:bg-red-700 transition duration-200">
+        <button
+          type="submit"
+          className="w-full bg-red-600 text-white font-bold rounded-md p-2 hover:bg-red-700 transition duration-200"
+        >
           Upload Property
         </button>
       </form>
