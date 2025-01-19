@@ -92,9 +92,39 @@ const Home = () => {
                       className="w-full h-48 object-cover"
                     />
                     <div className="p-4">
-                      <h3 className="font-bold text-lg md:text-xl">{prop.name}</h3>
-                      <p className="text-gray-600 text-sm md:text-base">{prop.description}</p>
-                      <p className="text-red-500 font-bold text-sm md:text-base">
+                      <h3 className="font-bold text-lg md:text-xl mb-2">
+                        {prop.name}
+                      </h3>
+                      <p className="text-gray-600 text-sm md:text-base mb-2">
+                        {prop.description}
+                      </p>
+                      <div className="flex flex-col md:flex-row md:space-x-4 mb-4">
+                        <div className="flex items-center space-x-2 mb-2 md:mb-0">
+                          <span className="text-gray-600 text-sm md:text-base">
+                            Region:
+                          </span>
+                          <span className="font-medium text-sm md:text-base text-gray-800">
+                            {prop.region}
+                          </span>
+                        </div>
+                        <div className="flex items-center space-x-2 mb-2 md:mb-0">
+                          <span className="text-gray-600 text-sm md:text-base">
+                            Address:
+                          </span>
+                          <span className="font-medium text-sm md:text-base text-gray-800">
+                            {prop.address}
+                          </span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <span className="text-gray-600 text-sm md:text-base">
+                            Condition:
+                          </span>
+                          <span className="font-medium text-sm md:text-base text-gray-800">
+                            {prop.condition}
+                          </span>
+                        </div>
+                      </div>
+                      <p className="text-red-500 font-bold text-sm md:text-base mb-2">
                         ₵{prop.price}
                       </p>
                       <p className="text-gray-500 text-xs md:text-sm">{prop.location}</p>
