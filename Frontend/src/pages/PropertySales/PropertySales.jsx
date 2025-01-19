@@ -19,7 +19,7 @@ const PropertySales = () => {
 
   const handleFileChange = (e) => {
     const { name, files } = e.target;
-
+  
     if (name === "photos") {
       setFormData((prevData) => ({
         ...prevData,
@@ -32,7 +32,15 @@ const PropertySales = () => {
       }));
     }
   };
-
+  
+  // Function to remove an uploaded image
+  const removeImage = (index) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      photos: prevData.photos.filter((_, i) => i !== index),
+    }));
+  };
+  
   const handlePostListing = async () => {
     const { name, description, location, price, photos, video, propertyType } = formData;
   
@@ -55,25 +63,15 @@ const PropertySales = () => {
       return;
     }
   
-    console.log("Property Type Selected:", propertyType);
-  
-    // Prepare FormData
     const formDataToSend = new FormData();
     formDataToSend.append("name", name);
     formDataToSend.append("description", description);
     formDataToSend.append("location", location);
     formDataToSend.append("price", price);
     formDataToSend.append("propertyType", propertyType);
-    photos.forEach((photo) => formDataToSend.append("photos", photo));
-    formDataToSend.append("video", video);
   
-    if (isPropertyOwner) {
-      formDataToSend.append("promotionFeePaid", true);
-      formDataToSend.append("isPropertyOwner", true);
-    } else {
-      formDataToSend.append("agentSubscription", true);
-      formDataToSend.append("isPropertyOwner", false);
-    }
+    photos.forEach((photo) => formDataToSend.append("images", photo));
+    formDataToSend.append("video", video);
   
     try {
       const response = await axios.post(
@@ -100,6 +98,7 @@ const PropertySales = () => {
       }
     }
   };
+  
   
   const handlePaymentSuccess = () => {
     toast.success("Payment Successful! Your property has been posted.");
