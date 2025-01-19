@@ -19,10 +19,10 @@ const upload = multer({ storage: storage });
 // Upload property route
 router.post(
   '/upload',
-  upload.fields([{ name: 'images', maxCount: 10 }, { name: 'video', maxCount: 1 }]),
+  upload.fields([{ name: 'images', maxCount: 10 }, { name: 'video', maxCount: 1 }]), // Limit max count to 10 for multer
   async (req, res) => {
     try {
-      const { name, description, price, location, condition, region, propertyType, address } = req.body;
+      const { name, description, price, location, condition, region, propertyType } = req.body;
 
       // Validate required fields
       const missingFields = [];
@@ -32,7 +32,6 @@ router.post(
       if (!condition) missingFields.push('condition');
       if (!region) missingFields.push('region');
       if (!propertyType) missingFields.push('propertyType');
-      if (!address) missingFields.push('address');
 
       if (missingFields.length > 0) {
         return res.status(400).json({
@@ -40,39 +39,44 @@ router.post(
         });
       }
 
-      // Process images upload to Cloudinary
-      const imageUrls = [];
+      // Handle image uploads
+      let images = [];
       if (req.files.images) {
-        for (const image of req.files.images) {
-          const result = await cloudinary.uploader.upload_stream(
-            { resource_type: 'image' },
-            (error, result) => {
-              if (error) {
-                return res.status(500).json({ message: 'Error uploading image' });
-              }
-              imageUrls.push(result.secure_url);
-            }
-          );
-          image.pipe(result);
+        // Check if image count exceeds 5
+        if (req.files.images.length > 5) {
+          return res.status(400).json({ message: 'You can upload a maximum of 5 images' });
         }
-      }
 
-      // Process video upload to Cloudinary
-      let videoUrl = '';
-      if (req.files.video) {
-        const videoResult = await cloudinary.uploader.upload_stream(
-          { resource_type: 'video' },
-          (error, result) => {
-            if (error) {
-              return res.status(500).json({ message: 'Error uploading video' });
-            }
-            videoUrl = result.secure_url;
-          }
+        images = await Promise.all(
+          req.files.images.map((image) =>
+            new Promise((resolve, reject) => {
+              cloudinary.uploader.upload_stream({ resource_type: 'image' }, (error, result) => {
+                if (error) {
+                  console.error('Cloudinary image upload error:', error);
+                  return reject(`Image upload failed: ${error.message}`);
+                }
+                resolve(result.secure_url);
+              }).end(image.buffer);
+            })
+          )
         );
-        req.files.video[0].pipe(videoResult);
       }
 
-      // Create a new property document
+      // Handle video upload
+      let video = null;
+      if (req.files.video && req.files.video.length > 0) {
+        video = await new Promise((resolve, reject) => {
+          cloudinary.uploader.upload_stream({ resource_type: 'video' }, (error, result) => {
+            if (error) {
+              console.error('Cloudinary video upload error:', error);
+              return reject(`Video upload failed: ${error.message}`);
+            }
+            resolve(result.secure_url);
+          }).end(req.files.video[0].buffer);
+        });
+      }
+
+      // Create new property document
       const property = new Property({
         name,
         description,
@@ -81,23 +85,72 @@ router.post(
         condition,
         region,
         propertyType,
-        address, // Added address
-        images: imageUrls,
-        video: videoUrl,
+        images,
+        video,
       });
 
-      // Save property to the database
       await property.save();
-
-      res.status(201).json({
-        message: 'Property uploaded successfully!',
-        property,
-      });
+      res.status(200).json({ message: 'Property uploaded successfully', property });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Server error' });
+      console.error('Error uploading property:', error);
+      res.status(500).json({ message: 'Failed to upload property', error: error.message || error });
     }
   }
 );
+
+// Get all properties
+router.get('/', async (req, res) => {
+  try {
+    const properties = await Property.find();
+    res.status(200).json(properties);
+  } catch (error) {
+    console.error('Error fetching properties:', error);
+    res.status(500).json({ message: 'Failed to fetch properties', error: error.message || error });
+  }
+});
+
+// Delete property
+router.delete('/:id', async (req, res) => {
+  try {
+    const propertyId = req.params.id;
+    const property = await Property.findByIdAndDelete(propertyId);
+
+    if (!property) {
+      return res.status(404).json({ message: 'Property not found' });
+    }
+
+    res.status(200).json({ message: 'Property deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting property:', error.message);
+    res.status(500).json({ message: 'Failed to delete property', error: error.message });
+  }
+});
+
+// Update property status
+router.put('/:id/status', async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  if (!status) {
+    return res.status(400).json({ message: 'Status is required' });
+  }
+
+  try {
+    const updatedProperty = await Property.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true }
+    );
+
+    if (!updatedProperty) {
+      return res.status(404).json({ message: 'Property not found' });
+    }
+
+    res.status(200).json(updatedProperty);
+  } catch (error) {
+    console.error('Error updating property status:', error);
+    res.status(500).json({ message: 'Failed to update property status' });
+  }
+});
 
 module.exports = router;
