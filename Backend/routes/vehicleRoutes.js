@@ -14,5 +14,4 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Export the router to be used in the server.js
 module.exports = router;

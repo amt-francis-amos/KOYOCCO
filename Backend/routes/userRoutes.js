@@ -124,6 +124,7 @@ router.post("/signup", async (req, res) => {
 
 // Login route
 router.post("/login", async (req, res) => {
+  
   const { email, password } = req.body;
 
   // Validate the incoming request
@@ -184,6 +185,7 @@ router.post("/forgot-password", async (req, res) => {
 
 // Reset password route
 router.post("/reset-password/:token", async (req, res) => {
+  
   const { password } = req.body;
   const { token } = req.params;
 

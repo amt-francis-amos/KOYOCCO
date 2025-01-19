@@ -33,7 +33,7 @@ router.get("/profile", authenticateToken, async (req, res) => {
 });
 
 
-// Update user profile (basic info)
+// Update user profile 
 router.put("/profile", authenticateToken, async (req, res) => {
   const { firstname, lastname, phoneNumber, location } = req.body;
   try {

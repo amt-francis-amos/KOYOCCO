@@ -10,8 +10,6 @@ const listingRoutes = require("./routes/listingRoutes");
 const adminRoutes = require('./routes/adminRoutes');
 const profileRoutes = require("./routes/profileRoutes");
 const contactAgentRoutes = require("./routes/contactAgentRoutes");
-
-
 dotenv.config();
 
 const app = express();
