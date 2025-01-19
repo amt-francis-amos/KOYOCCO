@@ -36,7 +36,6 @@ const PropertySales = () => {
   const handlePostListing = async () => {
     const { name, description, location, price, photos, video, propertyType } = formData;
   
-   
     if (!name || !description || !location || !price || !propertyType) {
       setError("All fields are required.");
       toast.error("All fields are required!");
@@ -55,9 +54,6 @@ const PropertySales = () => {
       return;
     }
   
-  
-    console.log("Property Type Selected:", propertyType);
-  
     const formDataToSend = new FormData();
     formDataToSend.append("name", name);
     formDataToSend.append("description", description);
@@ -67,14 +63,6 @@ const PropertySales = () => {
     photos.forEach((photo) => formDataToSend.append("photos", photo));
     formDataToSend.append("video", video);
   
-    if (isPropertyOwner) {
-      formDataToSend.append("promotionFeePaid", true);
-      formDataToSend.append("isPropertyOwner", true);
-    } else {
-      formDataToSend.append("agentSubscription", true);
-      formDataToSend.append("isPropertyOwner", false);
-    }
-  
     try {
       const response = await axios.post(
         "https://koyocco-backend.onrender.com/api/post-listing/upload",
@@ -82,7 +70,7 @@ const PropertySales = () => {
         { headers: { "Content-Type": "multipart/form-data" } }
       );
       toast.success("Property uploaded successfully!");
-     
+  
       setFormData({
         name: "",
         description: "",
@@ -97,12 +85,7 @@ const PropertySales = () => {
       toast.error("Failed to upload property. Please try again.");
     }
   };
-
-  const handlePaymentSuccess = () => {
-    toast.success("Payment Successful! Your property has been posted.");
-    setShowPaymentForm(false);
-    handlePostListing();
-  };
+  
 
   const handlePaymentFailure = () => {
     toast.error("Payment Failed! Please try again.");
