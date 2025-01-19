@@ -22,11 +22,11 @@ router.post(
   upload.fields([{ name: 'images', maxCount: 10 }, { name: 'video', maxCount: 1 }]), // Limit max count to 10 for multer
   async (req, res) => {
     try {
-      const { name, description, price, location, propertyType } = req.body;
+      const { name, description, price, location, condition, region, propertyType } = req.body;
 
       // Validate required fields
-      if (!name || !price || !location || !propertyType) {
-        return res.status(400).json({ message: 'Missing required fields: name, price, location, or propertyType' });
+      if (!name || !price || !location || !condition || !region || !propertyType) {
+        return res.status(400).json({ message: 'Missing required fields: name, price, location, condition, region, or propertyType' });
       }
 
       // Handle image uploads
@@ -72,6 +72,8 @@ router.post(
         description,
         price,
         location,
+        condition,
+        region,
         propertyType,
         images,
         video,
