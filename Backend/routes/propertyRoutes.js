@@ -25,28 +25,27 @@ router.post(
   '/upload',
   upload.fields([{ name: 'images', maxCount: 10 }, { name: 'video', maxCount: 1 }]),
   async (req, res) => {
-    console.log('Request Body:', req.body);
-    console.log('Request Files:', req.files);
+    console.log('Request Body:', req.body); // Debug log for request body
+    console.log('Request Files:', req.files); // Debug log for uploaded files
 
     try {
       const { name, description, price, location, propertyType } = req.body;
 
-   
+      // Validate required fields
       if (!name || !price || !location || !propertyType) {
-        return res.status(400).json({ message: 'Missing required fields: name, price, location, or propertyType' });
+        return res.status(400).json({
+          message: 'Missing required fields: name, price, location, or propertyType',
+        });
       }
 
-     
+      // Process images
       let images = [];
       if (req.files?.images) {
         images = await Promise.all(
           req.files.images.map((image) =>
             new Promise((resolve, reject) => {
               cloudinary.uploader.upload_stream({ resource_type: 'image' }, (error, result) => {
-                if (error) {
-                  console.error('Cloudinary image upload error:', error);
-                  return reject(`Image upload failed: ${error.message}`);
-                }
+                if (error) return reject(`Image upload failed: ${error.message}`);
                 resolve(result.secure_url);
               }).end(image.buffer);
             })
@@ -54,27 +53,24 @@ router.post(
         );
       }
 
-     
+      // Process video
       let video = null;
       if (req.files?.video?.length > 0) {
         video = await new Promise((resolve, reject) => {
           cloudinary.uploader.upload_stream({ resource_type: 'video' }, (error, result) => {
-            if (error) {
-              console.error('Cloudinary video upload error:', error);
-              return reject(`Video upload failed: ${error.message}`);
-            }
+            if (error) return reject(`Video upload failed: ${error.message}`);
             resolve(result.secure_url);
           }).end(req.files.video[0].buffer);
         });
       }
 
-      // Create and save the property
+      // Create and save property
       const property = new Property({
         name,
         description,
         price,
         location,
-        propertyType,
+        propertyType, // Ensure propertyType is passed
         images,
         video,
       });
@@ -83,7 +79,10 @@ router.post(
       res.status(201).json({ message: 'Property uploaded successfully', property });
     } catch (error) {
       console.error('Error uploading property:', error);
-      res.status(500).json({ message: 'Failed to upload property', error: error.message || error });
+      res.status(500).json({
+        message: 'Failed to upload property',
+        error: error.message || error,
+      });
     }
   }
 );
