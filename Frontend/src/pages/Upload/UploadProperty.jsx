@@ -10,10 +10,13 @@ const UploadProperty = () => {
     description: '',
     price: '',
     location: '',
-    propertyType: '', 
+    region: '',
+    propertyType: '',
+    condition: '', // New field
     images: [],
     video: null,
   });
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -54,7 +57,9 @@ const UploadProperty = () => {
         description: '',
         price: '',
         location: '',
-        propertyType: '',  // Reset propertyType
+        region: '',
+        propertyType: '',
+        condition: '',
         images: [],
         video: null,
       });
@@ -101,12 +106,49 @@ const UploadProperty = () => {
         <input
           type="text"
           name="location"
-          placeholder="Location"
+          placeholder="Address"
           value={propertyData.location}
           onChange={handleChange}
           required
           className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
         />
+        <select
+          name="region"
+          value={propertyData.region}
+          onChange={handleChange}
+          required
+          className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+        >
+          <option value="">Select Region</option>
+          <option value="Greater Accra">Greater Accra</option>
+          <option value="Ashanti">Ashanti</option>
+          <option value="Central">Central</option>
+          <option value="Western">Western</option>
+          <option value="Eastern">Eastern</option>
+          <option value="Volta">Volta</option>
+          <option value="Northern">Northern</option>
+          <option value="Upper East">Upper East</option>
+          <option value="Upper West">Upper West</option>
+          <option value="Bono">Bono</option>
+          <option value="Bono East">Bono East</option>
+          <option value="Ahafo">Ahafo</option>
+          <option value="Oti">Oti</option>
+          <option value="Savannah">Savannah</option>
+          <option value="North East">North East</option>
+          <option value="Western North">Western North</option>
+        </select>
+        <select
+          name="condition"
+          value={propertyData.condition}
+          onChange={handleChange}
+          required
+          className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+        >
+          <option value="">Select Condition</option>
+          <option value="Newly built">Newly built</option>
+          <option value="Innovated">Innovated</option>
+          <option value="Used">Used</option>
+        </select>
         <select
           name="propertyType"
           value={propertyData.propertyType}
