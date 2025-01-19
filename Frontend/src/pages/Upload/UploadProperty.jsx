@@ -11,8 +11,8 @@ const UploadProperty = () => {
     price: '',
     location: '',
     propertyType: '',
-    condition: '', // Added condition field
-    region: '', // Added region field
+    condition: '',
+    region: '',
     images: [],
     video: null,
   });
@@ -22,10 +22,10 @@ const UploadProperty = () => {
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === 'images') {
-      const selectedImages = [...files];
+      const selectedImages = [...files]; // Get all selected images
       setPropertyData({ ...propertyData, images: selectedImages });
 
-      // Generate image previews
+      // Generate previews for all selected images
       const previews = selectedImages.map((file) => URL.createObjectURL(file));
       setImagePreviews(previews);
     } else if (name === 'video') {
@@ -38,6 +38,8 @@ const UploadProperty = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
+
+    // Append all fields to FormData
     Object.keys(propertyData).forEach((key) => {
       if (key === 'images') {
         propertyData.images.forEach((image) => {
@@ -67,12 +69,12 @@ const UploadProperty = () => {
         price: '',
         location: '',
         propertyType: '',
-        condition: '', // Reset condition field
-        region: '', // Reset region field
+        condition: '',
+        region: '',
         images: [],
         video: null,
       });
-      setImagePreviews([]); // Clear image previews
+      setImagePreviews([]); // Clear previews
       navigate('/property-list');
     } catch (error) {
       toast.error('Failed to upload property. Please try again.');
