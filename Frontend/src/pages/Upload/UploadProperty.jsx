@@ -25,9 +25,9 @@ const UploadProperty = () => {
     if (name === 'images') {
       const selectedImages = [...files];
 
-      // Ensure no more than 5 images are selected
+     
       if (selectedImages.length > 10) {
-        toast.error('You can only upload up to 5 images.');
+        toast.error('You can only upload up to 10 images.');
         return;
       }
 
@@ -187,7 +187,7 @@ const UploadProperty = () => {
           ))}
         </select>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Upload Images (Max 5):</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Upload Images (Max 10):</label>
           <input
             type="file"
             name="images"
