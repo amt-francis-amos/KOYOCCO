@@ -34,6 +34,7 @@ const PropertySales = () => {
   };
 
   const handlePostListing = async () => {
+    
     const { name, description, location, price, photos, video, propertyType } = formData;
   
     if (!name || !description || !location || !price || !propertyType) {
