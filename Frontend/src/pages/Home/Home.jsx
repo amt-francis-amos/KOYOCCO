@@ -4,14 +4,14 @@ import { assets } from "../../assets/assets";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Link } from "react-router-dom";
 import { useProperty } from "../../context/PropertyContext";
-import ReactPaginate from "react-paginate"; // Import the pagination component
+import ReactPaginate from "react-paginate"; 
 
 const Home = () => {
   const { property } = useProperty();
   const [searchTerm, setSearchTerm] = useState("");
   const [priceRange, setPriceRange] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
-  const propertiesPerPage = 6; // Set the number of properties per page
+  const propertiesPerPage = 6; 
 
   // Filter properties based on search term and price range
   const filteredProperties = property.filter((prop) => {
@@ -24,7 +24,7 @@ const Home = () => {
     return matchesSearchTerm && matchesPriceRange;
   });
 
-  // Pagination: Slice the filtered properties based on the current page and items per page
+  
   const paginatedProperties = filteredProperties.slice(
     currentPage * propertiesPerPage,
     (currentPage + 1) * propertiesPerPage
