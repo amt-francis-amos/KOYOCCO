@@ -36,10 +36,10 @@ const PropertySales = () => {
   const handlePostListing = async () => {
     const { name, description, location, price, photos, video, propertyType } = formData;
   
-    // Validate if all fields are filled, including the propertyType
+    // Validation
     if (!name || !description || !location || !price || !propertyType) {
-      setError("All fields are required.");
-      toast.error("All fields are required!");
+      setError("All fields are required, including the Property Type.");
+      toast.error("All fields are required, including the Property Type.");
       return;
     }
   
@@ -55,15 +55,15 @@ const PropertySales = () => {
       return;
     }
   
-    // Check the propertyType field explicitly
     console.log("Property Type Selected:", propertyType);
   
+    // Prepare FormData
     const formDataToSend = new FormData();
     formDataToSend.append("name", name);
     formDataToSend.append("description", description);
     formDataToSend.append("location", location);
     formDataToSend.append("price", price);
-    formDataToSend.append("propertyType", propertyType);  
+    formDataToSend.append("propertyType", propertyType);
     photos.forEach((photo) => formDataToSend.append("photos", photo));
     formDataToSend.append("video", video);
   
@@ -82,7 +82,6 @@ const PropertySales = () => {
         { headers: { "Content-Type": "multipart/form-data" } }
       );
       toast.success("Property uploaded successfully!");
-      // Reset formData after successful upload
       setFormData({
         name: "",
         description: "",
@@ -90,14 +89,18 @@ const PropertySales = () => {
         price: "",
         photos: [],
         video: null,
-        propertyType: "",  
+        propertyType: "",
       });
     } catch (error) {
       console.error("Error uploading property:", error);
-      toast.error("Failed to upload property. Please try again.");
+      if (error.response && error.response.data) {
+        toast.error(error.response.data.message || "Failed to upload property. Please try again.");
+      } else {
+        toast.error("Failed to upload property. Please try again.");
+      }
     }
   };
-
+  
   const handlePaymentSuccess = () => {
     toast.success("Payment Successful! Your property has been posted.");
     setShowPaymentForm(false);
