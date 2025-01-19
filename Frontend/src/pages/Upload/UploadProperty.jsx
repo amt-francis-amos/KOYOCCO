@@ -13,7 +13,6 @@ const UploadProperty = () => {
     propertyType: '',
     condition: '',
     region: '',
-    address: '',  // Add address field to state
     images: [],
     video: null,
   });
@@ -47,8 +46,8 @@ const UploadProperty = () => {
     e.preventDefault();
 
     // Validation for missing required fields
-    const { name, price, location, condition, region, propertyType, address } = propertyData;
-    if (!name || !price || !location || !condition || !region || !propertyType || !address) {
+    const { name, price, location, condition, region, propertyType } = propertyData;
+    if (!name || !price || !location || !condition || !region || !propertyType) {
       toast.error('Please fill in all required fields.');
       return;
     }
@@ -87,7 +86,6 @@ const UploadProperty = () => {
         propertyType: '',
         condition: '',
         region: '',
-        address: '',  // Clear address field
         images: [],
         video: null,
       });
@@ -129,24 +127,18 @@ const UploadProperty = () => {
           required
           className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
         />
-        <input
-          type="text"
-          name="address"
-          placeholder="Property Address"  // New address field
-          value={propertyData.address}
-          onChange={handleChange}
-          required
-          className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
-        />
-        <input
-          type="text"
+        <select
           name="propertyType"
-          placeholder="Property Type"
           value={propertyData.propertyType}
           onChange={handleChange}
           required
           className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
-        />
+        >
+          <option value="">Select Property Type</option>
+          <option value="Short-Stay">Short-Stay</option>
+          <option value="PropertySales">Property Sales</option>
+          <option value="PropertyRentals">Property Rentals</option>
+        </select>
         <div className="flex items-center space-x-2">
           <span className="text-xl">₵</span>
           <input
