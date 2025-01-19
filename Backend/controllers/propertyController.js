@@ -3,13 +3,25 @@ const cloudinary = require('../config/cloudinaryConfig');
 
 const uploadProperty = async (req, res) => {
   try {
-    const { name, description, price, location } = req.body;
+    const { name, description, price, location, condition, region, propertyType, address } = req.body;
 
-    if (!name || !price || !location) {
-      return res.status(400).json({ message: 'Missing required fields: name, price, or location' });
+    // Check for missing required fields
+    const missingFields = [];
+    if (!name) missingFields.push('name');
+    if (!price) missingFields.push('price');
+    if (!location) missingFields.push('location');
+    if (!condition) missingFields.push('condition');
+    if (!region) missingFields.push('region');
+    if (!propertyType) missingFields.push('propertyType');
+    if (!address) missingFields.push('address');
+
+    if (missingFields.length > 0) {
+      return res.status(400).json({
+        message: `Missing required fields: ${missingFields.join(', ')}`,
+      });
     }
 
-    // Image Uploads
+    // Handle image uploads
     let images = [];
     if (req.files.images) {
       images = await Promise.all(
@@ -24,7 +36,7 @@ const uploadProperty = async (req, res) => {
       );
     }
 
-    // Video Upload
+    // Handle video upload
     let video = null;
     if (req.files.video) {
       video = await new Promise((resolve, reject) => {
@@ -35,7 +47,19 @@ const uploadProperty = async (req, res) => {
       });
     }
 
-    const property = new Property({ name, description, price, location, images, video });
+    // Create new property and save
+    const property = new Property({ 
+      name, 
+      description, 
+      price, 
+      location, 
+      condition, 
+      region, 
+      propertyType, 
+      address, 
+      images, 
+      video 
+    });
     await property.save();
 
     res.status(200).json({ message: 'Property uploaded successfully', property });
