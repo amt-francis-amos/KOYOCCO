@@ -1,19 +1,17 @@
 const mongoose = require('mongoose');
 
-const PropertySchema = new mongoose.Schema({
+const propertySchema = new mongoose.Schema({
   name: { type: String, required: true },
   description: { type: String },
   price: { type: Number, required: true },
-  location: { type: String, required: true }, 
-  address: { type: String, required: true }, 
+  location: { type: String, required: true },
+  condition: { type: String, required: true },
   region: { type: String, required: true },
-  condition: { type: String, enum: ['Newly built', 'Innovated', 'Used'], required: true }, 
-  propertyType: { type: String, required: true }, 
-  images: [{ type: String }], 
-  video: { type: String },
-  status: { type: String, enum: ['Available', 'Sold', 'Rented'], default: 'Available' }, 
-  owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, 
-  agent: { type: mongoose.Schema.Types.ObjectId, ref: 'Agent' }, 
+  propertyType: { type: String, required: true },
+  address: { type: String }, 
+  images: [String],
+  video: String,
+  status: { type: String, enum: ['available', 'sold'], default: 'available' },
 });
 
-module.exports = mongoose.model('Property', PropertySchema);
+module.exports = mongoose.model('Property', propertySchema);
