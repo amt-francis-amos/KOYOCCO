@@ -112,7 +112,7 @@ const Home = () => {
                 
 <div className="flex items-center mt-4">
   <div
-    className={`w-4 h-4 rounded-full mr-2 ${
+    className={`w-2 h-2 rounded-full mr-2 ${
       prop.status === "Available"
         ? "bg-green-500"
         : prop.status === "Rented"
