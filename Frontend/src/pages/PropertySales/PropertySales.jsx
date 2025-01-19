@@ -36,7 +36,7 @@ const PropertySales = () => {
   const handlePostListing = async () => {
     const { name, description, location, price, photos, video, propertyType } = formData;
   
-    // Validate if all fields are filled, including the propertyType
+   
     if (!name || !description || !location || !price || !propertyType) {
       setError("All fields are required.");
       toast.error("All fields are required!");
@@ -55,7 +55,7 @@ const PropertySales = () => {
       return;
     }
   
-    // Check the propertyType field explicitly
+  
     console.log("Property Type Selected:", propertyType);
   
     const formDataToSend = new FormData();
@@ -82,7 +82,7 @@ const PropertySales = () => {
         { headers: { "Content-Type": "multipart/form-data" } }
       );
       toast.success("Property uploaded successfully!");
-      // Reset formData after successful upload
+     
       setFormData({
         name: "",
         description: "",
@@ -113,8 +113,8 @@ const PropertySales = () => {
     const handler = window.PaystackPop.setup({
       key: "pk_live_be305faba4d35f18862ba2e58aeaff4a1aadbaa5",
       email: "francismarkamos71@gmail.com",
-      amount: 5000, // Amount in Ghana cedis (₵)
-      currency: "GH₵", // Set currency to Ghanaian Cedis
+      amount: 5000, 
+      currency: "GH₵", 
       callback: handlePaymentSuccess,
       onClose: handlePaymentFailure,
     });
@@ -203,7 +203,7 @@ const PropertySales = () => {
             />
           </div>
 
-          {/* New Property Type Dropdown */}
+        
           <div className="mb-6">
             <label className="block text-lg font-medium text-gray-700 mb-2">Property Type</label>
             <select
