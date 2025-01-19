@@ -13,7 +13,6 @@ const UploadProperty = () => {
     propertyType: '',
     condition: '',
     region: '',
-    address: '', // Added the address field
     images: [],
     video: null,
   });
@@ -24,7 +23,7 @@ const UploadProperty = () => {
     const { name, value, files } = e.target;
     if (name === 'images') {
       const selectedImages = [...files];
-
+      
       // Ensure no more than 5 images are selected
       if (selectedImages.length > 5) {
         toast.error('You can only upload up to 5 images.');
@@ -45,14 +44,6 @@ const UploadProperty = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Validation for missing required fields
-    const { name, price, location, condition, region, propertyType, address } = propertyData;
-    if (!name || !price || !location || !condition || !region || !propertyType || !address) {
-      toast.error('Please fill in all required fields.');
-      return;
-    }
-
     const formData = new FormData();
 
     // Append all fields to FormData
@@ -87,7 +78,6 @@ const UploadProperty = () => {
         propertyType: '',
         condition: '',
         region: '',
-        address: '', // Reset address field after submission
         images: [],
         video: null,
       });
@@ -120,36 +110,6 @@ const UploadProperty = () => {
           className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
           rows="3"
         />
-        <input
-          type="text"
-          name="address"
-          placeholder="Address"  // Added address field
-          value={propertyData.address}
-          onChange={handleChange}
-          required
-          className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
-        />
-        <input
-          type="text"
-          name="location"
-          placeholder="Location"
-          value={propertyData.location}
-          onChange={handleChange}
-          required
-          className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
-        />
-        <select
-          name="propertyType"
-          value={propertyData.propertyType}
-          onChange={handleChange}
-          required
-          className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
-        >
-          <option value="">Select Property Type</option>
-          <option value="Short-Stay">Short-Stay</option>
-          <option value="PropertySales">Property Sales</option>
-          <option value="PropertyRentals">Property Rentals</option>
-        </select>
         <div className="flex items-center space-x-2">
           <span className="text-xl">₵</span>
           <input
@@ -182,8 +142,27 @@ const UploadProperty = () => {
           className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
         >
           <option value="">Select Region</option>
-          {[ 'Greater Accra', 'Ashanti', 'Western', 'Eastern', 'Northern', 'Volta', 'Central', 'Upper East', 'Upper West', 'Savannah', 'Bono', 'Bono East', 'Ahafo', 'Oti', 'Western North', 'North East' ].map((region) => (
-            <option key={region} value={region}>{region}</option>
+          {[
+            'Greater Accra',
+            'Ashanti',
+            'Western',
+            'Eastern',
+            'Northern',
+            'Volta',
+            'Central',
+            'Upper East',
+            'Upper West',
+            'Savannah',
+            'Bono',
+            'Bono East',
+            'Ahafo',
+            'Oti',
+            'Western North',
+            'North East',
+          ].map((region) => (
+            <option key={region} value={region}>
+              {region}
+            </option>
           ))}
         </select>
         <div>
