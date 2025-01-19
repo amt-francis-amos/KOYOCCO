@@ -82,8 +82,7 @@ const Home = () => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {Array.isArray(filteredProperties) &&
-            filteredProperties.length > 0 ? (
+            {filteredProperties.length > 0 ? (
               filteredProperties.map((prop) => (
                 <Link key={prop._id} to={`/property/${prop._id}`}>
                   <div className="border rounded-lg overflow-hidden shadow-lg transition-transform transform hover:scale-105">
@@ -93,38 +92,30 @@ const Home = () => {
                       className="w-full h-48 object-cover"
                     />
                     <div className="p-4">
-                      <h3 className="font-bold text-lg md:text-xl">
-                        {prop.name}
-                      </h3>
-                      <p className="text-gray-600 text-sm md:text-base">
-                        {prop.description}
-                      </p>
+                      <h3 className="font-bold text-lg md:text-xl">{prop.name}</h3>
+                      <p className="text-gray-600 text-sm md:text-base">{prop.description}</p>
                       <p className="text-red-500 font-bold text-sm md:text-base">
                         ₵{prop.price}
                       </p>
-                      <p className="text-gray-500 text-xs md:text-sm">
-                        {prop.location}
-                      </p>
+                      <p className="text-gray-500 text-xs md:text-sm">{prop.location}</p>
                       <p className="text-red-600 text-xl font-bold md:text-sm mt-2">
                         {prop.propertyType}
                       </p>
-                   
-                
-<div className="flex items-center mt-4">
-  <div
-    className={`w-3 h-3 rounded-full mr-2 ${
-      prop.status === "Available"
-        ? "bg-green-500"
-        : prop.status === "Rented"
-        ? "bg-blue-500"
-        : "bg-red-500"
-    }`}
-  ></div>
-  <span className="text-sm md:text-base font-medium text-gray-700">
-    {prop.status}
-  </span>
-</div>
 
+                      <div className="flex items-center mt-4">
+                        <div
+                          className={`w-3 h-3 rounded-full mr-2 ${
+                            prop.status === "available"
+                              ? "bg-green-500"
+                              : prop.status === "rented"
+                              ? "bg-blue-500"
+                              : "bg-red-500"
+                          }`}
+                        ></div>
+                        <span className="text-sm md:text-base font-medium text-gray-700">
+                          {prop.status.charAt(0).toUpperCase() + prop.status.slice(1)}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </Link>
