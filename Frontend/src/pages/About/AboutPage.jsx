@@ -102,7 +102,7 @@ const AboutPage = () => {
         </motion.div>
 
         <section
-          className=" mb-12 relative bg-cover bg-center py-12"
+          className="mb-12 relative bg-cover bg-center py-12"
           style={{ backgroundImage: `url(${assets.aboutImg})` }}
         >
           <div className="absolute inset-0 bg-red-600 opacity-50"></div>
