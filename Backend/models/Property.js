@@ -8,7 +8,7 @@ const propertySchema = new mongoose.Schema({
   condition: { type: String, required: true },
   region: { type: String, required: true },
   propertyType: { type: String, required: true },
-  address: { type: String }, 
+  address: { type: String, required:true }, 
   images: [String],
   video: String,
   status: { type: String, enum: ['available', 'sold'], default: 'available' },
