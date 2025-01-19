@@ -45,16 +45,16 @@ const UploadProperty = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     // Validation for missing required fields
     const { name, price, location, condition, region, propertyType, address } = propertyData;
     if (!name || !price || !location || !condition || !region || !propertyType || !address) {
       toast.error('Please fill in all required fields.');
       return;
     }
-
+  
     const formData = new FormData();
-
+  
     // Append all fields to FormData
     Object.keys(propertyData).forEach((key) => {
       if (key === 'images') {
@@ -67,7 +67,12 @@ const UploadProperty = () => {
         formData.append(key, propertyData[key]);
       }
     });
-
+  
+    // Debugging: Log FormData content
+    for (let pair of formData.entries()) {
+      console.log(pair[0] + ': ' + pair[1]);
+    }
+  
     try {
       const response = await axios.post(
         'https://koyocco-backend.onrender.com/api/properties/upload',
@@ -97,7 +102,7 @@ const UploadProperty = () => {
       toast.error('Failed to upload property. Please try again.');
     }
   };
-
+  
   return (
     <div className="max-w-[500px] mx-auto mt-10 mb-20 p-5 bg-white shadow-md rounded-lg">
       <ToastContainer />
