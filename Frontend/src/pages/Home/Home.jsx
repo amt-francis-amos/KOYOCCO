@@ -109,7 +109,7 @@ const Home = () => {
                         {prop.propertyType}
                       </p>
                    
-                     {/* Status Circle and Text */}
+                
 <div className="flex items-center mt-4">
   <div
     className={`w-4 h-4 rounded-full mr-2 ${
