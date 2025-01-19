@@ -108,16 +108,23 @@ const Home = () => {
                       <p className="text-red-600 text-xl font-bold md:text-sm mt-2">
                         {prop.propertyType}
                       </p>
-                      {/* Status Circle */}
-                      <div
-                        className={`w-4 h-4 mt-4 rounded-full ${
-                          prop.status === "Available"
-                            ? "bg-green-500"
-                            : prop.status === "Rented"
-                            ? "bg-blue-500"
-                            : "bg-red-500"
-                        }`}
-                      ></div>
+                   
+                     {/* Status Circle and Text */}
+<div className="flex items-center mt-4">
+  <div
+    className={`w-4 h-4 rounded-full mr-2 ${
+      prop.status === "Available"
+        ? "bg-green-500"
+        : prop.status === "Rented"
+        ? "bg-blue-500"
+        : "bg-red-500"
+    }`}
+  ></div>
+  <span className="text-sm md:text-base font-medium text-gray-700">
+    {prop.status}
+  </span>
+</div>
+
                     </div>
                   </div>
                 </Link>
