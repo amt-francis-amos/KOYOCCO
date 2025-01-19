@@ -13,7 +13,7 @@ const UploadProperty = () => {
     propertyType: '',
     condition: '',
     region: '',
-    address: '', // Added the address field
+    address: '', 
     images: [],
     video: null,
   });
