@@ -13,6 +13,8 @@ const uploadProperty = async (req, res) => {
     if (!condition) missingFields.push('condition');
     if (!region) missingFields.push('region');
     if (!propertyType) missingFields.push('propertyType');
+
+    // Optionally check for address only if it's required
     if (!address) missingFields.push('address');
 
     if (missingFields.length > 0) {
@@ -56,7 +58,7 @@ const uploadProperty = async (req, res) => {
       condition, 
       region, 
       propertyType, 
-      address, 
+      address, // Optional
       images, 
       video 
     });
@@ -67,6 +69,7 @@ const uploadProperty = async (req, res) => {
     res.status(500).json({ message: 'Failed to upload property', error: error.message });
   }
 };
+
 
 const getAllProperties = async (req, res) => {
   try {
