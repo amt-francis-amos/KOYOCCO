@@ -50,17 +50,17 @@ const uploadProperty = async (req, res) => {
     }
 
     // Create new property and save
-    const property = new Property({ 
-      name, 
-      description, 
-      price, 
-      location, 
-      condition, 
-      region, 
-      propertyType, 
-      address, // Optional
-      images, 
-      video 
+    const property = new Property({
+      name,
+      description,
+      price,
+      location,
+      address,
+      region,
+      condition,
+      propertyType,
+      images,
+      video,
     });
     await property.save();
 
