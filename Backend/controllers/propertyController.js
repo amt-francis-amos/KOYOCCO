@@ -3,9 +3,9 @@ const cloudinary = require('../config/cloudinaryConfig');
 
 const uploadProperty = async (req, res) => {
   try {
-    const { name, description, price, location, condition, region, propertyType,address } = req.body;
+    const { name, description, price, location, condition, region, propertyType } = req.body;
 
-    if (!name || !price || !location || !condition || !region || !propertyType || !address) {
+    if (!name || !price || !location || !condition || !region || !propertyType) {
       return res.status(400).json({ message: 'Missing required fields: name, price, location, condition, region, or propertyType' });
     }
 
@@ -41,7 +41,6 @@ const uploadProperty = async (req, res) => {
       price,
       location,
       condition,
-      address,
       region,
       propertyType,
       images,

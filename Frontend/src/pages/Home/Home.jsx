@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Carousel } from "react-responsive-carousel";
 import { assets } from "../../assets/assets";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
@@ -19,11 +19,6 @@ const Home = () => {
       : true;
     return matchesSearchTerm && matchesPriceRange;
   });
-
-  useEffect(() => {
-    // Any additional updates after upload logic goes here (e.g., fetch new properties or refresh data)
-    // Example: fetchUpdatedProperties();
-  }, [property]);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -93,7 +88,7 @@ const Home = () => {
                 <Link key={prop._id} to={`/property/${prop._id}`}>
                   <div className="border rounded-lg overflow-hidden shadow-lg transition-transform transform hover:scale-105">
                     <img
-                      src={prop.images[0] || assets.defaultImage} // Handle default image in case images array is empty
+                      src={prop.images[0]}
                       alt={prop.name}
                       className="w-full h-48 object-cover"
                     />
@@ -113,21 +108,23 @@ const Home = () => {
                       <p className="text-red-600 text-xl font-bold md:text-sm mt-2">
                         {prop.propertyType}
                       </p>
+                   
+                
+<div className="flex items-center mt-4">
+  <div
+    className={`w-3 h-3 rounded-full mr-2 ${
+      prop.status === "Available"
+        ? "bg-green-500"
+        : prop.status === "Rented"
+        ? "bg-blue-500"
+        : "bg-red-500"
+    }`}
+  ></div>
+  <span className="text-sm md:text-base font-medium text-gray-700">
+    {prop.status}
+  </span>
+</div>
 
-                      <div className="flex items-center mt-4">
-                        <div
-                          className={`w-3 h-3 rounded-full mr-2 ${
-                            prop.status === "Available"
-                              ? "bg-green-500"
-                              : prop.status === "Rented"
-                              ? "bg-blue-500"
-                              : "bg-red-500"
-                          }`}
-                        ></div>
-                        <span className="text-sm md:text-base font-medium text-gray-700">
-                          {prop.status}
-                        </span>
-                      </div>
                     </div>
                   </div>
                 </Link>
