@@ -22,7 +22,7 @@ router.post(
   upload.fields([{ name: 'images', maxCount: 10 }, { name: 'video', maxCount: 1 }]), // Limit max count to 10 for multer
   async (req, res) => {
     try {
-      const { name, description, price, location, condition, region, propertyType, address } = req.body;
+      const { name, description, price, location, condition, region, propertyType } = req.body;
 
       // Validate required fields
       const missingFields = [];
@@ -32,7 +32,6 @@ router.post(
       if (!condition) missingFields.push('condition');
       if (!region) missingFields.push('region');
       if (!propertyType) missingFields.push('propertyType');
-      if (!address) missingFields.push('address');
 
       if (missingFields.length > 0) {
         return res.status(400).json({
@@ -43,9 +42,9 @@ router.post(
       // Handle image uploads
       let images = [];
       if (req.files.images) {
-        // Check if image count exceeds 10
-        if (req.files.images.length > 10) {
-          return res.status(400).json({ message: 'You can upload a maximum of 10 images' });
+        // Check if image count exceeds 5
+        if (req.files.images.length > 5) {
+          return res.status(400).json({ message: 'You can upload a maximum of 5 images' });
         }
 
         images = await Promise.all(
@@ -65,7 +64,7 @@ router.post(
 
       // Handle video upload
       let video = null;
-      if (req.files.video) {
+      if (req.files.video && req.files.video.length > 0) {
         video = await new Promise((resolve, reject) => {
           cloudinary.uploader.upload_stream({ resource_type: 'video' }, (error, result) => {
             if (error) {
@@ -77,7 +76,7 @@ router.post(
         });
       }
 
-      // Create a new property instance and save it to the database
+      // Create new property document
       const property = new Property({
         name,
         description,
@@ -86,7 +85,6 @@ router.post(
         condition,
         region,
         propertyType,
-        address,
         images,
         video,
       });
@@ -95,26 +93,27 @@ router.post(
       res.status(200).json({ message: 'Property uploaded successfully', property });
     } catch (error) {
       console.error('Error uploading property:', error);
-      res.status(500).json({ message: 'Failed to upload property', error: error.message });
+      res.status(500).json({ message: 'Failed to upload property', error: error.message || error });
     }
   }
 );
 
-// Get all properties route
-router.get('/all', async (req, res) => {
+// Get all properties
+router.get('/', async (req, res) => {
   try {
     const properties = await Property.find();
     res.status(200).json(properties);
   } catch (error) {
-    res.status(500).json({ message: 'Failed to fetch properties', error: error.message });
+    console.error('Error fetching properties:', error);
+    res.status(500).json({ message: 'Failed to fetch properties', error: error.message || error });
   }
 });
 
-// Delete a property route
-router.delete('/delete/:id', async (req, res) => {
+// Delete property
+router.delete('/:id', async (req, res) => {
   try {
-    const { id } = req.params;
-    const property = await Property.findByIdAndDelete(id);
+    const propertyId = req.params.id;
+    const property = await Property.findByIdAndDelete(propertyId);
 
     if (!property) {
       return res.status(404).json({ message: 'Property not found' });
@@ -122,25 +121,35 @@ router.delete('/delete/:id', async (req, res) => {
 
     res.status(200).json({ message: 'Property deleted successfully' });
   } catch (error) {
+    console.error('Error deleting property:', error.message);
     res.status(500).json({ message: 'Failed to delete property', error: error.message });
   }
 });
 
-// Update property status route
-router.put('/update-status/:id', async (req, res) => {
+// Update property status
+router.put('/:id/status', async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  if (!status) {
+    return res.status(400).json({ message: 'Status is required' });
+  }
+
   try {
-    const { id } = req.params;
-    const { status } = req.body;
+    const updatedProperty = await Property.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true }
+    );
 
-    const property = await Property.findByIdAndUpdate(id, { status }, { new: true });
-
-    if (!property) {
+    if (!updatedProperty) {
       return res.status(404).json({ message: 'Property not found' });
     }
 
-    res.status(200).json(property);
+    res.status(200).json(updatedProperty);
   } catch (error) {
-    res.status(500).json({ message: 'Failed to update property status', error: error.message });
+    console.error('Error updating property status:', error);
+    res.status(500).json({ message: 'Failed to update property status' });
   }
 });
 
