@@ -12,9 +12,9 @@ const PropertySales = () => {
     price: "",
     photos: [],
     video: null,
-    propertyType: "", // propertyType is part of the form data state
+    propertyType: "", 
   });
-  const [error, setError] = useState(""); // Error state to display form validation errors
+  const [error, setError] = useState("");
   const [showPaymentForm, setShowPaymentForm] = useState(false);
 
   const handleFileChange = (e) => {
@@ -54,16 +54,16 @@ const PropertySales = () => {
       toast.error("Please upload a video!");
       return;
     }
-
-    // Reset error state when all fields are validated
-    setError("");
-
+  
+    // Check the propertyType field explicitly
+    console.log("Property Type Selected:", propertyType);
+  
     const formDataToSend = new FormData();
     formDataToSend.append("name", name);
     formDataToSend.append("description", description);
     formDataToSend.append("location", location);
     formDataToSend.append("price", price);
-    formDataToSend.append("propertyType", propertyType);  // Appending the propertyType to the form data
+    formDataToSend.append("propertyType", propertyType);  
     photos.forEach((photo) => formDataToSend.append("photos", photo));
     formDataToSend.append("video", video);
   
@@ -193,45 +193,45 @@ const PropertySales = () => {
           </div>
 
           <div className="mb-6">
-            <label className="block text-lg font-medium text-gray-700 mb-2">Property Type</label>
-            <select
-              name="propertyType"
-              value={formData.propertyType}
-              onChange={(e) => setFormData({ ...formData, propertyType: e.target.value })}
-              className="w-full p-3 border border-gray-300 rounded-lg"
-            >
-              <option value="">Select Property Type</option>
-              <option value="House">House</option>
-              <option value="Apartment">Apartment</option>
-              <option value="Commercial">Commercial</option>
-              <option value="Land">Land</option>
-            </select>
-          </div>
-
-          <div className="mb-6">
-            <label className="block text-lg font-medium text-gray-700 mb-2">Price</label>
+            <label className="block text-lg font-medium text-gray-700 mb-2">Price (₵)</label>
             <input
-              type="text"
+              type="number"
               className="w-full p-3 border border-gray-300 rounded-lg"
-              placeholder="Enter property price"
+              placeholder="Enter property price in ₵"
               value={formData.price}
               onChange={(e) => setFormData({ ...formData, price: e.target.value })}
             />
           </div>
 
+          {/* New Property Type Dropdown */}
           <div className="mb-6">
-            <label className="block text-lg font-medium text-gray-700 mb-2">Photos</label>
+            <label className="block text-lg font-medium text-gray-700 mb-2">Property Type</label>
+            <select
+              className="w-full p-3 border border-gray-300 rounded-lg"
+              value={formData.propertyType}
+              onChange={(e) => setFormData({ ...formData, propertyType: e.target.value })}
+            >
+              <option value="">Select Property Type</option>
+              <option value="House">House</option>
+              <option value="Land">Land</option>
+              <option value="Commercial">Commercial</option>
+            </select>
+          </div>
+
+          <div className="mb-6">
+            <label className="block text-lg font-medium text-gray-700 mb-2">Upload Photos</label>
             <input
               type="file"
               name="photos"
               multiple
+              accept="image/*"
               className="w-full p-3 border border-gray-300 rounded-lg"
               onChange={handleFileChange}
             />
           </div>
 
           <div className="mb-6">
-            <label className="block text-lg font-medium text-gray-700 mb-2">Video</label>
+            <label className="block text-lg font-medium text-gray-700 mb-2">Upload Video</label>
             <input
               type="file"
               name="video"
@@ -240,28 +240,30 @@ const PropertySales = () => {
             />
           </div>
 
-          <div className="mb-6">
-            {showPaymentForm && (
-              <div className="bg-green-100 p-6 rounded-lg">
-                <h3 className="text-xl text-green-600 mb-4">Payment Form</h3>
-                {/* Your Payment Form Integration Here */}
-              </div>
+          <div className="text-center">
+            {isPropertyOwner ? (
+              <>
+                <h3 className="text-lg font-semibold text-gray-700 mb-4">
+                  Promotion Fee: <span className="text-green-500">₵50</span>
+                </h3>
+                <button
+                  onClick={() => {
+                    setShowPaymentForm(true);
+                    initializePayment();
+                  }}
+                  className="bg-red-500 text-white py-3 px-8 rounded-lg w-full sm:w-auto"
+                >
+                  Pay and Post Property
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={handlePostListing}
+                className="bg-red-500 text-white py-3 px-8 rounded-lg w-full sm:w-auto"
+              >
+                Post Property
+              </button>
             )}
-          </div>
-
-          <div className="flex justify-center gap-4">
-            <button
-              onClick={initializePayment}
-              className="py-3 px-8 bg-red-500 text-white font-semibold rounded-lg"
-            >
-              Pay & Post Property
-            </button>
-            <button
-              onClick={handlePostListing}
-              className="py-3 px-8 bg-blue-500 text-white font-semibold rounded-lg"
-            >
-              Post Property
-            </button>
           </div>
         </div>
       </div>
