@@ -19,7 +19,7 @@ const PropertySales = () => {
 
   const handleFileChange = (e) => {
     const { name, files } = e.target;
-  
+
     if (name === "photos") {
       setFormData((prevData) => ({
         ...prevData,
@@ -32,22 +32,14 @@ const PropertySales = () => {
       }));
     }
   };
-  
-  // Function to remove an uploaded image
-  const removeImage = (index) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      photos: prevData.photos.filter((_, i) => i !== index),
-    }));
-  };
-  
+
   const handlePostListing = async () => {
     const { name, description, location, price, photos, video, propertyType } = formData;
   
-    // Validation
+    // Validate if all fields are filled, including the propertyType
     if (!name || !description || !location || !price || !propertyType) {
-      setError("All fields are required, including the Property Type.");
-      toast.error("All fields are required, including the Property Type.");
+      setError("All fields are required.");
+      toast.error("All fields are required!");
       return;
     }
   
@@ -63,15 +55,25 @@ const PropertySales = () => {
       return;
     }
   
+    // Check the propertyType field explicitly
+    console.log("Property Type Selected:", propertyType);
+  
     const formDataToSend = new FormData();
     formDataToSend.append("name", name);
     formDataToSend.append("description", description);
     formDataToSend.append("location", location);
     formDataToSend.append("price", price);
-    formDataToSend.append("propertyType", propertyType);
-  
-    photos.forEach((photo) => formDataToSend.append("images", photo));
+    formDataToSend.append("propertyType", propertyType);  
+    photos.forEach((photo) => formDataToSend.append("photos", photo));
     formDataToSend.append("video", video);
+  
+    if (isPropertyOwner) {
+      formDataToSend.append("promotionFeePaid", true);
+      formDataToSend.append("isPropertyOwner", true);
+    } else {
+      formDataToSend.append("agentSubscription", true);
+      formDataToSend.append("isPropertyOwner", false);
+    }
   
     try {
       const response = await axios.post(
@@ -80,6 +82,7 @@ const PropertySales = () => {
         { headers: { "Content-Type": "multipart/form-data" } }
       );
       toast.success("Property uploaded successfully!");
+      // Reset formData after successful upload
       setFormData({
         name: "",
         description: "",
@@ -87,19 +90,14 @@ const PropertySales = () => {
         price: "",
         photos: [],
         video: null,
-        propertyType: "",
+        propertyType: "",  
       });
     } catch (error) {
       console.error("Error uploading property:", error);
-      if (error.response && error.response.data) {
-        toast.error(error.response.data.message || "Failed to upload property. Please try again.");
-      } else {
-        toast.error("Failed to upload property. Please try again.");
-      }
+      toast.error("Failed to upload property. Please try again.");
     }
   };
-  
-  
+
   const handlePaymentSuccess = () => {
     toast.success("Payment Successful! Your property has been posted.");
     setShowPaymentForm(false);

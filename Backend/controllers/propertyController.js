@@ -3,61 +3,46 @@ const cloudinary = require('../config/cloudinaryConfig');
 
 const uploadProperty = async (req, res) => {
   try {
-    const { name, description, price, location, propertyType } = req.body;
+    const { name, description, price, location } = req.body;
 
-    if (!name || !price || !location || !propertyType) {
-      return res
-        .status(400)
-        .json({ message: "Missing required fields: name, price, location, or propertyType" });
+    if (!name || !price || !location) {
+      return res.status(400).json({ message: 'Missing required fields: name, price, or location' });
     }
 
     // Image Uploads
-    const images = [];
-    if (req.files && req.files.images) {
-      try {
-        for (const image of req.files.images) {
-          const result = await cloudinary.uploader.upload(image.path, {
-            resource_type: "image",
-            folder: "properties/images",
-          });
-          images.push(result.secure_url);
-        }
-      } catch (error) {
-        return res.status(500).json({ message: "Image upload failed", error: error.message });
-      }
+    let images = [];
+    if (req.files.images) {
+      images = await Promise.all(
+        req.files.images.map((image) =>
+          new Promise((resolve, reject) => {
+            cloudinary.uploader.upload_stream({ resource_type: 'image' }, (error, result) => {
+              if (error) reject(error);
+              else resolve(result.secure_url);
+            }).end(image.buffer);
+          })
+        )
+      );
     }
 
     // Video Upload
     let video = null;
-    if (req.files && req.files.video) {
-      try {
-        const result = await cloudinary.uploader.upload(req.files.video[0].path, {
-          resource_type: "video",
-          folder: "properties/videos",
-        });
-        video = result.secure_url;
-      } catch (error) {
-        return res.status(500).json({ message: "Video upload failed", error: error.message });
-      }
+    if (req.files.video) {
+      video = await new Promise((resolve, reject) => {
+        cloudinary.uploader.upload_stream({ resource_type: 'video' }, (error, result) => {
+          if (error) reject(error);
+          else resolve(result.secure_url);
+        }).end(req.files.video[0].buffer);
+      });
     }
 
-    const property = new Property({
-      name,
-      description,
-      price,
-      location,
-      propertyType,
-      images,
-      video,
-    });
+    const property = new Property({ name, description, price, location, images, video });
     await property.save();
 
-    res.status(200).json({ message: "Property uploaded successfully", property });
+    res.status(200).json({ message: 'Property uploaded successfully', property });
   } catch (error) {
-    res.status(500).json({ message: "Failed to upload property", error: error.message });
+    res.status(500).json({ message: 'Failed to upload property', error: error.message });
   }
 };
-
 
 const getAllProperties = async (req, res) => {
   try {
