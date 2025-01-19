@@ -4,12 +4,16 @@ import { assets } from "../../assets/assets";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Link } from "react-router-dom";
 import { useProperty } from "../../context/PropertyContext";
+import ReactPaginate from "react-paginate"; // Import the pagination component
 
 const Home = () => {
   const { property } = useProperty();
   const [searchTerm, setSearchTerm] = useState("");
   const [priceRange, setPriceRange] = useState("");
+  const [currentPage, setCurrentPage] = useState(0);
+  const propertiesPerPage = 6; // Set the number of properties per page
 
+  // Filter properties based on search term and price range
   const filteredProperties = property.filter((prop) => {
     const matchesSearchTerm =
       prop.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -19,6 +23,18 @@ const Home = () => {
       : true;
     return matchesSearchTerm && matchesPriceRange;
   });
+
+  // Pagination: Slice the filtered properties based on the current page and items per page
+  const paginatedProperties = filteredProperties.slice(
+    currentPage * propertiesPerPage,
+    (currentPage + 1) * propertiesPerPage
+  );
+
+  // Handle page change
+  const handlePageClick = (data) => {
+    const selectedPage = data.selected;
+    setCurrentPage(selectedPage);
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -82,8 +98,8 @@ const Home = () => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProperties.length > 0 ? (
-              filteredProperties.map((prop) => (
+            {paginatedProperties.length > 0 ? (
+              paginatedProperties.map((prop) => (
                 <Link key={prop._id} to={`/property/${prop._id}`}>
                   <div className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105">
                     <img
@@ -149,6 +165,25 @@ const Home = () => {
                 No properties available at the moment.
               </p>
             )}
+          </div>
+
+          {/* Pagination Component */}
+          <div className="mt-8 flex justify-center">
+            <ReactPaginate
+              previousLabel={"Previous"}
+              nextLabel={"Next"}
+              breakLabel={"..."}
+              pageCount={Math.ceil(filteredProperties.length / propertiesPerPage)}
+              marginPagesDisplayed={2}
+              pageRangeDisplayed={5}
+              onPageChange={handlePageClick}
+              containerClassName="flex space-x-4"
+              pageClassName="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+              previousClassName="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+              nextClassName="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+              disabledClassName="text-gray-400 cursor-not-allowed"
+              activeClassName="bg-red-500 text-white"
+            />
           </div>
         </section>
       </div>
