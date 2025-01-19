@@ -22,10 +22,17 @@ const UploadProperty = () => {
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === 'images') {
-      const selectedImages = [...files]; // Get all selected images
+      const selectedImages = [...files];
+      
+      // Ensure no more than 5 images are selected
+      if (selectedImages.length > 5) {
+        toast.error('You can only upload up to 5 images.');
+        return;
+      }
+
       setPropertyData({ ...propertyData, images: selectedImages });
 
-      // Generate previews for all selected images
+      // Generate previews for the selected images
       const previews = selectedImages.map((file) => URL.createObjectURL(file));
       setImagePreviews(previews);
     } else if (name === 'video') {
@@ -159,7 +166,7 @@ const UploadProperty = () => {
           ))}
         </select>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Upload Images:</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Upload Images (Max 5):</label>
           <input
             type="file"
             name="images"
