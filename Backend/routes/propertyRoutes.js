@@ -25,8 +25,18 @@ router.post(
       const { name, description, price, location, condition, region, propertyType } = req.body;
 
       // Validate required fields
-      if (!name || !price || !location || !condition || !region || !propertyType) {
-        return res.status(400).json({ message: 'Missing required fields: name, price, location, condition, region, or propertyType' });
+      const missingFields = [];
+      if (!name) missingFields.push('name');
+      if (!price) missingFields.push('price');
+      if (!location) missingFields.push('location');
+      if (!condition) missingFields.push('condition');
+      if (!region) missingFields.push('region');
+      if (!propertyType) missingFields.push('propertyType');
+
+      if (missingFields.length > 0) {
+        return res.status(400).json({
+          message: `Missing required fields: ${missingFields.join(', ')}`,
+        });
       }
 
       // Handle image uploads
