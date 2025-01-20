@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import socket, { connectToChat, disconnectFromChat } from "../../Services/Socket.js";
+import { socket, connectToChat, disconnectFromChat } from "../../Services/Socket.js";
 
 const ChatModal = ({ userId, agentId, onClose }) => {
   const [messages, setMessages] = useState([]);
@@ -7,24 +7,25 @@ const ChatModal = ({ userId, agentId, onClose }) => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    connectToChat(); 
+    connectToChat(); // Connect to the chat server
 
-  
+    // Join the chat
     socket.emit("joinChat", { userId, agentId });
 
+    // Listen for incoming messages
     socket.on("receiveMessage", (message) => {
       setMessages((prev) => [...prev, { sender: "agent", content: message }]);
     });
 
-  
+    // Listen for errors
     socket.on("error", (errMsg) => {
       console.error("Socket Error:", errMsg);
       setError(errMsg);
     });
 
     return () => {
-      disconnectFromChat(); 
-      socket.off("receiveMessage");
+      disconnectFromChat(); // Disconnect from the chat server
+      socket.off("receiveMessage"); // Remove listeners
       socket.off("error");
     };
   }, [userId, agentId]);
@@ -32,13 +33,12 @@ const ChatModal = ({ userId, agentId, onClose }) => {
   const sendMessage = () => {
     if (newMessage.trim() === "") return;
 
- 
+    // Emit a message to the server
     socket.emit(
       "sendMessage",
       { to: agentId, content: newMessage },
       (response) => {
         if (response.status === "ok") {
-        
           setMessages((prev) => [
             ...prev,
             { sender: "user", content: newMessage },

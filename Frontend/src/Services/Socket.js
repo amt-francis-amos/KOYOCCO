@@ -2,18 +2,22 @@ import { io } from "socket.io-client";
 
 const socket = io("https://koyocco-backend.onrender.com"); 
 
+// Define the connect and disconnect functions
+const connectToChat = () => {
+  console.log("Connecting to chat...");
+  if (!socket.connected) {
+    socket.connect();
+  }
+};
+
+const disconnectFromChat = () => {
+  console.log("Disconnecting from chat...");
+  socket.disconnect();
+};
+
+// Handle connection events
 socket.on("connect", () => {
   console.log("Connected to server:", socket.id);
-
-  // Join a chat
-  socket.emit("joinChat", { userId: "user123" });
-
-  // Send a message
-  socket.emit("sendMessage", {
-    from: "user123",
-    to: "agent456",
-    content: "Hello! How can I help you?",
-  });
 });
 
 // Listen for incoming messages
@@ -25,3 +29,5 @@ socket.on("receiveMessage", (message) => {
 socket.on("chatJoined", (data) => {
   console.log(data.message);
 });
+
+export { socket, connectToChat, disconnectFromChat };
