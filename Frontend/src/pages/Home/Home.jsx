@@ -30,7 +30,7 @@ const Home = () => {
     (currentPage + 1) * propertiesPerPage
   );
 
-  // Handle page change
+
   const handlePageClick = (data) => {
     const selectedPage = data.selected;
     setCurrentPage(selectedPage);

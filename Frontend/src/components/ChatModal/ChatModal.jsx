@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from "react";
-import socket, { connectToChat, disconnectFromChat } from "../services/socket";
+import socket, { connectToChat, disconnectFromChat } from "../../Services/Socket.js";
 
 const ChatModal = ({ userId, agentId, onClose }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
 
   useEffect(() => {
-    connectToChat(); // Connect to the socket server
+    connectToChat(); 
 
-    // Join the chat room
+ 
     socket.emit("joinChat", { userId, agentId });
 
-    // Listen for incoming messages
+  
     socket.on("receiveMessage", (message) => {
       setMessages((prev) => [...prev, { sender: "agent", content: message }]);
     });
 
     return () => {
-      disconnectFromChat(); // Disconnect when the component unmounts
+      disconnectFromChat(); 
     };
   }, [userId, agentId]);
 
@@ -25,7 +25,7 @@ const ChatModal = ({ userId, agentId, onClose }) => {
     if (newMessage.trim() !== "") {
       socket.emit("sendMessage", { to: agentId, content: newMessage });
       setMessages((prev) => [...prev, { sender: "user", content: newMessage }]);
-      setNewMessage(""); // Clear input field
+      setNewMessage(""); 
     }
   };
 
