@@ -4,27 +4,26 @@ import socket, { connectToChat, disconnectFromChat } from "../../Services/Socket
 const ChatModal = ({ userId, agentId, onClose }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const [error, setError] = useState(""); // Track errors
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    connectToChat(); // Connect to the chat server
+    connectToChat(); 
 
-    // Join the chat room for user and agent
+  
     socket.emit("joinChat", { userId, agentId });
 
-    // Listen for incoming messages
     socket.on("receiveMessage", (message) => {
       setMessages((prev) => [...prev, { sender: "agent", content: message }]);
     });
 
-    // Listen for errors from the server
+  
     socket.on("error", (errMsg) => {
       console.error("Socket Error:", errMsg);
       setError(errMsg);
     });
 
     return () => {
-      disconnectFromChat(); // Clean up when modal closes
+      disconnectFromChat(); 
       socket.off("receiveMessage");
       socket.off("error");
     };
@@ -33,13 +32,13 @@ const ChatModal = ({ userId, agentId, onClose }) => {
   const sendMessage = () => {
     if (newMessage.trim() === "") return;
 
-    // Emit a message to the server
+ 
     socket.emit(
       "sendMessage",
       { to: agentId, content: newMessage },
       (response) => {
         if (response.status === "ok") {
-          // If successfully sent, add to the chat
+        
           setMessages((prev) => [
             ...prev,
             { sender: "user", content: newMessage },
