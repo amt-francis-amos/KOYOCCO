@@ -1,15 +1,27 @@
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:5000", {
-  autoConnect: false,
-});
+let socket;
 
 export const connectToChat = () => {
-  if (!socket.connected) socket.connect(); 
+  socket = io("http://localhost:5000", {
+    transports: ["websocket"], 
+    reconnection: true, 
+  });
+
+  socket.on("connect", () => {
+    console.log("Connected to chat server");
+  });
+
+  socket.on("connect_error", (err) => {
+    console.error("Connection Error:", err.message);
+  });
 };
 
 export const disconnectFromChat = () => {
-  if (socket.connected) socket.disconnect(); 
+  if (socket) {
+    socket.disconnect();
+    console.log("Disconnected from chat server");
+  }
 };
 
 export default socket;

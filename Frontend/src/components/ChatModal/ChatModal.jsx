@@ -4,29 +4,53 @@ import socket, { connectToChat, disconnectFromChat } from "../../Services/Socket
 const ChatModal = ({ userId, agentId, onClose }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const [error, setError] = useState(""); // Track errors
 
   useEffect(() => {
-    connectToChat(); 
+    connectToChat(); // Connect to the chat server
 
- 
+    // Join the chat room for user and agent
     socket.emit("joinChat", { userId, agentId });
 
-  
+    // Listen for incoming messages
     socket.on("receiveMessage", (message) => {
       setMessages((prev) => [...prev, { sender: "agent", content: message }]);
     });
 
+    // Listen for errors from the server
+    socket.on("error", (errMsg) => {
+      console.error("Socket Error:", errMsg);
+      setError(errMsg);
+    });
+
     return () => {
-      disconnectFromChat(); 
+      disconnectFromChat(); // Clean up when modal closes
+      socket.off("receiveMessage");
+      socket.off("error");
     };
   }, [userId, agentId]);
 
   const sendMessage = () => {
-    if (newMessage.trim() !== "") {
-      socket.emit("sendMessage", { to: agentId, content: newMessage });
-      setMessages((prev) => [...prev, { sender: "user", content: newMessage }]);
-      setNewMessage(""); 
-    }
+    if (newMessage.trim() === "") return;
+
+    // Emit a message to the server
+    socket.emit(
+      "sendMessage",
+      { to: agentId, content: newMessage },
+      (response) => {
+        if (response.status === "ok") {
+          // If successfully sent, add to the chat
+          setMessages((prev) => [
+            ...prev,
+            { sender: "user", content: newMessage },
+          ]);
+          setNewMessage("");
+        } else {
+          console.error("Message failed to send:", response.error);
+          setError("Failed to send message. Try again.");
+        }
+      }
+    );
   };
 
   return (
@@ -55,6 +79,9 @@ const ChatModal = ({ userId, agentId, onClose }) => {
               {msg.content}
             </div>
           ))}
+          {error && (
+            <p className="text-red-500 text-sm text-center mt-2">{error}</p>
+          )}
         </div>
 
         <div className="flex items-center border-t p-2">
