@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useProperty } from "../../context/PropertyContext";
 import { FaWhatsapp, FaComments } from "react-icons/fa";
+import ChatModal from "../components/ChatModal"; // Import ChatModal component
 
 const PropertyDetails = () => {
   const { id } = useParams(); // Extract property ID from URL
@@ -10,6 +11,9 @@ const PropertyDetails = () => {
 
   // State for showing contact
   const [showContact, setShowContact] = useState(false);
+
+  // State for showing the chat modal
+  const [showChat, setShowChat] = useState(false);
 
   // Handler to toggle contact visibility
   const handleShowContact = () => {
@@ -83,15 +87,22 @@ const PropertyDetails = () => {
             </button>
 
             {/* Chat Button */}
-            <a
-              href={whatsappURL}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={() => setShowChat(true)}
               className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-300"
             >
               <FaComments size={18} />
-              Chat on WhatsApp
-            </a>
+              Chat with Agent
+            </button>
+
+            {/* Chat Modal */}
+            {showChat && (
+              <ChatModal
+                userId={"USER_ID"} // Replace with real user ID from your app
+                agentId={propertyDetail.agentId} // Agent ID from property details
+                onClose={() => setShowChat(false)}
+              />
+            )}
           </div>
         </div>
       </div>
