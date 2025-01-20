@@ -14,7 +14,7 @@ const ChatModal = ({ userId, agentId, onClose }) => {
 
     // Listen for incoming messages
     socket.on("receiveMessage", (message) => {
-      setMessages((prev) => [...prev, { sender: "agent", content: message }]);
+      setMessages((prev) => [...prev, { sender: "agent", content: message.content }]);
     });
 
     // Listen for errors
@@ -36,16 +36,16 @@ const ChatModal = ({ userId, agentId, onClose }) => {
     // Emit a message to the server
     socket.emit(
       "sendMessage",
-      { to: agentId, content: newMessage },
+      { from: userId, to: agentId, content: newMessage },
       (response) => {
-        if (response.status === "ok") {
+        if (response?.status === "ok") {
           setMessages((prev) => [
             ...prev,
             { sender: "user", content: newMessage },
           ]);
           setNewMessage("");
         } else {
-          console.error("Message failed to send:", response.error);
+          console.error("Message failed to send:", response?.error);
           setError("Failed to send message. Try again.");
         }
       }
