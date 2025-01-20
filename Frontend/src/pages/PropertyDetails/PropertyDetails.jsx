@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useProperty } from "../../context/PropertyContext";
 import { FaWhatsapp, FaComments } from "react-icons/fa";
-import ChatModal from "../components/ChatModal"; // Import ChatModal component
+import ChatModal from "../../components/ChatModal/ChatModal"
 
 const PropertyDetails = () => {
   const { id } = useParams(); // Extract property ID from URL
