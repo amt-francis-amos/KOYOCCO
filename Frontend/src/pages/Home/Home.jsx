@@ -45,7 +45,7 @@ const Home = () => {
 
   // Navigate to login page
   const handleNavigateToLogin = () => {
-    navigate("/upload-property");
+    navigate("/uploadProperty");
   };
 
   return (
