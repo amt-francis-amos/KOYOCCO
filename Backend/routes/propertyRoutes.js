@@ -19,7 +19,7 @@ const upload = multer({ storage: storage });
 // Upload property route
 router.post(
   '/upload',
-  upload.fields([{ name: 'images', maxCount: 10 }, { name: 'video', maxCount: 1 }]), // Limit max count to 10 for multer
+  upload.fields([{ name: 'images', maxCount: 10 }, { name: 'video', maxCount: 1 }]), 
   async (req, res) => {
     try {
       const { name, description, price, location, address, condition, region, propertyType } = req.body;
@@ -28,8 +28,8 @@ router.post(
       const missingFields = [];
       if (!name) missingFields.push('name');
       if (!price) missingFields.push('price');
-      if (!location) missingFields.push('location');  // location is required
-      if (!address) missingFields.push('address');  // address is required
+      if (!location) missingFields.push('location');  
+      if (!address) missingFields.push('address');  
       if (!condition) missingFields.push('condition');
       if (!region) missingFields.push('region');
       if (!propertyType) missingFields.push('propertyType');
@@ -82,8 +82,8 @@ router.post(
         name,
         description,
         price,
-        location, // Keep location and address as separate fields
-        address,  // Address field
+        location, 
+        address,  
         condition,
         region,
         propertyType,
