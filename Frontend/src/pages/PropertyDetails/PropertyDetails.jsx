@@ -2,27 +2,29 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useProperty } from "../../context/PropertyContext";
 import { FaWhatsapp, FaComments } from "react-icons/fa";
-import ChatModal from "../../components/ChatModal/ChatModal"
+
 
 const PropertyDetails = () => {
   const { id } = useParams();
   const { property } = useProperty();
   const propertyDetail = property.find((prop) => prop._id === id); 
 
-
+  // State for showing contact
   const [showContact, setShowContact] = useState(false);
 
+  // State for showing the chat modal
   const [showChat, setShowChat] = useState(false);
 
+  // Handler to toggle contact visibility
   const handleShowContact = () => {
     setShowContact(!showContact);
   };
 
   if (!propertyDetail) {
-    return <p className="text-center">Property not found.</p>; 
+    return <p className="text-center">Property not found.</p>; // Handle case where property does not exist
   }
 
-
+  // WhatsApp URL
   const whatsappURL = `https://wa.me/${propertyDetail.contact}`;
 
   return (
@@ -31,9 +33,9 @@ const PropertyDetails = () => {
         {propertyDetail.name}
       </h2>
 
-
+      {/* Main content section */}
       <div className="flex flex-col md:flex-row gap-6">
-   
+        {/* Left: Image Section */}
         <div className="md:w-1/2">
           <img
             src={propertyDetail.images[0]}
@@ -42,7 +44,7 @@ const PropertyDetails = () => {
           />
         </div>
 
-  
+        {/* Right: Text Section */}
         <div className="md:w-1/2 flex flex-col justify-between">
           <div>
             <p className="text-gray-600 mb-4">{propertyDetail.description}</p>
@@ -73,9 +75,9 @@ const PropertyDetails = () => {
             </p>
           </div>
 
-   
+          {/* Buttons Section */}
           <div className="flex flex-col md:flex-row items-center gap-4 mt-6">
-          
+            {/* WhatsApp Button */}
             <button
               onClick={handleShowContact}
               className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-300"
@@ -84,6 +86,7 @@ const PropertyDetails = () => {
               {showContact ? propertyDetail.contact : "Show Contact"}
             </button>
 
+            {/* Chat Button */}
             <button
               onClick={() => setShowChat(true)}
               className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-300"
@@ -92,13 +95,6 @@ const PropertyDetails = () => {
               Chat with Agent
             </button>
 
-            {showChat && (
-              <ChatModal
-                userId={"USER_ID"} 
-                agentId={propertyDetail.agentId}
-                onClose={() => setShowChat(false)}
-              />
-            )}
           </div>
         </div>
       </div>
