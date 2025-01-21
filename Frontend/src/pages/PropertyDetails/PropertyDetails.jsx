@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useProperty } from "../../context/PropertyContext";
-import { FaWhatsapp, FaComments } from "react-icons/fa";
+
 
 const PropertyDetails = () => {
   const { id } = useParams();
