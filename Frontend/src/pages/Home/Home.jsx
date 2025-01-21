@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Carousel } from "react-responsive-carousel";
-import { assets } from "../../assets/assets";
+import { assets } from "../../assets/assets"; // Your assets
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { useProperty } from "../../context/PropertyContext";
+import { useProperty } from "../../context/PropertyContext"; // Property Context
 import ReactPaginate from "react-paginate";
 
 const Home = () => {
-  const { property } = useProperty();
-  const [searchTerm, setSearchTerm] = useState("");
-  const [priceRange, setPriceRange] = useState("");
-  const [currentPage, setCurrentPage] = useState(0);
+  const { property } = useProperty(); // Fetch properties from context
+  const [searchTerm, setSearchTerm] = useState(""); // For search functionality
+  const [priceRange, setPriceRange] = useState(""); // For price filtering
+  const [currentPage, setCurrentPage] = useState(0); // Current pagination page
   const navigate = useNavigate();
-  const propertiesPerPage = 6;
+  const propertiesPerPage = 6; // Number of properties displayed per page
 
   const carouselSlides = [
     { img: assets.houseImg1, text: "Find Your Dream Home" },
@@ -20,6 +20,7 @@ const Home = () => {
     { img: assets.houseImg3, text: "Affordable Housing Options" },
   ];
 
+  // Filter properties based on search term and price range
   const filteredProperties = property.filter((prop) => {
     const matchesSearchTerm =
       prop.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -30,22 +31,26 @@ const Home = () => {
     return matchesSearchTerm && matchesPriceRange;
   });
 
+  // Paginate filtered properties
   const paginatedProperties = filteredProperties.slice(
     currentPage * propertiesPerPage,
     (currentPage + 1) * propertiesPerPage
   );
 
+  // Handle page navigation
   const handlePageClick = (data) => {
     const selectedPage = data.selected;
     setCurrentPage(selectedPage);
   };
 
+  // Navigate to login page
   const handleNavigateToLogin = () => {
-    navigate("/login"); // Redirect to login page
+    navigate("/login");
   };
 
   return (
     <div className="flex flex-col min-h-screen">
+      {/* Header Section with Carousel */}
       <header className="h-[70vh] md:h-screen">
         <Carousel
           showArrows={true}
@@ -66,7 +71,7 @@ const Home = () => {
                   {slide.text}
                 </h1>
                 <button
-                  onClick={handleNavigateToLogin} // Navigate to login when clicked
+                  onClick={handleNavigateToLogin}
                   className="bg-red-500 text-white px-6 py-3 rounded-md text-sm md:text-base"
                 >
                   Get Started
@@ -77,12 +82,14 @@ const Home = () => {
         </Carousel>
       </header>
 
-      {/* The rest of the component remains unchanged */}
+      {/* Main Content */}
       <div className="container mx-auto my-8 px-4">
         <section className="my-8">
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">
             Featured Properties
           </h2>
+
+          {/* Filters */}
           <div className="flex flex-col md:flex-row justify-between mb-4 space-y-2 md:space-y-0">
             <input
               type="text"
@@ -104,6 +111,7 @@ const Home = () => {
             </select>
           </div>
 
+          {/* Property Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {paginatedProperties.length > 0 ? (
               paginatedProperties.map((prop) => (
@@ -123,11 +131,9 @@ const Home = () => {
                           ₵{prop.price}
                         </p>
                       </div>
-
                       <p className="text-gray-600 text-sm mb-4">
                         {prop.description}
                       </p>
-
                       <div className="grid grid-cols-2 gap-4 text-gray-600 text-sm mb-4">
                         <div className="flex flex-col">
                           <span className="font-medium">Region</span>
@@ -157,7 +163,6 @@ const Home = () => {
                           </span>
                         </div>
                       </div>
-
                       <div className="flex justify-end mt-4">
                         <span className="text-xs text-gray-500">
                           {prop.propertyType}
@@ -174,6 +179,7 @@ const Home = () => {
             )}
           </div>
 
+          {/* Pagination */}
           <div className="mt-8 flex justify-center">
             <ReactPaginate
               previousLabel={"Previous"}
