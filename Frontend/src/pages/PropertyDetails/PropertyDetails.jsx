@@ -9,9 +9,7 @@ const PropertyDetails = () => {
   const { property } = useProperty();
   const propertyDetail = property.find((prop) => prop._id === id); 
 
-  const [showContact, setShowContact] = useState(false);
 
-  const [showChat, setShowChat] = useState(false);
 
 
   const handleShowContact = () => {
@@ -73,23 +71,7 @@ const PropertyDetails = () => {
 
           <div className="flex flex-col md:flex-row items-center gap-4 mt-6">
          
-            <button
-              onClick={handleShowContact}
-              className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-300"
-            >
-              <FaWhatsapp size={18} />
-              {showContact ? propertyDetail.contact : "Show Contact"}
-            </button>
-
-            {/* Chat Button */}
-            <button
-              onClick={() => setShowChat(true)}
-              className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-300"
-            >
-              <FaComments size={18} />
-              Chat with Agent
-            </button>
-
+          
           </div>
         </div>
       </div>
