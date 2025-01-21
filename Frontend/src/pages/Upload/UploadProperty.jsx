@@ -11,7 +11,9 @@ const UploadProperty = () => {
     price: '',
     location: '',
     propertyType: '',
-    shortStayType: '', // New field for Short-Stay types
+    shortStayType: '',
+    propertySalesType: '',
+    propertyRentalsType: '',
     condition: '',
     region: '',
     address: '',
@@ -83,6 +85,8 @@ const UploadProperty = () => {
         location: '',
         propertyType: '',
         shortStayType: '',
+        propertySalesType: '',
+        propertyRentalsType: '',
         condition: '',
         region: '',
         address: '',
@@ -149,7 +153,7 @@ const UploadProperty = () => {
           <option value="PropertyRentals">Property Rentals</option>
         </select>
 
-        {/* Conditionally render the Short-Stay options */}
+        {/* Conditionally render options based on propertyType */}
         {propertyData.propertyType === 'Short-Stay' && (
           <select
             name="shortStayType"
@@ -159,7 +163,35 @@ const UploadProperty = () => {
             className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
           >
             <option value="">Select Short-Stay Type</option>
-            <option value="Apartment">Apartment</option>
+            <option value="Hotels">Hotels</option>
+            <option value="Movie House">Movie House</option>
+            <option value="Guest House">Guest House</option>
+          </select>
+        )}
+        {propertyData.propertyType === 'PropertySales' && (
+          <select
+            name="propertySalesType"
+            value={propertyData.propertySalesType}
+            onChange={handleChange}
+            required
+            className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+          >
+            <option value="">Select Sales Type</option>
+            <option value="Houses">Houses</option>
+            <option value="Land">Land</option>
+            <option value="Commercial">Commercial</option>
+          </select>
+        )}
+        {propertyData.propertyType === 'PropertyRentals' && (
+          <select
+            name="propertyRentalsType"
+            value={propertyData.propertyRentalsType}
+            onChange={handleChange}
+            required
+            className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+          >
+            <option value="">Select Rentals Type</option>
+            <option value="Apartments">Apartments</option>
             <option value="Condos">Condos</option>
             <option value="Houses">Houses</option>
             <option value="Duplex">Duplex</option>
