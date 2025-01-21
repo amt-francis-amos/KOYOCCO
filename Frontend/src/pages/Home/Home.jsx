@@ -17,11 +17,7 @@ const Home = () => {
     { img: assets.houseImg1, text: "Find Your Dream Home" },
     { img: assets.houseImg2, text: "Experience Luxury Living" },
     { img: assets.houseImg3, text: "Affordable Housing Options" },
-    { img: assets.houseImg4, text: "Modern Designs for You" },
-    { img: assets.houseImg5, text: "Comfort and Style Combined" },
-    { img: assets.houseImg6, text: "Discover Your Next Home" },
-    { img: assets.houseImg7, text: "Move Into Your Perfect Space" },
-    { img: assets.houseImg8, text: "Start Your New Journey Today" },
+    
   ];
 
   const filteredProperties = property.filter((prop) => {
