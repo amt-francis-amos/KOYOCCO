@@ -65,7 +65,7 @@ const PropertyDetails = () => {
 
           <div className="flex flex-col md:flex-row items-center gap-4 mt-6">
         
-            <button className="bg-red-500 text-white px-6 py-2 rounded-full">
+            <button className="bg-red-500 text-white px-6 py-2 hover:bg-black duration-300 rounded-full">
               Contact Agent
             </button>
           </div>
