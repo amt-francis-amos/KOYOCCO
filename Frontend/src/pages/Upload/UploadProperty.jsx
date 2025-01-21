@@ -175,7 +175,7 @@ const UploadProperty = () => {
           <option value="">Select Condition</option>
           <option value="Newly built">Newly built</option>
           <option value="Innovated">Innovated</option>
-          <option value="Used">Fairly Used</option>
+          <option value="Fairly Used">Fairly Used</option>
         </select>
         <select
           name="region"
