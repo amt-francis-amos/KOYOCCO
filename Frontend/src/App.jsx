@@ -77,7 +77,7 @@ function App() {
             <Route path="/property-rentals" element={<PropertyRentals />} />
             <Route path="/cars" element={<Cars />} />
             <Route path="/booking" element={<Booking />} />
-            <Route path="/uploadProperty" element={<UploadProperty />} />
+            <Route path="/upload-property" element={<UploadProperty />} />
             <Route path="/property-list" element={<PropertyList />} />
             <Route path="/profile-update" element={<ProfileUpdate />} />
             <Route path="/property/:id" element={<PropertyDetails />} />
