@@ -64,8 +64,8 @@ const PropertyDetails = () => {
           </div>
 
           <div className="flex flex-col md:flex-row items-center gap-4 mt-6">
-            {/* You can add any additional buttons or information here */}
-            <button className="bg-blue-500 text-white px-6 py-2 rounded-full">
+        
+            <button className="bg-red-500 text-white px-6 py-2 rounded-full">
               Contact Agent
             </button>
           </div>
