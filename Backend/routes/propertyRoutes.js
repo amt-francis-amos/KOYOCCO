@@ -1,4 +1,3 @@
-// Enhanced property routes with validations and improved error handling
 
 const express = require('express');
 const multer = require('multer');
