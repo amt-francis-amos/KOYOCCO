@@ -61,7 +61,7 @@ const PropertyDetails = () => {
           </div>
 
           <div className="flex flex-col md:flex-row items-center gap-4 mt-6">
-            {/* Add buttons or additional content here */}
+         
           </div>
         </div>
       </div>
