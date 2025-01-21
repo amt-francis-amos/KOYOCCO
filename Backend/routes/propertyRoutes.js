@@ -5,18 +5,18 @@ const cloudinary = require('cloudinary').v2;
 
 const router = express.Router();
 
-// Cloudinary configuration
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Set up multer for file uploads
+
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-// Upload property route
+
 router.post(
   '/upload',
   upload.fields([{ name: 'images', maxCount: 10 }, { name: 'video', maxCount: 1 }]), 
@@ -24,7 +24,7 @@ router.post(
     try {
       const { name, description, price, location, address, condition, region, propertyType } = req.body;
 
-      // Validate required fields
+    
       const missingFields = [];
       if (!name) missingFields.push('name');
       if (!price) missingFields.push('price');
@@ -40,10 +40,10 @@ router.post(
         });
       }
 
-      // Handle image uploads
+      
       let images = [];
       if (req.files.images) {
-        // Check if image count exceeds 5
+   
         if (req.files.images.length > 5) {
           return res.status(400).json({ message: 'You can upload a maximum of 5 images' });
         }
@@ -63,7 +63,7 @@ router.post(
         );
       }
 
-      // Handle video upload
+    
       let video = null;
       if (req.files.video && req.files.video.length > 0) {
         video = await new Promise((resolve, reject) => {
@@ -77,7 +77,7 @@ router.post(
         });
       }
 
-      // Create new property document
+      
       const property = new Property({
         name,
         description,
@@ -100,7 +100,7 @@ router.post(
   }
 );
 
-// Get all properties
+
 router.get('/', async (req, res) => {
   try {
     const properties = await Property.find();
