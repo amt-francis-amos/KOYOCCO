@@ -4,16 +4,26 @@ import { assets } from "../../assets/assets";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Link } from "react-router-dom";
 import { useProperty } from "../../context/PropertyContext";
-import ReactPaginate from "react-paginate"; 
+import ReactPaginate from "react-paginate";
 
 const Home = () => {
   const { property } = useProperty();
   const [searchTerm, setSearchTerm] = useState("");
   const [priceRange, setPriceRange] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
-  const propertiesPerPage = 6; 
+  const propertiesPerPage = 6;
 
-  // Filter properties based on search term and price range
+  const carouselSlides = [
+    { img: assets.houseImg1, text: "Find Your Dream Home" },
+    { img: assets.houseImg2, text: "Experience Luxury Living" },
+    { img: assets.houseImg3, text: "Affordable Housing Options" },
+    { img: assets.houseImg4, text: "Modern Designs for You" },
+    { img: assets.houseImg5, text: "Comfort and Style Combined" },
+    { img: assets.houseImg6, text: "Discover Your Next Home" },
+    { img: assets.houseImg7, text: "Move Into Your Perfect Space" },
+    { img: assets.houseImg8, text: "Start Your New Journey Today" },
+  ];
+
   const filteredProperties = property.filter((prop) => {
     const matchesSearchTerm =
       prop.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -24,12 +34,10 @@ const Home = () => {
     return matchesSearchTerm && matchesPriceRange;
   });
 
-  
   const paginatedProperties = filteredProperties.slice(
     currentPage * propertiesPerPage,
     (currentPage + 1) * propertiesPerPage
   );
-
 
   const handlePageClick = (data) => {
     const selectedPage = data.selected;
@@ -47,27 +55,25 @@ const Home = () => {
           autoPlay={true}
           interval={5000}
         >
-          {[assets.houseImg1, assets.houseImg2, assets.houseImg3].map(
-            (img, index) => (
-              <div
-                key={index}
-                className="bg-cover bg-center h-[70vh] md:h-screen"
-                style={{ backgroundImage: `url(${img})` }}
-              >
-                <div className="bg-black bg-opacity-50 h-full flex flex-col justify-center items-center px-4 text-center">
-                  <h1 className="text-white text-3xl md:text-5xl font-bold mb-4">
-                    Find Your Dream Home
-                  </h1>
-                  <Link
-                    to="/login"
-                    className="bg-red-500 text-white px-6 py-3 rounded-md text-sm md:text-base"
-                  >
-                    Get Started
-                  </Link>
-                </div>
+          {carouselSlides.map((slide, index) => (
+            <div
+              key={index}
+              className="bg-cover bg-center h-[70vh] md:h-screen"
+              style={{ backgroundImage: `url(${slide.img})` }}
+            >
+              <div className="bg-black bg-opacity-50 h-full flex flex-col justify-center items-center px-4 text-center">
+                <h1 className="text-white text-3xl md:text-5xl font-bold mb-4">
+                  {slide.text}
+                </h1>
+                <Link
+                  to="/login"
+                  className="bg-red-500 text-white px-6 py-3 rounded-md text-sm md:text-base"
+                >
+                  Get Started
+                </Link>
               </div>
-            )
-          )}
+            </div>
+          ))}
         </Carousel>
       </header>
 
@@ -167,7 +173,6 @@ const Home = () => {
             )}
           </div>
 
-          {/* Pagination Component */}
           <div className="mt-8 flex justify-center">
             <ReactPaginate
               previousLabel={"Previous"}
