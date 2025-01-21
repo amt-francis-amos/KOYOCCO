@@ -11,13 +11,14 @@ const UploadProperty = () => {
     price: '',
     location: '',
     propertyType: '',
+    shortStayType: '', // New field for Short-Stay types
     condition: '',
     region: '',
-    address: '', 
+    address: '',
     images: [],
     video: null,
   });
-  const [imagePreviews, setImagePreviews] = useState([]); 
+  const [imagePreviews, setImagePreviews] = useState([]);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -25,7 +26,6 @@ const UploadProperty = () => {
     if (name === 'images') {
       const selectedImages = [...files];
 
-     
       if (selectedImages.length > 10) {
         toast.error('You can only upload up to 10 images.');
         return;
@@ -50,9 +50,8 @@ const UploadProperty = () => {
       toast.error('Please fill in all required fields.');
       return;
     }
-  
+
     const formData = new FormData();
-  
 
     Object.keys(propertyData).forEach((key) => {
       if (key === 'images') {
@@ -65,12 +64,7 @@ const UploadProperty = () => {
         formData.append(key, propertyData[key]);
       }
     });
-  
 
-    for (let pair of formData.entries()) {
-      console.log(pair[0] + ': ' + pair[1]);
-    }
-  
     try {
       const response = await axios.post(
         'https://koyocco-backend.onrender.com/api/properties/upload',
@@ -88,19 +82,20 @@ const UploadProperty = () => {
         price: '',
         location: '',
         propertyType: '',
+        shortStayType: '',
         condition: '',
         region: '',
-        address: '', 
+        address: '',
         images: [],
         video: null,
       });
-      setImagePreviews([]); 
+      setImagePreviews([]);
       navigate('/property-list');
     } catch (error) {
       toast.error('Failed to upload property. Please try again.');
     }
   };
-  
+
   return (
     <div className="max-w-[500px] mx-auto mt-10 mb-20 p-5 bg-white shadow-md rounded-lg">
       <ToastContainer />
@@ -126,7 +121,7 @@ const UploadProperty = () => {
         <input
           type="text"
           name="address"
-          placeholder="Address"  
+          placeholder="Address"
           value={propertyData.address}
           onChange={handleChange}
           required
@@ -153,6 +148,26 @@ const UploadProperty = () => {
           <option value="PropertySales">Property Sales</option>
           <option value="PropertyRentals">Property Rentals</option>
         </select>
+
+        {/* Conditionally render the Short-Stay options */}
+        {propertyData.propertyType === 'Short-Stay' && (
+          <select
+            name="shortStayType"
+            value={propertyData.shortStayType}
+            onChange={handleChange}
+            required
+            className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+          >
+            <option value="">Select Short-Stay Type</option>
+            <option value="Apartment">Apartment</option>
+            <option value="Condos">Condos</option>
+            <option value="Houses">Houses</option>
+            <option value="Duplex">Duplex</option>
+            <option value="Office">Office</option>
+            <option value="Shop">Shop</option>
+          </select>
+        )}
+
         <div className="flex items-center space-x-2">
           <span className="text-xl">₵</span>
           <input
@@ -185,12 +200,33 @@ const UploadProperty = () => {
           className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
         >
           <option value="">Select Region</option>
-          {[ 'Greater Accra', 'Ashanti', 'Western', 'Eastern', 'Northern', 'Volta', 'Central', 'Upper East', 'Upper West', 'Savannah', 'Bono', 'Bono East', 'Ahafo', 'Oti', 'Western North', 'North East' ].map((region) => (
-            <option key={region} value={region}>{region}</option>
+          {[
+            'Greater Accra',
+            'Ashanti',
+            'Western',
+            'Eastern',
+            'Northern',
+            'Volta',
+            'Central',
+            'Upper East',
+            'Upper West',
+            'Savannah',
+            'Bono',
+            'Bono East',
+            'Ahafo',
+            'Oti',
+            'Western North',
+            'North East',
+          ].map((region) => (
+            <option key={region} value={region}>
+              {region}
+            </option>
           ))}
         </select>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Upload Images (Max 10):</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Upload Images (Max 10):
+          </label>
           <input
             type="file"
             name="images"
@@ -213,7 +249,9 @@ const UploadProperty = () => {
           )}
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Upload Video:</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Upload Video:
+          </label>
           <input
             type="file"
             name="video"
