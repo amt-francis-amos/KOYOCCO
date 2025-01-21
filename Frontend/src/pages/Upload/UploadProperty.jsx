@@ -17,7 +17,7 @@ const UploadProperty = () => {
     images: [],
     video: null,
   });
-  const [imagePreviews, setImagePreviews] = useState([]); // To store image previews
+  const [imagePreviews, setImagePreviews] = useState([]); 
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -33,7 +33,6 @@ const UploadProperty = () => {
 
       setPropertyData({ ...propertyData, images: selectedImages });
 
-      // Generate previews for the selected images
       const previews = selectedImages.map((file) => URL.createObjectURL(file));
       setImagePreviews(previews);
     } else if (name === 'video') {
@@ -45,8 +44,7 @@ const UploadProperty = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    // Validation for missing required fields
+
     const { name, price, location, condition, region, propertyType, address } = propertyData;
     if (!name || !price || !location || !condition || !region || !propertyType || !address) {
       toast.error('Please fill in all required fields.');
@@ -55,7 +53,7 @@ const UploadProperty = () => {
   
     const formData = new FormData();
   
-    // Append all fields to FormData
+
     Object.keys(propertyData).forEach((key) => {
       if (key === 'images') {
         propertyData.images.forEach((image) => {
@@ -68,7 +66,7 @@ const UploadProperty = () => {
       }
     });
   
-    // Debugging: Log FormData content
+
     for (let pair of formData.entries()) {
       console.log(pair[0] + ': ' + pair[1]);
     }
@@ -92,11 +90,11 @@ const UploadProperty = () => {
         propertyType: '',
         condition: '',
         region: '',
-        address: '', // Reset address field after submission
+        address: '', 
         images: [],
         video: null,
       });
-      setImagePreviews([]); // Clear previews
+      setImagePreviews([]); 
       navigate('/property-list');
     } catch (error) {
       toast.error('Failed to upload property. Please try again.');
@@ -128,7 +126,7 @@ const UploadProperty = () => {
         <input
           type="text"
           name="address"
-          placeholder="Address"  // Added address field
+          placeholder="Address"  
           value={propertyData.address}
           onChange={handleChange}
           required
@@ -177,7 +175,7 @@ const UploadProperty = () => {
           <option value="">Select Condition</option>
           <option value="Newly built">Newly built</option>
           <option value="Innovated">Innovated</option>
-          <option value="Used">Used</option>
+          <option value="Used">Fairly Used</option>
         </select>
         <select
           name="region"

@@ -9,23 +9,20 @@ const PropertyDetails = () => {
   const { property } = useProperty();
   const propertyDetail = property.find((prop) => prop._id === id); 
 
-  // State for showing contact
   const [showContact, setShowContact] = useState(false);
 
-  // State for showing the chat modal
   const [showChat, setShowChat] = useState(false);
 
-  // Handler to toggle contact visibility
+
   const handleShowContact = () => {
     setShowContact(!showContact);
   };
 
   if (!propertyDetail) {
-    return <p className="text-center">Property not found.</p>; // Handle case where property does not exist
+    return <p className="text-center">Property not found.</p>; 
   }
 
-  // WhatsApp URL
-  const whatsappURL = `https://wa.me/${propertyDetail.contact}`;
+
 
   return (
     <div className="container mx-auto my-8 px-4">
@@ -33,9 +30,8 @@ const PropertyDetails = () => {
         {propertyDetail.name}
       </h2>
 
-      {/* Main content section */}
       <div className="flex flex-col md:flex-row gap-6">
-        {/* Left: Image Section */}
+
         <div className="md:w-1/2">
           <img
             src={propertyDetail.images[0]}
@@ -44,7 +40,7 @@ const PropertyDetails = () => {
           />
         </div>
 
-        {/* Right: Text Section */}
+
         <div className="md:w-1/2 flex flex-col justify-between">
           <div>
             <p className="text-gray-600 mb-4">{propertyDetail.description}</p>
@@ -75,9 +71,8 @@ const PropertyDetails = () => {
             </p>
           </div>
 
-          {/* Buttons Section */}
           <div className="flex flex-col md:flex-row items-center gap-4 mt-6">
-            {/* WhatsApp Button */}
+         
             <button
               onClick={handleShowContact}
               className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-300"
