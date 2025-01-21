@@ -7,7 +7,11 @@ const propertySchema = new mongoose.Schema({
   location: { type: String, required: true },
   condition: { type: String, required: true },
   region: { type: String, required: true },
-  propertyType: { type: String, required: true },
+  propertyType: { 
+    type: String, 
+    required: true, 
+    enum: ['Short-Stay', 'PropertySales', 'PropertyRentals'], 
+  },
   address: { type: String, required:true }, 
   images: [String],
   video: String,
