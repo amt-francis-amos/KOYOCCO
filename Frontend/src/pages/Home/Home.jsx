@@ -1,8 +1,8 @@
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Carousel } from "react-responsive-carousel";
 import { assets } from "../../assets/assets";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { Link } from "react-router-dom";
 import { useProperty } from "../../context/PropertyContext";
 import ReactPaginate from "react-paginate";
 
@@ -11,13 +11,13 @@ const Home = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [priceRange, setPriceRange] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
+  const navigate = useNavigate();
   const propertiesPerPage = 6;
 
   const carouselSlides = [
     { img: assets.houseImg1, text: "Find Your Dream Home" },
     { img: assets.houseImg2, text: "Experience Luxury Living" },
     { img: assets.houseImg3, text: "Affordable Housing Options" },
-    
   ];
 
   const filteredProperties = property.filter((prop) => {
@@ -38,6 +38,10 @@ const Home = () => {
   const handlePageClick = (data) => {
     const selectedPage = data.selected;
     setCurrentPage(selectedPage);
+  };
+
+  const handleNavigateToLogin = () => {
+    navigate("/login"); // Redirect to login page
   };
 
   return (
@@ -61,18 +65,19 @@ const Home = () => {
                 <h1 className="text-white text-3xl md:text-5xl font-bold mb-4">
                   {slide.text}
                 </h1>
-                <Link
-                  to="/login"
+                <button
+                  onClick={handleNavigateToLogin} // Navigate to login when clicked
                   className="bg-red-500 text-white px-6 py-3 rounded-md text-sm md:text-base"
                 >
                   Get Started
-                </Link>
+                </button>
               </div>
             </div>
           ))}
         </Carousel>
       </header>
 
+      {/* The rest of the component remains unchanged */}
       <div className="container mx-auto my-8 px-4">
         <section className="my-8">
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">
