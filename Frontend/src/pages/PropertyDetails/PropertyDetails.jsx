@@ -16,13 +16,9 @@ const PropertyDetails = () => {
   // Find the property based on the ID
   const propertyDetail = property.find((prop) => prop._id === id);
 
-  // Check if propertyDetail is available
-  if (!propertyDetail) {
-    return <div className="text-center py-8">Loading property details...</div>;
-  }
-
   // Debug log to check property data
   useEffect(() => {
+    console.log("Property Data:", property);
     if (propertyDetail) {
       console.log("Property Detail:", propertyDetail);
       console.log("Agent ID:", propertyDetail.agentId);
@@ -40,6 +36,13 @@ const PropertyDetails = () => {
   const fetchAgentContact = async () => {
     setLoading(true);
     setError(null);
+
+    // Check if propertyDetail exists
+    if (!propertyDetail) {
+      setError("Property details not found");
+      setLoading(false);
+      return;
+    }
 
     // Check if agentId exists
     if (!propertyDetail.agentId) {
@@ -59,6 +62,7 @@ const PropertyDetails = () => {
         }
       );
 
+      console.log("Agent Response:", response);
       if (response.data) {
         setAgentContact(response.data);
         setShowContact(true);
@@ -72,6 +76,10 @@ const PropertyDetails = () => {
       setLoading(false);
     }
   };
+
+  if (!propertyDetail) {
+    return <div className="text-center py-8">Loading property details...</div>;
+  }
 
   const handleThumbnailClick = (image) => {
     setMainImage(image);
@@ -90,7 +98,7 @@ const PropertyDetails = () => {
             className="w-full h-[37.5rem] object-cover rounded-md"
           />
           <div className="flex space-x-2 mt-4 overflow-x-auto">
-            {propertyDetail.images?.map((image, index) => (
+            {propertyDetail.images.map((image, index) => (
               <img
                 key={index}
                 src={image}
