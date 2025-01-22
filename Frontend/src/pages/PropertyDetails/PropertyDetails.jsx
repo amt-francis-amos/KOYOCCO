@@ -30,7 +30,7 @@ const PropertyDetails = () => {
           <img
             src={mainImage}
             alt={propertyDetail.name}
-            className="w-full h-[80vh] object-cover rounded-md"
+            className="w-full  h-[37.5rem] object-cover rounded-md"
           />
           {/* Thumbnails */}
           <div className="flex space-x-2 mt-4">
