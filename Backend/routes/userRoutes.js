@@ -8,7 +8,6 @@ const path = require("path");
 require("dotenv").config();
 const router = express.Router();
 
-
 const createTransporter = () => {
   return nodemailer.createTransport({
     service: "gmail",
@@ -18,7 +17,6 @@ const createTransporter = () => {
     },
   });
 };
-
 
 const sendConfirmationEmail = async (user) => {
   const transporter = createTransporter();
@@ -99,7 +97,6 @@ router.post("/signup", async (req, res) => {
     const userExists = await User.findOne({ email });
     if (userExists) return res.status(400).json({ message: "User already exists" });
 
-
     const user = new User({
       email,
       password: await bcrypt.hash(password, 10),
@@ -110,12 +107,11 @@ router.post("/signup", async (req, res) => {
       location,
     });
 
-  
     await user.save();
 
     // Send the confirmation email
     await sendConfirmationEmail(user);
-    res.status(201).json({ message: "Signup successful! Confirmation email sent.",role: user.role });
+    res.status(201).json({ message: "Signup successful! Confirmation email sent.", role: user.role });
   } catch (error) {
     console.error("Signup error:", error);
     res.status(500).json({ message: "Internal server error" });
@@ -124,7 +120,6 @@ router.post("/signup", async (req, res) => {
 
 // Login route
 router.post("/login", async (req, res) => {
-  
   const { email, password } = req.body;
 
   // Validate the incoming request
@@ -145,16 +140,15 @@ router.post("/login", async (req, res) => {
 
     // Respond with token, role, and userId
     res.status(200).json({
-      token,         
-      role: user.role, 
-      userId: user._id 
+      token,
+      role: user.role,
+      userId: user._id
     });
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
-
 
 // Forgot password route
 router.post("/forgot-password", async (req, res) => {
@@ -185,7 +179,6 @@ router.post("/forgot-password", async (req, res) => {
 
 // Reset password route
 router.post("/reset-password/:token", async (req, res) => {
-  
   const { password } = req.body;
   const { token } = req.params;
 
@@ -204,7 +197,6 @@ router.post("/reset-password/:token", async (req, res) => {
     }
 
     user.password = await bcrypt.hash(password, 10);
-
     user.resetPasswordToken = undefined;
     user.resetPasswordExpires = undefined;
 
@@ -217,8 +209,4 @@ router.post("/reset-password/:token", async (req, res) => {
   }
 });
 
-
-
 module.exports = router;
-
-
