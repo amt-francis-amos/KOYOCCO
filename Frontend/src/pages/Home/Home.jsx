@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Carousel } from "react-responsive-carousel";
-import { assets } from "../../assets/assets"; // Your assets
+import { assets } from "../../assets/assets";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { useProperty } from "../../context/PropertyContext"; // Property Context
+import { useProperty } from "../../context/PropertyContext"; 
 import ReactPaginate from "react-paginate";
 
 const Home = () => {
-  const { property } = useProperty(); // Fetch properties from context
-  const [searchTerm, setSearchTerm] = useState(""); // For search functionality
-  const [priceRange, setPriceRange] = useState(""); // For price filtering
-  const [currentPage, setCurrentPage] = useState(0); // Current pagination page
+  const { property } = useProperty(); 
+  const [searchTerm, setSearchTerm] = useState(""); 
+  const [priceRange, setPriceRange] = useState(""); 
+  const [currentPage, setCurrentPage] = useState(0); 
   const navigate = useNavigate();
-  const propertiesPerPage = 6; // Number of properties displayed per page
+  const propertiesPerPage = 6; 
 
   const carouselSlides = [
     { img: assets.houseImg1, text: "Find Your Dream Home" },
