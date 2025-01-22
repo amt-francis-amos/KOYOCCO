@@ -5,17 +5,12 @@ import { useProperty } from "../../context/PropertyContext";
 const PropertyDetails = () => {
   const { id } = useParams();
   const { property } = useProperty();
-  const [showAgentDetails, setShowAgentDetails] = useState(false);
 
   const propertyDetail = property.find((prop) => prop._id === id);
 
   if (!propertyDetail) {
     return <p className="text-center">Property not found.</p>;
   }
-
-  const handleContactAgent = () => {
-    setShowAgentDetails(!showAgentDetails);
-  };
 
   return (
     <div className="container mx-auto my-8 px-4">
@@ -33,7 +28,7 @@ const PropertyDetails = () => {
           />
         </div>
 
-        {/* Right section */}
+        {/* Right section with styling */}
         <div className="md:w-1/2 bg-white shadow-lg rounded-md p-6 flex flex-col justify-between">
           <div>
             <p className="text-gray-600 mb-4">{propertyDetail.description}</p>
@@ -62,51 +57,17 @@ const PropertyDetails = () => {
                   propertyDetail.status.slice(1)}
               </span>
             </p>
+            {/* Added propertyType */}
             <p className="text-sm text-gray-600 mb-4">
               <strong>Type:</strong> {propertyDetail.propertyType}
             </p>
           </div>
 
-          <div className="flex flex-col items-center gap-4 mt-6">
-            {/* Contact Agent Button */}
-            <button
-              className="bg-red-500 text-white px-6 py-2 hover:bg-black duration-300 rounded-full"
-              onClick={handleContactAgent}
-            >
+          <div className="flex flex-col md:flex-row items-center gap-4 mt-6">
+        
+            <button className="bg-red-500 text-white px-6 py-2 hover:bg-black duration-300 rounded-full">
               Contact Agent
             </button>
-
-            {/* Agent Details */}
-            {showAgentDetails && (
-              <div className="w-full mt-4 bg-gray-100 p-4 rounded-md">
-                <h3 className="text-lg font-semibold mb-2">Agent Details</h3>
-                <p className="text-sm text-gray-600 mb-2">
-                  <strong>Name:</strong> {propertyDetail.agent.name}
-                </p>
-                <p className="text-sm text-gray-600 mb-2">
-                  <strong>Email:</strong>{" "}
-                  <a
-                    href={`mailto:${propertyDetail.agent.email}`}
-                    className="text-blue-500"
-                  >
-                    {propertyDetail.agent.email}
-                  </a>
-                </p>
-                <p className="text-sm text-gray-600 mb-2">
-                  <strong>Phone:</strong>{" "}
-                  <a
-                    href={`tel:${propertyDetail.agent.phone}`}
-                    className="text-blue-500"
-                  >
-                    {propertyDetail.agent.phone}
-                  </a>
-                </p>
-                <p className="text-sm text-gray-600">
-                  <strong>Experience:</strong> {propertyDetail.agent.experience}{" "}
-                  years
-                </p>
-              </div>
-            )}
           </div>
         </div>
       </div>
