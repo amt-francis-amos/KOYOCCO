@@ -8,6 +8,7 @@ const PropertyDetails = () => {
   const { id } = useParams();
   const { property } = useProperty();
 
+  // Find the property based on the ID
   const propertyDetail = property.find((prop) => prop._id === id);
 
   const [mainImage, setMainImage] = useState(null);
@@ -21,20 +22,24 @@ const PropertyDetails = () => {
     }
   }, [propertyDetail]);
 
+  // If propertyDetail is not found, show an error message
   if (!propertyDetail) {
     return <p className="text-center">Property not found.</p>;
   }
 
+  // Handle thumbnail image click to change the main image
   const handleThumbnailClick = (image) => {
     setMainImage(image);
   };
 
+  // Function to fetch agent contact info, with check for agentId
   const fetchAgentContact = async () => {
     if (!propertyDetail || !propertyDetail.agentId) {
       console.error("Agent ID is missing.");
-      return; // Exit the function early if agentId is missing
+      setAgentContact(null); // Optional: clear previous agent contact data
+      return; // Exit early if no agentId is found
     }
-  
+
     try {
       const response = await axios.get(
         `https://koyocco-backend.onrender.com/api/agents/${propertyDetail.agentId}`
@@ -45,7 +50,12 @@ const PropertyDetails = () => {
       console.error("Error fetching agent contact:", error.response?.data || error.message);
     }
   };
-  
+
+  // Log property details for debugging
+  useEffect(() => {
+    console.log(property); // Log the property data
+    console.log(propertyDetail); // Log the specific property details
+  }, [property, id]);
 
   return (
     <div className="container mx-auto my-8 px-4">
