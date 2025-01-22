@@ -24,13 +24,14 @@ const PropertyDetails = () => {
 
   const fetchAgentContact = async () => {
     try {
-      const response = await axios.get(`https://koyocco-backend.onrender.com/api/${propertyDetail.agentId}`);
+      const response = await axios.get(`https://koyocco-backend.onrender.com/api/agents/${propertyDetail.agentId}`);
       setAgentContact(response.data);
       setShowContact(true);
     } catch (error) {
-      console.error("Error fetching agent contact:", error);
+      console.error("Error fetching agent contact:", error.response?.data || error.message);
     }
   };
+  
 
   return (
     <div className="container mx-auto my-8 px-4">
