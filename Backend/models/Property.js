@@ -12,7 +12,6 @@ const propertySchema = new mongoose.Schema({
     required: true, 
     enum: ['Short-Stay', 'PropertySales', 'PropertyRentals'], 
   },
-  agentId: { type: String, required: true },
   address: { type: String, required:true }, 
   images: [String],
   video: String,
