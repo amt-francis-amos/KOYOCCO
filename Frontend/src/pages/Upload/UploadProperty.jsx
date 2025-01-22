@@ -19,7 +19,6 @@ const UploadProperty = () => {
     address: '',
     images: [],
     video: null,
-    agentId: '', // Add agentId field here
   });
   const [imagePreviews, setImagePreviews] = useState([]);
   const navigate = useNavigate();
@@ -48,8 +47,8 @@ const UploadProperty = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { name, price, location, condition, region, propertyType, address, agentId } = propertyData;
-    if (!name || !price || !location || !condition || !region || !propertyType || !address || !agentId) {
+    const { name, price, location, condition, region, propertyType, address } = propertyData;
+    if (!name || !price || !location || !condition || !region || !propertyType || !address) {
       toast.error('Please fill in all required fields.');
       return;
     }
@@ -93,7 +92,6 @@ const UploadProperty = () => {
         address: '',
         images: [],
         video: null,
-        agentId: '', // Reset agentId after submission
       });
       setImagePreviews([]);
       navigate('/uploadProperty');
@@ -257,17 +255,6 @@ const UploadProperty = () => {
             </option>
           ))}
         </select>
-        
-        {/* Add agentId input */}
-        <input
-          type="text"
-          name="agentId"
-          placeholder="Agent ID"
-          value={propertyData.agentId}
-          onChange={handleChange}
-          required
-          className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
-        />
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
