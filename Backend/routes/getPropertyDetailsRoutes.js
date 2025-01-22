@@ -3,6 +3,5 @@ const router = express.Router();
 const { getPropertyDetails } = require('../controllers/getPropertyDetails');
 
 
-router.get('/properties/:id', getPropertyDetails);
-
+router.get('/:id', getPropertyDetails);  
 module.exports = router;
