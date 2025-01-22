@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
@@ -19,23 +19,10 @@ const UploadProperty = () => {
     address: '',
     images: [],
     video: null,
-    agentId: '', // This will be dynamically set
+    agentId: '', // Add agentId field here
   });
-
   const [imagePreviews, setImagePreviews] = useState([]);
   const navigate = useNavigate();
-
-  // Assuming you have a global state or a way to fetch the logged-in agent's ID
-  const agentIdFromContext = 'logged-in-agent-id'; // Replace with actual dynamic fetching logic
-
-  useEffect(() => {
-    if (agentIdFromContext) {
-      setPropertyData((prevData) => ({
-        ...prevData,
-        agentId: agentIdFromContext,
-      }));
-    }
-  }, [agentIdFromContext]);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -270,6 +257,17 @@ const UploadProperty = () => {
             </option>
           ))}
         </select>
+        
+        {/* Add agentId input */}
+        <input
+          type="text"
+          name="agentId"
+          placeholder="Agent ID"
+          value={propertyData.agentId}
+          onChange={handleChange}
+          required
+          className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+        />
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -310,9 +308,9 @@ const UploadProperty = () => {
         </div>
         <button
           type="submit"
-          className="w-full py-3 bg-red-500 text-white rounded-md hover:bg-black transition duration-300"
+          className="w-full bg-red-600 text-white font-bold rounded-md p-2 hover:bg-red-700 transition duration-200"
         >
-          Submit
+          Upload Property
         </button>
       </form>
     </div>
