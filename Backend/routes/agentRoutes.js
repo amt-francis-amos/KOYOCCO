@@ -2,10 +2,10 @@ const express = require('express');
 const Agent = require('../models/Agent'); 
 const router = express.Router();
 
-// Get agent contact information by ID
+
 router.get('/agent/:id', async (req, res) => {
   try {
-    const agent = await Agent.findById(req.params.id); // Query the correct model
+    const agent = await Agent.findById(req.params.id); 
     if (!agent) {
       return res.status(404).json({ message: "Agent not found" });
     }
