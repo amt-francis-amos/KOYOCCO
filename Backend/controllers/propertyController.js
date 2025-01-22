@@ -5,7 +5,6 @@ const uploadProperty = async (req, res) => {
   try {
     const { name, description, price, location, condition, region, propertyType, address } = req.body;
 
-    // Check for missing required fields
     const missingFields = [];
     if (!name) missingFields.push('name');
     if (!price) missingFields.push('price');
@@ -14,7 +13,6 @@ const uploadProperty = async (req, res) => {
     if (!region) missingFields.push('region');
     if (!propertyType) missingFields.push('propertyType');
 
-    // Optionally check for address only if it's required
     if (!address) missingFields.push('address');
 
     if (missingFields.length > 0) {

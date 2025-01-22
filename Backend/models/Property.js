@@ -13,6 +13,7 @@ const propertySchema = new mongoose.Schema({
     enum: ['Short-Stay', 'PropertySales', 'PropertyRentals'], 
   },
   address: { type: String, required:true }, 
+  agent: { type: mongoose.Schema.Types.ObjectId, ref: 'Agent', required: true }, 
   images: [String],
   video: String,
   status: { type: String, enum: ['available', 'sold'], default: 'available' },
