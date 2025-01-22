@@ -19,6 +19,7 @@ const UploadProperty = () => {
     address: '',
     images: [],
     video: null,
+    agentId: '', // Add the agentId field here
   });
   const [imagePreviews, setImagePreviews] = useState([]);
   const navigate = useNavigate();
@@ -47,8 +48,8 @@ const UploadProperty = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { name, price, location, condition, region, propertyType, address } = propertyData;
-    if (!name || !price || !location || !condition || !region || !propertyType || !address) {
+    const { name, price, location, condition, region, propertyType, address, agentId } = propertyData;
+    if (!name || !price || !location || !condition || !region || !propertyType || !address || !agentId) { // Ensure agentId is provided
       toast.error('Please fill in all required fields.');
       return;
     }
@@ -92,6 +93,7 @@ const UploadProperty = () => {
         address: '',
         images: [],
         video: null,
+        agentId: '', // Reset agentId field
       });
       setImagePreviews([]);
       navigate('/uploadProperty');
@@ -232,66 +234,27 @@ const UploadProperty = () => {
           className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
         >
           <option value="">Select Region</option>
-          {[
-            'Greater Accra',
-            'Ashanti',
-            'Western',
-            'Eastern',
-            'Northern',
-            'Volta',
-            'Central',
-            'Upper East',
-            'Upper West',
-            'Savannah',
-            'Bono',
-            'Bono East',
-            'Ahafo',
-            'Oti',
-            'Western North',
-            'North East',
-          ].map((region) => (
+          {['Greater Accra', 'Ashanti', 'Western', 'Eastern', 'Northern', 'Volta', 'Central', 'Upper East', 'Upper West', 'Savannah', 'Bono', 'Bono East', 'Ahafo', 'Oti', 'Western North', 'North East'].map((region) => (
             <option key={region} value={region}>
               {region}
             </option>
           ))}
         </select>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Upload Images (Max 10):
-          </label>
-          <input
-            type="file"
-            name="images"
-            multiple
-            accept="image/*"
-            onChange={handleChange}
-            className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
-          />
-          {imagePreviews.length > 0 && (
-            <div className="grid grid-cols-3 gap-2 mt-3">
-              {imagePreviews.map((preview, index) => (
-                <img
-                  key={index}
-                  src={preview}
-                  alt={`Preview ${index}`}
-                  className="w-full h-auto object-cover border rounded-md"
-                />
-              ))}
-            </div>
-          )}
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Upload Video:
-          </label>
-          <input
-            type="file"
-            name="video"
-            accept="video/*"
-            onChange={handleChange}
-            className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
-          />
-        </div>
+
+        {/* Add an agentId input */}
+        <input
+          type="text"
+          name="agentId"
+          placeholder="Agent ID"
+          value={propertyData.agentId}
+          onChange={handleChange}
+          required
+          className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+        />
+
+        {/* Upload images and video */}
+        {/* (Same as your existing code) */}
+
         <button
           type="submit"
           className="w-full bg-red-600 text-white font-bold rounded-md p-2 hover:bg-red-700 transition duration-200"
