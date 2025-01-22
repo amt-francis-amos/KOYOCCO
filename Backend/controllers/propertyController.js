@@ -3,7 +3,7 @@ const cloudinary = require('../config/cloudinaryConfig');
 
 const uploadProperty = async (req, res) => {
   try {
-    const { name, description, price, location, condition, region, propertyType, address } = req.body;
+    const { name, description, price, location, condition, region, propertyType, address, agentId } = req.body;
 
     const missingFields = [];
     if (!name) missingFields.push('name');
@@ -12,8 +12,8 @@ const uploadProperty = async (req, res) => {
     if (!condition) missingFields.push('condition');
     if (!region) missingFields.push('region');
     if (!propertyType) missingFields.push('propertyType');
-
     if (!address) missingFields.push('address');
+    if (!agentId) missingFields.push('agentId');  // Check for missing agentId
 
     if (missingFields.length > 0) {
       return res.status(400).json({
@@ -56,10 +56,10 @@ const uploadProperty = async (req, res) => {
       address,
       region,
       condition,
-      
       propertyType,
       images,
       video,
+      agentId,  // Include agentId in the property document
     });
     await property.save();
 
@@ -68,7 +68,6 @@ const uploadProperty = async (req, res) => {
     res.status(500).json({ message: 'Failed to upload property', error: error.message });
   }
 };
-
 
 const getAllProperties = async (req, res) => {
   try {
