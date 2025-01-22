@@ -43,7 +43,7 @@ const Home = () => {
     setCurrentPage(selectedPage);
   };
 
-  // Navigate to login page
+  // Navigate to upload property page
   const handleNavigateToLogin = () => {
     navigate("/uploadProperty");
   };

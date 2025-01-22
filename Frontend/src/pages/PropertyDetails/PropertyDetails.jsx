@@ -32,98 +32,78 @@ const PropertyDetails = () => {
     }
   }, [propertyDetail]);
 
-  // Enhanced fetchAgentContact function with better error handling
-  const fetchAgentContact = async () => {
-    setLoading(true);
-    setError(null);
-
-    // Check if propertyDetail exists
-    if (!propertyDetail) {
-      setError("Property details not found");
-      setLoading(false);
-      return;
-    }
-
-    // Check if agentId exists
-    if (!propertyDetail.agentId) {
-      setError("Agent information not available for this property");
-      setLoading(false);
-      return;
-    }
-
-    try {
-      const response = await axios.get(
-        `https://koyocco-backend.onrender.com/api/agents/${propertyDetail.agentId}`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            // Add any required authorization headers here if needed
-          }
-        }
-      );
-
-      console.log("Agent Response:", response);
-      if (response.data) {
+  // Fetch agent's contact details
+  useEffect(() => {
+    const fetchAgentContact = async () => {
+      if (!propertyDetail?.agentId) return;
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          `/api/agents/${propertyDetail.agentId}`
+        );
         setAgentContact(response.data);
-        setShowContact(true);
-      } else {
-        setError("No agent data received");
+      } catch (err) {
+        setError("Failed to load agent contact information");
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      setError(error.response?.data?.message || "Error fetching agent contact information");
-      console.error("Fetch error:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
+
+    fetchAgentContact();
+  }, [propertyDetail]);
 
   if (!propertyDetail) {
-    return <div className="text-center py-8">Loading property details...</div>;
+    return <div className="text-center py-8">Property not found.</div>;
   }
 
-  const handleThumbnailClick = (image) => {
-    setMainImage(image);
-  };
-
   return (
-    <div className="container mx-auto my-8 px-4">
-      <h2 className="text-3xl font-bold mb-6 text-center">{propertyDetail.name}</h2>
-
-      <div className="flex flex-col md:flex-row gap-6">
-        {/* Left section */}
-        <div className="md:w-1/2">
+    <div className="container mx-auto py-8">
+      <h2 className="text-3xl font-bold text-center mb-8">
+        {propertyDetail.name}
+      </h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div>
           <img
-            src={mainImage || "/placeholder-image.jpg"}
+            src={mainImage}
             alt={propertyDetail.name}
-            className="w-full h-[37.5rem] object-cover rounded-md"
+            className="w-full rounded-lg shadow-md"
           />
-          <div className="flex space-x-2 mt-4 overflow-x-auto">
-            {propertyDetail.images.map((image, index) => (
+          <div className="flex flex-wrap gap-2 mt-6">
+            {propertyDetail.images?.map((image, index) => (
               <img
                 key={index}
                 src={image}
-                alt={`Thumbnail ${index}`}
-                className="w-24 h-24 object-cover rounded-md cursor-pointer flex-shrink-0"
-                onClick={() => handleThumbnailClick(image)}
+                alt={propertyDetail.name}
+                className="w-24 h-24 object-cover rounded-lg cursor-pointer"
+                onClick={() => setMainImage(image)}
               />
             ))}
           </div>
         </div>
 
-        {/* Right section */}
-        <div className="md:w-1/2 bg-white shadow-lg rounded-md p-6 flex flex-col justify-between">
-          <div>
-            <p className="text-gray-600 mb-4">{propertyDetail.description}</p>
-            <p className="text-red-500 font-bold text-lg mb-2">₵{propertyDetail.price}</p>
-            <p className="text-gray-500 mb-4">{propertyDetail.location}</p>
-            <p className="text-sm text-gray-600 mb-4">
-              <strong>Region:</strong> {propertyDetail.region}
-            </p>
-            <p className="text-sm text-gray-600 mb-4">
-              <strong>Condition:</strong> {propertyDetail.condition}
-            </p>
-            <p className="text-sm text-gray-600 mb-4">
-              <strong>Status:</strong>{" "}
+        <div>
+          <h3 className="text-xl font-semibold text-gray-800 mb-4">
+            Details
+          </h3>
+          <div className="space-y-4">
+            <div className="flex justify-between">
+              <span className="font-semibold">Price:</span>
+              <span className="text-lg text-red-500">₵{propertyDetail.price}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="font-semibold">Location:</span>
+              <span>{propertyDetail.location}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="font-semibold">Type:</span>
+              <span>{propertyDetail.propertyType}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="font-semibold">Condition:</span>
+              <span>{propertyDetail.condition}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="font-semibold">Status:</span>
               <span
                 className={`${
                   propertyDetail.status === "available"
@@ -136,54 +116,38 @@ const PropertyDetails = () => {
                 {propertyDetail.status.charAt(0).toUpperCase() +
                   propertyDetail.status.slice(1)}
               </span>
-            </p>
-            <p className="text-sm text-gray-600 mb-4">
-              <strong>Type:</strong> {propertyDetail.propertyType}
-            </p>
-          </div>
-
-          <div className="flex flex-col md:flex-row items-center gap-4 mt-6">
-            <button
-              className="bg-red-500 text-white px-6 py-2 hover:bg-black duration-300 rounded-full w-full md:w-auto"
-              onClick={fetchAgentContact}
-              disabled={loading}
-            >
-              <FaPhoneAlt className="inline-block mr-2" />
-              {loading ? "Loading..." : "Contact Agent"}
-            </button>
-            <button className="bg-gray-300 text-black px-6 py-2 hover:bg-gray-400 duration-300 rounded-full w-full md:w-auto">
-              <FaCommentDots className="inline-block mr-2" /> Start Chat
-            </button>
-          </div>
-
-          {/* Error Message Display */}
-          {error && (
-            <div className="mt-4 p-3 bg-red-100 text-red-700 rounded-md">
-              {error}
             </div>
-          )}
+          </div>
+        </div>
+      </div>
 
-          {/* Agent Contact Display */}
-          {showContact && agentContact && (
-            <div className="mt-4 p-4 bg-gray-100 rounded-md">
-              <h3 className="text-lg font-bold mb-2">Agent Contact</h3>
-              <div className="space-y-2">
-                <p>
-                  <strong>Name:</strong> {agentContact.firstname} {agentContact.lastname}
-                </p>
-                <p>
-                  <strong>Phone:</strong> {agentContact.phoneNumber}
-                </p>
-                <p>
-                  <strong>Email:</strong> {agentContact.email}
-                </p>
-                <p>
-                  <strong>Location:</strong> {agentContact.location}
-                </p>
+      <div className="mt-8 text-center">
+        {error && <div className="text-red-500">{error}</div>}
+        {loading ? (
+          <div>Loading agent contact...</div>
+        ) : (
+          agentContact && (
+            <div>
+              <h3 className="text-xl font-semibold">Agent Contact</h3>
+              <div className="flex justify-center gap-4 mt-4">
+                <button
+                  onClick={() => setShowContact(!showContact)}
+                  className="text-blue-500"
+                >
+                  {showContact ? "Hide" : "Show"} Contact Info
+                </button>
+                {showContact && (
+                  <div className="flex items-center gap-2">
+                    <FaPhoneAlt />
+                    <span>{agentContact.phone}</span>
+                    <FaCommentDots />
+                    <span>{agentContact.email}</span>
+                  </div>
+                )}
               </div>
             </div>
-          )}
-        </div>
+          )
+        )}
       </div>
     </div>
   );
