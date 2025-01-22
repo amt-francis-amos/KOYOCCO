@@ -37,37 +37,45 @@ const PropertyDetails = () => {
     setLoading(true);
     setError(null);
 
+    // Check if propertyDetail exists
     if (!propertyDetail) {
-        setError("Property details not found");
-        setLoading(false);
-        return;
+      setError("Property details not found");
+      setLoading(false);
+      return;
     }
 
+    // Check if agentId exists
     if (!propertyDetail.agentId) {
-        setError("Agent information not available for this property");
-        setLoading(false);
-        return;
+      setError("Agent information not available for this property");
+      setLoading(false);
+      return;
     }
 
     try {
-        const response = await axios.get(
-            `https://koyocco-backend.onrender.com/api/agents/${propertyDetail.agentId}`
-        );
-        console.log('Agent Contact:', response.data); // Verify if agent data is returned correctly
-        if (response.data) {
-            setAgentContact(response.data);
-            setShowContact(true);
-        } else {
-            setError("No agent data received");
+      const response = await axios.get(
+        `https://koyocco-backend.onrender.com/api/agents/${propertyDetail.agentId}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            // Add any required authorization headers here if needed
+          }
         }
-    } catch (error) {
-        setError(error.response?.data?.message || "Error fetching agent contact information");
-        console.error("Fetch error:", error);
-    } finally {
-        setLoading(false);
-    }
-};
+      );
 
+      console.log("Agent Response:", response);
+      if (response.data) {
+        setAgentContact(response.data);
+        setShowContact(true);
+      } else {
+        setError("No agent data received");
+      }
+    } catch (error) {
+      setError(error.response?.data?.message || "Error fetching agent contact information");
+      console.error("Fetch error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (!propertyDetail) {
     return <div className="text-center py-8">Loading property details...</div>;
