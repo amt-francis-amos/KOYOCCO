@@ -5,7 +5,7 @@ import { useProperty } from "../../context/PropertyContext";
 const PropertyDetails = () => {
   const { id } = useParams();
   const { property } = useProperty();
-  const [showContactForm, setShowContactForm] = useState(false);
+  const [showAgentDetails, setShowAgentDetails] = useState(false);
 
   const propertyDetail = property.find((prop) => prop._id === id);
 
@@ -14,7 +14,7 @@ const PropertyDetails = () => {
   }
 
   const handleContactAgent = () => {
-    setShowContactForm(!showContactForm);
+    setShowAgentDetails(!showAgentDetails);
   };
 
   return (
@@ -68,6 +68,7 @@ const PropertyDetails = () => {
           </div>
 
           <div className="flex flex-col items-center gap-4 mt-6">
+            {/* Contact Agent Button */}
             <button
               className="bg-red-500 text-white px-6 py-2 hover:bg-black duration-300 rounded-full"
               onClick={handleContactAgent}
@@ -75,39 +76,35 @@ const PropertyDetails = () => {
               Contact Agent
             </button>
 
-            {/* Contact Form */}
-            {showContactForm && (
+            {/* Agent Details */}
+            {showAgentDetails && (
               <div className="w-full mt-4 bg-gray-100 p-4 rounded-md">
-                <h3 className="text-lg font-semibold mb-2">Contact {propertyDetail.agentName}</h3>
+                <h3 className="text-lg font-semibold mb-2">Agent Details</h3>
                 <p className="text-sm text-gray-600 mb-2">
-                  Email: <a href={`mailto:${propertyDetail.agentEmail}`} className="text-blue-500">{propertyDetail.agentEmail}</a>
+                  <strong>Name:</strong> {propertyDetail.agent.name}
                 </p>
-                <p className="text-sm text-gray-600 mb-4">
-                  Phone: <a href={`tel:${propertyDetail.agentPhone}`} className="text-blue-500">{propertyDetail.agentPhone}</a>
-                </p>
-                <form className="flex flex-col gap-2">
-                  <input
-                    type="text"
-                    placeholder="Your Name"
-                    className="w-full border border-gray-300 rounded-md p-2"
-                  />
-                  <input
-                    type="email"
-                    placeholder="Your Email"
-                    className="w-full border border-gray-300 rounded-md p-2"
-                  />
-                  <textarea
-                    placeholder="Your Message"
-                    rows="4"
-                    className="w-full border border-gray-300 rounded-md p-2"
-                  ></textarea>
-                  <button
-                    type="submit"
-                    className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 duration-300"
+                <p className="text-sm text-gray-600 mb-2">
+                  <strong>Email:</strong>{" "}
+                  <a
+                    href={`mailto:${propertyDetail.agent.email}`}
+                    className="text-blue-500"
                   >
-                    Send Message
-                  </button>
-                </form>
+                    {propertyDetail.agent.email}
+                  </a>
+                </p>
+                <p className="text-sm text-gray-600 mb-2">
+                  <strong>Phone:</strong>{" "}
+                  <a
+                    href={`tel:${propertyDetail.agent.phone}`}
+                    className="text-blue-500"
+                  >
+                    {propertyDetail.agent.phone}
+                  </a>
+                </p>
+                <p className="text-sm text-gray-600">
+                  <strong>Experience:</strong> {propertyDetail.agent.experience}{" "}
+                  years
+                </p>
               </div>
             )}
           </div>
