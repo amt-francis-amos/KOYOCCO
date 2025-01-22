@@ -1,6 +1,6 @@
 const express = require('express');
 const Agent = require('../models/Agent'); 
-const authenticateToken = require('../middleware/auth.middleware'); // Import the authentication middleware
+const authenticateToken = require('../middleware/auth.middleware'); 
 const router = express.Router();
 
 // Route to get agent details by ID
