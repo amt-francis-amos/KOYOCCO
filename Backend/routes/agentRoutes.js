@@ -13,7 +13,7 @@ router.get('/agent/:id', authenticateToken, async (req, res) => {
     return res.status(400).json({ message: "Invalid agent ID" });
   }
 
-  console.log("Agent ID:", id); // Debugging log to check if the ID is passed correctly
+  console.log("Agent ID:", Agent); 
 
   try {
     // Find agent by ID

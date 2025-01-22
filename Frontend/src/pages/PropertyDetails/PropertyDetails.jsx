@@ -16,11 +16,14 @@ const PropertyDetails = () => {
   // Find the property based on the ID
   const propertyDetail = property.find((prop) => prop._id === id);
 
+  // Debug log to check property data
   useEffect(() => {
-    if (propertyDetail?.agentId) {
-      fetchAgentContact(); // Fetch agent info as soon as propertyDetail is available
+    console.log("Property Data:", property);
+    if (propertyDetail) {
+      console.log("Property Detail:", propertyDetail);
+      console.log("Agent ID:", propertyDetail.agentId);
     }
-  }, [propertyDetail]); // Trigger this effect whenever propertyDetail changes
+  }, [propertyDetail]);
 
   // Set the main image once propertyDetail is loaded
   useEffect(() => {
@@ -34,12 +37,14 @@ const PropertyDetails = () => {
     setLoading(true);
     setError(null);
 
+    // Check if propertyDetail exists
     if (!propertyDetail) {
       setError("Property details not found");
       setLoading(false);
       return;
     }
 
+    // Check if agentId exists
     if (!propertyDetail.agentId) {
       setError("Agent information not available for this property");
       setLoading(false);
@@ -52,10 +57,12 @@ const PropertyDetails = () => {
         {
           headers: {
             'Content-Type': 'application/json',
+            // Add any required authorization headers here if needed
           }
         }
       );
 
+      console.log("Agent Response:", response);
       if (response.data) {
         setAgentContact(response.data);
         setShowContact(true);
@@ -64,6 +71,7 @@ const PropertyDetails = () => {
       }
     } catch (error) {
       setError(error.response?.data?.message || "Error fetching agent contact information");
+      console.error("Fetch error:", error);
     } finally {
       setLoading(false);
     }
