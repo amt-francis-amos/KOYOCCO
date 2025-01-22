@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useProperty } from "../../context/PropertyContext";
 import { FaPhoneAlt, FaCommentDots } from "react-icons/fa";
+import axios from "axios";
 
 const PropertyDetails = () => {
   const { id } = useParams();
@@ -10,6 +11,8 @@ const PropertyDetails = () => {
   const propertyDetail = property.find((prop) => prop._id === id);
 
   const [mainImage, setMainImage] = useState(propertyDetail?.images[0]);
+  const [agentContact, setAgentContact] = useState(null);
+  const [showContact, setShowContact] = useState(false);
 
   if (!propertyDetail) {
     return <p className="text-center">Property not found.</p>;
@@ -17,6 +20,16 @@ const PropertyDetails = () => {
 
   const handleThumbnailClick = (image) => {
     setMainImage(image);
+  };
+
+  const fetchAgentContact = async () => {
+    try {
+      const response = await axios.get(`https://koyocco-backend.onrender.com/api/${propertyDetail.agentId}`);
+      setAgentContact(response.data);
+      setShowContact(true);
+    } catch (error) {
+      console.error("Error fetching agent contact:", error);
+    }
   };
 
   return (
@@ -80,13 +93,35 @@ const PropertyDetails = () => {
           </div>
 
           <div className="flex flex-col md:flex-row items-center gap-4 mt-6">
-            <button className="bg-red-500 text-white px-6 py-2 hover:bg-black duration-300 rounded-full">
+            <button
+              className="bg-red-500 text-white px-6 py-2 hover:bg-black duration-300 rounded-full"
+              onClick={fetchAgentContact}
+            >
               <FaPhoneAlt className="inline-block mr-2" /> Contact Agent
             </button>
             <button className="bg-gray-300 text-black px-6 py-2 hover:bg-gray-400 duration-300 rounded-full">
               <FaCommentDots className="inline-block mr-2" /> Start Chat
             </button>
           </div>
+
+          {/* Agent Contact Display */}
+          {showContact && agentContact && (
+            <div className="mt-4 p-4 bg-gray-100 rounded-md">
+              <h3 className="text-lg font-bold">Agent Contact</h3>
+              <p>
+                <strong>Name:</strong> {agentContact.firstname} {agentContact.lastname}
+              </p>
+              <p>
+                <strong>Phone:</strong> {agentContact.phoneNumber}
+              </p>
+              <p>
+                <strong>Email:</strong> {agentContact.email}
+              </p>
+              <p>
+                <strong>Location:</strong> {agentContact.location}
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>
