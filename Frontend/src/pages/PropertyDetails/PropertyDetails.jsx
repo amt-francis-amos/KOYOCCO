@@ -18,7 +18,7 @@ const PropertyDetails = () => {
   // Fetch agent contact details
   const fetchAgentDetails = async () => {
     try {
-      const response = await axios.get(`/api/properties/${id}`);
+      const response = await axios.get(`https://koyocco-backend.onrender.com/api/properties/${id}`);
       if (response.data.agent) {
         setAgentContact(response.data.agent);
       } else {
