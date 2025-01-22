@@ -10,6 +10,7 @@ const listingRoutes = require("./routes/listingRoutes");
 const adminRoutes = require('./routes/adminRoutes');
 const profileRoutes = require("./routes/profileRoutes");
 const contactAgentRoutes = require("./routes/contactAgentRoutes");
+const agentRoutes = require('./routes/agentRoutes');
 dotenv.config();
 
 const app = express();
@@ -23,6 +24,8 @@ app.use(express.json());
 mongoDb();
 
 // Routes
+
+app.use('/api', agentRoutes);
 app.use('/api/auth', userRoutes); 
 app.use('/api/properties', propertyRoutes); 
 app.use('/api/bookings', bookingRoutes);
