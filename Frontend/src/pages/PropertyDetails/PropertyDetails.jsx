@@ -19,15 +19,17 @@ const PropertyDetails = () => {
   const fetchAgentDetails = async () => {
     try {
       const response = await axios.get(`https://koyocco-backend.onrender.com/api/properties/${id}`);
+      console.log('Response:', response.data); 
       if (response.data.agent) {
         setAgentContact(response.data.agent);
       } else {
-        console.error("Agent details not found.");
+        console.error('Agent details not found.');
       }
     } catch (error) {
-      console.error("Error fetching agent details:", error);
+      console.error('Error fetching agent details:', error.response?.data || error.message);
     }
   };
+  
 
   return (
     <div className="container mx-auto my-8 px-4">
