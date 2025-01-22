@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useProperty } from "../../context/PropertyContext";
 import { FaPhoneAlt, FaCommentDots } from "react-icons/fa";
@@ -10,9 +10,16 @@ const PropertyDetails = () => {
 
   const propertyDetail = property.find((prop) => prop._id === id);
 
-  const [mainImage, setMainImage] = useState(propertyDetail?.images[0]);
+  const [mainImage, setMainImage] = useState(null);
   const [agentContact, setAgentContact] = useState(null);
   const [showContact, setShowContact] = useState(false);
+
+  // Set the main image once propertyDetail is loaded
+  useEffect(() => {
+    if (propertyDetail && propertyDetail.images && propertyDetail.images.length > 0) {
+      setMainImage(propertyDetail.images[0]);
+    }
+  }, [propertyDetail]);
 
   if (!propertyDetail) {
     return <p className="text-center">Property not found.</p>;
@@ -24,14 +31,15 @@ const PropertyDetails = () => {
 
   const fetchAgentContact = async () => {
     try {
-      const response = await axios.get(`https://koyocco-backend.onrender.com/api/agents/${propertyDetail.agentId}`);
+      const response = await axios.get(
+        `https://koyocco-backend.onrender.com/api/agents/${propertyDetail.agentId}`
+      );
       setAgentContact(response.data);
       setShowContact(true);
     } catch (error) {
       console.error("Error fetching agent contact:", error.response?.data || error.message);
     }
   };
-  
 
   return (
     <div className="container mx-auto my-8 px-4">
@@ -42,9 +50,9 @@ const PropertyDetails = () => {
         <div className="md:w-1/2">
           {/* Main image display */}
           <img
-            src={mainImage}
+            src={mainImage || "/placeholder-image.jpg"} // Fallback image if mainImage is null
             alt={propertyDetail.name}
-            className="w-full  h-[37.5rem] object-cover rounded-md"
+            className="w-full h-[37.5rem] object-cover rounded-md"
           />
           {/* Thumbnails */}
           <div className="flex space-x-2 mt-4">
@@ -60,7 +68,7 @@ const PropertyDetails = () => {
           </div>
         </div>
 
-        {/* Right section with styling */}
+        {/* Right section */}
         <div className="md:w-1/2 bg-white shadow-lg rounded-md p-6 flex flex-col justify-between">
           <div>
             <p className="text-gray-600 mb-4">{propertyDetail.description}</p>
