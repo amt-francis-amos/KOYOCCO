@@ -30,6 +30,11 @@ const PropertyDetails = () => {
   };
 
   const fetchAgentContact = async () => {
+    if (!propertyDetail || !propertyDetail.agentId) {
+      console.error("Agent ID is missing.");
+      return; // Exit the function early if agentId is missing
+    }
+  
     try {
       const response = await axios.get(
         `https://koyocco-backend.onrender.com/api/agents/${propertyDetail.agentId}`
@@ -40,6 +45,7 @@ const PropertyDetails = () => {
       console.error("Error fetching agent contact:", error.response?.data || error.message);
     }
   };
+  
 
   return (
     <div className="container mx-auto my-8 px-4">
