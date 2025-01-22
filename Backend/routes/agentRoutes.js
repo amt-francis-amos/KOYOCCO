@@ -1,11 +1,10 @@
 const express = require('express');
 const Agent = require('../models/Agent'); 
-// const authenticateToken = require('../middleware/auth.middleware'); 
-const generateToken = require('../middleware/generateToken');
+const authenticateToken = require('../middleware/auth.middleware'); 
 const router = express.Router();
 
 // Route to get agent details by ID
-router.get('/agent/:id', generateToken, async (req, res) => {
+router.get('/agent/:id', authenticateToken, async (req, res) => {
   try {
     // Find agent by ID
     const agent = await Agent.findById(req.params.id); 
