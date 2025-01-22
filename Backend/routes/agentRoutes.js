@@ -1,11 +1,11 @@
 const express = require('express');
-const User = require('../models/User');
+const Agent = require('../models/Agent'); 
 const router = express.Router();
 
 // Get agent contact information by ID
 router.get('/agent/:id', async (req, res) => {
   try {
-    const agent = await User.findById(req.params.id);
+    const agent = await Agent.findById(req.params.id); // Query the correct model
     if (!agent) {
       return res.status(404).json({ message: "Agent not found" });
     }
@@ -22,4 +22,4 @@ router.get('/agent/:id', async (req, res) => {
   }
 });
 
-module.exports = router; // Ensure you're exporting the router
+module.exports = router;
