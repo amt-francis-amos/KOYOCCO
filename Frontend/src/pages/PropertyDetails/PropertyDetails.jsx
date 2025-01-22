@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useProperty } from "../../context/PropertyContext";
+import { FaPhoneAlt, FaCommentDots } from "react-icons/fa"; 
 
 const PropertyDetails = () => {
   const { id } = useParams();
@@ -64,9 +65,11 @@ const PropertyDetails = () => {
           </div>
 
           <div className="flex flex-col md:flex-row items-center gap-4 mt-6">
-        
             <button className="bg-red-500 text-white px-6 py-2 hover:bg-black duration-300 rounded-full">
-              Contact Agent
+              <FaPhoneAlt className="inline-block mr-2" /> Contact Agent
+            </button>
+            <button className="bg-gray-300 text-black px-6 py-2 hover:bg-gray-400 duration-300 rounded-full">
+              <FaCommentDots className="inline-block mr-2" /> Start Chat
             </button>
           </div>
         </div>
