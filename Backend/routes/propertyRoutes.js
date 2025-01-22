@@ -21,7 +21,7 @@ router.post(
   upload.fields([{ name: 'images', maxCount: 10 }, { name: 'video', maxCount: 1 }]), // Limit max count to 10 for multer
   async (req, res) => {
     try {
-      const { name, description, price, location, address, condition, region, propertyType, agentId } = req.body;
+      const { name, description, price, location, address, condition, region, propertyType } = req.body;
 
       const missingFields = [];
       if (!name) missingFields.push('name');
@@ -86,7 +86,7 @@ router.post(
         propertyType,
         images,
         video,
-        agentId: agentId || null, // Include agentId if provided, else set it as null
+    
       });
 
       await property.save();
