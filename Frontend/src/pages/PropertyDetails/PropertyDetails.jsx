@@ -6,28 +6,17 @@ import { FaPhoneAlt, FaCommentDots } from "react-icons/fa";
 const PropertyDetails = () => {
   const { id } = useParams();
   const { property } = useProperty();
+
   const propertyDetail = property.find((prop) => prop._id === id);
 
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [mainImage, setMainImage] = useState(propertyDetail?.images[0]);
 
   if (!propertyDetail) {
     return <p className="text-center">Property not found.</p>;
   }
 
-  const handleThumbnailClick = (index) => {
-    setCurrentImageIndex(index);
-  };
-
-  const handleNextImage = () => {
-    if (currentImageIndex < propertyDetail.images.length - 1) {
-      setCurrentImageIndex(currentImageIndex + 1);
-    }
-  };
-
-  const handlePrevImage = () => {
-    if (currentImageIndex > 0) {
-      setCurrentImageIndex(currentImageIndex - 1);
-    }
+  const handleThumbnailClick = (image) => {
+    setMainImage(image);
   };
 
   return (
@@ -37,27 +26,23 @@ const PropertyDetails = () => {
       <div className="flex flex-col md:flex-row gap-6">
         {/* Left section */}
         <div className="md:w-1/2">
-          <div className="relative">
-            <img
-              src={propertyDetail.images[currentImageIndex]}
-              alt={propertyDetail.name}
-              className="w-full h-full object-cover rounded-md"
-            />
-            <button
-              onClick={handlePrevImage}
-              className="absolute top-1/2 left-2 transform -translate-y-1/2 text-white bg-gray-600 bg-opacity-50 p-2 rounded-full"
-            >
-              {"<"}
-            </button>
-            <button
-              onClick={handleNextImage}
-              className="absolute top-1/2 right-2 transform -translate-y-1/2 text-white bg-gray-600 bg-opacity-50 p-2 rounded-full"
-            >
-              {">"}
-            </button>
-          </div>
-          <div className="flex justify-center mt-4">
-            <p className="text-gray-600">{`${currentImageIndex + 1} of ${propertyDetail.images.length}`}</p>
+          {/* Main image display */}
+          <img
+            src={mainImage}
+            alt={propertyDetail.name}
+            className="w-full h-full object-cover rounded-md"
+          />
+          {/* Thumbnails */}
+          <div className="flex space-x-2 mt-4">
+            {propertyDetail.images.map((image, index) => (
+              <img
+                key={index}
+                src={image}
+                alt={`Thumbnail ${index}`}
+                className="w-24 h-24 object-cover rounded-md cursor-pointer"
+                onClick={() => handleThumbnailClick(image)}
+              />
+            ))}
           </div>
         </div>
 
@@ -74,7 +59,7 @@ const PropertyDetails = () => {
               <strong>Condition:</strong> {propertyDetail.condition}
             </p>
             <p className="text-sm text-gray-600 mb-4">
-              <strong>Status:</strong>{" "}
+              <strong>Status:</strong>
               <span
                 className={`${
                   propertyDetail.status === "available"
@@ -84,7 +69,8 @@ const PropertyDetails = () => {
                     : "text-red-500"
                 }`}
               >
-                {propertyDetail.status.charAt(0).toUpperCase() + propertyDetail.status.slice(1)}
+                {propertyDetail.status.charAt(0).toUpperCase() +
+                  propertyDetail.status.slice(1)}
               </span>
             </p>
             {/* Added propertyType */}
@@ -102,21 +88,6 @@ const PropertyDetails = () => {
             </button>
           </div>
         </div>
-      </div>
-
-      {/* Thumbnail Gallery */}
-      <div className="mt-4 flex justify-center space-x-2">
-        {propertyDetail.images.map((image, index) => (
-          <img
-            key={index}
-            src={image}
-            alt={`Thumbnail ${index}`}
-            className={`w-24 h-24 object-cover rounded-md cursor-pointer ${
-              index === currentImageIndex ? "border-4 border-blue-500" : ""
-            }`}
-            onClick={() => handleThumbnailClick(index)}
-          />
-        ))}
       </div>
     </div>
   );
