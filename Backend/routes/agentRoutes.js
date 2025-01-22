@@ -1,9 +1,10 @@
 const express = require('express');
 const Agent = require('../models/Agent'); 
+const generateToken = require('../middleware/generateToken');
 const router = express.Router();
 
 
-router.get('/agent/:id', async (req, res) => {
+router.get('/agent/:id',  generateToken,   async (req, res) => {
   try {
     const agent = await Agent.findById(req.params.id); 
     if (!agent) {

@@ -56,6 +56,7 @@ const uploadProperty = async (req, res) => {
       address,
       region,
       condition,
+      
       propertyType,
       images,
       video,
