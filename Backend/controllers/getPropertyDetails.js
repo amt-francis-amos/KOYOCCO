@@ -1,10 +1,9 @@
+
 const Property = require('../models/Property');
-const Agent = require('../models/Agent');
 
 const getPropertyDetails = async (req, res) => {
   try {
     const { id } = req.params;
-
 
     const property = await Property.findById(id).populate('agent', 'name email phone');
 
