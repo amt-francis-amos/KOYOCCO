@@ -7,7 +7,7 @@ const PropertyDetails = () => {
   const { id } = useParams();
   const { property } = useProperty();
 
-  const [agentContact, setAgentContact] = useState(null); // State to store agent details
+  const [agentContact, setAgentContact] = useState(null); 
 
   const propertyDetail = property.find((prop) => prop._id === id);
 
