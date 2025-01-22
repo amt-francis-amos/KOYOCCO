@@ -1,15 +1,18 @@
 const express = require('express');
 const Agent = require('../models/Agent'); 
-const generateToken = require('../middleware/generateToken');
+const authenticateToken = require('../middleware/auth.middleware'); // Import the authentication middleware
 const router = express.Router();
 
-
-router.get('/agent/:id',  generateToken,   async (req, res) => {
+// Route to get agent details by ID
+router.get('/agent/:id', authenticateToken, async (req, res) => {
   try {
+    // Find agent by ID
     const agent = await Agent.findById(req.params.id); 
     if (!agent) {
       return res.status(404).json({ message: "Agent not found" });
     }
+
+    // Return agent details if found
     res.json({
       firstname: agent.firstname,
       lastname: agent.lastname,
@@ -19,6 +22,7 @@ router.get('/agent/:id',  generateToken,   async (req, res) => {
       location: agent.location,
     });
   } catch (error) {
+    // Catch errors and return server error
     res.status(500).json({ message: "Internal server error" });
   }
 });

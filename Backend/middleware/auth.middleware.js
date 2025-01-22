@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 
+// JWT Authentication Middleware
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -23,7 +24,7 @@ const authenticateToken = (req, res, next) => {
       });
     }
 
-    req.user = user;
+    req.user = user; // Attach user info (including agent's ID) to the request object
     next();
   });
 };
