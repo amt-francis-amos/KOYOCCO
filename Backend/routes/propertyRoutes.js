@@ -15,20 +15,19 @@ cloudinary.config({
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-
+// Upload property route
 router.post(
   '/upload',
   upload.fields([{ name: 'images', maxCount: 10 }, { name: 'video', maxCount: 1 }]), // Limit max count to 10 for multer
   async (req, res) => {
     try {
-      const { name, description, price, location, address, condition, region, propertyType } = req.body;
+      const { name, description, price, location, address, condition, region, propertyType, agentId } = req.body;
 
-     
       const missingFields = [];
       if (!name) missingFields.push('name');
       if (!price) missingFields.push('price');
-      if (!location) missingFields.push('location'); 
-      if (!address) missingFields.push('address'); 
+      if (!location) missingFields.push('location');
+      if (!address) missingFields.push('address');
       if (!condition) missingFields.push('condition');
       if (!region) missingFields.push('region');
       if (!propertyType) missingFields.push('propertyType');
@@ -39,10 +38,9 @@ router.post(
         });
       }
 
-   
+      // Handle image uploads
       let images = [];
       if (req.files.images) {
-       
         if (req.files.images.length > 10) {
           return res.status(400).json({ message: 'You can upload a maximum of 10 images' });
         }
@@ -62,7 +60,7 @@ router.post(
         );
       }
 
-   
+      // Handle video upload
       let video = null;
       if (req.files.video && req.files.video.length > 0) {
         video = await new Promise((resolve, reject) => {
@@ -76,18 +74,19 @@ router.post(
         });
       }
 
-      // Create new property document
+      // Create new property document (including agentId if provided)
       const property = new Property({
         name,
         description,
         price,
-        location, 
-        address,  
+        location,
+        address,
         condition,
         region,
         propertyType,
         images,
         video,
+        agentId: agentId || null, // Include agentId if provided, else set it as null
       });
 
       await property.save();
@@ -99,7 +98,7 @@ router.post(
   }
 );
 
-// Get all properties
+// Get all properties route
 router.get('/', async (req, res) => {
   try {
     const properties = await Property.find();
@@ -110,7 +109,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Delete property
+// Delete property route
 router.delete('/:id', async (req, res) => {
   try {
     const propertyId = req.params.id;
@@ -127,7 +126,7 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-// Update property status
+// Update property status route
 router.put('/:id/status', async (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
