@@ -26,25 +26,35 @@ const ShortStays = () => {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Short-Stay Properties</h1>
+      <h1 className="text-2xl font-bold mb-6 text-center">Short-Stay Properties</h1>
       {properties.length === 0 ? (
-        <p>No Short-Stay properties available</p>
+        <p className="text-center text-gray-600">No Short-Stay properties available</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {properties.map((property) => (
-            <div key={property._id} className="border rounded-lg p-4 shadow">
-              <h2 className="text-xl font-semibold">{property.name}</h2>
-              <p>{property.description}</p>
-              <p>Price: ${property.price}</p>
-              <p>Location: {property.location}</p>
-              <div>
-                {property.images && property.images.length > 0 && (
-                  <img
-                    src={property.images[0]}
-                    alt={property.name}
-                    className="w-full h-40 object-cover rounded-md mt-2"
-                  />
-                )}
+            <div
+              key={property._id}
+              className="bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105"
+            >
+              {property.images && property.images.length > 0 && (
+                <img
+                  src={property.images[0]}
+                  alt={property.name}
+                  className="w-full h-48 object-cover"
+                />
+              )}
+              <div className="p-4">
+                <h2 className="text-lg font-semibold text-gray-800">{property.name}</h2>
+                <p className="text-sm text-gray-600 mt-2">{property.description}</p>
+                <div className="flex justify-between items-center mt-4">
+                  <span className="text-orange-500 font-bold text-lg">${property.price}</span>
+                  <span className="text-gray-500 text-sm">{property.location}</span>
+                </div>
+                <button
+                  className="w-full mt-4 py-2 text-white bg-orange-500 hover:bg-orange-600 font-semibold rounded-lg transition duration-300"
+                >
+                  Book Now
+                </button>
               </div>
             </div>
           ))}
