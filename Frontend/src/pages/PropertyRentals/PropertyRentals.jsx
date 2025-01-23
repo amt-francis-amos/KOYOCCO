@@ -2,31 +2,31 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const PropertyRentals = () => {
-  const [properties, setProperties] = useState([]);
+  const [rentals, setRentals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchRentalProperties = async () => {
+    const fetchPropertyRentals = async () => {
       try {
         const response = await axios.get(
-          'https://koyocco-backend.onrender.com/api/properties?propertyType=Property-Rental'
+          'https://koyocco-backend.onrender.com/api/properties?propertyType=Rental'
         );
 
-        // Validate the fetched properties to ensure they are Property Rentals
-        const rentalProperties = response.data.filter(
-          (property) => property.propertyType === 'Property-Rental'
+        // Filter the properties explicitly on the frontend
+        const filteredRentals = response.data.filter(
+          (property) => property.propertyType === 'Rental'
         );
 
-        setProperties(rentalProperties);
+        setRentals(filteredRentals);
         setLoading(false);
       } catch (err) {
-        setError('Failed to fetch properties');
+        setError('Failed to fetch property rentals');
         setLoading(false);
       }
     };
 
-    fetchRentalProperties();
+    fetchPropertyRentals();
   }, []);
 
   if (loading) return <p>Loading...</p>;
@@ -35,33 +35,33 @@ const PropertyRentals = () => {
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-6 text-center">Property Rentals</h1>
-      {properties.length === 0 ? (
-        <p className="text-center text-gray-600">No Property Rentals available</p>
+      {rentals.length === 0 ? (
+        <p className="text-center text-gray-600">No Rental properties available</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {properties.map((property) => (
+          {rentals.map((rental) => (
             <div
-              key={property._id}
+              key={rental._id}
               className="bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105"
             >
-              {property.images && property.images.length > 0 && (
+              {rental.images && rental.images.length > 0 && (
                 <img
-                  src={property.images[0]}
-                  alt={property.name}
+                  src={rental.images[0]}
+                  alt={rental.name}
                   className="w-full h-48 object-cover"
                 />
               )}
               <div className="p-4">
-                <h2 className="text-lg font-semibold text-gray-800">{property.name}</h2>
-                <p className="text-sm text-gray-600 mt-2">{property.description}</p>
+                <h2 className="text-lg font-semibold text-gray-800">{rental.name}</h2>
+                <p className="text-sm text-gray-600 mt-2">{rental.description}</p>
                 <div className="flex justify-between items-center mt-4">
-                  <span className="text-red-500 font-bold text-lg">₵{property.price}</span>
-                  <span className="text-gray-500 text-sm">{property.location}</span>
+                  <span className="text-orange-500 font-bold text-lg">${rental.price}</span>
+                  <span className="text-gray-500 text-sm">{rental.location}</span>
                 </div>
                 <button
                   className="w-full mt-4 py-2 text-white bg-red-500 hover:bg-black font-semibold rounded-lg transition duration-300"
                 >
-                  Book Now
+                  Rent Now
                 </button>
               </div>
             </div>
