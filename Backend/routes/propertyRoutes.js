@@ -2,6 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const Property = require('../models/Property');
 const cloudinary = require('cloudinary').v2;
+const authenticateToken = require('../middleware/auth.middleware');
 
 const router = express.Router();
 
@@ -17,7 +18,7 @@ const upload = multer({ storage: storage });
 
 // Upload property route
 router.post(
-  '/upload',
+  '/upload',authenticateToken,
   upload.fields([{ name: 'images', maxCount: 10 }, { name: 'video', maxCount: 1 }]), // Limit max count to 10 for multer
   async (req, res) => {
     try {
