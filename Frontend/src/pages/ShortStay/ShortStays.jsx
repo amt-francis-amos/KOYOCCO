@@ -36,7 +36,7 @@ const ShortStays = () => {
 
   // Navigate to the booking page with property details
   const handleBooking = (propertyId) => {
-    navigate(`/booking/${propertyId}`); // Direct to the booking page with the property ID
+    navigate(`/booking`); // Direct to the booking page with the property ID
   };
 
   return (
