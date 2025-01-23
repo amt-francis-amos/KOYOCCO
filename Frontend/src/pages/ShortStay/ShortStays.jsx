@@ -51,7 +51,7 @@ const ShortStays = () => {
                   <span className="text-gray-500 text-sm">{property.location}</span>
                 </div>
                 <button
-                  className="w-full mt-4 py-2 text-white bg-orange-500 hover:bg-orange-600 font-semibold rounded-lg transition duration-300"
+                  className="w-full mt-4 py-2 text-white bg-red-500 hover:bg-black font-semibold rounded-lg transition duration-300"
                 >
                   Book Now
                 </button>
