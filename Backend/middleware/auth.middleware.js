@@ -1,18 +1,29 @@
 const jwt = require('jsonwebtoken');
 
 const authenticateToken = (req, res, next) => {
-  const token = req.headers['authorization']?.split(' ')[1]; // Get token from Authorization header
-
-  if (!token) {
-    return res.status(401).json({ message: 'Agent not authenticated' });
+  const authHeader = req.headers['authorization'];
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ message: 'Invalid authorization header format' });
   }
 
-  // Verify token
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+  const token = authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, { expiresIn: '7d' }, (err, user) => {
     if (err) {
-      return res.status(403).json({ message: 'Invalid or expired token' });
+      const errorMessage = err.name === 'TokenExpiredError' 
+        ? 'Token expired' 
+        : 'Invalid token';
+      return res.status(403).json({ 
+        message: errorMessage,
+        errorCode: err.name 
+      });
     }
-    req.user = user; // Attach the user object (containing agentId) to the request
+
+    req.user = user;
     next();
   });
 };

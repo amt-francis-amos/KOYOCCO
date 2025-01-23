@@ -2,7 +2,6 @@ const express = require('express');
 const multer = require('multer');
 const Property = require('../models/Property');
 const cloudinary = require('cloudinary').v2;
-const authenticateToken = require('../middleware/auth.middleware');
 
 const router = express.Router();
 
@@ -18,27 +17,11 @@ const upload = multer({ storage: storage });
 
 // Upload property route
 router.post(
-  '/upload',authenticateToken,
+  '/upload',
   upload.fields([{ name: 'images', maxCount: 10 }, { name: 'video', maxCount: 1 }]), // Limit max count to 10 for multer
   async (req, res) => {
     try {
-      // Retrieve agentId from the logged-in user (assuming token-based authentication)
-      const agentId = req.user ? req.user._id : null; // If using JWT, `req.user` should contain the logged-in user info.
-
-      if (!agentId) {
-        return res.status(401).json({ message: 'Agent not authenticated' }); // Ensure agent is logged in
-      }
-
-      const {
-        name,
-        description,
-        price,
-        location,
-        address,
-        condition,
-        region,
-        propertyType,
-      } = req.body;
+      const { name, description, price, location, address, condition, region, propertyType } = req.body;
 
       const missingFields = [];
       if (!name) missingFields.push('name');
@@ -91,7 +74,7 @@ router.post(
         });
       }
 
-      // Create new property document
+      // Create new property document (including agentId if provided)
       const property = new Property({
         name,
         description,
@@ -103,7 +86,7 @@ router.post(
         propertyType,
         images,
         video,
-        agentId, // Use the agentId from the session or token
+    
       });
 
       await property.save();
@@ -118,25 +101,11 @@ router.post(
 // Get all properties route
 router.get('/', async (req, res) => {
   try {
-    const properties = await Property.find().populate('agentId'); // Populate agent details
+    const properties = await Property.find();
     res.status(200).json(properties);
   } catch (error) {
     console.error('Error fetching properties:', error);
     res.status(500).json({ message: 'Failed to fetch properties', error: error.message || error });
-  }
-});
-
-// Get property by ID route
-router.get('/:id', async (req, res) => {
-  try {
-    const property = await Property.findById(req.params.id).populate('agentId'); // Populate agent details
-    if (!property) {
-      return res.status(404).json({ message: 'Property not found' });
-    }
-    res.status(200).json(property);
-  } catch (error) {
-    console.error('Error fetching property:', error);
-    res.status(500).json({ message: 'Failed to fetch property', error: error.message || error });
   }
 });
 
