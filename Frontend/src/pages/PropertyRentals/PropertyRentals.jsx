@@ -9,7 +9,7 @@ const PropertyRentals = () => {
   const fetchPropertyRentals = async () => {
     try {
       const response = await axios.get(
-        'https://koyocco-backend.onrender.com/api/properties?propertyType=Rental'
+        'https://koyocco-backend.onrender.com/api/properties?propertyType=PropertyRentals'
       );
 
       // Filter properties on the frontend for extra safety
