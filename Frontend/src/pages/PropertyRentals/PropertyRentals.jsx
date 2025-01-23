@@ -67,7 +67,7 @@ const PropertyRentals = () => {
                   className="w-full mt-4 py-2 text-white bg-red-500 hover:bg-black font-semibold rounded-lg transition duration-300"
                   onClick={handlePropertyUpload}
                 >
-                  Refresh Rentals
+                  Rent Now
                 </button>
               </div>
             </div>
