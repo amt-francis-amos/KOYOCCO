@@ -6,28 +6,33 @@ const PropertyRentals = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const fetchPropertyRentals = async () => {
+    try {
+      const response = await axios.get(
+        'https://koyocco-backend.onrender.com/api/properties?propertyType=Rental'
+      );
+
+      // Filter properties on the frontend for extra safety
+      const filteredRentals = response.data.filter(
+        (property) => property.propertyType === 'Rental'
+      );
+
+      setRentals(filteredRentals);
+      setLoading(false);
+    } catch (err) {
+      setError('Failed to fetch property rentals');
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchPropertyRentals = async () => {
-      try {
-        const response = await axios.get(
-          'https://koyocco-backend.onrender.com/api/properties?propertyType=Rental'
-        );
-
-        // Filter the properties explicitly on the frontend
-        const filteredRentals = response.data.filter(
-          (property) => property.propertyType === 'Rental'
-        );
-
-        setRentals(filteredRentals);
-        setLoading(false);
-      } catch (err) {
-        setError('Failed to fetch property rentals');
-        setLoading(false);
-      }
-    };
-
     fetchPropertyRentals();
   }, []);
+
+  const handlePropertyUpload = async () => {
+    // Simulate property upload to refresh the rentals
+    await fetchPropertyRentals();
+  };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
@@ -60,8 +65,9 @@ const PropertyRentals = () => {
                 </div>
                 <button
                   className="w-full mt-4 py-2 text-white bg-red-500 hover:bg-black font-semibold rounded-lg transition duration-300"
+                  onClick={handlePropertyUpload}
                 >
-                  Rent Now
+                  Refresh Rentals
                 </button>
               </div>
             </div>
