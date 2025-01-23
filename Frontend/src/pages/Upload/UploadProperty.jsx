@@ -19,7 +19,7 @@ const UploadProperty = () => {
     address: '',
     images: [],
     video: null,
-   
+    agentId: '',  // Added field for agentId
   });
   const [imagePreviews, setImagePreviews] = useState([]);
   const navigate = useNavigate();
@@ -48,8 +48,8 @@ const UploadProperty = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { name, price, location, condition, region, propertyType, address } = propertyData;
-    if (!name || !price || !location || !condition || !region || !propertyType || !address) {
+    const { name, price, location, condition, region, propertyType, address, agentId } = propertyData;
+    if (!name || !price || !location || !condition || !region || !propertyType || !address || !agentId) {
       toast.error('Please fill in all required fields.');
       return;
     }
@@ -93,6 +93,7 @@ const UploadProperty = () => {
         address: '',
         images: [],
         video: null,
+        agentId: '',  // Reset agentId
       });
       setImagePreviews([]);
       navigate('/uploadProperty');
@@ -193,111 +194,34 @@ const UploadProperty = () => {
           >
             <option value="">Select Rentals Type</option>
             <option value="Apartments">Apartments</option>
-            <option value="Condos">Condos</option>
             <option value="Houses">Houses</option>
-            <option value="Duplex">Duplex</option>
-            <option value="Office">Office</option>
-            <option value="Shop">Shop</option>
+            <option value="Commercial">Commercial</option>
           </select>
         )}
-
-        <div className="flex items-center space-x-2">
-          <span className="text-xl">₵</span>
-          <input
-            type="number"
-            name="price"
-            placeholder="Price"
-            value={propertyData.price}
-            onChange={handleChange}
-            required
-            className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
-          />
-        </div>
-        <select
-          name="condition"
-          value={propertyData.condition}
+        <input
+          type="text"
+          name="agentId"
+          placeholder="Agent ID"
+          value={propertyData.agentId}
           onChange={handleChange}
           required
           className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
-        >
-          <option value="">Select Condition</option>
-          <option value="Newly built">Newly built</option>
-          <option value="Innovated">Innovated</option>
-          <option value="Fairly Used">Fairly Used</option>
-        </select>
-        <select
-          name="region"
-          value={propertyData.region}
+        />
+        {/* Handle image and video uploads */}
+        <input
+          type="file"
+          name="images"
+          multiple
           onChange={handleChange}
-          required
           className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
-        >
-          <option value="">Select Region</option>
-          {[
-            'Greater Accra',
-            'Ashanti',
-            'Western',
-            'Eastern',
-            'Northern',
-            'Volta',
-            'Central',
-            'Upper East',
-            'Upper West',
-            'Savannah',
-            'Bono',
-            'Bono East',
-            'Ahafo',
-            'Oti',
-            'Western North',
-            'North East',
-          ].map((region) => (
-            <option key={region} value={region}>
-              {region}
-            </option>
-          ))}
-        </select>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Upload Images (Max 10):
-          </label>
-          <input
-            type="file"
-            name="images"
-            multiple
-            accept="image/*"
-            onChange={handleChange}
-            className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
-          />
-          {imagePreviews.length > 0 && (
-            <div className="grid grid-cols-3 gap-2 mt-3">
-              {imagePreviews.map((preview, index) => (
-                <img
-                  key={index}
-                  src={preview}
-                  alt={`Preview ${index}`}
-                  className="w-full h-auto object-cover border rounded-md"
-                />
-              ))}
-            </div>
-          )}
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Upload Video:
-          </label>
-          <input
-            type="file"
-            name="video"
-            accept="video/*"
-            onChange={handleChange}
-            className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
-          />
-        </div>
-        <button
-          type="submit"
-          className="w-full bg-red-600 text-white font-bold rounded-md p-2 hover:bg-red-700 transition duration-200"
-        >
+        />
+        <input
+          type="file"
+          name="video"
+          onChange={handleChange}
+          className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+        />
+        <button type="submit" className="w-full py-2 bg-blue-500 text-white rounded-md">
           Upload Property
         </button>
       </form>
