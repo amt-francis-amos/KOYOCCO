@@ -15,7 +15,6 @@ const ShortStays = () => {
           'https://koyocco-backend.onrender.com/api/properties?propertyType=Short-Stay'
         );
 
-        // Validate the fetched properties to ensure they are Short-Stay
         const shortStayProperties = response.data.filter(
           (property) => property.propertyType === 'Short-Stay'
         );
@@ -35,8 +34,8 @@ const ShortStays = () => {
   if (error) return <p>{error}</p>;
 
   // Navigate to the booking page with property details
-  const handleBooking = (propertyId) => {
-    navigate(`/booking`); // Direct to the booking page with the property ID
+  const handleBooking = (property) => {
+    navigate('/booking', { state: property }); // Pass the entire property object to the booking page
   };
 
   return (
@@ -48,7 +47,7 @@ const ShortStays = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {properties.map((property) => (
             <div
-              key={property._id}
+              key={property.name} // Use a unique property (like name) as a key
               className="bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105"
             >
               {property.images && property.images.length > 0 && (
@@ -66,7 +65,7 @@ const ShortStays = () => {
                   <span className="text-gray-500 text-sm">{property.location}</span>
                 </div>
                 <button
-                  onClick={() => handleBooking(property._id)}
+                  onClick={() => handleBooking(property)}
                   className="w-full mt-4 py-2 text-white bg-red-500 hover:bg-black font-semibold rounded-lg transition duration-300"
                 >
                   Book Now
