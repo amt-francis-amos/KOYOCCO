@@ -9,8 +9,16 @@ const ShortStays = () => {
   useEffect(() => {
     const fetchShortStayProperties = async () => {
       try {
-        const response = await axios.get('https://koyocco-backend.onrender.com/api/properties?propertyType=Short-Stay'); 
-        setProperties(response.data);
+        const response = await axios.get(
+          'https://koyocco-backend.onrender.com/api/properties?propertyType=Short-Stay'
+        );
+        
+        // Validate the fetched properties to ensure they are Short-Stay
+        const shortStayProperties = response.data.filter(
+          (property) => property.propertyType === 'Short-Stay'
+        );
+
+        setProperties(shortStayProperties);
         setLoading(false);
       } catch (err) {
         setError('Failed to fetch properties');
