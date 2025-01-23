@@ -131,6 +131,17 @@ const PropertyDetails = () => {
                   <strong>Location:</strong> {propertyDetail.agentId.location || "Not specified"}
                 </p>
               </div>
+              {/* Buttons */}
+              <div className="mt-4 flex space-x-4">
+                <button className="flex items-center justify-center bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
+                  <FaPhoneAlt className="mr-2" />
+                  Call Agent
+                </button>
+                <button className="flex items-center justify-center bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600">
+                  <FaCommentDots className="mr-2" />
+                  Message Agent
+                </button>
+              </div>
             </div>
           )}
         </div>
