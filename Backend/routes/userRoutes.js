@@ -119,6 +119,7 @@ router.post("/signup", async (req, res) => {
 });
 
 // Login route
+// Login route
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -131,24 +132,32 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ message: "Invalid email or password" });
     }
 
+    // If the user is an agent, ensure they have an agentId
+    if (user.role === 'agent' && !user.agentId) {
+      user.agentId = `AGENT-${user._id.toString().slice(-6)}`;  
+      await user.save();  
+    }
+
     // Generate JWT token
     const token = jwt.sign(
-      { userId: user._id, role: user.role },
-      process.env.JWT_SECRET,
+      { userId: user._id, role: user.role, agentId: user.agentId },
+      process.env.JWT_SECRET,  
       { expiresIn: "1h" }
     );
 
-    // Respond with token, role, and userId
+   
     res.status(200).json({
-      token,
-      role: user.role,
-      userId: user._id
+      token,         
+      role: user.role, 
+      userId: user._id, 
+      agentId: user.agentId, 
     });
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
 
 // Forgot password route
 router.post("/forgot-password", async (req, res) => {
