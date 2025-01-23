@@ -47,7 +47,7 @@ const ShortStays = () => {
                 <h2 className="text-lg font-semibold text-gray-800">{property.name}</h2>
                 <p className="text-sm text-gray-600 mt-2">{property.description}</p>
                 <div className="flex justify-between items-center mt-4">
-                  <span className="text-orange-500 font-bold text-lg">${property.price}</span>
+                  <span className="text-red-500 font-bold text-lg">₵{property.price}</span>
                   <span className="text-gray-500 text-sm">{property.location}</span>
                 </div>
                 <button
