@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { assets } from "../../assets/assets";
 import { FaBars, FaTimes, FaChevronDown } from "react-icons/fa";
-import axios from 'axios'
+import axios from 'axios';
 
 const Navbar = () => {
   
@@ -13,7 +13,6 @@ const Navbar = () => {
     propertySales: false,
   });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   const [userProfile, setUserProfile] = useState({ profileImage: "", role: "" });
 
   const navigate = useNavigate();
@@ -33,7 +32,6 @@ const Navbar = () => {
     const token = localStorage.getItem("authToken");
     setIsLoggedIn(!!token);
   
-    // Fetch user profile data if logged in
     if (token) {
       const fetchUserData = async () => {
         try {
@@ -57,7 +55,7 @@ const Navbar = () => {
   
       fetchUserData();
     }
-  }, [localStorage.getItem("authToken"),userProfile]);
+  }, [localStorage.getItem("authToken"), userProfile]);
   
 
   const updateLoginStatus = () => {
@@ -91,6 +89,11 @@ const Navbar = () => {
       ...prev,
       [dropdown]: false,
     }));
+  };
+
+  const handleDropdownRedirect = (route) => {
+    navigate(route);
+    closeMenuOnLinkClick();
   };
 
   return (
@@ -164,27 +167,27 @@ const Navbar = () => {
             >
               <li>
                 <Link
-                  to="/hotels"
+                  to="#"
                   className="block px-4 py-2 hover:bg-gray-100"
-                  onClick={closeMenuOnLinkClick}
+                  onClick={() => handleDropdownRedirect("/hotels")}
                 >
                   Hotels
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/movie-house"
+                  to="#"
                   className="block px-4 py-2 hover:bg-gray-100"
-                  onClick={closeMenuOnLinkClick}
+                  onClick={() => handleDropdownRedirect("/movie-house")}
                 >
                   Movie House
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/guest-house"
+                  to="#"
                   className="block px-4 py-2 hover:bg-gray-100"
-                  onClick={closeMenuOnLinkClick}
+                  onClick={() => handleDropdownRedirect("/guest-house")}
                 >
                   Guest House
                 </Link>
@@ -215,60 +218,61 @@ const Navbar = () => {
             >
               <li>
                 <Link
-                  to="/apartments"
+                  to="#"
                   className="block px-4 py-2 hover:bg-gray-100"
-                  onClick={closeMenuOnLinkClick}
+                  onClick={() => handleDropdownRedirect("/apartments")}
                 >
                   Apartments
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/condos"
+                  to="#"
                   className="block px-4 py-2 hover:bg-gray-100"
-                  onClick={closeMenuOnLinkClick}
+                  onClick={() => handleDropdownRedirect("/condos")}
                 >
                   Condos
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/houses"
+                  to="#"
                   className="block px-4 py-2 hover:bg-gray-100"
-                  onClick={closeMenuOnLinkClick}
+                  onClick={() => handleDropdownRedirect("/houses")}
                 >
                   Houses
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/duplex"
+                  to="#"
                   className="block px-4 py-2 hover:bg-gray-100"
-                  onClick={closeMenuOnLinkClick}
+                  onClick={() => handleDropdownRedirect("/duplex")}
                 >
                   Duplex
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/office"
+                  to="#"
                   className="block px-4 py-2 hover:bg-gray-100"
-                  onClick={closeMenuOnLinkClick}
+                  onClick={() => handleDropdownRedirect("/office")}
                 >
                   Office
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/shop"
+                  to="#"
                   className="block px-4 py-2 hover:bg-gray-100"
-                  onClick={closeMenuOnLinkClick}
+                  onClick={() => handleDropdownRedirect("/shop")}
                 >
                   Shop
                 </Link>
               </li>
             </ul>
           </li>
+
           {/* Property Sales Dropdown */}
           <li
             className="relative"
@@ -288,137 +292,69 @@ const Navbar = () => {
               <ul className="absolute left-0 mt-1 bg-white shadow-lg rounded-md py-2 w-48 transition-opacity ease-in-out duration-300">
                 <li>
                   <Link
-                    to="/houses"
+                    to="#"
                     className="block px-4 py-2 hover:bg-gray-100"
-                    onClick={closeMenuOnLinkClick}
-                  >
-                    Houses
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/land"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                    onClick={closeMenuOnLinkClick}
+                    onClick={() => handleDropdownRedirect("/land")}
                   >
                     Land
                   </Link>
                 </li>
                 <li>
                   <Link
-                    to="/commercial"
+                    to="#"
                     className="block px-4 py-2 hover:bg-gray-100"
-                    onClick={closeMenuOnLinkClick}
+                    onClick={() => handleDropdownRedirect("/commercial")}
                   >
-                    Commercial
+                    Commercial Property
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="#"
+                    className="block px-4 py-2 hover:bg-gray-100"
+                    onClick={() => handleDropdownRedirect("/houses-for-sale")}
+                  >
+                    Houses for Sale
                   </Link>
                 </li>
               </ul>
             )}
           </li>
 
-          {/* Other Links */}
-          <li>
-            <Link
-              to="/cars"
-              className="hover:text-gray-700 block py-2 lg:py-0"
-              onClick={closeMenuOnLinkClick}
-            >
-              Cars
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/uploadProperty"
-              className="hover:text-gray-700 block py-2 lg:py-0"
-              onClick={closeMenuOnLinkClick}
-            >
-              Upload a Property
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/about"
-              className="hover:text-gray-700 block py-2 lg:py-0"
-              onClick={closeMenuOnLinkClick}
-            >
-              About
-            </Link>
-          </li>
-
-          {isLoggedIn && (
-            <li className="relative">
-              <div
-                className="flex items-center space-x-2 cursor-pointer"
-                onClick={goToProfile}
-              >
+          {/* Profile and Logout */}
+          <li className="ml-4">
+            {isLoggedIn ? (
+              <div className="relative">
                 <img
-                  src={userProfile?.profileImage || assets.defaultProfilePic}
-                  alt="User Profile"
-                  className="w-10 h-10 rounded-full object-cover"
-                  onError={(e) => (e.target.src = assets.defaultProfilePic)} // Fallback if image fails to load
+                  src={userProfile.profileImage}
+                  alt="Profile"
+                  className="w-10 h-10 rounded-full cursor-pointer"
+                  onClick={goToProfile}
                 />
-
-                <span className="hidden lg:block text-gray-700">
-                  {userProfile.role}
-                </span>
+                <div
+                  className="absolute right-0 bg-white shadow-lg rounded-md mt-2 py-2 w-48"
+                  onClick={handleLogout}
+                >
+                  <Link
+                    to="#"
+                    className="block px-4 py-2 hover:bg-gray-100"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </Link>
+                </div>
               </div>
-            </li>
-          )}
-
-          {isLoggedIn ? (
-            <li className="lg:hidden mt-4">
-              <button
-                onClick={handleLogout}
-                className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black w-full"
+            ) : (
+              <Link
+                to="/login"
+                className="py-2 px-4 bg-blue-500 text-white rounded-lg"
+                onClick={closeMenuOnLinkClick}
               >
-                Logout
-              </button>
-            </li>
-          ) : (
-            <>
-              <li className="lg:hidden mt-4">
-                <Link to="/login" onClick={closeMenuOnLinkClick}>
-                  <button className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black w-full">
-                    Login
-                  </button>
-                </Link>
-              </li>
-              <li className="lg:hidden">
-                <Link to="/signup" onClick={closeMenuOnLinkClick}>
-                  <button className="bg-red-500 mt-2 text-white px-7 py-2 rounded-md hover:bg-black w-full">
-                    Signup
-                  </button>
-                </Link>
-              </li>
-            </>
-          )}
+                Login
+              </Link>
+            )}
+          </li>
         </ul>
-
-        {/* Desktop-Only Buttons */}
-        <div className="hidden lg:flex lg:items-center space-x-4">
-          {isLoggedIn ? (
-            <button
-              onClick={handleLogout}
-              className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black"
-            >
-              Logout
-            </button>
-          ) : (
-            <>
-              <Link to="/login">
-                <button className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black">
-                  Login
-                </button>
-              </Link>
-              <Link to="/signup">
-                <button className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black">
-                  Signup
-                </button>
-              </Link>
-            </>
-          )}
-        </div>
       </div>
     </nav>
   );
