@@ -21,6 +21,13 @@ router.post(
   upload.fields([{ name: 'images', maxCount: 10 }, { name: 'video', maxCount: 1 }]), // Limit max count to 10 for multer
   async (req, res) => {
     try {
+      // Retrieve agentId from the logged-in user (assuming token-based authentication)
+      const agentId = req.user ? req.user._id : null; // If using JWT, `req.user` should contain the logged-in user info.
+
+      if (!agentId) {
+        return res.status(401).json({ message: 'Agent not authenticated' }); // Ensure agent is logged in
+      }
+
       const {
         name,
         description,
@@ -30,7 +37,6 @@ router.post(
         condition,
         region,
         propertyType,
-        agentId, // Added agentId
       } = req.body;
 
       const missingFields = [];
@@ -41,7 +47,6 @@ router.post(
       if (!condition) missingFields.push('condition');
       if (!region) missingFields.push('region');
       if (!propertyType) missingFields.push('propertyType');
-      if (!agentId) missingFields.push('agentId'); // Check for agentId
 
       if (missingFields.length > 0) {
         return res.status(400).json({
@@ -97,7 +102,7 @@ router.post(
         propertyType,
         images,
         video,
-        agentId, // Save agentId in the property document
+        agentId, // Use the agentId from the session or token
       });
 
       await property.save();
