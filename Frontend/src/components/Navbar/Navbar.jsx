@@ -321,40 +321,108 @@ const Navbar = () => {
             )}
           </li>
 
-          {/* Profile and Logout */}
-          <li className="ml-4">
-            {isLoggedIn ? (
-              <div className="relative">
-                <img
-                  src={userProfile.profileImage}
-                  alt="Profile"
-                  className="w-10 h-10 rounded-full cursor-pointer"
-                  onClick={goToProfile}
-                />
-                <div
-                  className="absolute right-0 bg-white shadow-lg rounded-md mt-2 py-2 w-48"
-                  onClick={handleLogout}
-                >
-                  <Link
-                    to="#"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                    onClick={handleLogout}
-                  >
-                    Logout
-                  </Link>
-                </div>
-              </div>
-            ) : (
-              <Link
-                to="/login"
-                className="py-2 px-4 bg-blue-500 text-white rounded-lg"
-                onClick={closeMenuOnLinkClick}
-              >
-                Login
-              </Link>
-            )}
+       {/* Other Links */}
+       <li>
+            <Link
+              to="/cars"
+              className="hover:text-gray-700 block py-2 lg:py-0"
+              onClick={closeMenuOnLinkClick}
+            >
+              Cars
+            </Link>
           </li>
+          <li>
+            <Link
+              to="/uploadProperty"
+              className="hover:text-gray-700 block py-2 lg:py-0"
+              onClick={closeMenuOnLinkClick}
+            >
+              Upload a Property
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/about"
+              className="hover:text-gray-700 block py-2 lg:py-0"
+              onClick={closeMenuOnLinkClick}
+            >
+              About
+            </Link>
+          </li>
+
+          {isLoggedIn && (
+            <li className="relative">
+              <div
+                className="flex items-center space-x-2 cursor-pointer"
+                onClick={goToProfile}
+              >
+                <img
+                  src={userProfile?.profileImage || assets.defaultProfilePic}
+                  alt="User Profile"
+                  className="w-10 h-10 rounded-full object-cover"
+                  onError={(e) => (e.target.src = assets.defaultProfilePic)} // Fallback if image fails to load
+                />
+
+                <span className="hidden lg:block text-gray-700">
+                  {userProfile.role}
+                </span>
+              </div>
+            </li>
+          )}
+
+          {isLoggedIn ? (
+            <li className="lg:hidden mt-4">
+              <button
+                onClick={handleLogout}
+                className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black w-full"
+              >
+                Logout
+              </button>
+            </li>
+          ) : (
+            <>
+              <li className="lg:hidden mt-4">
+                <Link to="/login" onClick={closeMenuOnLinkClick}>
+                  <button className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black w-full">
+                    Login
+                  </button>
+                </Link>
+              </li>
+              <li className="lg:hidden">
+                <Link to="/signup" onClick={closeMenuOnLinkClick}>
+                  <button className="bg-red-500 mt-2 text-white px-7 py-2 rounded-md hover:bg-black w-full">
+                    Signup
+                  </button>
+                </Link>
+              </li>
+            </>
+          )}
         </ul>
+
+        {/* Desktop-Only Buttons */}
+        <div className="hidden lg:flex lg:items-center space-x-4">
+          {isLoggedIn ? (
+            <button
+              onClick={handleLogout}
+              className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black"
+            >
+              Logout
+            </button>
+          ) : (
+            <>
+              <Link to="/login">
+                <button className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black">
+                  Login
+                </button>
+              </Link>
+              <Link to="/signup">
+                <button className="bg-red-500 text-white px-7 py-2 rounded-md hover:bg-black">
+                  Signup
+                </button>
+              </Link>
+            </>
+          )}
+        </div>
       </div>
     </nav>
   );
