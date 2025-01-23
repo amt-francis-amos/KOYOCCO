@@ -57,7 +57,7 @@ const PropertyDetails = () => {
         {
           headers: {
             'Content-Type': 'application/json',
-            // Add any required authorization headers here if needed
+            
           }
         }
       );
