@@ -71,12 +71,20 @@ const uploadProperty = async (req, res) => {
 
 const getAllProperties = async (req, res) => {
   try {
-    const properties = await Property.find();
+    const { propertyType } = req.query; // Get property type from query params
+
+    let filter = {};
+    if (propertyType) {
+      filter.propertyType = propertyType; // Filter by propertyType if provided
+    }
+
+    const properties = await Property.find(filter);
     res.status(200).json(properties);
   } catch (error) {
     res.status(500).json({ message: 'Failed to fetch properties', error: error.message });
   }
 };
+
 
 const deleteProperty = async (req, res) => {
   try {
