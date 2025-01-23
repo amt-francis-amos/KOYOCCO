@@ -19,7 +19,7 @@ const UploadProperty = () => {
     address: '',
     images: [],
     video: null,
-    agentId: loggedInAgentId,
+    agentId
   });
   const [imagePreviews, setImagePreviews] = useState([]);
   const navigate = useNavigate();
