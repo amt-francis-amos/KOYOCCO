@@ -1,27 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const ShortStays = () => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchShortStayProperties = async () => {
       try {
         const response = await axios.get(
-          'https://koyocco-backend.onrender.com/api/properties?propertyType=Short-Stay'
+          "https://koyocco-backend.onrender.com/api/properties?propertyType=Short-Stay"
         );
-         
-        // Validate the fetched properties to ensure they are Short-Stay
-        const shortStayProperties = response.data.filter(
-          (property) => property.propertyType === 'Short-Stay'
-        );
-
-        setProperties(shortStayProperties);
+        setProperties(response.data);
         setLoading(false);
       } catch (err) {
-        setError('Failed to fetch properties');
+        setError("Failed to fetch properties. Please try again.");
         setLoading(false);
       }
     };
@@ -29,45 +25,39 @@ const ShortStays = () => {
     fetchShortStayProperties();
   }, []);
 
+  const handleBookNow = (property) => {
+    navigate("/booking", { state: property });
+  };
+
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-6 text-center">Short-Stay Properties</h1>
-      {properties.length === 0 ? (
-        <p className="text-center text-gray-600">No Short-Stay properties available</p>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {properties.map((property) => (
-            <div
-              key={property._id}
-              className="bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105"
+    <div className="max-w-6xl mx-auto py-12">
+      <h1 className="text-3xl font-bold mb-6">Short-Stay Properties</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {properties.map((property) => (
+          <div
+            key={property.id}
+            className="bg-white shadow-lg rounded-lg p-4 flex flex-col"
+          >
+            <img
+              src={property.imageUrl}
+              alt={property.name}
+              className="w-full h-48 object-cover rounded-md mb-4"
+            />
+            <h2 className="text-xl font-semibold mb-2">{property.name}</h2>
+            <p className="text-gray-600">{property.location}</p>
+            <p className="text-gray-800 font-bold mb-4">${property.price}</p>
+            <button
+              onClick={() => handleBookNow(property)}
+              className="mt-auto bg-red-500 text-white py-2 px-4 rounded hover:bg-black"
             >
-              {property.images && property.images.length > 0 && (
-                <img
-                  src={property.images[0]}
-                  alt={property.name}
-                  className="w-full h-48 object-cover"
-                />
-              )}
-              <div className="p-4">
-                <h2 className="text-lg font-semibold text-gray-800">{property.name}</h2>
-                <p className="text-sm text-gray-600 mt-2">{property.description}</p>
-                <div className="flex justify-between items-center mt-4">
-                  <span className="text-red-500 font-bold text-lg">₵{property.price}</span>
-                  <span className="text-gray-500 text-sm">{property.location}</span>
-                </div>
-                <button
-                  className="w-full mt-4 py-2 text-white bg-red-500 hover:bg-black font-semibold rounded-lg transition duration-300"
-                >
-                  Book Now
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+              Book Now
+            </button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
