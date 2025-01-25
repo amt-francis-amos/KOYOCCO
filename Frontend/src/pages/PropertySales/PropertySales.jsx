@@ -1,26 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; 
+import axios from "axios";
 
 const PropertySales = () => {
   const [sales, setSales] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate(); 
 
   const fetchPropertySales = async () => {
     try {
       const response = await axios.get(
-        'https://koyocco-backend.onrender.com/api/properties?propertyType=PropertySales'
+        "https://koyocco-backend.onrender.com/api/properties?propertyType=PropertySales"
       );
 
-      // Filter properties on the frontend for extra safety
+  
       const filteredSales = response.data.filter(
-        (property) => property.propertyType === 'PropertySales'
+        (property) => property.propertyType === "PropertySales"
       );
 
       setSales(filteredSales);
       setLoading(false);
     } catch (err) {
-      setError('Failed to fetch property sales');
+      setError("Failed to fetch property sales");
       setLoading(false);
     }
   };
@@ -29,9 +31,16 @@ const PropertySales = () => {
     fetchPropertySales();
   }, []);
 
-  const handlePropertyUpload = async () => {
-    // Simulate property upload to refresh the sales
-    await fetchPropertySales();
+  const handleBookSales = (sale) => {
+ 
+    navigate("/booking", {
+      state: {
+        id: sale._id,
+        name: sale.name,
+        price: sale.price,
+        location: sale.location,
+      },
+    });
   };
 
   if (loading) return <p>Loading...</p>;
@@ -60,12 +69,12 @@ const PropertySales = () => {
                 <h2 className="text-lg font-semibold text-gray-800">{sale.name}</h2>
                 <p className="text-sm text-gray-600 mt-2">{sale.description}</p>
                 <div className="flex justify-between items-center mt-4">
-                  <span className="text-orange-500 font-bold text-lg">${sale.price}</span>
+                  <span className="text-red-500 font-bold text-lg">${sale.price}</span>
                   <span className="text-gray-500 text-sm">{sale.location}</span>
                 </div>
                 <button
                   className="w-full mt-4 py-2 text-white bg-red-500 hover:bg-black font-semibold rounded-lg transition duration-300"
-                  onClick={handlePropertyUpload}
+                  onClick={() => handleBookSales(sale)} 
                 >
                   Book Sales
                 </button>

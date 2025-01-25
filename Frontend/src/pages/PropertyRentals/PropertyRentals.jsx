@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // Use this for navigation
+import { useNavigate } from "react-router-dom"; 
 import axios from "axios";
 
 const PropertyRentals = () => {
   const [rentals, setRentals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate(); // Initialize navigation
+  const navigate = useNavigate(); 
 
   const fetchPropertyRentals = async () => {
     try {
@@ -14,7 +14,7 @@ const PropertyRentals = () => {
         "https://koyocco-backend.onrender.com/api/properties?propertyType=PropertyRentals"
       );
 
-      // Filter properties on the frontend for extra safety
+      
       const filteredRentals = response.data.filter(
         (property) => property.propertyType === "PropertyRentals"
       );
@@ -32,7 +32,7 @@ const PropertyRentals = () => {
   }, []);
 
   const handleRentNow = (rental) => {
-    // Navigate to the booking page with the rental details
+   
     navigate("/booking", {
       state: {
         id: rental._id,
@@ -74,7 +74,7 @@ const PropertyRentals = () => {
                 </div>
                 <button
                   className="w-full mt-4 py-2 text-white bg-red-500 hover:bg-black font-semibold rounded-lg transition duration-300"
-                  onClick={() => handleRentNow(rental)} // Pass rental details
+                  onClick={() => handleRentNow(rental)} 
                 >
                   Rent Now
                 </button>
