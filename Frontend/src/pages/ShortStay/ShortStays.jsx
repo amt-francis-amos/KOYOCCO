@@ -1,33 +1,46 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const ShortStays = () => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchShortStayProperties = async () => {
       try {
         const response = await axios.get(
-          'https://koyocco-backend.onrender.com/api/properties?propertyType=Short-Stay'
+          "https://koyocco-backend.onrender.com/api/properties?propertyType=Short-Stay"
         );
-         
+
         // Validate the fetched properties to ensure they are Short-Stay
         const shortStayProperties = response.data.filter(
-          (property) => property.propertyType === 'Short-Stay'
+          (property) => property.propertyType === "Short-Stay"
         );
 
         setProperties(shortStayProperties);
         setLoading(false);
       } catch (err) {
-        setError('Failed to fetch properties');
+        setError("Failed to fetch properties");
         setLoading(false);
       }
     };
 
     fetchShortStayProperties();
   }, []);
+
+  const handleBookNow = (property) => {
+    navigate("/booking", {
+      state: {
+        id: property._id,
+        name: property.name,
+        price: property.price,
+        location: property.location,
+      },
+    });
+  };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
@@ -59,6 +72,7 @@ const ShortStays = () => {
                   <span className="text-gray-500 text-sm">{property.location}</span>
                 </div>
                 <button
+                  onClick={() => handleBookNow(property)}
                   className="w-full mt-4 py-2 text-white bg-red-500 hover:bg-black font-semibold rounded-lg transition duration-300"
                 >
                   Book Now
