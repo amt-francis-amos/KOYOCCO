@@ -12,7 +12,7 @@ const ShortStays = () => {
         const response = await axios.get(
           'https://koyocco-backend.onrender.com/api/properties?propertyType=Short-Stay'
         );
-        
+         
         // Validate the fetched properties to ensure they are Short-Stay
         const shortStayProperties = response.data.filter(
           (property) => property.propertyType === 'Short-Stay'
