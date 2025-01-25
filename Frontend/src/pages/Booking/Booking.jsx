@@ -7,65 +7,71 @@ const Booking = () => {
   const { name, price, location: stayLocation, id } = location.state;
 
   const [fullName, setFullName] = useState("");
-  const [propertyId, setPropertyId] = useState("");
   const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [date, setDate] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState(""); 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const exchangeRate = 10;
+  const exchangeRate = 10; // Example exchange rate (can be fetched dynamically)
 
   const convertToGHS = (priceInUSD) => {
-    const price = parseFloat(priceInUSD.replace(/[^0-9.-]+/g, ""));
-    if (isNaN(price)) {
+    if (!priceInUSD) return "Price not available";
+
+    const sanitizedPrice = parseFloat(priceInUSD.toString().replace(/[^0-9.-]+/g, ""));
+    if (isNaN(sanitizedPrice)) {
       return "Invalid Price";
     }
-    return `₵ ${(price * exchangeRate).toLocaleString()}`;
+
+    return `₵ ${(sanitizedPrice * exchangeRate).toLocaleString()}`;
   };
 
   const handleBooking = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
-  
-    if (!fullName || !email || !date || !phoneNumber) { 
-      setError("All fields are required");
+
+    // Basic validation
+    if (!fullName || !email || !date || !phoneNumber) {
+      setError("All fields are required.");
       return;
     }
-  
+
+    if (!/^\+?[0-9]{7,15}$/.test(phoneNumber)) {
+      setError("Invalid phone number format.");
+      return;
+    }
+
     try {
       const bookingData = {
-        propertyId: id, 
+        propertyId: id,
         fullName,
         email,
-        phoneNumber, 
+        phoneNumber,
         date,
       };
-  
+
       const response = await axios.post(
         "https://koyocco-backend.onrender.com/api/bookings",
         bookingData,
         {
-          headers: { Authorization: "Bearer " + localStorage.getItem("authToken") },
+          headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
         }
       );
-  
+
       if (response.status === 201) {
         setSuccess("Booking confirmed! Check your email for confirmation.");
         setFullName("");
         setEmail("");
-        setPhoneNumber(""); // Reset phoneNumber input
+        setPhoneNumber("");
         setDate("");
       } else {
         setError("Unexpected response from the server. Please try again.");
       }
     } catch (err) {
-      if (err.response && err.response.data) {
-        setError(err.response.data.message || "Error creating booking. Please try again.");
-      } else {
-        setError("Error creating booking. Please try again.");
-      }
+      setError(
+        err.response?.data?.message || "Error creating booking. Please try again."
+      );
       console.error(err);
     }
   };
