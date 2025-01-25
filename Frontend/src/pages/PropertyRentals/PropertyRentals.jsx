@@ -1,26 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; // Use this for navigation
+import axios from "axios";
 
 const PropertyRentals = () => {
   const [rentals, setRentals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate(); // Initialize navigation
 
   const fetchPropertyRentals = async () => {
     try {
       const response = await axios.get(
-        'https://koyocco-backend.onrender.com/api/properties?propertyType=PropertyRentals'
+        "https://koyocco-backend.onrender.com/api/properties?propertyType=PropertyRentals"
       );
 
       // Filter properties on the frontend for extra safety
       const filteredRentals = response.data.filter(
-        (property) => property.propertyType === 'PropertyRentals'
+        (property) => property.propertyType === "PropertyRentals"
       );
 
       setRentals(filteredRentals);
       setLoading(false);
     } catch (err) {
-      setError('Failed to fetch property rentals');
+      setError("Failed to fetch property rentals");
       setLoading(false);
     }
   };
@@ -29,9 +31,16 @@ const PropertyRentals = () => {
     fetchPropertyRentals();
   }, []);
 
-  const handlePropertyUpload = async () => {
-    // Simulate property upload to refresh the rentals
-    await fetchPropertyRentals();
+  const handleRentNow = (rental) => {
+    // Navigate to the booking page with the rental details
+    navigate("/booking", {
+      state: {
+        id: rental._id,
+        name: rental.name,
+        price: rental.price,
+        location: rental.location,
+      },
+    });
   };
 
   if (loading) return <p>Loading...</p>;
@@ -65,7 +74,7 @@ const PropertyRentals = () => {
                 </div>
                 <button
                   className="w-full mt-4 py-2 text-white bg-red-500 hover:bg-black font-semibold rounded-lg transition duration-300"
-                  onClick={handlePropertyUpload}
+                  onClick={() => handleRentNow(rental)} // Pass rental details
                 >
                   Rent Now
                 </button>
