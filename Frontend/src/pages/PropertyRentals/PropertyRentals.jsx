@@ -69,7 +69,7 @@ const PropertyRentals = () => {
                 <h2 className="text-lg font-semibold text-gray-800">{rental.name}</h2>
                 <p className="text-sm text-gray-600 mt-2">{rental.description}</p>
                 <div className="flex justify-between items-center mt-4">
-                  <span className="text-orange-500 font-bold text-lg">${rental.price}</span>
+                  <span className="text-red-500 font-bold text-lg">${rental.price}</span>
                   <span className="text-gray-500 text-sm">{rental.location}</span>
                 </div>
                 <button
