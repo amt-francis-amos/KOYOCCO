@@ -24,17 +24,15 @@ app.use(express.json());
 mongoDb();
 
 // Routes
-
 app.use('/api', agentRoutes);
 app.use('/api/auth', userRoutes); 
 app.use('/api/properties', propertyRoutes); 
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/requests', requestRoutes);
-app.use('/api/post-listing', listingRoutes);
-app.use('/api/admin', adminRoutes);
+app.use('/api/post-listing', listingRoutes); 
+app.use('/api/admin', adminRoutes); 
 app.use('/api/user', profileRoutes); 
-app.use('/api', contactAgentRoutes); 
-app.use('/api', listingRoutes);
+app.use('/api/contact-agent', contactAgentRoutes); 
 
 // Global error handling middleware
 app.use((err, req, res, next) => {
