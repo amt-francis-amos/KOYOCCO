@@ -71,11 +71,11 @@ const uploadProperty = async (req, res) => {
 
 const getAllProperties = async (req, res) => {
   try {
-    const { propertyType } = req.query; // Get property type from query params
+    const { propertyType } = req.query; 
 
     let filter = {};
     if (propertyType) {
-      filter.propertyType = propertyType; // Filter by propertyType if provided
+      filter.propertyType = propertyType; 
     }
 
     const properties = await Property.find(filter);

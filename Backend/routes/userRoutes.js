@@ -97,6 +97,13 @@ router.post("/signup", async (req, res) => {
     const userExists = await User.findOne({ email });
     if (userExists) return res.status(400).json({ message: "User already exists" });
 
+   
+    let agentId = null;
+    if (role === 'Agent') {
+      agentId = crypto.randomBytes(16).toString('hex'); 
+    }
+
+    // Create new user
     const user = new User({
       email,
       password: await bcrypt.hash(password, 10),
@@ -105,20 +112,26 @@ router.post("/signup", async (req, res) => {
       lastname,
       phoneNumber,
       location,
+      agentId, 
     });
 
     await user.save();
 
-    // Send the confirmation email
     await sendConfirmationEmail(user);
-    res.status(201).json({ message: "Signup successful! Confirmation email sent.", role: user.role });
+
+  
+    res.status(201).json({
+      message: "Signup successful! Confirmation email sent.",
+      role: user.role,
+      userId: user._id,
+      agentId: user.agentId, 
+    });
   } catch (error) {
     console.error("Signup error:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
 
-// Login route
 // Login route
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;

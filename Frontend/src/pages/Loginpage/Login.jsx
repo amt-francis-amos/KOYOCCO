@@ -15,7 +15,6 @@ const Login = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
 
-
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (token) {
@@ -52,7 +51,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (!validateForm()) return;
 
     try {
@@ -60,21 +59,23 @@ const Login = () => {
         "https://koyocco-backend.onrender.com/api/auth/login",
         { email, password }
       );
-  
-      const { token, role, userId } = response.data; 
-  
+
+      const { token, role, userId, agentId } = response.data;
+
       if (!token || !role || !userId) {
         setMessage("Login failed: No token, role, or userId received");
         return;
       }
-  
+
       localStorage.setItem("authToken", token);
       localStorage.setItem("role", role);
-      localStorage.setItem("userId", userId); 
-  
-      setIsAuthenticated(true); 
-  
-     
+      localStorage.setItem("userId", userId);
+      if (role === "Agent") {
+        localStorage.setItem("agentId", agentId); // Store agentId for agents
+      }
+
+      setIsAuthenticated(true);
+
       const redirectPath =
         role === "Admin"
           ? "/admin-dashboard"
@@ -83,9 +84,9 @@ const Login = () => {
           : role === "Agent"
           ? "/"
           : "/";
-  
+
       toast.success("Login successful!");
-      navigate(redirectPath); 
+      navigate(redirectPath);
     } catch (error) {
       setMessage(error.response?.data?.message || "An error occurred");
       toast.error(error.response?.data?.message || "An error occurred");
@@ -121,7 +122,7 @@ const Login = () => {
         <div className="mb-4 relative">
           <label className="block text-gray-700">Password</label>
           <input
-            type={showPassword ? "text" : "password"} 
+            type={showPassword ? "text" : "password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="w-full p-2 border border-gray-300 rounded-lg"
@@ -131,7 +132,7 @@ const Login = () => {
             className="absolute right-3 top-10 cursor-pointer"
             onClick={togglePasswordVisibility}
           >
-            {showPassword ? <FaEyeSlash /> : <FaEye />} 
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
           </span>
           {errors.password && <p className="text-red-500">{errors.password}</p>}
         </div>
