@@ -57,7 +57,6 @@ const PropertyDetails = () => {
         {
           headers: {
             'Content-Type': 'application/json',
-            
           }
         }
       );
@@ -144,7 +143,9 @@ const PropertyDetails = () => {
 
           <div className="flex flex-col md:flex-row items-center gap-4 mt-6">
             <button
-              className="bg-red-500 text-white px-6 py-2 hover:bg-black duration-300 rounded-full w-full md:w-auto"
+              className={`${
+                loading ? "bg-gray-400 cursor-not-allowed" : "bg-red-500 hover:bg-black"
+              } text-white px-6 py-2 rounded-full w-full md:w-auto`}
               onClick={fetchAgentContact}
               disabled={loading}
             >
@@ -164,7 +165,7 @@ const PropertyDetails = () => {
           )}
 
           {/* Agent Contact Display */}
-          {showContact && agentContact && (
+          {showContact && agentContact ? (
             <div className="mt-4 p-4 bg-gray-100 rounded-md">
               <h3 className="text-lg font-bold mb-2">Agent Contact</h3>
               <div className="space-y-2">
@@ -182,6 +183,8 @@ const PropertyDetails = () => {
                 </p>
               </div>
             </div>
+          ) : (
+            <div className="mt-4 text-gray-500">No agent contact information available.</div>
           )}
         </div>
       </div>
