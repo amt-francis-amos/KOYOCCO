@@ -24,7 +24,6 @@ app.use(express.json());
 mongoDb();
 
 // Routes
-app.use("/api", agentRoutes);
 app.use('/api/auth', userRoutes); 
 app.use('/api/properties', propertyRoutes); 
 app.use('/api/bookings', bookingRoutes);

@@ -16,34 +16,42 @@ const PropertyDetails = () => {
   // Find the property based on the ID
   const propertyDetail = property.find((prop) => prop._id === id);
 
+  // Debug log to check property data
   useEffect(() => {
+    console.log("Property Data:", property);
     if (propertyDetail) {
+      console.log("Property Detail:", propertyDetail);
+      console.log("Agent ID:", propertyDetail.agentId);
+    }
+  }, [propertyDetail]);
+
+  // Set the main image once propertyDetail is loaded
+  useEffect(() => {
+    if (propertyDetail?.images?.length > 0) {
       setMainImage(propertyDetail.images[0]);
     }
   }, [propertyDetail]);
 
-  // Fetch agent contact when "Contact Agent" button is clicked
+  // Enhanced fetchAgentContact function with better error handling
   const fetchAgentContact = async () => {
     setLoading(true);
     setError(null);
 
-    if (!propertyDetail || !propertyDetail.agentId) {
-      setError("Property details or agent info not available");
+    // Check if propertyDetail exists
+    if (!propertyDetail) {
+      setError("Property details not found");
       setLoading(false);
       return;
     }
 
-    try {
-   
-      const response = await axios.get(
-        `https://koyocco-backend.onrender.com/api/agent/${propertyDetail.agentId}`
-      );
-      setAgentContact(response.data);
-      setShowContact(true);
-    } catch (err) {
-      setError("Failed to fetch agent contact information.");
+    // Check if agentId exists
+    if (!propertyDetail.agentId) {
+      setError("Agent information not available for this property");
+      setLoading(false);
+      return;
     }
-    setLoading(false);
+
+    
   };
 
   if (!propertyDetail) {
@@ -59,6 +67,7 @@ const PropertyDetails = () => {
       <h2 className="text-3xl font-bold mb-6 text-center">{propertyDetail.name}</h2>
 
       <div className="flex flex-col md:flex-row gap-6">
+        {/* Left section */}
         <div className="md:w-1/2">
           <img
             src={mainImage || "/placeholder-image.jpg"}
@@ -78,6 +87,7 @@ const PropertyDetails = () => {
           </div>
         </div>
 
+        {/* Right section */}
         <div className="md:w-1/2 bg-white shadow-lg rounded-md p-6 flex flex-col justify-between">
           <div>
             <p className="text-gray-600 mb-4">{propertyDetail.description}</p>
@@ -125,13 +135,15 @@ const PropertyDetails = () => {
             </button>
           </div>
 
+          {/* Error Message Display */}
           {error && (
             <div className="mt-4 p-3 bg-red-100 text-red-700 rounded-md">
               {error}
             </div>
           )}
 
-          {showContact && agentContact && (
+          {/* Agent Contact Display */}
+          {showContact && agentContact ? (
             <div className="mt-4 p-4 bg-gray-100 rounded-md">
               <h3 className="text-lg font-bold mb-2">Agent Contact</h3>
               <div className="space-y-2">
@@ -149,6 +161,8 @@ const PropertyDetails = () => {
                 </p>
               </div>
             </div>
+          ) : (
+            <div className="mt-4 text-gray-500">No agent contact information available.</div>
           )}
         </div>
       </div>
