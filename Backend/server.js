@@ -9,7 +9,7 @@ const requestRoutes = require('./routes/requestRoutes');
 const listingRoutes = require("./routes/listingRoutes");
 const adminRoutes = require('./routes/adminRoutes');
 const profileRoutes = require("./routes/profileRoutes");
-const agentRoutes = require("./routes/agentRoutes");
+
 
 dotenv.config();
 
