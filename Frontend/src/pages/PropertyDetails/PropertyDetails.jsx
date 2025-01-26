@@ -53,7 +53,7 @@ const PropertyDetails = () => {
 
     try {
       const response = await axios.get(
-        `https://koyocco-backend.onrender.com/api/contact-agent/${propertyDetail.agentId}`,
+        `https://koyocco-backend.onrender.com/api/agents/${propertyDetail.agentId}`,
         {
           headers: {
             'Content-Type': 'application/json',
