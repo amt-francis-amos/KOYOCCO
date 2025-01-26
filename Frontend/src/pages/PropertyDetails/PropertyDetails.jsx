@@ -51,29 +51,7 @@ const PropertyDetails = () => {
       return;
     }
 
-    try {
-      const response = await axios.get(
-        `https://koyocco-backend.onrender.com/api/agents/${propertyDetail.agentId}`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        }
-      );
-
-      console.log("Agent Response:", response);
-      if (response.data) {
-        setAgentContact(response.data);
-        setShowContact(true);
-      } else {
-        setError("No agent data received");
-      }
-    } catch (error) {
-      setError(error.response?.data?.message || "Error fetching agent contact information");
-      console.error("Fetch error:", error);
-    } finally {
-      setLoading(false);
-    }
+    
   };
 
   if (!propertyDetail) {
