@@ -34,8 +34,9 @@ const PropertyDetails = () => {
     }
 
     try {
+      // Corrected URL here to match the backend API endpoint
       const response = await axios.get(
-        `https://koyocco-backend.onrender.com/api/agents/${propertyDetail.agentId}/contact`
+        `https://koyocco-backend.onrender.com/api/agent/${propertyDetail.agentId}`
       );
       setAgentContact(response.data);
       setShowContact(true);
