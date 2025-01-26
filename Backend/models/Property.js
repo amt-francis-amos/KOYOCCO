@@ -22,7 +22,7 @@ const propertySchema = new mongoose.Schema(
     condition: {
       type: String,
       required: true,
-      enum: ["Newly Built", "Fairly Used", "Renovated"], 
+      enum: ["Newly Built", "Fairly Used", "Innovated"], 
     },
     region: {
       type: String,
