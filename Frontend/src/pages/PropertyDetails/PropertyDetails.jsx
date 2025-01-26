@@ -178,10 +178,13 @@ const PropertyDetails = () => {
                 <p>
                   <strong>Email:</strong> {agentContact.email}
                 </p>
+                <p>
+                  <strong>Location:</strong> {agentContact.location}
+                </p>
               </div>
             </div>
           ) : (
-            <div className="mt-4 text-gray-500">No agent contact details available</div>
+            <div className="mt-4 text-gray-500">No agent contact information available.</div>
           )}
         </div>
       </div>
