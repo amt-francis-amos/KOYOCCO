@@ -28,7 +28,7 @@ const uploadProperty = async (req, res) => {
       });
     }
 
-    const companyLogo = "https://res.cloudinary.com/dkvs0lnab/image/upload/koyocco.jpeg"; 
+    const companyLogo = "https://res.cloudinary.com/dkvs0lnab/image/upload/koyocco-logo.jpeg"; 
 
     const property = new Property({
       name,
