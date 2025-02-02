@@ -1,27 +1,31 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Carousel } from "react-responsive-carousel";
-import { assets } from "../../assets/assets";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { useProperty } from "../../context/PropertyContext"; 
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import ReactPaginate from "react-paginate";
+import axios from "axios"; // For API requests
 
 const Home = () => {
-  const { property } = useProperty(); 
-  const [searchTerm, setSearchTerm] = useState(""); 
-  const [priceRange, setPriceRange] = useState(""); 
-  const [currentPage, setCurrentPage] = useState(0); 
-  const navigate = useNavigate();
-  const propertiesPerPage = 6; 
+  const [properties, setProperties] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [priceRange, setPriceRange] = useState("");
+  const [currentPage, setCurrentPage] = useState(0);
 
-  const carouselSlides = [
-    { img: assets.houseImg1, text: "Find Your Dream Home" },
-    { img: assets.houseImg2, text: "Experience Luxury Living" },
-    { img: assets.houseImg3, text: "Affordable Housing Options" },
-  ];
+  const propertiesPerPage = 6;
 
+  useEffect(() => {
+    // Fetch properties from backend
+    const fetchProperties = async () => {
+      try {
+        const response = await axios.get("/api/properties");
+        setProperties(response.data);
+      } catch (error) {
+        console.error("Error fetching properties:", error);
+      }
+    };
 
-  const filteredProperties = property.filter((prop) => {
+    fetchProperties();
+  }, []);
+
+  const filteredProperties = properties.filter((prop) => {
     const matchesSearchTerm =
       prop.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       prop.description.toLowerCase().includes(searchTerm.toLowerCase());
@@ -31,55 +35,20 @@ const Home = () => {
     return matchesSearchTerm && matchesPriceRange;
   });
 
-
   const paginatedProperties = filteredProperties.slice(
     currentPage * propertiesPerPage,
     (currentPage + 1) * propertiesPerPage
   );
-
 
   const handlePageClick = (data) => {
     const selectedPage = data.selected;
     setCurrentPage(selectedPage);
   };
 
-
-  const handleNavigateToLogin = () => {
-    navigate("/uploadProperty");
-  };
-
   return (
     <div className="flex flex-col min-h-screen">
-  
       <header className="h-[70vh] md:h-screen">
-        <Carousel
-          showArrows={true}
-          infiniteLoop={true}
-          showThumbs={false}
-          showStatus={false}
-          autoPlay={true}
-          interval={5000}
-        >
-          {carouselSlides.map((slide, index) => (
-            <div
-              key={index}
-              className="bg-cover bg-center h-[70vh] md:h-screen"
-              style={{ backgroundImage: `url(${slide.img})` }}
-            >
-              <div className="bg-black bg-opacity-50 h-full flex flex-col justify-center items-center px-4 text-center">
-                <h1 className="text-white text-3xl md:text-5xl font-bold mb-4">
-                  {slide.text}
-                </h1>
-                <button
-                  onClick={handleNavigateToLogin}
-                  className="bg-red-500 text-white px-6 py-3 rounded-md text-sm md:text-base"
-                >
-                  Get Started
-                </button>
-              </div>
-            </div>
-          ))}
-        </Carousel>
+        {/* Your Carousel or other header content */}
       </header>
 
       <div className="container mx-auto my-8 px-4">
@@ -88,7 +57,7 @@ const Home = () => {
             Featured Properties
           </h2>
 
-       
+          {/* Search and Filter Section */}
           <div className="flex flex-col md:flex-row justify-between mb-4 space-y-2 md:space-y-0">
             <input
               type="text"
@@ -110,7 +79,7 @@ const Home = () => {
             </select>
           </div>
 
-         
+          {/* Property Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {paginatedProperties.length > 0 ? (
               paginatedProperties.map((prop) => (
@@ -152,9 +121,9 @@ const Home = () => {
                             className={`${
                               prop.status === "available"
                                 ? "text-green-500"
-                                : prop.status === "rented"
-                                ? "text-blue-500"
-                                : "text-red-500"
+                                : prop.status === "sold"
+                                ? "text-red-500"
+                                : "text-gray-500"
                             }`}
                           >
                             {prop.status.charAt(0).toUpperCase() +
@@ -162,10 +131,14 @@ const Home = () => {
                           </span>
                         </div>
                       </div>
-                      <div className="flex justify-end mt-4">
-                        <span className="text-xs text-gray-500">
-                          {prop.propertyType}
-                        </span>
+
+                      {/* Display Company Logo */}
+                      <div className="flex justify-center mt-4">
+                        <img
+                          src={prop.companyLogo}
+                          alt="Company Logo"
+                          className="w-12 h-12 object-cover rounded-full"
+                        />
                       </div>
                     </div>
                   </div>
@@ -178,7 +151,7 @@ const Home = () => {
             )}
           </div>
 
-         
+          {/* Pagination */}
           <div className="mt-8 flex justify-center">
             <ReactPaginate
               previousLabel={"Previous"}
