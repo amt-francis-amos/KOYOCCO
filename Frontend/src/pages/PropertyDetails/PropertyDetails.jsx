@@ -92,6 +92,13 @@ const PropertyDetails = () => {
             <p className="text-sm text-gray-600 mb-4">
               <strong>Type:</strong> {propertyDetail.propertyType}
             </p>
+            <div className="flex items-center justify-start mb-4">
+              <img
+                src={assets.koyoccoLogo}
+                alt="Company Logo"
+                className="h-10 w-10 object-contain"
+              />
+              </div>
           </div>
 
           {/* Buttons Section */}
