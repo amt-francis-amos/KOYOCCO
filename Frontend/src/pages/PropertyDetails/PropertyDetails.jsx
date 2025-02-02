@@ -156,17 +156,17 @@ const PropertyDetails = () => {
           </div>
 
           {/* Buttons Section (Dynamically Rendered) */}
-          <div className="flex flex-col gap-4 md:flex-row items-center mt-6">
+          <div className="flex flex-col md:flex-row items-center gap-4 mt-6">
             {buttons
               .filter((btn) => btn.condition)
-              .map((btn, index) => {
+              .map((btn) => {
                 // Common styling for both buttons and links
                 const commonClasses =
                   "text-white px-6 py-3 rounded-full shadow-md w-full md:w-auto flex items-center justify-center transition-all duration-200 ease-in-out focus:outline-none focus:ring-2";
                 if (btn.type === "button") {
                   return (
                     <button
-                      key={index}
+                      key={btn.id}
                       onClick={btn.onClick}
                       className={`${commonClasses} ${btn.className}`}
                     >
@@ -177,7 +177,7 @@ const PropertyDetails = () => {
                 } else {
                   return (
                     <a
-                      key={index}
+                      key={btn.id}
                       href={btn.href}
                       target="_blank"
                       rel="noopener noreferrer"
