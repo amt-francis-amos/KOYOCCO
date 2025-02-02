@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useProperty } from "../../context/PropertyContext";
-import { FaPhoneAlt, FaCommentDots, FaWhatsapp } from "react-icons/fa";
+import { FaPhoneAlt, FaWhatsapp } from "react-icons/fa";
 import { assets } from "../../assets/assets";
 import axios from "axios";
 
@@ -14,6 +14,7 @@ const PropertyDetails = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  // Find the property based on the URL parameter id
   const propertyDetail = property.find((prop) => prop._id === id);
 
   useEffect(() => {
@@ -30,6 +31,7 @@ const PropertyDetails = () => {
     }
   }, [propertyDetail]);
 
+  // Updated function to fetch agent contact details
   const fetchAgentContact = async () => {
     setLoading(true);
     setError(null);
@@ -44,6 +46,19 @@ const PropertyDetails = () => {
       setError("Agent information not available for this property");
       setLoading(false);
       return;
+    }
+
+    try {
+      // Replace `/api/agents/` with your actual API endpoint
+      const response = await axios.get(`/api/agents/${propertyDetail.agentId}`);
+      // Assuming the response returns the agent object directly
+      setAgentContact(response.data);
+      setShowContact(true);
+    } catch (err) {
+      console.error(err);
+      setError("Unable to fetch agent contact details.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -136,8 +151,6 @@ const PropertyDetails = () => {
               <FaPhoneAlt className="inline-block mr-2" />
               {loading ? "Loading..." : "Contact Agent"}
             </button>
-
-           
 
             {/* WhatsApp Button */}
             <button
