@@ -40,11 +40,12 @@ const PropertyDetails = () => {
       return;
     }
 
-    // Extract the agent ID from the property object.
+    // Extract the agent ID from the property object or use stored agent details
     const agentId =
       propertyDetail.agent?._id ||
       propertyDetail.agentId ||
-      propertyDetail.createdBy;
+      propertyDetail.createdBy ||
+      JSON.parse(localStorage.getItem("agentDetails"))?.agentId;
 
     console.log("Extracted Agent ID:", agentId);
 
@@ -57,7 +58,7 @@ const PropertyDetails = () => {
     try {
       // Fetch agent details from API
       const response = await axios.get(
-        `https://koyocco-backend.onrender.com/api/agents/${agentDetails}`
+        `https://koyocco-backend.onrender.com/api/agents/${agentId}`
       );
       if (response.status === 200 && response.data) {
         setAgentContact(response.data);
