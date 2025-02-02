@@ -9,7 +9,9 @@ const PropertyDetails = () => {
   const { property } = useProperty();
   const [mainImage, setMainImage] = useState(null);
   const [agentContact, setAgentContact] = useState(null);
-  const [showContact, setShowContact] = useState(false);
+  const [ownerContact, setOwnerContact] = useState(null);
+  const [showAgentContact, setShowAgentContact] = useState(false);
+  const [showOwnerContact, setShowOwnerContact] = useState(false);
 
   // Find the property based on the URL parameter id
   const propertyDetail = property.find((prop) => prop._id === id);
@@ -19,6 +21,14 @@ const PropertyDetails = () => {
     const storedAgent = localStorage.getItem("agentDetails");
     if (storedAgent) {
       setAgentContact(JSON.parse(storedAgent));
+    }
+  }, []);
+
+  // Retrieve owner details from localStorage
+  useEffect(() => {
+    const storedOwner = localStorage.getItem("ownerDetails");
+    if (storedOwner) {
+      setOwnerContact(JSON.parse(storedOwner));
     }
   }, []);
 
@@ -110,13 +120,13 @@ const PropertyDetails = () => {
             {/* Contact Agent Button */}
             <button
               className="bg-red-500 hover:bg-black text-white px-6 py-2 rounded-full w-full md:w-auto"
-              onClick={() => setShowContact(true)}
+              onClick={() => setShowAgentContact(true)}
             >
               <FaPhoneAlt className="inline-block mr-2" />
               Contact Agent
             </button>
 
-            {/* WhatsApp Button */}
+            {/* WhatsApp Button for Agent */}
             {agentContact?.phoneNumber && (
               <a
                 href={`https://wa.me/233${agentContact.phoneNumber}`}
@@ -127,10 +137,19 @@ const PropertyDetails = () => {
                 <FaWhatsapp className="mr-2" /> WhatsApp
               </a>
             )}
+
+            {/* Contact Owner Button */}
+            <button
+              className="bg-blue-500 hover:bg-black text-white px-6 py-2 rounded-full w-full md:w-auto"
+              onClick={() => setShowOwnerContact(true)}
+            >
+              <FaPhoneAlt className="inline-block mr-2" />
+              Contact Owner
+            </button>
           </div>
 
           {/* Agent Contact Details */}
-          {showContact && agentContact ? (
+          {showAgentContact && agentContact ? (
             <div className="mt-4 p-4 bg-gray-100 rounded-md">
               <h3 className="text-lg font-bold mb-2">Agent Contact</h3>
               <div className="flex items-center space-x-4">
@@ -159,11 +178,47 @@ const PropertyDetails = () => {
                 </div>
               </div>
             </div>
-          ) : (
+          ) : showAgentContact && !agentContact ? (
             <div className="mt-4 text-gray-500">
               No agent contact information available.
             </div>
-          )}
+          ) : null}
+
+          {/* Owner Contact Details */}
+          {showOwnerContact && ownerContact ? (
+            <div className="mt-4 p-4 bg-gray-100 rounded-md">
+              <h3 className="text-lg font-bold mb-2">Owner Contact</h3>
+              <div className="flex items-center space-x-4">
+                <img
+                  src={ownerContact.profileImage || "/default-owner-image.jpg"}
+                  alt="Owner Profile"
+                  className="w-16 h-16 object-cover rounded-full"
+                />
+                <div>
+                  <p className="font-semibold">
+                    {ownerContact.firstname} {ownerContact.lastname}
+                  </p>
+                  <p>
+                    <strong>Phone:</strong>{" "}
+                    <a
+                      href={`tel:${ownerContact.phoneNumber}`}
+                      className="text-blue-500 hover:underline"
+                    >
+                      {ownerContact.phoneNumber}
+                    </a>
+                  </p>
+                  <p>
+                    <strong>Location:</strong>{" "}
+                    {ownerContact.location || "Unknown"}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ) : showOwnerContact && !ownerContact ? (
+            <div className="mt-4 text-gray-500">
+              No owner contact information available.
+            </div>
+          ) : null}
         </div>
       </div>
     </div>
