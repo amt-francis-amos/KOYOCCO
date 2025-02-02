@@ -29,49 +29,14 @@ const PropertyDetails = () => {
     }
   }, [propertyDetail]);
 
-  // Function to fetch agent contact details.
-  const fetchAgentContact = async () => {
-    setLoading(true);
-    setError(null);
-
-    if (!propertyDetail) {
-      setError("Property details not found");
-      setLoading(false);
-      return;
+  // Fetch agent details from localStorage if the agent is logged in.
+  useEffect(() => {
+    const agentDetails = JSON.parse(localStorage.getItem("agentDetails"));
+    if (agentDetails) {
+      setAgentContact(agentDetails);
+      setShowContact(true); // Show agent contact immediately if available
     }
-
-    // Extract the agent ID from the property object.
-    const agentId =
-      propertyDetail.agent?._id ||
-      propertyDetail.agentDetails ||
-      propertyDetail.createdBy;
-
-    console.log("Extracted Agent ID:", agentDetails);
-
-    if (!agentId) {
-      setError("Agent information not available for this property");
-      setLoading(false);
-      return;
-    }
-
-    try {
-      // Fetch agent details from API
-      const response = await axios.get(
-        `https://koyocco-backend.onrender.com/api/agents/${agentDetails}`
-      );
-      if (response.status === 200 && response.data) {
-        setAgentContact(response.data);
-        setShowContact(true);
-      } else {
-        setError("No agent information found.");
-      }
-    } catch (err) {
-      console.error("Error fetching agent details:", err);
-      setError("Unable to fetch agent contact details.");
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, []);
 
   if (!propertyDetail) {
     return <div className="text-center py-8">Loading property details...</div>;
@@ -79,9 +44,7 @@ const PropertyDetails = () => {
 
   return (
     <div className="container mx-auto my-8 px-4">
-      <h2 className="text-3xl font-bold mb-6 text-center">
-        {propertyDetail.name}
-      </h2>
+      <h2 className="text-3xl font-bold mb-6 text-center">{propertyDetail.name}</h2>
 
       <div className="flex flex-col md:flex-row gap-6">
         {/* Property Image Section */}
@@ -108,9 +71,7 @@ const PropertyDetails = () => {
         <div className="md:w-1/2 bg-white shadow-lg rounded-md p-6 flex flex-col justify-between">
           <div>
             <p className="text-gray-600 mb-4">{propertyDetail.description}</p>
-            <p className="text-red-500 font-bold text-lg mb-2">
-              ₵{propertyDetail.price}
-            </p>
+            <p className="text-red-500 font-bold text-lg mb-2">₵{propertyDetail.price}</p>
             <p className="text-gray-500 mb-4">{propertyDetail.location}</p>
             <p className="text-sm text-gray-600 mb-4">
               <strong>Region:</strong> {propertyDetail.region}
@@ -152,7 +113,6 @@ const PropertyDetails = () => {
               className={`${
                 loading ? "bg-gray-400 cursor-not-allowed" : "bg-red-500 hover:bg-black"
               } text-white px-6 py-2 rounded-full w-full md:w-auto`}
-              onClick={fetchAgentContact}
               disabled={loading}
             >
               <FaPhoneAlt className="inline-block mr-2" />
@@ -183,8 +143,7 @@ const PropertyDetails = () => {
               <h3 className="text-lg font-bold mb-2">Agent Contact</h3>
               <div className="space-y-2">
                 <p>
-                  <strong>Name:</strong> {agentContact.firstname}{" "}
-                  {agentContact.lastname}
+                  <strong>Name:</strong> {agentContact.firstname} {agentContact.lastname}
                 </p>
                 <p>
                   <strong>Phone:</strong> {agentContact.phoneNumber}
