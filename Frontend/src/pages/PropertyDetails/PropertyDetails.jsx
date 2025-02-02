@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useProperty } from "../context/PropertyContext";
+import { useProperty } from "../../context/PropertyContext";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { FaPhoneAlt, FaWhatsapp } from "react-icons/fa";
