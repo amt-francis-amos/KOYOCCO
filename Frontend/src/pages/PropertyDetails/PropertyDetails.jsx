@@ -145,7 +145,7 @@ const PropertyDetails = () => {
             {/* WhatsApp Button */}
             <button
               className="bg-green-500 text-white px-6 py-2 rounded-full w-full md:w-auto flex items-center justify-center hover:bg-green-600"
-              onClick={() => window.open("https://wa.me/233241333361", "_blank")}
+              onClick={() => window.open("https://wa.me/233541742099", "_blank")}
             >
               <FaWhatsapp className="mr-2" /> WhatsApp
             </button>
