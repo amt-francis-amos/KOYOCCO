@@ -14,21 +14,22 @@ const PropertyDetails = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Get agent details from localStorage if the user is an agent
-  const agentDetails = localStorage.getItem("agentDetails");
-  const parsedAgentDetails = agentDetails ? JSON.parse(agentDetails) : null;
-
   // Find the property based on the URL parameter id
   const propertyDetail = property.find((prop) => prop._id === id);
 
-  // Set the main image to the first image if available
+  // Debugging: Log property details
+  useEffect(() => {
+    console.log("Property Detail:", propertyDetail);
+  }, [propertyDetail]);
+
+  // Set the main image to the first image if available.
   useEffect(() => {
     if (propertyDetail?.images?.length > 0) {
       setMainImage(propertyDetail.images[0]);
     }
   }, [propertyDetail]);
 
-  // Function to fetch agent contact details (if not available in localStorage)
+  // Function to fetch agent contact details.
   const fetchAgentContact = async () => {
     setLoading(true);
     setError(null);
@@ -39,10 +40,13 @@ const PropertyDetails = () => {
       return;
     }
 
+    // Extract the agent ID from the property object.
     const agentId =
       propertyDetail.agent?._id ||
       propertyDetail.agentId ||
       propertyDetail.createdBy;
+
+    console.log("Extracted Agent ID:", agentId);
 
     if (!agentId) {
       setError("Agent information not available for this property");
@@ -51,8 +55,9 @@ const PropertyDetails = () => {
     }
 
     try {
+      // Fetch agent details from API
       const response = await axios.get(
-        `https://koyocco-backend.onrender.com/api/agents/${agentId}`
+        `https://koyocco-backend.onrender.com/api/agents/${agentDetails}`
       );
       if (response.status === 200 && response.data) {
         setAgentContact(response.data);
@@ -67,12 +72,6 @@ const PropertyDetails = () => {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (!parsedAgentDetails) {
-      fetchAgentContact();
-    }
-  }, [parsedAgentDetails]);
 
   if (!propertyDetail) {
     return <div className="text-center py-8">Loading property details...</div>;
@@ -148,6 +147,7 @@ const PropertyDetails = () => {
 
           {/* Buttons Section */}
           <div className="flex flex-col md:flex-row items-center gap-4 mt-6">
+            {/* Contact Agent Button */}
             <button
               className={`${
                 loading ? "bg-gray-400 cursor-not-allowed" : "bg-red-500 hover:bg-black"
@@ -159,6 +159,7 @@ const PropertyDetails = () => {
               {loading ? "Loading..." : "Contact Agent"}
             </button>
 
+            {/* WhatsApp Button */}
             <button
               className="bg-green-500 text-white px-6 py-2 rounded-full w-full md:w-auto flex items-center justify-center hover:bg-green-600"
               onClick={() =>
@@ -177,21 +178,22 @@ const PropertyDetails = () => {
           )}
 
           {/* Agent Contact Details */}
-          {showContact || parsedAgentDetails ? (
+          {showContact && agentContact ? (
             <div className="mt-4 p-4 bg-gray-100 rounded-md">
               <h3 className="text-lg font-bold mb-2">Agent Contact</h3>
               <div className="space-y-2">
                 <p>
-                  <strong>Name:</strong> {parsedAgentDetails ? `${parsedAgentDetails.firstname} ${parsedAgentDetails.lastname}` : `${agentContact?.firstname} ${agentContact?.lastname}`}
+                  <strong>Name:</strong> {agentContact.firstname}{" "}
+                  {agentContact.lastname}
                 </p>
                 <p>
-                  <strong>Phone:</strong> {parsedAgentDetails ? parsedAgentDetails.phoneNumber : agentContact?.phoneNumber}
+                  <strong>Phone:</strong> {agentContact.phoneNumber}
                 </p>
                 <p>
-                  <strong>Email:</strong> {parsedAgentDetails ? parsedAgentDetails.email : agentContact?.email}
+                  <strong>Email:</strong> {agentContact.email}
                 </p>
                 <p>
-                  <strong>Location:</strong> {parsedAgentDetails ? parsedAgentDetails.location : agentContact?.location}
+                  <strong>Location:</strong> {agentContact.location}
                 </p>
               </div>
             </div>

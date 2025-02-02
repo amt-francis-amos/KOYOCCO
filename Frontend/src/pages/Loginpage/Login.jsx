@@ -69,6 +69,7 @@ const Login = () => {
       localStorage.setItem("authToken", token);
       localStorage.setItem("role", role);
       localStorage.setItem("userId", userId);
+      localStorage.setItem("agentDetails", agentDetails);
 
 
         if (role === "Agent") {
