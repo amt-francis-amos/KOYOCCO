@@ -106,103 +106,95 @@ const Home = () => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-  {paginatedProperties.length > 0 ? (
-    paginatedProperties.map((prop) => (
-      <Link key={prop._id} to={`/property/${prop._id}`}>
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105">
-          {/* Displaying images */}
-          <img
-            src={prop.images[0]}
-            alt={prop.name}
-            className="w-full h-48 object-cover"
-          />
-          <div className="p-6">
-            <div className="flex justify-between mb-4">
-              <h3 className="text-xl font-bold text-gray-800">
-                {prop.name}
-              </h3>
-              <p className="text-xl font-semibold text-red-500">
-                ₵{prop.price}
-              </p>
-            </div>
-            <p className="text-gray-600 text-sm mb-4">
-              {prop.description}
-            </p>
+            {paginatedProperties.length > 0 ? (
+              paginatedProperties.map((prop) => (
+                <Link key={prop._id} to={`/property/${prop._id}`}>
+                  <div className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105">
+                    {/* Display the first image */}
+                    <img
+                      src={prop.images[0]}
+                      alt={prop.name}
+                      className="w-full h-48 object-cover"
+                    />
 
-            {/* Display Videos */}
-            {prop.videos && prop.videos.length > 0 && (
-              <div className="my-4">
-                <h4 className="text-sm font-medium text-gray-800">Property Videos</h4>
-                <div className="flex flex-wrap gap-4 mt-2">
-                  {prop.videos.map((video, index) => (
-                    <div key={index} className="w-full md:w-1/2 lg:w-1/3">
-                      <video
-                        controls
-                        className="w-full h-auto rounded-lg"
-                        src={video}
-                        alt={`Video ${index + 1}`}
-                      />
+                    {/* If videos are available, display them below the image */}
+                    {prop.videos && prop.videos.length > 0 && (
+                      <div className="flex justify-center mb-4">
+                        {prop.videos.map((videoUrl, index) => (
+                          <video
+                            key={index}
+                            controls
+                            className="w-full h-48 object-cover"
+                          >
+                            <source src={videoUrl} type="video/mp4" />
+                            Your browser does not support the video tag.
+                          </video>
+                        ))}
+                      </div>
+                    )}
+
+                    <div className="p-6">
+                      <div className="flex justify-between mb-4">
+                        <h3 className="text-xl font-bold text-gray-800">
+                          {prop.name}
+                        </h3>
+                        <p className="text-xl font-semibold text-red-500">
+                          ₵{prop.price}
+                        </p>
+                      </div>
+                      <p className="text-gray-600 text-sm mb-4">{prop.description}</p>
+
+                      {/* Add the company logo */}
+                      <div className="flex items-center justify-start mb-4">
+                        <img
+                          src={prop.companyLogo || assets.koyoccoLogo}
+                          alt="Company Logo"
+                          className="h-10 w-10 object-contain"
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4 text-gray-600 text-sm mb-4">
+                        <div className="flex flex-col">
+                          <span className="font-medium">Region</span>
+                          <span>{prop.region}</span>
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="font-medium">Address</span>
+                          <span>{prop.address}</span>
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="font-medium">Condition</span>
+                          <span>{prop.condition}</span>
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="font-medium">Status</span>
+                          <span
+                            className={
+                              prop.status === "available"
+                                ? "text-green-500"
+                                : prop.status === "rented"
+                                ? "text-blue-500"
+                                : "text-red-500"
+                            }
+                          >
+                            {prop.status.charAt(0).toUpperCase() +
+                              prop.status.slice(1)}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex justify-end mt-4">
+                        <span className="text-xs text-gray-500">{prop.propertyType}</span>
+                      </div>
                     </div>
-                  ))}
-                </div>
-              </div>
+                  </div>
+                </Link>
+              ))
+            ) : (
+              <p className="text-center text-sm md:text-base">
+                No properties available at the moment.
+              </p>
             )}
-
-            {/* Company Logo */}
-            <div className="flex items-center justify-start mb-4">
-              <img
-                src={prop.companyLogo || assets.koyoccoLogo}
-                alt="Company Logo"
-                className="h-10 w-10 object-contain"
-              />
-            </div>
-
-            {/* Other Property Details */}
-            <div className="grid grid-cols-2 gap-4 text-gray-600 text-sm mb-4">
-              <div className="flex flex-col">
-                <span className="font-medium">Region</span>
-                <span>{prop.region}</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="font-medium">Address</span>
-                <span>{prop.address}</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="font-medium">Condition</span>
-                <span>{prop.condition}</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="font-medium">Status</span>
-                <span
-                  className={
-                    prop.status === "available"
-                      ? "text-green-500"
-                      : prop.status === "rented"
-                      ? "text-blue-500"
-                      : "text-red-500"
-                  }
-                >
-                  {prop.status.charAt(0).toUpperCase() +
-                    prop.status.slice(1)}
-                </span>
-              </div>
-            </div>
-            <div className="flex justify-end mt-4">
-              <span className="text-xs text-gray-500">
-                {prop.propertyType}
-              </span>
-            </div>
           </div>
-        </div>
-      </Link>
-    ))
-  ) : (
-    <p className="text-center text-sm md:text-base">
-      No properties available at the moment.
-    </p>
-  )}
-</div>
-
 
           <div className="mt-8 flex justify-center">
             <ReactPaginate
