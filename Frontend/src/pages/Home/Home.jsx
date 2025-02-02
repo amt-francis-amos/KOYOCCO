@@ -79,7 +79,7 @@ const Home = () => {
       </header>
 
       <div className="container mx-auto my-8 px-4">
-        <section className="my-8">
+        <div className="my-8">
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">
             Featured Properties
           </h2>
@@ -215,7 +215,7 @@ const Home = () => {
               activeClassName="bg-red-500 text-white"
             />
           </div>
-        </section>
+        </div>
       </div>
     </div>
   );
