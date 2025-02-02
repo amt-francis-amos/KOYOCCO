@@ -49,3 +49,25 @@ app.use((req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+
+
+
+
+
+
+export const register = (req, res) => {
+    
+    const {name,email, password} = req.body;
+    
+    if(!name || !email || !password) {
+        return res.json({sucess:false, message:"Missing detailed"})
+    }
+} 
+
+
+
+
+
+
+

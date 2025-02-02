@@ -44,7 +44,7 @@ const sendConfirmationEmails = async (email, request) => {
   }
 };
 
-// POST request to create a new service request
+// ----POST request to create a new service request
 router.post('/create', async (req, res) => {
   try {
     const { userName, userEmail, phone, serviceType, details, vehicleId, date, location } = req.body;
