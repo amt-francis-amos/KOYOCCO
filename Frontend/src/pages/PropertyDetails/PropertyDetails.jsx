@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useProperty } from "../../context/PropertyContext";
-import { FaPhoneAlt, FaCommentDots } from "react-icons/fa";
+import { FaPhoneAlt, FaCommentDots, FaWhatsapp } from "react-icons/fa";
 import { assets } from "../../assets/assets";
 import axios from "axios";
 
@@ -14,9 +14,7 @@ const PropertyDetails = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-
   const propertyDetail = property.find((prop) => prop._id === id);
-
 
   useEffect(() => {
     console.log("Property Data:", property);
@@ -26,33 +24,27 @@ const PropertyDetails = () => {
     }
   }, [propertyDetail]);
 
-  
   useEffect(() => {
     if (propertyDetail?.images?.length > 0) {
       setMainImage(propertyDetail.images[0]);
     }
   }, [propertyDetail]);
 
- 
   const fetchAgentContact = async () => {
     setLoading(true);
     setError(null);
 
-   
     if (!propertyDetail) {
       setError("Property details not found");
       setLoading(false);
       return;
     }
 
-    // Check if agentId exists
     if (!propertyDetail.agentId) {
       setError("Agent information not available for this property");
       setLoading(false);
       return;
     }
-
-    
   };
 
   if (!propertyDetail) {
@@ -65,10 +57,12 @@ const PropertyDetails = () => {
 
   return (
     <div className="container mx-auto my-8 px-4">
-      <h2 className="text-3xl font-bold mb-6 text-center">{propertyDetail.name}</h2>
+      <h2 className="text-3xl font-bold mb-6 text-center">
+        {propertyDetail.name}
+      </h2>
 
       <div className="flex flex-col md:flex-row gap-6">
-       
+        {/* Property Image Section */}
         <div className="md:w-1/2">
           <img
             src={mainImage || "/placeholder-image.jpg"}
@@ -88,11 +82,13 @@ const PropertyDetails = () => {
           </div>
         </div>
 
-      
+        {/* Property Details Section */}
         <div className="md:w-1/2 bg-white shadow-lg rounded-md p-6 flex flex-col justify-between">
           <div>
             <p className="text-gray-600 mb-4">{propertyDetail.description}</p>
-            <p className="text-red-500 font-bold text-lg mb-2">₵{propertyDetail.price}</p>
+            <p className="text-red-500 font-bold text-lg mb-2">
+              ₵{propertyDetail.price}
+            </p>
             <p className="text-gray-500 mb-4">{propertyDetail.location}</p>
             <p className="text-sm text-gray-600 mb-4">
               <strong>Region:</strong> {propertyDetail.region}
@@ -119,18 +115,17 @@ const PropertyDetails = () => {
               <strong>Type:</strong> {propertyDetail.propertyType}
             </p>
             <div className="flex items-center justify-start mb-4">
-                        <img
-                          src={assets.koyoccoLogo}
-                          alt="Company Logo"
-                          className="h-10 w-10 object-contain"
-                        />
-                      </div>
+              <img
+                src={assets.koyoccoLogo}
+                alt="Company Logo"
+                className="h-10 w-10 object-contain"
+              />
+            </div>
           </div>
-             
-            
 
-
+          {/* Buttons Section */}
           <div className="flex flex-col md:flex-row items-center gap-4 mt-6">
+            {/* Contact Agent Button */}
             <button
               className={`${
                 loading ? "bg-gray-400 cursor-not-allowed" : "bg-red-500 hover:bg-black"
@@ -141,19 +136,29 @@ const PropertyDetails = () => {
               <FaPhoneAlt className="inline-block mr-2" />
               {loading ? "Loading..." : "Contact Agent"}
             </button>
+
+            {/* Start Chat Button */}
             <button className="bg-gray-300 text-black px-6 py-2 hover:bg-gray-400 duration-300 rounded-full w-full md:w-auto">
               <FaCommentDots className="inline-block mr-2" /> Start Chat
             </button>
+
+            {/* WhatsApp Button */}
+            <button
+              className="bg-green-500 text-white px-6 py-2 rounded-full w-full md:w-auto flex items-center justify-center hover:bg-green-600"
+              onClick={() => window.open("https://wa.me/233241333361", "_blank")}
+            >
+              <FaWhatsapp className="mr-2" /> WhatsApp
+            </button>
           </div>
 
-      
+          {/* Error Message */}
           {error && (
             <div className="mt-4 p-3 bg-red-100 text-red-700 rounded-md">
               {error}
             </div>
           )}
 
-    
+          {/* Agent Contact Details */}
           {showContact && agentContact ? (
             <div className="mt-4 p-4 bg-gray-100 rounded-md">
               <h3 className="text-lg font-bold mb-2">Agent Contact</h3>
@@ -173,7 +178,9 @@ const PropertyDetails = () => {
               </div>
             </div>
           ) : (
-            <div className="mt-4 text-gray-500">No agent contact information available.</div>
+            <div className="mt-4 text-gray-500">
+              No agent contact information available.
+            </div>
           )}
         </div>
       </div>
