@@ -24,7 +24,7 @@ const Login = () => {
       } else if (role === "Property Owner") {
         navigate("/");
       } else if (role === "Agent") {
-        navigate("/property-details");
+        navigate("/");
       }
     }
   }, [navigate]);
