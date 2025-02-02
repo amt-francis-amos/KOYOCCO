@@ -1,65 +1,21 @@
 const mongoose = require("mongoose");
 
-const propertySchema = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: true,
-      maxlength: 100, 
-    },
-    description: {
-      type: String,
-    },
-    price: {
-      type: Number,
-      required: true,
-    },
-    location: {
-      type: String,
-      required: true,
-      maxlength: 255, 
-    },
-    condition: {
-      type: String,
-      required: true,
-      enum: ["Newly Built", "Fairly Used", "Innovated"], 
-    },
-    region: {
-      type: String,
-      required: true,
-    },
-    propertyType: {
-      type: String,
-      required: true,
-      enum: ["Short-Stay", "PropertySales", "PropertyRentals"], 
-    },
-    address: {
-      type: String,
-      required: true,
-    },
-    images: {
-      type: [String],
-      default: [], 
-    },
-    video: {
-      type: String,
-    },
-    status: {
-      type: String,
-      enum: ["available", "sold"],
-      default: "available",
-    },
-    owner: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User", 
-    },
-  },
-  {
-    timestamps: true, 
-  }
-);
-
-
-propertySchema.index({ region: 1 });
+const propertySchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  description: { type: String },
+  price: { type: Number, required: true },
+  location: { type: String, required: true },
+  condition: { type: String, required: true, enum: ["Newly Built", "Fairly Used", "Innovated"] },
+  region: { type: String, required: true },
+  propertyType: { type: String, required: true, enum: ["Short-Stay", "PropertySales", "PropertyRentals"] },
+  address: { type: String, required: true },
+  images: { type: [String], default: [] },
+  video: { type: String },
+  status: { type: String, enum: ["available", "sold"], default: "available" },
+  owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  companyLogo: { type: String, default: "https://your-cloudinary-url.com/koyocco-logo.jpeg" }, 
+}, { timestamps: true });
 
 module.exports = mongoose.model("Property", propertySchema);
+
+
