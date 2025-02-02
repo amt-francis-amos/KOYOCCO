@@ -17,7 +17,7 @@ const PropertyDetails = () => {
   // Find the property based on the URL parameter id
   const propertyDetail = property.find((prop) => prop._id === id);
 
-  // Debug: log the property details so we can see what fields are available
+  // Debugging: Log property details
   useEffect(() => {
     console.log("Property Detail:", propertyDetail);
   }, [propertyDetail]);
@@ -40,13 +40,11 @@ const PropertyDetails = () => {
       return;
     }
 
-    // Extract the agent ID from your property object.
-    // Change this logic based on the actual structure of your property object.
-    // For example, if your property data uses 'createdBy' for the agent id:
+    // Extract the agent ID from the property object.
     const agentId =
-      propertyDetail.agent?. _id || // If the agent is nested
-      propertyDetail.agentId ||     // If agentId exists
-      propertyDetail.createdBy;     // If the field is named createdBy
+      propertyDetail.agent?._id || 
+      propertyDetail.agentId || 
+      propertyDetail.createdBy;
 
     console.log("Extracted Agent ID:", agentId);
 
@@ -57,12 +55,12 @@ const PropertyDetails = () => {
     }
 
     try {
-      // Replace `/api/agents/` with your actual API endpoint.
+      // Fetch agent details from API
       const response = await axios.get(`https://koyocco-backend.onrender.com/api/agents/${agentId}`);
       setAgentContact(response.data);
       setShowContact(true);
     } catch (err) {
-      console.error(err);
+      console.error("Error fetching agent details:", err);
       setError("Unable to fetch agent contact details.");
     } finally {
       setLoading(false);
@@ -72,11 +70,6 @@ const PropertyDetails = () => {
   if (!propertyDetail) {
     return <div className="text-center py-8">Loading property details...</div>;
   }
-
-  // Change the main image when a thumbnail is clicked.
-  const handleThumbnailClick = (image) => {
-    setMainImage(image);
-  };
 
   return (
     <div className="container mx-auto my-8 px-4">
@@ -99,7 +92,7 @@ const PropertyDetails = () => {
                 src={image}
                 alt={`Thumbnail ${index}`}
                 className="w-24 h-24 object-cover rounded-md cursor-pointer flex-shrink-0"
-                onClick={() => handleThumbnailClick(image)}
+                onClick={() => setMainImage(image)}
               />
             ))}
           </div>
