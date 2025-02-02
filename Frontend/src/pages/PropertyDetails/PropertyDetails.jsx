@@ -14,15 +14,15 @@ const PropertyDetails = () => {
   // Find the property based on the URL parameter id
   const propertyDetail = property.find((prop) => prop._id === id);
 
-  // Retrieve agent details from localStorage when component mounts
+  // Retrieve agent details from localStorage
   useEffect(() => {
     const storedAgent = localStorage.getItem("agentDetails");
     if (storedAgent) {
-      setAgentContact(JSON.parse(storedAgent)); // Parse and set to state
+      setAgentContact(JSON.parse(storedAgent));
     }
   }, []);
 
-  // Set the main image to the first image if available.
+  // Set the main image
   useEffect(() => {
     if (propertyDetail?.images?.length > 0) {
       setMainImage(propertyDetail.images[0]);
@@ -35,7 +35,9 @@ const PropertyDetails = () => {
 
   return (
     <div className="container mx-auto my-8 px-4">
-      <h2 className="text-3xl font-bold mb-6 text-center">{propertyDetail.name}</h2>
+      <h2 className="text-3xl font-bold mb-6 text-center">
+        {propertyDetail.name}
+      </h2>
 
       <div className="flex flex-col md:flex-row gap-6">
         {/* Property Image Section */}
@@ -83,19 +85,13 @@ const PropertyDetails = () => {
                     : "text-red-500"
                 }`}
               >
-                {propertyDetail.status.charAt(0).toUpperCase() + propertyDetail.status.slice(1)}
+                {propertyDetail.status.charAt(0).toUpperCase() +
+                  propertyDetail.status.slice(1)}
               </span>
             </p>
             <p className="text-sm text-gray-600 mb-4">
               <strong>Type:</strong> {propertyDetail.propertyType}
             </p>
-            <div className="flex items-center justify-start mb-4">
-              <img
-                src={assets.koyoccoLogo}
-                alt="Company Logo"
-                className="h-10 w-10 object-contain"
-              />
-            </div>
           </div>
 
           {/* Buttons Section */}
@@ -110,12 +106,16 @@ const PropertyDetails = () => {
             </button>
 
             {/* WhatsApp Button */}
-            <button
-              className="bg-green-500 text-white px-6 py-2 rounded-full w-full md:w-auto flex items-center justify-center hover:bg-green-600"
-              onClick={() => window.open(`https://wa.me/233${agentContact?.phoneNumber}`, "_blank")}
-            >
-              <FaWhatsapp className="mr-2" /> WhatsApp
-            </button>
+            {agentContact && (
+              <a
+                href={`https://wa.me/233${agentContact.phoneNumber}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-green-500 text-white px-6 py-2 rounded-full w-full md:w-auto flex items-center justify-center hover:bg-green-600"
+              >
+                <FaWhatsapp className="mr-2" /> WhatsApp
+              </a>
+            )}
           </div>
 
           {/* Agent Contact Details */}
@@ -132,9 +132,19 @@ const PropertyDetails = () => {
                   <p className="font-semibold">
                     {agentContact.firstname} {agentContact.lastname}
                   </p>
-                  <p><strong>Phone:</strong> {agentContact.phoneNumber}</p>
-                  <p><strong>Email:</strong> {agentContact.email || "N/A"}</p>
-                  <p><strong>Location:</strong> {agentContact.location || "Unknown"}</p>
+                  <p>
+                    <strong>Phone:</strong>{" "}
+                    <a
+                      href={`tel:${agentContact.phoneNumber}`}
+                      className="text-blue-500 hover:underline"
+                    >
+                      {agentContact.phoneNumber}
+                    </a>
+                  </p>
+                 
+                  <p>
+                    <strong>Location:</strong> {agentContact.location || "Unknown"}
+                  </p>
                 </div>
               </div>
             </div>
