@@ -86,17 +86,17 @@ const Login = () => {
           ? "/"
           : "/";
 
-          toast.success("Login successful!");
-          if (role === "Agent") {
-            navigate("/property-details", { state: { agentDetails } }); // Pass agent details to PropertyDetails
-          } else {
-            navigate("/");
-          }
-        } catch (error) {
-          setMessage(error.response?.data?.message || "An error occurred");
-          toast.error(error.response?.data?.message || "An error occurred");
-        }
-      };
+       toast.success("Login successful!");
+      if (role === "Agent") {
+        navigate("/property/:id", { state: { agentDetails } }); // Pass agent details to PropertyDetails
+      } else {
+        navigate("/");
+      }
+    } catch (error) {
+      setMessage(error.response?.data?.message || "An error occurred");
+      toast.error(error.response?.data?.message || "An error occurred");
+    }
+  };
 
   const togglePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
