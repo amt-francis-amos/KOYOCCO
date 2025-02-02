@@ -12,6 +12,7 @@ const PropertyDetails = () => {
   const [ownerContact, setOwnerContact] = useState(null);
   const [showAgentContact, setShowAgentContact] = useState(false);
   const [showOwnerContact, setShowOwnerContact] = useState(false);
+  const [userRole, setUserRole] = useState(null); // Track user role
 
   // Find the property based on the URL parameter id
   const propertyDetail = property.find((prop) => prop._id === id);
@@ -22,6 +23,10 @@ const PropertyDetails = () => {
     if (storedAgent) {
       setAgentContact(JSON.parse(storedAgent));
     }
+
+    // Retrieve user role (for example, from localStorage)
+    const role = localStorage.getItem("userRole"); // Assuming this is stored
+    setUserRole(role);
   }, []);
 
   // Retrieve owner details from localStorage
@@ -52,7 +57,7 @@ const PropertyDetails = () => {
     {
       id: "contact-agent",
       type: "button",
-      condition: true,
+      condition: userRole === "agent", // Only show for agent
       onClick: () => setShowAgentContact(true),
       icon: <FaPhoneAlt className="inline-block mr-2" />,
       text: "Contact Agent",
@@ -61,7 +66,7 @@ const PropertyDetails = () => {
     {
       id: "whatsapp-agent",
       type: "link",
-      condition: !!agentContact?.phoneNumber,
+      condition: userRole === "agent" && !!agentContact?.phoneNumber, // Only show for agent with phone number
       href: `https://wa.me/233${agentContact?.phoneNumber}`,
       icon: <FaWhatsapp className="mr-2" />,
       text: "WhatsApp",
@@ -70,7 +75,7 @@ const PropertyDetails = () => {
     {
       id: "contact-owner",
       type: "button",
-      condition: true,
+      condition: userRole === "propertyOwner", // Only show for property owner
       onClick: () => setShowOwnerContact(true),
       icon: <FaPhoneAlt className="inline-block mr-2" />,
       text: "Contact Owner",
@@ -79,7 +84,7 @@ const PropertyDetails = () => {
     {
       id: "whatsapp-owner",
       type: "link",
-      condition: !!ownerContact?.phoneNumber,
+      condition: userRole === "propertyOwner" && !!ownerContact?.phoneNumber, // Only show for owner with phone number
       href: `https://wa.me/233${ownerContact?.phoneNumber}`,
       icon: <FaWhatsapp className="mr-2" />,
       text: "WhatsApp",
@@ -158,7 +163,7 @@ const PropertyDetails = () => {
           {/* Buttons Section (Dynamically Rendered) */}
           <div className="flex flex-col md:flex-row items-center gap-4 mt-6">
             {buttons
-              .filter((btn) => btn.condition)
+              .filter((btn) => btn.condition) // Show buttons based on role
               .map((btn) => {
                 // Common styling for both buttons and links
                 const commonClasses =
