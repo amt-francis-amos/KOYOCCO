@@ -1,3 +1,11 @@
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useProperty } from "../../context/PropertyContext";
+import { FaPhoneAlt, FaWhatsapp } from "react-icons/fa";
+import { assets } from "../../assets/assets";
+
+
+
 const PropertyDetails = () => {
   const { id } = useParams();
   const { property } = useProperty();
