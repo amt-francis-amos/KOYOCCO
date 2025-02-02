@@ -17,21 +17,25 @@ const PropertyDetails = () => {
   // Find the property based on the URL parameter id
   const propertyDetail = property.find((prop) => prop._id === id);
 
+  // Log the property and agent information for debugging.
   useEffect(() => {
     console.log("Property Data:", property);
     if (propertyDetail) {
+      // Check if the agent information is nested or provided via a separate field
+      const agentId = propertyDetail.agent ? propertyDetail.agent._id : propertyDetail.agentId;
       console.log("Property Detail:", propertyDetail);
-      console.log("Agent ID:", propertyDetail.agentId);
+      console.log("Agent ID:", agentId);
     }
-  }, [propertyDetail]);
+  }, [propertyDetail, property]);
 
+  // Set the main image to the first image if available.
   useEffect(() => {
     if (propertyDetail?.images?.length > 0) {
       setMainImage(propertyDetail.images[0]);
     }
   }, [propertyDetail]);
 
-  // Updated function to fetch agent contact details
+  // Function to fetch agent contact details.
   const fetchAgentContact = async () => {
     setLoading(true);
     setError(null);
@@ -42,16 +46,18 @@ const PropertyDetails = () => {
       return;
     }
 
-    if (!propertyDetail.agentId) {
+    // Extract agent ID either from nested agent or agentId field
+    const agentId = propertyDetail.agent ? propertyDetail.agent._id : propertyDetail.agentId;
+
+    if (!agentId) {
       setError("Agent information not available for this property");
       setLoading(false);
       return;
     }
 
     try {
-      // Replace `/api/agents/` with your actual API endpoint
-      const response = await axios.get(`/api/agents/${propertyDetail.agentId}`);
-      // Assuming the response returns the agent object directly
+      // Replace `/api/agents/` with your actual API endpoint.
+      const response = await axios.get(`https://koyocco-backend.onrender.com/api/agents/${agentId}`);
       setAgentContact(response.data);
       setShowContact(true);
     } catch (err) {
@@ -62,10 +68,12 @@ const PropertyDetails = () => {
     }
   };
 
+  // Show a loading message if the property detail hasn't loaded yet.
   if (!propertyDetail) {
     return <div className="text-center py-8">Loading property details...</div>;
   }
 
+  // Change the main image when a thumbnail is clicked.
   const handleThumbnailClick = (image) => {
     setMainImage(image);
   };
