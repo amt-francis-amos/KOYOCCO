@@ -18,14 +18,13 @@ const Login = () => {
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (token) {
-      setIsAuthenticated(true);
       const role = localStorage.getItem("role");
       if (role === "Admin") {
         navigate("/admin-dashboard");
       } else if (role === "Property Owner") {
         navigate("/");
       } else if (role === "Agent") {
-        navigate("/");
+        navigate("/property-details");
       }
     }
   }, [navigate]);
@@ -60,7 +59,7 @@ const Login = () => {
         { email, password }
       );
 
-      const { token, role, userId, agentId } = response.data;
+      const { token, role, userId, agentDetails  } = response.data;
 
       if (!token || !role || !userId) {
         setMessage("Login failed: No token, role, or userId received");
@@ -70,8 +69,10 @@ const Login = () => {
       localStorage.setItem("authToken", token);
       localStorage.setItem("role", role);
       localStorage.setItem("userId", userId);
-      if (role === "Agent") {
-        localStorage.setItem("agentId", agentId); // Store agentId for agents
+
+
+        if (role === "Agent") {
+        localStorage.setItem("agentDetails", JSON.stringify(agentDetails)); // Store agent details in local storage
       }
 
       setIsAuthenticated(true);
@@ -85,13 +86,17 @@ const Login = () => {
           ? "/"
           : "/";
 
-      toast.success("Login successful!");
-      navigate(redirectPath);
-    } catch (error) {
-      setMessage(error.response?.data?.message || "An error occurred");
-      toast.error(error.response?.data?.message || "An error occurred");
-    }
-  };
+          toast.success("Login successful!");
+          if (role === "Agent") {
+            navigate("/property-details", { state: { agentDetails } }); // Pass agent details to PropertyDetails
+          } else {
+            navigate("/");
+          }
+        } catch (error) {
+          setMessage(error.response?.data?.message || "An error occurred");
+          toast.error(error.response?.data?.message || "An error occurred");
+        }
+      };
 
   const togglePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
