@@ -47,6 +47,46 @@ const PropertyDetails = () => {
     );
   }
 
+  // Dynamically define buttons
+  const buttons = [
+    {
+      id: "contact-agent",
+      type: "button",
+      condition: true,
+      onClick: () => setShowAgentContact(true),
+      icon: <FaPhoneAlt className="inline-block mr-2" />,
+      text: "Contact Agent",
+      className: "bg-red-500 hover:bg-red-600 focus:ring-red-300",
+    },
+    {
+      id: "whatsapp-agent",
+      type: "link",
+      condition: !!agentContact?.phoneNumber,
+      href: `https://wa.me/233${agentContact?.phoneNumber}`,
+      icon: <FaWhatsapp className="mr-2" />,
+      text: "WhatsApp",
+      className: "bg-green-500 hover:bg-green-600 focus:ring-green-300",
+    },
+    {
+      id: "contact-owner",
+      type: "button",
+      condition: true,
+      onClick: () => setShowOwnerContact(true),
+      icon: <FaPhoneAlt className="inline-block mr-2" />,
+      text: "Contact Owner",
+      className: "bg-red-500 hover:bg-black focus:ring-blue-300",
+    },
+    {
+      id: "whatsapp-owner",
+      type: "link",
+      condition: !!ownerContact?.phoneNumber,
+      href: `https://wa.me/233${ownerContact?.phoneNumber}`,
+      icon: <FaWhatsapp className="mr-2" />,
+      text: "WhatsApp",
+      className: "bg-green-500 hover:bg-green-600 focus:ring-green-300",
+    },
+  ];
+
   return (
     <div className="container mx-auto my-8 px-4">
       <h2 className="text-3xl font-bold mb-6 text-center">
@@ -115,122 +155,121 @@ const PropertyDetails = () => {
             </div>
           </div>
 
-          {/* Buttons Section */}
+          {/* Buttons Section (Dynamically Rendered) */}
           <div className="flex flex-col md:flex-row items-center gap-4 mt-6">
-            {/* Contact Agent Button */}
-            <button
-              className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-full shadow-md w-full md:w-auto transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-red-300"
-              onClick={() => setShowAgentContact(true)}
-            >
-              <FaPhoneAlt className="inline-block mr-2" />
-              Contact Agent
-            </button>
-
-            {/* WhatsApp Button for Agent */}
-            {agentContact?.phoneNumber && (
-              <a
-                href={`https://wa.me/233${agentContact.phoneNumber}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full shadow-md w-full md:w-auto flex items-center justify-center transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-green-300"
-              >
-                <FaWhatsapp className="mr-2" /> WhatsApp
-              </a>
-            )}
-
-            {/* Contact Owner Button */}
-            <button
-              className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-full shadow-md w-full md:w-auto transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-300"
-              onClick={() => setShowOwnerContact(true)}
-            >
-              <FaPhoneAlt className="inline-block mr-2" />
-              Contact Owner
-            </button>
-
-            {/* WhatsApp Button for Owner */}
-            {ownerContact?.phoneNumber && (
-              <a
-                href={`https://wa.me/233${ownerContact.phoneNumber}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full shadow-md w-full md:w-auto flex items-center justify-center transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-green-300"
-              >
-                <FaWhatsapp className="mr-2" /> WhatsApp
-              </a>
-            )}
+            {buttons
+              .filter((btn) => btn.condition)
+              .map((btn) => {
+                // Common styling for both buttons and links
+                const commonClasses =
+                  "text-white px-6 py-3 rounded-full shadow-md w-full md:w-auto flex items-center justify-center transition-all duration-200 ease-in-out focus:outline-none focus:ring-2";
+                if (btn.type === "button") {
+                  return (
+                    <button
+                      key={btn.id}
+                      onClick={btn.onClick}
+                      className={`${commonClasses} ${btn.className}`}
+                    >
+                      {btn.icon}
+                      {btn.text}
+                    </button>
+                  );
+                } else {
+                  return (
+                    <a
+                      key={btn.id}
+                      href={btn.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`${commonClasses} ${btn.className}`}
+                    >
+                      {btn.icon}
+                      {btn.text}
+                    </a>
+                  );
+                }
+              })}
           </div>
 
           {/* Agent Contact Details */}
-          {showAgentContact && agentContact ? (
-            <div className="mt-4 p-4 bg-gray-100 rounded-md">
-              <h3 className="text-lg font-bold mb-2">Agent Contact</h3>
-              <div className="flex items-center space-x-4">
-                <img
-                  src={agentContact.profileImage || "/default-agent-image.jpg"}
-                  alt="Agent Profile"
-                  className="w-16 h-16 object-cover rounded-full"
-                />
-                <div>
-                  <p className="font-semibold">
-                    {agentContact.firstname} {agentContact.lastname}
-                  </p>
-                  <p>
-                    <strong>Phone:</strong>{" "}
-                    <a
-                      href={`tel:${agentContact.phoneNumber}`}
-                      className="text-blue-500 hover:underline"
-                    >
-                      {agentContact.phoneNumber}
-                    </a>
-                  </p>
-                  <p>
-                    <strong>Location:</strong>{" "}
-                    {agentContact.location || "Unknown"}
-                  </p>
+          {showAgentContact && (
+            <>
+              {agentContact ? (
+                <div className="mt-4 p-4 bg-gray-100 rounded-md">
+                  <h3 className="text-lg font-bold mb-2">Agent Contact</h3>
+                  <div className="flex items-center space-x-4">
+                    <img
+                      src={agentContact.profileImage || "/default-agent-image.jpg"}
+                      alt="Agent Profile"
+                      className="w-16 h-16 object-cover rounded-full"
+                    />
+                    <div>
+                      <p className="font-semibold">
+                        {agentContact.firstname} {agentContact.lastname}
+                      </p>
+                      <p>
+                        <strong>Phone:</strong>{" "}
+                        <a
+                          href={`tel:${agentContact.phoneNumber}`}
+                          className="text-blue-500 hover:underline"
+                        >
+                          {agentContact.phoneNumber}
+                        </a>
+                      </p>
+                      <p>
+                        <strong>Location:</strong>{" "}
+                        {agentContact.location || "Unknown"}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          ) : showAgentContact && !agentContact ? (
-            <div className="mt-4 text-gray-500">
-              No agent contact information available.
-            </div>
-          ) : null}
+              ) : (
+                <div className="mt-4 text-gray-500">
+                  No agent contact information available.
+                </div>
+              )}
+            </>
+          )}
 
           {/* Owner Contact Details */}
-          {showOwnerContact && ownerContact ? (
-            <div className="mt-4 p-4 bg-gray-100 rounded-md">
-              <h3 className="text-lg font-bold mb-2">Owner Contact</h3>
-              <div className="flex items-center space-x-4">
-                <img
-                  src={ownerContact.profileImage || "/default-owner-image.jpg"}
-                  alt="Owner Profile"
-                  className="w-16 h-16 object-cover rounded-full"
-                />
-                <div>
-                  <p className="font-semibold">
-                    {ownerContact.firstname} {ownerContact.lastname}
-                  </p>
-                  <p>
-                    <strong>Phone:</strong>{" "}
-                    <a
-                      href={`tel:${ownerContact.phoneNumber}`}
-                      className="text-blue-500 hover:underline"
-                    >
-                      {ownerContact.phoneNumber}
-                    </a>
-                  </p>
-                  <p>
-                    <strong>Location:</strong>{" "}
-                    {ownerContact.location || "Unknown"}
-                  </p>
+          {showOwnerContact && (
+            <>
+              {ownerContact ? (
+                <div className="mt-4 p-4 bg-gray-100 rounded-md">
+                  <h3 className="text-lg font-bold mb-2">Owner Contact</h3>
+                  <div className="flex items-center space-x-4">
+                    <img
+                      src={ownerContact.profileImage || "/default-owner-image.jpg"}
+                      alt="Owner Profile"
+                      className="w-16 h-16 object-cover rounded-full"
+                    />
+                    <div>
+                      <p className="font-semibold">
+                        {ownerContact.firstname} {ownerContact.lastname}
+                      </p>
+                      <p>
+                        <strong>Phone:</strong>{" "}
+                        <a
+                          href={`tel:${ownerContact.phoneNumber}`}
+                          className="text-blue-500 hover:underline"
+                        >
+                          {ownerContact.phoneNumber}
+                        </a>
+                      </p>
+                      <p>
+                        <strong>Location:</strong>{" "}
+                        {ownerContact.location || "Unknown"}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          ) : showOwnerContact && !ownerContact ? (
-            <div className="mt-4 text-gray-500">
-              No owner contact information available.
-            </div>
-          ) : null}
+              ) : (
+                <div className="mt-4 text-gray-500">
+                  No owner contact information available.
+                </div>
+              )}
+            </>
+          )}
         </div>
       </div>
     </div>
