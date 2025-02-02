@@ -1,4 +1,4 @@
-
+// src/components/PropertyDetails.js
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useProperty } from "../../context/PropertyContext";
@@ -11,25 +11,32 @@ const PropertyDetails = () => {
   const { property } = useProperty();
   const [mainImage, setMainImage] = useState(null);
   const [agentContact, setAgentContact] = useState(null);
-  const [showContact, setShowContact] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  // Find the property from your context by its id.
   const propertyDetail = property.find((prop) => prop._id === id);
 
-  useEffect(() => {
-    console.log("Property Data:", property);
-    if (propertyDetail) {
-      console.log("Property Detail:", propertyDetail);
-      console.log("Agent ID:", propertyDetail.agentId);
-    }
-  }, [propertyDetail, property]);
+  // Retrieve the logged-in agent from localStorage.
+  const loggedInAgent = JSON.parse(localStorage.getItem("agent"));
 
   useEffect(() => {
     if (propertyDetail?.images?.length > 0) {
       setMainImage(propertyDetail.images[0]);
     }
   }, [propertyDetail]);
+
+  // If the property’s agentId matches the logged-in agent’s id, use the local data.
+  useEffect(() => {
+    if (propertyDetail && propertyDetail.agentId && loggedInAgent) {
+      if (propertyDetail.agentId === loggedInAgent._id) {
+        setAgentContact(loggedInAgent);
+      } else {
+        // Otherwise, fetch the agent details from the backend.
+        fetchAgentContact();
+      }
+    }
+  }, [propertyDetail, loggedInAgent]);
 
   const fetchAgentContact = async () => {
     setLoading(true);
@@ -48,10 +55,10 @@ const PropertyDetails = () => {
     }
 
     try {
-     
-      const response = await axios.get(`https://koyocco-backend.onrender.com/api/agent/${propertyDetail.agentId}`);
+      const response = await axios.get(
+        `https://koyocco-backend.onrender.com/api/agent/${propertyDetail.agentId}`
+      );
       setAgentContact(response.data);
-      setShowContact(true);
     } catch (err) {
       setError("Failed to fetch agent contact details. Please try again later.");
       console.error(err);
@@ -74,7 +81,7 @@ const PropertyDetails = () => {
       </h2>
 
       <div className="flex flex-col md:flex-row gap-6">
-      
+        {/* Property Image Section */}
         <div className="md:w-1/2">
           <img
             src={mainImage || "/placeholder-image.jpg"}
@@ -94,7 +101,7 @@ const PropertyDetails = () => {
           </div>
         </div>
 
-  
+        {/* Property Details Section */}
         <div className="md:w-1/2 bg-white shadow-lg rounded-md p-6 flex flex-col justify-between">
           <div>
             <p className="text-gray-600 mb-4">{propertyDetail.description}</p>
@@ -135,9 +142,9 @@ const PropertyDetails = () => {
             </div>
           </div>
 
-        
+          {/* Buttons Section */}
           <div className="flex flex-col md:flex-row items-center gap-4 mt-6">
-          
+            {/* Contact Agent Button */}
             <button
               className={`${
                 loading ? "bg-gray-400 cursor-not-allowed" : "bg-red-500 hover:bg-black"
@@ -149,7 +156,7 @@ const PropertyDetails = () => {
               {loading ? "Loading..." : "Contact Agent"}
             </button>
 
-           
+            {/* WhatsApp Button */}
             <button
               className="bg-green-500 text-white px-6 py-2 rounded-full w-full md:w-auto flex items-center justify-center hover:bg-green-600"
               onClick={() =>
@@ -160,39 +167,39 @@ const PropertyDetails = () => {
             </button>
           </div>
 
+          {/* Error Message */}
           {error && (
             <div className="mt-4 p-3 bg-red-100 text-red-700 rounded-md">
               {error}
             </div>
           )}
 
-       
-          {showContact && (
+          {/* Agent Contact Details */}
+          {agentContact && (
             <div className="mt-4 p-4 bg-gray-100 rounded-md">
-              {agentContact ? (
-                <>
-                  <h3 className="text-lg font-bold mb-2">Agent Contact</h3>
-                  <div className="space-y-2">
-                    <p>
-                      <strong>Name:</strong> {agentContact.firstname}{" "}
-                      {agentContact.lastname}
-                    </p>
-                    <p>
-                      <strong>Phone:</strong> {agentContact.phoneNumber}
-                    </p>
-                    <p>
-                      <strong>Email:</strong> {agentContact.email}
-                    </p>
-                    <p>
-                      <strong>Location:</strong> {agentContact.location}
-                    </p>
-                  </div>
-                </>
-              ) : (
-                <div className="text-gray-500">
-                  No agent contact information available.
-                </div>
-              )}
+              <h3 className="text-lg font-bold mb-2">Agent Contact</h3>
+              <div className="space-y-2">
+                <p>
+                  <strong>Name:</strong> {agentContact.firstname}{" "}
+                  {agentContact.lastname}
+                </p>
+                <p>
+                  <strong>Phone:</strong> {agentContact.phoneNumber}
+                </p>
+                <p>
+                  <strong>Email:</strong> {agentContact.email}
+                </p>
+                <p>
+                  <strong>Location:</strong> {agentContact.location}
+                </p>
+                {agentContact.profileImage && (
+                  <img
+                    src={agentContact.profileImage}
+                    alt="Agent Profile"
+                    className="w-16 h-16 rounded-full mt-2"
+                  />
+                )}
+              </div>
             </div>
           )}
         </div>
