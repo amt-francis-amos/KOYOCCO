@@ -1,16 +1,27 @@
 const Property = require('../models/Property');
 const cloudinary = require('../config/cloudinaryConfig');
 
+const Property = require("../models/Property");
+const User = require("../models/User"); // Import User model
+const cloudinary = require("../config/cloudinaryConfig");
+
 const uploadProperty = async (req, res) => {
   try {
     const { name, description, price, location, condition, region, propertyType, address } = req.body;
+    const ownerId = req.user.id; // Assuming user authentication middleware adds `req.user.id`
+
+    // Fetch the user's details
+    const user = await User.findById(ownerId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
     // Handle images upload
     let images = [];
     if (req.files?.images) {
       images = await Promise.all(req.files.images.map((image) =>
         new Promise((resolve, reject) => {
-          cloudinary.uploader.upload_stream({ resource_type: 'image' }, (error, result) => {
+          cloudinary.uploader.upload_stream({ resource_type: "image" }, (error, result) => {
             if (error) return reject(error);
             resolve(result.secure_url);
           }).end(image.buffer);
@@ -22,15 +33,15 @@ const uploadProperty = async (req, res) => {
     let video = null;
     if (req.files?.video) {
       video = await new Promise((resolve, reject) => {
-        cloudinary.uploader.upload_stream({ resource_type: 'video' }, (error, result) => {
+        cloudinary.uploader.upload_stream({ resource_type: "video" }, (error, result) => {
           if (error) return reject(error);
           resolve(result.secure_url);
         }).end(req.files.video[0].buffer);
       });
     }
 
-    // Hardcoded logo URL
-    const companyLogo = "https://res.cloudinary.com/dkvs0lnab/image/upload/koyocco-logo.jpeg";
+    // Use owner's company logo
+    const companyLogo = user.companyLogo || "https://res.cloudinary.com/dkvs0lnab/image/upload/default-logo.png";
 
     const property = new Property({
       name,
@@ -44,6 +55,7 @@ const uploadProperty = async (req, res) => {
       images,
       video,
       companyLogo,
+      owner: ownerId, // Link property to owner
     });
 
     await property.save();
@@ -52,6 +64,7 @@ const uploadProperty = async (req, res) => {
     res.status(500).json({ message: "Failed to upload property", error: error.message });
   }
 };
+
 
 const getAllProperties = async (req, res) => {
   try {
