@@ -1,24 +1,24 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { useProperty } from "../../context/PropertyContext";
-import { FaPhoneAlt, FaWhatsapp } from "react-icons/fa";
-import { assets } from "../../assets/assets";
-
 const PropertyDetails = () => {
   const { id } = useParams();
   const { property } = useProperty();
   const [mainImage, setMainImage] = useState(null);
   const [agentContact, setAgentContact] = useState(null);
+  const [ownerContact, setOwnerContact] = useState(null);  // State for owner contact details
   const [showContact, setShowContact] = useState(false);
 
   // Find the property based on the URL parameter id
   const propertyDetail = property.find((prop) => prop._id === id);
 
-  // Retrieve agent details from localStorage
+  // Retrieve agent and owner details from localStorage
   useEffect(() => {
     const storedAgent = localStorage.getItem("agentDetails");
     if (storedAgent) {
       setAgentContact(JSON.parse(storedAgent));
+    }
+
+    const storedOwner = localStorage.getItem("ownerDetails");
+    if (storedOwner) {
+      setOwnerContact(JSON.parse(storedOwner));  // Set owner contact details
     }
   }, []);
 
@@ -39,9 +39,7 @@ const PropertyDetails = () => {
 
   return (
     <div className="container mx-auto my-8 px-4">
-      <h2 className="text-3xl font-bold mb-6 text-center">
-        {propertyDetail.name}
-      </h2>
+      <h2 className="text-3xl font-bold mb-6 text-center">{propertyDetail.name}</h2>
 
       <div className="flex flex-col md:flex-row gap-6">
         {/* Property Image Section */}
@@ -96,13 +94,38 @@ const PropertyDetails = () => {
             <p className="text-sm text-gray-600 mb-4">
               <strong>Type:</strong> {propertyDetail.propertyType}
             </p>
-            <div className="flex items-center justify-start mb-4">
-              <img
-                src={assets.koyoccoLogo}
-                alt="Company Logo"
-                className="h-10 w-10 object-contain"
-              />
-            </div>
+
+            {/* Property Owner Contact Details */}
+            {ownerContact && (
+              <div className="mt-4 p-4 bg-gray-100 rounded-md">
+                <h3 className="text-lg font-bold mb-2">Property Owner Contact</h3>
+                <div className="flex items-center space-x-4">
+                  <img
+                    src={ownerContact.profileImage || "/default-owner-image.jpg"}
+                    alt="Owner Profile"
+                    className="w-16 h-16 object-cover rounded-full"
+                  />
+                  <div>
+                    <p className="font-semibold">
+                      {ownerContact.firstname} {ownerContact.lastname}
+                    </p>
+                    <p>
+                      <strong>Phone:</strong>{" "}
+                      <a
+                        href={`tel:${ownerContact.phoneNumber}`}
+                        className="text-blue-500 hover:underline"
+                      >
+                        {ownerContact.phoneNumber}
+                      </a>
+                    </p>
+                    <p>
+                      <strong>Location:</strong>{" "}
+                      {ownerContact.location || "Unknown"}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Buttons Section */}

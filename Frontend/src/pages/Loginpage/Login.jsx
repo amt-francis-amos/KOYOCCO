@@ -59,7 +59,7 @@ const Login = () => {
         { email, password }
       );
   
-      const { token, role, userId, agentDetails } = response.data;
+      const { token, role, userId, agentDetails, ownerDetails } = response.data;
   
       if (!token || !role || !userId) {
         setMessage("Login failed: No token, role, or userId received");
@@ -74,6 +74,10 @@ const Login = () => {
         localStorage.setItem("agentDetails", JSON.stringify(agentDetails));
       }
   
+      if (role === "Property Owner" && ownerDetails) {
+        localStorage.setItem("ownerDetails", JSON.stringify(ownerDetails));
+      }
+  
       setIsAuthenticated(true);
   
       const redirectPath =
@@ -82,7 +86,7 @@ const Login = () => {
           : role === "Property Owner"
           ? "/"
           : role === "Agent"
-          ? "/"
+          ? "/property-details"
           : "/";
   
       toast.success("Login successful!");
