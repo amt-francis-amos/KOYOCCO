@@ -177,7 +177,7 @@ const PropertyDetails = () => {
                 } else {
                   return (
                     <a
-                      key={btn.id}
+                      key={index}
                       href={btn.href}
                       target="_blank"
                       rel="noopener noreferrer"
