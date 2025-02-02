@@ -17,16 +17,14 @@ const PropertyDetails = () => {
   const propertyDetail = property.find((prop) => prop._id === id);
 
   useEffect(() => {
-    console.log("Property Data:", property);
-    if (propertyDetail) {
-      console.log("Property Detail:", propertyDetail);
-      console.log("Agent ID:", propertyDetail.agentId);
+    if (propertyDetail?.images?.length > 0) {
+      setMainImage(propertyDetail.images[0]);
     }
   }, [propertyDetail]);
 
   useEffect(() => {
-    if (propertyDetail?.images?.length > 0) {
-      setMainImage(propertyDetail.images[0]);
+    if (propertyDetail?.agentId) {
+      fetchAgentContact();
     }
   }, [propertyDetail]);
 
@@ -34,16 +32,20 @@ const PropertyDetails = () => {
     setLoading(true);
     setError(null);
 
-    if (!propertyDetail) {
-      setError("Property details not found");
+    if (!propertyDetail?.agentId) {
+      setError("Agent information not available for this property");
       setLoading(false);
       return;
     }
 
-    if (!propertyDetail.agentId) {
-      setError("Agent information not available for this property");
+    try {
+      const response = await axios.get(`https://koyocco-backend.onrender.com/api/agents/${propertyDetail.agentId}`);
+      setAgentContact(response.data);
+      setShowContact(true);
+    } catch (err) {
+      setError("Failed to fetch agent details");
+    } finally {
       setLoading(false);
-      return;
     }
   };
 
@@ -54,6 +56,11 @@ const PropertyDetails = () => {
   const handleThumbnailClick = (image) => {
     setMainImage(image);
   };
+
+
+  const agentPhoneNumber = agentContact?.phoneNumber
+    ? `233${agentContact.phoneNumber.replace(/^0/, "")}` 
+    : null;
 
   return (
     <div className="container mx-auto my-8 px-4">
@@ -144,8 +151,15 @@ const PropertyDetails = () => {
 
             {/* WhatsApp Button */}
             <button
-              className="bg-green-500 text-white px-6 py-2 rounded-full w-full md:w-auto flex items-center justify-center hover:bg-green-600"
-              onClick={() => window.open("https://wa.me/233541742099", "_blank")}
+              className={`${
+                agentPhoneNumber ? "bg-green-500 hover:bg-green-600" : "bg-gray-400 cursor-not-allowed"
+              } text-white px-6 py-2 rounded-full w-full md:w-auto flex items-center justify-center`}
+              onClick={() => {
+                if (agentPhoneNumber) {
+                  window.open(`https://wa.me/${agentPhoneNumber}`, "_blank");
+                }
+              }}
+              disabled={!agentPhoneNumber}
             >
               <FaWhatsapp className="mr-2" /> WhatsApp
             </button>
