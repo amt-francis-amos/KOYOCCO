@@ -43,10 +43,10 @@ const PropertyDetails = () => {
     // Extract the agent ID from the property object.
     const agentId =
       propertyDetail.agent?._id ||
-      propertyDetail.agentId ||
+      propertyDetail.agentDetails ||
       propertyDetail.createdBy;
 
-    console.log("Extracted Agent ID:", agentId);
+    console.log("Extracted Agent ID:", agentDetails);
 
     if (!agentId) {
       setError("Agent information not available for this property");
