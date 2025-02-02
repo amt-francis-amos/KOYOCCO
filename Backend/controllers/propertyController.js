@@ -7,28 +7,30 @@ const uploadProperty = async (req, res) => {
 
     // Handle images upload
     let images = [];
-    if (req.files.images) {
+    if (req.files?.images) {
       images = await Promise.all(req.files.images.map((image) =>
         new Promise((resolve, reject) => {
           cloudinary.uploader.upload_stream({ resource_type: 'image' }, (error, result) => {
-            if (error) reject(error);
-            else resolve(result.secure_url);
+            if (error) return reject(error);
+            resolve(result.secure_url);
           }).end(image.buffer);
         })
       ));
     }
 
+    // Handle video upload if provided
     let video = null;
-    if (req.files.video) {
+    if (req.files?.video) {
       video = await new Promise((resolve, reject) => {
         cloudinary.uploader.upload_stream({ resource_type: 'video' }, (error, result) => {
-          if (error) reject(error);
-          else resolve(result.secure_url);
+          if (error) return reject(error);
+          resolve(result.secure_url);
         }).end(req.files.video[0].buffer);
       });
     }
 
-    const companyLogo = "https://res.cloudinary.com/dkvs0lnab/image/upload/koyocco-logo.jpeg"; 
+    // Hardcoded logo URL
+    const companyLogo = "https://res.cloudinary.com/dkvs0lnab/image/upload/koyocco-logo.jpeg";
 
     const property = new Property({
       name,
@@ -41,7 +43,7 @@ const uploadProperty = async (req, res) => {
       propertyType,
       images,
       video,
-      companyLogo, 
+      companyLogo,
     });
 
     await property.save();
@@ -50,8 +52,6 @@ const uploadProperty = async (req, res) => {
     res.status(500).json({ message: "Failed to upload property", error: error.message });
   }
 };
-
-
 
 const getAllProperties = async (req, res) => {
   try {
