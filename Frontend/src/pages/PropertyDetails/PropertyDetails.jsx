@@ -31,21 +31,15 @@ const PropertyDetails = () => {
 
   // Fetch agent details from localStorage if the agent is logged in.
   useEffect(() => {
-    const agentDetails = JSON.parse(localStorage.getItem("agentDetails"));
+    const agentDetails = localStorage.getItem("agentDetails");
     if (agentDetails) {
-      setAgentContact(agentDetails);
+      setAgentContact(JSON.parse(agentDetails)); // Only parse if agentDetails exists
       setShowContact(true); // Show agent contact immediately if available
     }
   }, []);
 
-  // Handle property details loading state
   if (!propertyDetail) {
     return <div className="text-center py-8">Loading property details...</div>;
-  }
-
-  // Handle error if there are no property details available
-  if (error) {
-    return <div className="text-center py-8 text-red-500">{error}</div>;
   }
 
   return (
@@ -120,7 +114,6 @@ const PropertyDetails = () => {
                 loading ? "bg-gray-400 cursor-not-allowed" : "bg-red-500 hover:bg-black"
               } text-white px-6 py-2 rounded-full w-full md:w-auto`}
               disabled={loading}
-              onClick={() => setLoading(true)} // Simulating agent contact
             >
               <FaPhoneAlt className="inline-block mr-2" />
               {loading ? "Loading..." : "Contact Agent"}
