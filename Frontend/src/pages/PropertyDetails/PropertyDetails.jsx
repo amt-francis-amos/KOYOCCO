@@ -135,7 +135,7 @@ const PropertyDetails = () => {
             {/* Contact Agent Button */}
             <button
               className={`${
-                loading ? "bg-gray-400 cursor-not-allowed" : "bg-red-500 hover:bg-black"
+                loading ? "bg-green-600 cursor-not-allowed" : "bg-red-500 hover:bg-black"
               } text-white px-6 py-2 rounded-full w-full md:w-auto`}
               onClick={fetchAgentContact}
               disabled={loading}
