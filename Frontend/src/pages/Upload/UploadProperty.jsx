@@ -98,8 +98,8 @@ const UploadProperty = () => {
       });
       setImagePreviews([]);
 
-      // Navigate to a different page where users can see their uploaded properties
-      navigate("/my-properties");
+     
+      navigate("/");
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to upload property. Please try again.");
     }
