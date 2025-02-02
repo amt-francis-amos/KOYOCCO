@@ -110,29 +110,11 @@ const Home = () => {
               paginatedProperties.map((prop) => (
                 <Link key={prop._id} to={`/property/${prop._id}`}>
                   <div className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105">
-                    {/* Display the first image */}
                     <img
                       src={prop.images[0]}
                       alt={prop.name}
                       className="w-full h-48 object-cover"
                     />
-
-                    {/* If videos are available, display them below the image */}
-                    {prop.videos && prop.videos.length > 0 && (
-                      <div className="flex justify-center mb-4">
-                        {prop.videos.map((videoUrl, index) => (
-                          <video
-                            key={index}
-                            controls
-                            className="w-full h-48 object-cover"
-                          >
-                            <source src={videoUrl} type="video/mp4" />
-                            Your browser does not support the video tag.
-                          </video>
-                        ))}
-                      </div>
-                    )}
-
                     <div className="p-6">
                       <div className="flex justify-between mb-4">
                         <h3 className="text-xl font-bold text-gray-800">
@@ -142,9 +124,11 @@ const Home = () => {
                           ₵{prop.price}
                         </p>
                       </div>
-                      <p className="text-gray-600 text-sm mb-4">{prop.description}</p>
+                      <p className="text-gray-600 text-sm mb-4">
+                        {prop.description}
+                      </p>
 
-                      {/* Add the company logo */}
+                      {/* Add the company logo here */}
                       <div className="flex items-center justify-start mb-4">
                         <img
                           src={prop.companyLogo || assets.koyoccoLogo}
@@ -183,7 +167,9 @@ const Home = () => {
                         </div>
                       </div>
                       <div className="flex justify-end mt-4">
-                        <span className="text-xs text-gray-500">{prop.propertyType}</span>
+                        <span className="text-xs text-gray-500">
+                          {prop.propertyType}
+                        </span>
                       </div>
                     </div>
                   </div>
