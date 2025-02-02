@@ -33,46 +33,40 @@ const PropertyDetails = () => {
   const fetchAgentContact = async () => {
     setLoading(true);
     setError(null);
-
+  
     if (!propertyDetail) {
       setError("Property details not found");
       setLoading(false);
       return;
     }
-
-    // Extract the agent ID from the property object or use stored agent details
-    const agentId =
-      propertyDetail.agent?._id ||
-      propertyDetail.agentId ||
-      propertyDetail.createdBy ||
-      JSON.parse(localStorage.getItem("agentDetails"))?.agentId;
-
-    console.log("Extracted Agent ID:", agentId);
-
+  
+    const agentId = propertyDetail.agentId || propertyDetail.createdBy;
+  
     if (!agentId) {
       setError("Agent information not available for this property");
       setLoading(false);
       return;
     }
-
+  
     try {
-      // Fetch agent details from API
-      const response = await axios.get(
+      const { data } = await axios.get(
         `https://koyocco-backend.onrender.com/api/agent/${agentId}`
       );
-      if (response.status === 200 && response.data) {
-        setAgentContact(response.data);
+      
+      if (data) {
+        setAgentContact(data);
         setShowContact(true);
       } else {
         setError("No agent information found.");
       }
     } catch (err) {
-      console.error("Error fetching agent details:", err);
+      console.error("Error fetching agent details:", err.response?.data || err);
       setError("Unable to fetch agent contact details.");
     } finally {
       setLoading(false);
     }
   };
+  
 
   if (!propertyDetail) {
     return <div className="text-center py-8">Loading property details...</div>;
@@ -180,29 +174,28 @@ const PropertyDetails = () => {
 
           {/* Agent Contact Details */}
           {showContact && agentContact ? (
-            <div className="mt-4 p-4 bg-gray-100 rounded-md">
-              <h3 className="text-lg font-bold mb-2">Agent Contact</h3>
-              <div className="flex items-center space-x-4">
-                <img
-                  src={agentContact.profileImage || "/default-agent-image.jpg"}
-                  alt="Agent Profile"
-                  className="w-16 h-16 object-cover rounded-full"
-                />
-                <div>
-                  <p className="font-semibold">
-                    {agentContact.firstname} {agentContact.lastname}
-                  </p>
-                  <p><strong>Phone:</strong> {agentContact.phoneNumber}</p>
-                  <p><strong>Email:</strong> {agentContact.email}</p>
-                  <p><strong>Location:</strong> {agentContact.location}</p>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="mt-4 text-gray-500">
-              No agent contact information available.
-            </div>
-          )}
+  <div className="mt-4 p-4 bg-gray-100 rounded-md">
+    <h3 className="text-lg font-bold mb-2">Agent Contact</h3>
+    <div className="flex items-center space-x-4">
+      <img
+        src={agentContact.profileImage || "/default-agent-image.jpg"}
+        alt="Agent Profile"
+        className="w-16 h-16 object-cover rounded-full"
+      />
+      <div>
+        <p className="font-semibold">
+          {agentContact.firstname} {agentContact.lastname}
+        </p>
+        <p><strong>Phone:</strong> {agentContact.phoneNumber}</p>
+        <p><strong>Email:</strong> {agentContact.email || "N/A"}</p>
+        <p><strong>Location:</strong> {agentContact.location || "Unknown"}</p>
+      </div>
+    </div>
+  </div>
+) : (
+  <div className="mt-4 text-gray-500">No agent contact information available.</div>
+)}
+
         </div>
       </div>
     </div>
