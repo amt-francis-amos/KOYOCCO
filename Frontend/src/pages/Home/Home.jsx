@@ -110,32 +110,36 @@ const Home = () => {
     paginatedProperties.map((prop) => (
       <Link key={prop._id} to={`/property/${prop._id}`}>
         <div className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105">
-          {/* Check if video exists, else display image */}
-          {prop.video ? (
-            <video
-              className="w-full h-48 object-cover"
-              controls
-              src={prop.video}
-              alt={prop.name}
-            />
-          ) : (
-            <img
-              src={prop.images[0]}
-              alt={prop.name}
-              className="w-full h-48 object-cover"
-            />
-          )}
+          <div className="relative">
+            {/* Display both video and image */}
+            <div className="flex">
+              {prop.video ? (
+                <div className="w-1/2">
+                  <video
+                    className="w-full h-auto object-cover"
+                    controls
+                    src={prop.video}
+                    alt={prop.name}
+                  />
+                </div>
+              ) : null}
+              <div className={`w-${prop.video ? '1/2' : 'full'}`}>
+                <img
+                  src={prop.images[0]}
+                  alt={prop.name}
+                  className="w-full h-auto object-cover"
+                />
+              </div>
+            </div>
+          </div>
+
           <div className="p-6">
             <div className="flex justify-between mb-4">
-              <h3 className="text-xl font-bold text-gray-800">
-                {prop.name}
-              </h3>
-              <p className="text-xl font-semibold text-red-500">
-                ₵{prop.price}
-              </p>
+              <h3 className="text-xl font-bold text-gray-800">{prop.name}</h3>
+              <p className="text-xl font-semibold text-red-500">₵{prop.price}</p>
             </div>
             <p className="text-gray-600 text-sm mb-4">{prop.description}</p>
-            
+
             {/* Add the company logo here */}
             <div className="flex items-center justify-start mb-4">
               <img
@@ -187,6 +191,7 @@ const Home = () => {
     </p>
   )}
 </div>
+
 
 
           <div className="mt-8 flex justify-center">
