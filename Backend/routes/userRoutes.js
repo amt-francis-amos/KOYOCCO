@@ -133,6 +133,7 @@ router.post("/signup", async (req, res) => {
 });
 
 // Login route
+// Login route
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -146,30 +147,45 @@ router.post("/login", async (req, res) => {
     }
 
     // If the user is an agent, ensure they have an agentId
-    if (user.role === 'agent' && !user.agentId) {
-      user.agentId = `AGENT-${user._id.toString().slice(-6)}`;  
-      await user.save();  
+    if (user.role === 'Agent' && !user.agentId) {
+      user.agentId = `AGENT-${user._id.toString().slice(-6)}`;
+      await user.save();
     }
 
     // Generate JWT token
     const token = jwt.sign(
       { userId: user._id, role: user.role, agentId: user.agentId },
-      process.env.JWT_SECRET,  
+      process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
 
-   
-    res.status(200).json({
-      token,         
-      role: user.role, 
-      userId: user._id, 
-      agentId: user.agentId, 
-    });
+    // Send response with token, userId, role, and agent details if the role is Agent
+    const responseData = {
+      token,
+      role: user.role,
+      userId: user._id,
+    };
+
+    if (user.role === "Agent") {
+      const agentDetails = {
+        agentId: user.agentId,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        phoneNumber: user.phoneNumber,
+        location: user.location,
+        profileImage: user.profileImage,
+        companyLogo: user.companyLogo,
+      };
+      responseData.agentDetails = agentDetails;
+    }
+
+    res.status(200).json(responseData);
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
 
 
 // Forgot password route
