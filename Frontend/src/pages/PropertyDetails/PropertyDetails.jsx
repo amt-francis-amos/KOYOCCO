@@ -182,20 +182,20 @@ const PropertyDetails = () => {
           {showContact && agentContact ? (
             <div className="mt-4 p-4 bg-gray-100 rounded-md">
               <h3 className="text-lg font-bold mb-2">Agent Contact</h3>
-              <div className="space-y-2">
-                <p>
-                  <strong>Name:</strong> {agentContact.firstname}{" "}
-                  {agentContact.lastname}
-                </p>
-                <p>
-                  <strong>Phone:</strong> {agentContact.phoneNumber}
-                </p>
-                <p>
-                  <strong>Email:</strong> {agentContact.email}
-                </p>
-                <p>
-                  <strong>Location:</strong> {agentContact.location}
-                </p>
+              <div className="flex items-center space-x-4">
+                <img
+                  src={agentContact.profileImage || "/default-agent-image.jpg"}
+                  alt="Agent Profile"
+                  className="w-16 h-16 object-cover rounded-full"
+                />
+                <div>
+                  <p className="font-semibold">
+                    {agentContact.firstname} {agentContact.lastname}
+                  </p>
+                  <p><strong>Phone:</strong> {agentContact.phoneNumber}</p>
+                  <p><strong>Email:</strong> {agentContact.email}</p>
+                  <p><strong>Location:</strong> {agentContact.location}</p>
+                </div>
               </div>
             </div>
           ) : (
