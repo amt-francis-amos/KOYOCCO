@@ -45,6 +45,17 @@ const PropertyDetails = () => {
       setLoading(false);
       return;
     }
+
+    try {
+      // Replace the endpoint URL if needed
+      const response = await axios.get(`/api/agent/${propertyDetail.agentId}`);
+      setAgentContact(response.data);
+      setShowContact(true);
+    } catch (err) {
+      setError("Failed to fetch agent contact details. Please try again later.");
+      console.error(err);
+    }
+    setLoading(false);
   };
 
   if (!propertyDetail) {
@@ -128,7 +139,9 @@ const PropertyDetails = () => {
             {/* Contact Agent Button */}
             <button
               className={`${
-                loading ? "bg-gray-400 cursor-not-allowed" : "bg-red-500 hover:bg-black"
+                loading
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-red-500 hover:bg-black"
               } text-white px-6 py-2 rounded-full w-full md:w-auto`}
               onClick={fetchAgentContact}
               disabled={loading}
@@ -136,8 +149,6 @@ const PropertyDetails = () => {
               <FaPhoneAlt className="inline-block mr-2" />
               {loading ? "Loading..." : "Contact Agent"}
             </button>
-
-           
 
             {/* WhatsApp Button */}
             <button
@@ -156,27 +167,32 @@ const PropertyDetails = () => {
           )}
 
           {/* Agent Contact Details */}
-          {showContact && agentContact ? (
+          {showContact && (
             <div className="mt-4 p-4 bg-gray-100 rounded-md">
-              <h3 className="text-lg font-bold mb-2">Agent Contact</h3>
-              <div className="space-y-2">
-                <p>
-                  <strong>Name:</strong> {agentContact.firstname} {agentContact.lastname}
-                </p>
-                <p>
-                  <strong>Phone:</strong> {agentContact.phoneNumber}
-                </p>
-                <p>
-                  <strong>Email:</strong> {agentContact.email}
-                </p>
-                <p>
-                  <strong>Location:</strong> {agentContact.location}
-                </p>
-              </div>
-            </div>
-          ) : (
-            <div className="mt-4 text-gray-500">
-              No agent contact information available.
+              {agentContact ? (
+                <>
+                  <h3 className="text-lg font-bold mb-2">Agent Contact</h3>
+                  <div className="space-y-2">
+                    <p>
+                      <strong>Name:</strong> {agentContact.firstname}{" "}
+                      {agentContact.lastname}
+                    </p>
+                    <p>
+                      <strong>Phone:</strong> {agentContact.phoneNumber}
+                    </p>
+                    <p>
+                      <strong>Email:</strong> {agentContact.email}
+                    </p>
+                    <p>
+                      <strong>Location:</strong> {agentContact.location}
+                    </p>
+                  </div>
+                </>
+              ) : (
+                <div className="text-gray-500">
+                  No agent contact information available.
+                </div>
+              )}
             </div>
           )}
         </div>
