@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useProperty } from "../../context/PropertyContext";
 import { FaPhoneAlt, FaCommentDots } from "react-icons/fa";
+import { assets } from "../../assets/assets";
 import axios from "axios";
 
 const PropertyDetails = () => {
@@ -117,7 +118,17 @@ const PropertyDetails = () => {
             <p className="text-sm text-gray-600 mb-4">
               <strong>Type:</strong> {propertyDetail.propertyType}
             </p>
+            <div className="flex items-center justify-start mb-4">
+                        <img
+                          src={assets.koyoccoLogo}
+                          alt="Company Logo"
+                          className="h-10 w-10 object-contain"
+                        />
+                      </div>
           </div>
+             
+            
+
 
           <div className="flex flex-col md:flex-row items-center gap-4 mt-6">
             <button
