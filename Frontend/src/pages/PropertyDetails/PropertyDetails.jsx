@@ -29,43 +29,6 @@ const PropertyDetails = () => {
     }
   }, [propertyDetail]);
 
-  // Function to fetch agent contact details.
-  const fetchAgentContact = async () => {
-    setLoading(true);
-    setError(null);
-  
-    if (!propertyDetail) {
-      setError("Property details not found");
-      setLoading(false);
-      return;
-    }
-  
-    const agentId = propertyDetail.agentId || propertyDetail.createdBy;
-  
-    if (!agentId) {
-      setError("Agent information not available for this property");
-      setLoading(false);
-      return;
-    }
-  
-    try {
-      const { data } = await axios.get(
-        `https://koyocco-backend.onrender.com/api/agent/${agentId}`
-      );
-      
-      if (data) {
-        setAgentContact(data);
-        setShowContact(true);
-      } else {
-        setError("No agent information found.");
-      }
-    } catch (err) {
-      console.error("Error fetching agent details:", err.response?.data || err);
-      setError("Unable to fetch agent contact details.");
-    } finally {
-      setLoading(false);
-    }
-  };
   
 
   if (!propertyDetail) {
