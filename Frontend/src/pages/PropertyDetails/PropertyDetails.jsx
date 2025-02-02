@@ -24,13 +24,17 @@ const PropertyDetails = () => {
 
   // Set the main image
   useEffect(() => {
-    if (propertyDetail?.images?.length > 0) {
+    if (propertyDetail?.images?.length) {
       setMainImage(propertyDetail.images[0]);
     }
-  }, [propertyDetail]);
+  }, [propertyDetail?.images]);
 
   if (!propertyDetail) {
-    return <div className="text-center py-8">Loading property details...</div>;
+    return (
+      <div className="text-center py-8 text-red-500 font-semibold">
+        Property not found or unavailable.
+      </div>
+    );
   }
 
   return (
@@ -48,7 +52,7 @@ const PropertyDetails = () => {
             className="w-full h-[37.5rem] object-cover rounded-md"
           />
           <div className="flex space-x-2 mt-4 overflow-x-auto">
-            {propertyDetail.images.map((image, index) => (
+            {propertyDetail.images?.map((image, index) => (
               <img
                 key={index}
                 src={image}
@@ -98,7 +102,7 @@ const PropertyDetails = () => {
                 alt="Company Logo"
                 className="h-10 w-10 object-contain"
               />
-              </div>
+            </div>
           </div>
 
           {/* Buttons Section */}
@@ -113,7 +117,7 @@ const PropertyDetails = () => {
             </button>
 
             {/* WhatsApp Button */}
-            {agentContact && (
+            {agentContact?.phoneNumber && (
               <a
                 href={`https://wa.me/233${agentContact.phoneNumber}`}
                 target="_blank"
@@ -148,15 +152,17 @@ const PropertyDetails = () => {
                       {agentContact.phoneNumber}
                     </a>
                   </p>
-                 
                   <p>
-                    <strong>Location:</strong> {agentContact.location || "Unknown"}
+                    <strong>Location:</strong>{" "}
+                    {agentContact.location || "Unknown"}
                   </p>
                 </div>
               </div>
             </div>
           ) : (
-            <div className="mt-4 text-gray-500">No agent contact information available.</div>
+            <div className="mt-4 text-gray-500">
+              No agent contact information available.
+            </div>
           )}
         </div>
       </div>
