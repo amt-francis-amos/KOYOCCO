@@ -17,16 +17,10 @@ const PropertyDetails = () => {
   // Find the property based on the URL parameter id
   const propertyDetail = property.find((prop) => prop._id === id);
 
-  // Log the property and agent information for debugging.
+  // Debug: log the property details so we can see what fields are available
   useEffect(() => {
-    console.log("Property Data:", property);
-    if (propertyDetail) {
-      // Check if the agent information is nested or provided via a separate field
-      const agentId = propertyDetail.agent ? propertyDetail.agent._id : propertyDetail.agentId;
-      console.log("Property Detail:", propertyDetail);
-      console.log("Agent ID:", agentId);
-    }
-  }, [propertyDetail, property]);
+    console.log("Property Detail:", propertyDetail);
+  }, [propertyDetail]);
 
   // Set the main image to the first image if available.
   useEffect(() => {
@@ -46,8 +40,15 @@ const PropertyDetails = () => {
       return;
     }
 
-    // Extract agent ID either from nested agent or agentId field
-    const agentId = propertyDetail.agent ? propertyDetail.agent._id : propertyDetail.agentId;
+    // Extract the agent ID from your property object.
+    // Change this logic based on the actual structure of your property object.
+    // For example, if your property data uses 'createdBy' for the agent id:
+    const agentId =
+      propertyDetail.agent?. _id || // If the agent is nested
+      propertyDetail.agentId ||     // If agentId exists
+      propertyDetail.createdBy;     // If the field is named createdBy
+
+    console.log("Extracted Agent ID:", agentId);
 
     if (!agentId) {
       setError("Agent information not available for this property");
@@ -68,7 +69,6 @@ const PropertyDetails = () => {
     }
   };
 
-  // Show a loading message if the property detail hasn't loaded yet.
   if (!propertyDetail) {
     return <div className="text-center py-8">Loading property details...</div>;
   }
@@ -163,7 +163,9 @@ const PropertyDetails = () => {
             {/* WhatsApp Button */}
             <button
               className="bg-green-500 text-white px-6 py-2 rounded-full w-full md:w-auto flex items-center justify-center hover:bg-green-600"
-              onClick={() => window.open("https://wa.me/233541742099", "_blank")}
+              onClick={() =>
+                window.open("https://wa.me/233541742099", "_blank")
+              }
             >
               <FaWhatsapp className="mr-2" /> WhatsApp
             </button>
@@ -182,7 +184,8 @@ const PropertyDetails = () => {
               <h3 className="text-lg font-bold mb-2">Agent Contact</h3>
               <div className="space-y-2">
                 <p>
-                  <strong>Name:</strong> {agentContact.firstname} {agentContact.lastname}
+                  <strong>Name:</strong> {agentContact.firstname}{" "}
+                  {agentContact.lastname}
                 </p>
                 <p>
                   <strong>Phone:</strong> {agentContact.phoneNumber}
