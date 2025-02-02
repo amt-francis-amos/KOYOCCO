@@ -104,104 +104,100 @@ const Home = () => {
               <option value="400000">Up to ₵400,000</option>
             </select>
           </div>
+          
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-  {paginatedProperties.length > 0 ? (
-    paginatedProperties.map((prop) => (
-      <Link key={prop._id} to={`/property/${prop._id}`}>
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105">
-          <div className="relative">
-            {/* Display both video and image with equal size */}
-            <div className="flex">
-              {prop.video ? (
-                <div className="w-1/2 h-64">
-                  <video
-                    className="w-full h-full object-cover"
-                    controls
-                    src={prop.video}
-                    alt={prop.name}
-                  />
-                </div>
-              ) : null}
-              <div className={`w-${prop.video ? '1/2' : 'full'} h-64`}>
-                <img
-                  src={prop.images[0]}
-                  alt={prop.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
+            {paginatedProperties.length > 0 ? (
+              paginatedProperties.map((prop) => (
+                <Link key={prop._id} to={`/property/${prop._id}`}>
+                  <div className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105">
+                    <div className="relative">
+                      {/* Display both video and image with equal size */}
+                      <div className="flex">
+                        {prop.video ? (
+                          <div className="w-1/2 h-64">
+                            <video
+                              className="w-full h-full object-cover"
+                              controls
+                              src={prop.video}
+                              alt={prop.name}
+                            />
+                          </div>
+                        ) : null}
+                        <div className={`w-${prop.video ? '1/2' : 'full'} h-64`}>
+                          <img
+                            src={prop.images[0]}
+                            alt={prop.name}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="p-6">
+                      <div className="flex justify-between mb-4">
+                        <h3 className="text-xl font-bold text-gray-800">{prop.name}</h3>
+                        <p className="text-xl font-semibold text-red-500">₵{prop.price}</p>
+                      </div>
+                      <p className="text-gray-600 text-sm mb-4">{prop.description}</p>
+
+                      {/* Add the company logo here */}
+                      <div className="flex items-center justify-start mb-4">
+                        <img
+                          src={prop.companyLogo || assets.koyoccoLogo}
+                          alt="Company Logo"
+                          className="h-10 w-10 object-contain"
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4 text-gray-600 text-sm mb-4">
+                        <div className="flex flex-col">
+                          <span className="font-medium">Region</span>
+                          <span>{prop.region}</span>
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="font-medium">Address</span>
+                          <span>{prop.address}</span>
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="font-medium">Condition</span>
+                          <span>{prop.condition}</span>
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="font-medium">Status</span>
+                          <span
+                            className={
+                              prop.status === "available"
+                                ? "text-green-500"
+                                : prop.status === "rented"
+                                ? "text-blue-500"
+                                : "text-red-500"
+                            }
+                          >
+                            {prop.status.charAt(0).toUpperCase() +
+                              prop.status.slice(1)}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex justify-end mt-4">
+                        <span className="text-xs text-gray-500">{prop.propertyType || "Not Specified"}</span>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))
+            ) : (
+              <p className="text-center text-sm md:text-base">
+                No properties available at the moment.
+              </p>
+            )}
           </div>
-
-          <div className="p-6">
-            <div className="flex justify-between mb-4">
-              <h3 className="text-xl font-bold text-gray-800">{prop.name}</h3>
-              <p className="text-xl font-semibold text-red-500">₵{prop.price}</p>
-            </div>
-            <p className="text-gray-600 text-sm mb-4">{prop.description}</p>
-
-            {/* Add the company logo here */}
-            <div className="flex items-center justify-start mb-4">
-              <img
-                src={prop.companyLogo || assets.koyoccoLogo}
-                alt="Company Logo"
-                className="h-10 w-10 object-contain"
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-4 text-gray-600 text-sm mb-4">
-              <div className="flex flex-col">
-                <span className="font-medium">Region</span>
-                <span>{prop.region}</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="font-medium">Address</span>
-                <span>{prop.address}</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="font-medium">Condition</span>
-                <span>{prop.condition}</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="font-medium">Status</span>
-                <span
-                  className={
-                    prop.status === "available"
-                      ? "text-green-500"
-                      : prop.status === "rented"
-                      ? "text-blue-500"
-                      : "text-red-500"
-                  }
-                >
-                  {prop.status.charAt(0).toUpperCase() +
-                    prop.status.slice(1)}
-                </span>
-              </div>
-            </div>
-            <div className="flex justify-end mt-4">
-              <span className="text-xs text-gray-500">{prop.propertyType}</span>
-            </div>
-          </div>
-        </div>
-      </Link>
-    ))
-  ) : (
-    <p className="text-center text-sm md:text-base">
-      No properties available at the moment.
-    </p>
-  )}
-</div>
-
-
-
 
           <div className="mt-8 flex justify-center">
             <ReactPaginate
               previousLabel={"Previous"}
               nextLabel={"Next"}
               breakLabel={"..."}
-              pageCount={Math.ceil(
-                filteredProperties.length / propertiesPerPage
-              )}
+              pageCount={Math.ceil(filteredProperties.length / propertiesPerPage)}
               marginPagesDisplayed={2}
               pageRangeDisplayed={5}
               onPageChange={handlePageClick}
