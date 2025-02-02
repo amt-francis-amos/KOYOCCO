@@ -104,30 +104,29 @@ const Home = () => {
               <option value="400000">Up to ₵400,000</option>
             </select>
           </div>
-
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
   {paginatedProperties.length > 0 ? (
     paginatedProperties.map((prop) => (
       <Link key={prop._id} to={`/property/${prop._id}`}>
         <div className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105">
           <div className="relative">
-            {/* Display both video and image */}
+            {/* Display both video and image with equal size */}
             <div className="flex">
               {prop.video ? (
-                <div className="w-1/2">
+                <div className="w-1/2 h-64">
                   <video
-                    className="w-full h-auto object-cover"
+                    className="w-full h-full object-cover"
                     controls
                     src={prop.video}
                     alt={prop.name}
                   />
                 </div>
               ) : null}
-              <div className={`w-${prop.video ? '1/2' : 'full'}`}>
+              <div className={`w-${prop.video ? '1/2' : 'full'} h-64`}>
                 <img
                   src={prop.images[0]}
                   alt={prop.name}
-                  className="w-full h-auto object-cover"
+                  className="w-full h-full object-cover"
                 />
               </div>
             </div>
@@ -191,6 +190,7 @@ const Home = () => {
     </p>
   )}
 </div>
+
 
 
 
