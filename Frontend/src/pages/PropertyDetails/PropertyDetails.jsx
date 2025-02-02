@@ -11,11 +11,12 @@ const PropertyDetails = () => {
   const [agentContact, setAgentContact] = useState(null);
   const [ownerContact, setOwnerContact] = useState(null); // State for owner contact details
   const [showContact, setShowContact] = useState(false);
+  const [userRole, setUserRole] = useState(null); // State for user role (agent or owner)
 
   // Find the property based on the URL parameter id
   const propertyDetail = property.find((prop) => prop._id === id);
 
-  // Retrieve agent and owner details from localStorage
+  // Retrieve agent, owner details, and user role from localStorage
   useEffect(() => {
     const storedAgent = localStorage.getItem("agentDetails");
     if (storedAgent) {
@@ -25,6 +26,11 @@ const PropertyDetails = () => {
     const storedOwner = localStorage.getItem("ownerDetails");
     if (storedOwner) {
       setOwnerContact(JSON.parse(storedOwner)); // Set owner contact details
+    }
+
+    const storedRole = localStorage.getItem("userRole"); // Retrieve user role (agent or owner)
+    if (storedRole) {
+      setUserRole(storedRole);
     }
   }, []);
 
@@ -42,18 +48,6 @@ const PropertyDetails = () => {
       </div>
     );
   }
-
-  // Determine if the user is an agent or owner
-  const userType = localStorage.getItem("userType"); // Assuming userType is stored in localStorage
-
-  // Toggle contact details based on user type
-  const handleContactClick = () => {
-    if (userType === "agent") {
-      setShowContact("agent");
-    } else if (userType === "owner") {
-      setShowContact("owner");
-    }
-  };
 
   return (
     <div className="container mx-auto my-8 px-4">
@@ -113,8 +107,8 @@ const PropertyDetails = () => {
               <strong>Type:</strong> {propertyDetail.propertyType}
             </p>
 
-            {/* Property Owner Contact Details */}
-            {ownerContact && showContact === "owner" && (
+            {/* Conditionally Render Contact Information */}
+            {userRole === "owner" && ownerContact && (
               <div className="mt-4 p-4 bg-gray-100 rounded-md">
                 <h3 className="text-lg font-bold mb-2">Property Owner Contact</h3>
                 <div className="flex items-center space-x-4">
@@ -144,21 +138,64 @@ const PropertyDetails = () => {
                 </div>
               </div>
             )}
+
+            {userRole === "agent" && agentContact && (
+              <div className="mt-4 p-4 bg-gray-100 rounded-md">
+                <h3 className="text-lg font-bold mb-2">Agent Contact</h3>
+                <div className="flex items-center space-x-4">
+                  <img
+                    src={agentContact.profileImage || "/default-agent-image.jpg"}
+                    alt="Agent Profile"
+                    className="w-16 h-16 object-cover rounded-full"
+                  />
+                  <div>
+                    <p className="font-semibold">
+                      {agentContact.firstname} {agentContact.lastname}
+                    </p>
+                    <p>
+                      <strong>Phone:</strong>{" "}
+                      <a
+                        href={`tel:${agentContact.phoneNumber}`}
+                        className="text-blue-500 hover:underline"
+                      >
+                        {agentContact.phoneNumber}
+                      </a>
+                    </p>
+                    <p>
+                      <strong>Location:</strong>{" "}
+                      {agentContact.location || "Unknown"}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Buttons Section */}
           <div className="flex flex-col md:flex-row items-center gap-4 mt-6">
-            {/* Contact Button */}
-            <button
-              className="bg-red-500 hover:bg-black text-white px-6 py-2 rounded-full w-full md:w-auto"
-              onClick={handleContactClick}
-            >
-              <FaPhoneAlt className="inline-block mr-2" />
-              Contact {userType === "agent" ? "Agent" : "Owner"}
-            </button>
+            {/* Contact Button - Conditionally Render Based on Role */}
+            {userRole === "agent" && (
+              <button
+                className="bg-red-500 hover:bg-black text-white px-6 py-2 rounded-full w-full md:w-auto"
+                onClick={() => setShowContact(true)}
+              >
+                <FaPhoneAlt className="inline-block mr-2" />
+                Contact Agent
+              </button>
+            )}
+
+            {userRole === "owner" && (
+              <button
+                className="bg-red-500 hover:bg-black text-white px-6 py-2 rounded-full w-full md:w-auto"
+                onClick={() => setShowContact(true)}
+              >
+                <FaPhoneAlt className="inline-block mr-2" />
+                Contact Owner
+              </button>
+            )}
 
             {/* WhatsApp Button */}
-            {agentContact?.phoneNumber && (
+            {userRole === "agent" && agentContact?.phoneNumber && (
               <a
                 href={`https://wa.me/233${agentContact.phoneNumber}`}
                 target="_blank"
@@ -169,38 +206,6 @@ const PropertyDetails = () => {
               </a>
             )}
           </div>
-
-          {/* Agent or Owner Contact Details */}
-          {showContact === "agent" && agentContact && (
-            <div className="mt-4 p-4 bg-gray-100 rounded-md">
-              <h3 className="text-lg font-bold mb-2">Agent Contact</h3>
-              <div className="flex items-center space-x-4">
-                <img
-                  src={agentContact.profileImage || "/default-agent-image.jpg"}
-                  alt="Agent Profile"
-                  className="w-16 h-16 object-cover rounded-full"
-                />
-                <div>
-                  <p className="font-semibold">
-                    {agentContact.firstname} {agentContact.lastname}
-                  </p>
-                  <p>
-                    <strong>Phone:</strong>{" "}
-                    <a
-                      href={`tel:${agentContact.phoneNumber}`}
-                      className="text-blue-500 hover:underline"
-                    >
-                      {agentContact.phoneNumber}
-                    </a>
-                  </p>
-                  <p>
-                    <strong>Location:</strong>{" "}
-                    {agentContact.location || "Unknown"}
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </div>
