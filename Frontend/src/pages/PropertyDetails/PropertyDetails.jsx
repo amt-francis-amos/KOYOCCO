@@ -57,8 +57,12 @@ const PropertyDetails = () => {
     try {
       // Fetch agent details from API
       const response = await axios.get(`https://koyocco-backend.onrender.com/api/agents/${agentId}`);
-      setAgentContact(response.data);
-      setShowContact(true);
+      if (response.status === 200 && response.data) {
+        setAgentContact(response.data);
+        setShowContact(true);
+      } else {
+        setError("No agent information found.");
+      }
     } catch (err) {
       console.error("Error fetching agent details:", err);
       setError("Unable to fetch agent contact details.");
