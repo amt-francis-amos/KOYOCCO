@@ -56,14 +56,6 @@ app.listen(PORT, () => {
 
 
 
-export const register = (req, res) => {
-    
-    const {name,email, password} = req.body;
-    
-    if(!name || !email || !password) {
-        return res.json({sucess:false, message:"Missing detailed"})
-    }
-} 
 
 
 
