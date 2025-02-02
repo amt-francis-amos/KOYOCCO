@@ -12,7 +12,6 @@ const PropertyDetails = () => {
   const [ownerContact, setOwnerContact] = useState(null);
   const [showAgentContact, setShowAgentContact] = useState(false);
   const [showOwnerContact, setShowOwnerContact] = useState(false);
-  const [userRole, setUserRole] = useState(null); // New state for user role
 
   // Find the property based on the URL parameter id
   const propertyDetail = property.find((prop) => prop._id === id);
@@ -33,12 +32,6 @@ const PropertyDetails = () => {
     }
   }, []);
 
-  // Retrieve user role from localStorage or context (here assuming it's from localStorage)
-  useEffect(() => {
-    const role = localStorage.getItem("userRole"); // Adjust this line based on how your app stores user role
-    setUserRole(role);
-  }, []);
-
   // Set the main image
   useEffect(() => {
     if (propertyDetail?.images?.length) {
@@ -54,12 +47,12 @@ const PropertyDetails = () => {
     );
   }
 
-  // Dynamically define buttons based on user role
+  // Dynamically define buttons
   const buttons = [
     {
       id: "contact-agent",
       type: "button",
-      condition: userRole === "agent", // Show this button if the user is an agent
+      condition: true,
       onClick: () => setShowAgentContact(true),
       icon: <FaPhoneAlt className="inline-block mr-2" />,
       text: "Contact Agent",
@@ -68,7 +61,7 @@ const PropertyDetails = () => {
     {
       id: "whatsapp-agent",
       type: "link",
-      condition: !!agentContact?.phoneNumber && userRole === "agent", // Show if agent details exist and user is agent
+      condition: !!agentContact?.phoneNumber,
       href: `https://wa.me/233${agentContact?.phoneNumber}`,
       icon: <FaWhatsapp className="mr-2" />,
       text: "WhatsApp",
@@ -77,7 +70,7 @@ const PropertyDetails = () => {
     {
       id: "contact-owner",
       type: "button",
-      condition: userRole === "owner", // Show this button if the user is a property owner
+      condition: true,
       onClick: () => setShowOwnerContact(true),
       icon: <FaPhoneAlt className="inline-block mr-2" />,
       text: "Contact Owner",
@@ -86,7 +79,7 @@ const PropertyDetails = () => {
     {
       id: "whatsapp-owner",
       type: "link",
-      condition: !!ownerContact?.phoneNumber && userRole === "owner", // Show if owner details exist and user is owner
+      condition: !!ownerContact?.phoneNumber,
       href: `https://wa.me/233${ownerContact?.phoneNumber}`,
       icon: <FaWhatsapp className="mr-2" />,
       text: "WhatsApp",
@@ -96,7 +89,9 @@ const PropertyDetails = () => {
 
   return (
     <div className="container mx-auto my-8 px-4">
-      <h2 className="text-3xl font-bold mb-6 text-center">{propertyDetail.name}</h2>
+      <h2 className="text-3xl font-bold mb-6 text-center">
+        {propertyDetail.name}
+      </h2>
 
       <div className="flex flex-col md:flex-row gap-6">
         {/* Property Image Section */}
@@ -123,7 +118,9 @@ const PropertyDetails = () => {
         <div className="md:w-1/2 bg-white shadow-lg rounded-md p-6 flex flex-col justify-between">
           <div>
             <p className="text-gray-600 mb-4">{propertyDetail.description}</p>
-            <p className="text-red-500 font-bold text-lg mb-2">₵{propertyDetail.price}</p>
+            <p className="text-red-500 font-bold text-lg mb-2">
+              ₵{propertyDetail.price}
+            </p>
             <p className="text-gray-500 mb-4">{propertyDetail.location}</p>
             <p className="text-sm text-gray-600 mb-4">
               <strong>Region:</strong> {propertyDetail.region}
@@ -193,6 +190,86 @@ const PropertyDetails = () => {
                 }
               })}
           </div>
+
+          {/* Agent Contact Details */}
+          {showAgentContact && (
+            <>
+              {agentContact ? (
+                <div className="mt-4 p-4 bg-gray-100 rounded-md">
+                  <h3 className="text-lg font-bold mb-2">Agent Contact</h3>
+                  <div className="flex items-center space-x-4">
+                    <img
+                      src={agentContact.profileImage || "/default-agent-image.jpg"}
+                      alt="Agent Profile"
+                      className="w-16 h-16 object-cover rounded-full"
+                    />
+                    <div>
+                      <p className="font-semibold">
+                        {agentContact.firstname} {agentContact.lastname}
+                      </p>
+                      <p>
+                        <strong>Phone:</strong>{" "}
+                        <a
+                          href={`tel:${agentContact.phoneNumber}`}
+                          className="text-blue-500 hover:underline"
+                        >
+                          {agentContact.phoneNumber}
+                        </a>
+                      </p>
+                      <p>
+                        <strong>Location:</strong>{" "}
+                        {agentContact.location || "Unknown"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="mt-4 text-gray-500">
+                  No agent contact information available.
+                </div>
+              )}
+            </>
+          )}
+
+          {/* Owner Contact Details */}
+          {showOwnerContact && (
+            <>
+              {ownerContact ? (
+                <div className="mt-4 p-4 bg-gray-100 rounded-md">
+                  <h3 className="text-lg font-bold mb-2">Owner Contact</h3>
+                  <div className="flex items-center space-x-4">
+                    <img
+                      src={ownerContact.profileImage || "/default-owner-image.jpg"}
+                      alt="Owner Profile"
+                      className="w-16 h-16 object-cover rounded-full"
+                    />
+                    <div>
+                      <p className="font-semibold">
+                        {ownerContact.firstname} {ownerContact.lastname}
+                      </p>
+                      <p>
+                        <strong>Phone:</strong>{" "}
+                        <a
+                          href={`tel:${ownerContact.phoneNumber}`}
+                          className="text-blue-500 hover:underline"
+                        >
+                          {ownerContact.phoneNumber}
+                        </a>
+                      </p>
+                      <p>
+                        <strong>Location:</strong>{" "}
+                        {ownerContact.location || "Unknown"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="mt-4 text-gray-500">
+                  No owner contact information available.
+                </div>
+              )}
+            </>
+          )}
         </div>
       </div>
     </div>
