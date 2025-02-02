@@ -13,7 +13,7 @@ const propertySchema = new mongoose.Schema({
   video: { type: String },
   status: { type: String, enum: ["available", "sold"], default: "available" },
   owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-  companyLogo: { type: String, default: "https://your-cloudinary-url.com/koyocco-logo.jpeg" }, 
+  companyLogo: { type: String, default: "https://res.cloudinary.com/koyocco-logo.jpeg" }, 
 }, { timestamps: true });
 
 module.exports = mongoose.model("Property", propertySchema);
