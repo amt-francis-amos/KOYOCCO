@@ -46,7 +46,7 @@ const PropertyDetails = () => {
       propertyDetail.agentDetails ||
       propertyDetail.createdBy;
 
-    console.log("Extracted Agent ID:", agentDetails);
+    console.log("Extracted Agent ID:", agentId);
 
     if (!agentId) {
       setError("Agent information not available for this property");
@@ -57,7 +57,7 @@ const PropertyDetails = () => {
     try {
       // Fetch agent details from API
       const response = await axios.get(
-        `https://koyocco-backend.onrender.com/api/agents/${agentDetails}`
+        `https://koyocco-backend.onrender.com/api/agents/${agentId}`
       );
       if (response.status === 200 && response.data) {
         setAgentContact(response.data);
