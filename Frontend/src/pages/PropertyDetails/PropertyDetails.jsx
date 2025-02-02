@@ -4,14 +4,12 @@ import { useProperty } from "../../context/PropertyContext";
 import { FaPhoneAlt, FaWhatsapp } from "react-icons/fa";
 import { assets } from "../../assets/assets";
 
-
-
 const PropertyDetails = () => {
   const { id } = useParams();
   const { property } = useProperty();
   const [mainImage, setMainImage] = useState(null);
   const [agentContact, setAgentContact] = useState(null);
-  const [ownerContact, setOwnerContact] = useState(null);  // State for owner contact details
+  const [ownerContact, setOwnerContact] = useState(null); // State for owner contact details
   const [showContact, setShowContact] = useState(false);
 
   // Find the property based on the URL parameter id
@@ -26,7 +24,7 @@ const PropertyDetails = () => {
 
     const storedOwner = localStorage.getItem("ownerDetails");
     if (storedOwner) {
-      setOwnerContact(JSON.parse(storedOwner));  // Set owner contact details
+      setOwnerContact(JSON.parse(storedOwner)); // Set owner contact details
     }
   }, []);
 
@@ -44,6 +42,18 @@ const PropertyDetails = () => {
       </div>
     );
   }
+
+  // Determine if the user is an agent or owner
+  const userType = localStorage.getItem("userType"); // Assuming userType is stored in localStorage
+
+  // Toggle contact details based on user type
+  const handleContactClick = () => {
+    if (userType === "agent") {
+      setShowContact("agent");
+    } else if (userType === "owner") {
+      setShowContact("owner");
+    }
+  };
 
   return (
     <div className="container mx-auto my-8 px-4">
@@ -104,7 +114,7 @@ const PropertyDetails = () => {
             </p>
 
             {/* Property Owner Contact Details */}
-            {ownerContact && (
+            {ownerContact && showContact === "owner" && (
               <div className="mt-4 p-4 bg-gray-100 rounded-md">
                 <h3 className="text-lg font-bold mb-2">Property Owner Contact</h3>
                 <div className="flex items-center space-x-4">
@@ -138,13 +148,13 @@ const PropertyDetails = () => {
 
           {/* Buttons Section */}
           <div className="flex flex-col md:flex-row items-center gap-4 mt-6">
-            {/* Contact Agent Button */}
+            {/* Contact Button */}
             <button
               className="bg-red-500 hover:bg-black text-white px-6 py-2 rounded-full w-full md:w-auto"
-              onClick={() => setShowContact(true)}
+              onClick={handleContactClick}
             >
               <FaPhoneAlt className="inline-block mr-2" />
-              Contact Agent
+              Contact {userType === "agent" ? "Agent" : "Owner"}
             </button>
 
             {/* WhatsApp Button */}
@@ -160,8 +170,8 @@ const PropertyDetails = () => {
             )}
           </div>
 
-          {/* Agent Contact Details */}
-          {showContact && agentContact ? (
+          {/* Agent or Owner Contact Details */}
+          {showContact === "agent" && agentContact && (
             <div className="mt-4 p-4 bg-gray-100 rounded-md">
               <h3 className="text-lg font-bold mb-2">Agent Contact</h3>
               <div className="flex items-center space-x-4">
@@ -189,10 +199,6 @@ const PropertyDetails = () => {
                   </p>
                 </div>
               </div>
-            </div>
-          ) : (
-            <div className="mt-4 text-gray-500">
-              No agent contact information available.
             </div>
           )}
         </div>
