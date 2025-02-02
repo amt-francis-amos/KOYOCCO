@@ -9,7 +9,7 @@ const requestRoutes = require('./routes/requestRoutes');
 const listingRoutes = require("./routes/listingRoutes");
 const adminRoutes = require('./routes/adminRoutes');
 const profileRoutes = require("./routes/profileRoutes");
-const agentRoutes = require('./routes/agentRoutes');
+
 
 
 dotenv.config();
@@ -32,7 +32,7 @@ app.use('/api/requests', requestRoutes);
 app.use('/api/post-listing', listingRoutes); 
 app.use('/api/admin', adminRoutes); 
 app.use('/api/user', profileRoutes); 
-app.use('/api/agent', agentRoutes);
+
 
 
 // Global error handling middleware
