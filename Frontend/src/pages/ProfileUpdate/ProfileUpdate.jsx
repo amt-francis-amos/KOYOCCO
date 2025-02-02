@@ -44,13 +44,13 @@ const Profile = () => {
   
       const response = await axios.put(
         "https://koyocco-backend.onrender.com/api/User/profile",
-        profileData, // Profile data to update
+        profileData, 
         config
       );
   
-      setMessage(response.data.message); // Success message
+      setMessage(response.data.message); 
       setEditable(false);
-      setProfileData(response.data.user); // Update profile with new data
+      setProfileData(response.data.user); 
     } catch (error) {
       console.error("Error updating profile:", error);
       setMessage("Failed to update profile.");

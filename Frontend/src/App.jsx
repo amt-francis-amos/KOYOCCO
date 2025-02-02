@@ -47,7 +47,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             
-            {/* Add the Profile and Dashboard routes */}
+          
             <Route
               path="/profile"
               element={
@@ -56,9 +56,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-         
-            
-            {/* Admin, Owner, and Agent dashboards */}
             <Route
               path="/admin-login"
               element={
@@ -68,7 +65,6 @@ function App() {
               }
             />
             
-            {/* Additional Routes */}
             <Route path="/property-status" element={<ProtectedRoute role={role}><PropertyStatusPage /></ProtectedRoute>} />
             <Route path="/create-request" element={<CreateRequest />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -83,8 +79,6 @@ function App() {
             <Route path="/property/:id" element={<PropertyDetails />} />
             <Route path="/sales" element={<PropertySales />} />
             <Route path="/about" element={<AboutPage />} />
-
-            {/* Catch-all route for non-existing pages */}
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>

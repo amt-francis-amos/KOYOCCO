@@ -13,7 +13,7 @@ const Booking = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const exchangeRate = 10; // Example exchange rate (can be fetched dynamically)
+  const exchangeRate = 10; 
 
   const convertToGHS = (priceInUSD) => {
     if (!priceInUSD) return "Price not available";

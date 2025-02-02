@@ -132,8 +132,6 @@ const Navbar = () => {
               <FaTimes size={24} aria-label="Close menu" />
             </div>
           </div>
-
-          {/* Navigation Links */}
           <li>
             <Link
               to="/"
@@ -143,8 +141,6 @@ const Navbar = () => {
               Home
             </Link>
           </li>
-
-          {/* Short-Stays Dropdown */}
           <li
             className="relative group"
             onMouseLeave={() => handleMouseLeave("shortStays")}
@@ -158,8 +154,6 @@ const Navbar = () => {
                 Short-Stays <FaChevronDown size={13} className="ml-2" />
               </span>
             </Link>
-
-            {/* Dropdown Content */}
             <ul
               className={`absolute left-0 z-10 mt-1 bg-white shadow-lg rounded-md py-2 w-48 ${
                 dropdownOpen.shortStays ? "block" : "hidden"
@@ -209,8 +203,6 @@ const Navbar = () => {
                 Property Rentals <FaChevronDown size={13} className="ml-2" />
               </span>
             </Link>
-
-            {/* Dropdown Content */}
             <ul
               className={`absolute z-10 left-0 bg-white shadow-lg rounded-md py-2 w-48 ${
                 dropdownOpen.rental ? "block" : "hidden"
@@ -320,8 +312,6 @@ const Navbar = () => {
               </ul>
             )}
           </li>
-
-       {/* Other Links */}
        <li>
             <Link
               to="/cars"

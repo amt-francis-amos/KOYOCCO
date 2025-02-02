@@ -44,7 +44,6 @@ const handleSave = async () => {
       },
     };
 
-    // Handle profile image upload
     if (imageFile) {
       const formData = new FormData();
       formData.append("profileImage", imageFile);

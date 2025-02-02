@@ -11,14 +11,14 @@ const ResetPassword = () => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Validate token on component mount
+
   useEffect(() => {
     if (!token) {
       setMessage("Invalid or missing token. Please request a new password reset link.");
     }
   }, [token]);
 
-  // Form validation function
+ 
   const validateForm = () => {
     const validationErrors = {};
     if (password !== confirmPassword) {
@@ -31,11 +31,11 @@ const ResetPassword = () => {
     return Object.keys(validationErrors).length === 0;
   };
 
-  // Handle form submission
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate form fields
+   
     if (!validateForm()) {
       setMessage("Please fix the errors in the form");
       return;
@@ -44,19 +44,18 @@ const ResetPassword = () => {
     try {
       setIsSubmitting(true);
 
-      // Send request to reset password
       const response = await axios.post(
         `https://koyocco-backend.onrender.com/api/auth/reset-password/${token}`,
         { password }
       );
 
-      // Show success message and navigate to login page
+    
       setMessage(response.data.message || "Password reset successfully!");
       navigate("/login");
 
     } catch (error) {
       console.error("Reset password error:", error);
-      // Handle specific errors
+     
       if (error.response?.status === 400) {
         setMessage("Invalid or expired token. Please request a new password reset link.");
       } else {

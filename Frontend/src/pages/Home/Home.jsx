@@ -20,7 +20,7 @@ const Home = () => {
     { img: assets.houseImg3, text: "Affordable Housing Options" },
   ];
 
-  // Filter properties based on search term and price range
+
   const filteredProperties = property.filter((prop) => {
     const matchesSearchTerm =
       prop.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -31,26 +31,26 @@ const Home = () => {
     return matchesSearchTerm && matchesPriceRange;
   });
 
-  // Paginate filtered properties
+
   const paginatedProperties = filteredProperties.slice(
     currentPage * propertiesPerPage,
     (currentPage + 1) * propertiesPerPage
   );
 
-  // Handle page navigation
+
   const handlePageClick = (data) => {
     const selectedPage = data.selected;
     setCurrentPage(selectedPage);
   };
 
-  // Navigate to upload property page
+
   const handleNavigateToLogin = () => {
     navigate("/uploadProperty");
   };
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Header Section with Carousel */}
+  
       <header className="h-[70vh] md:h-screen">
         <Carousel
           showArrows={true}
@@ -82,14 +82,13 @@ const Home = () => {
         </Carousel>
       </header>
 
-      {/* Main Content */}
       <div className="container mx-auto my-8 px-4">
         <section className="my-8">
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">
             Featured Properties
           </h2>
 
-          {/* Filters */}
+       
           <div className="flex flex-col md:flex-row justify-between mb-4 space-y-2 md:space-y-0">
             <input
               type="text"
@@ -111,7 +110,7 @@ const Home = () => {
             </select>
           </div>
 
-          {/* Property Grid */}
+         
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {paginatedProperties.length > 0 ? (
               paginatedProperties.map((prop) => (
@@ -179,7 +178,7 @@ const Home = () => {
             )}
           </div>
 
-          {/* Pagination */}
+         
           <div className="mt-8 flex justify-center">
             <ReactPaginate
               previousLabel={"Previous"}

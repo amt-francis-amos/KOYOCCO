@@ -13,10 +13,10 @@ const PropertyDetails = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Find the property based on the ID
+
   const propertyDetail = property.find((prop) => prop._id === id);
 
-  // Debug log to check property data
+
   useEffect(() => {
     console.log("Property Data:", property);
     if (propertyDetail) {
@@ -25,19 +25,19 @@ const PropertyDetails = () => {
     }
   }, [propertyDetail]);
 
-  // Set the main image once propertyDetail is loaded
+  
   useEffect(() => {
     if (propertyDetail?.images?.length > 0) {
       setMainImage(propertyDetail.images[0]);
     }
   }, [propertyDetail]);
 
-  // Enhanced fetchAgentContact function with better error handling
+ 
   const fetchAgentContact = async () => {
     setLoading(true);
     setError(null);
 
-    // Check if propertyDetail exists
+   
     if (!propertyDetail) {
       setError("Property details not found");
       setLoading(false);
@@ -67,7 +67,7 @@ const PropertyDetails = () => {
       <h2 className="text-3xl font-bold mb-6 text-center">{propertyDetail.name}</h2>
 
       <div className="flex flex-col md:flex-row gap-6">
-        {/* Left section */}
+       
         <div className="md:w-1/2">
           <img
             src={mainImage || "/placeholder-image.jpg"}
@@ -87,7 +87,7 @@ const PropertyDetails = () => {
           </div>
         </div>
 
-        {/* Right section */}
+      
         <div className="md:w-1/2 bg-white shadow-lg rounded-md p-6 flex flex-col justify-between">
           <div>
             <p className="text-gray-600 mb-4">{propertyDetail.description}</p>
@@ -135,14 +135,14 @@ const PropertyDetails = () => {
             </button>
           </div>
 
-          {/* Error Message Display */}
+      
           {error && (
             <div className="mt-4 p-3 bg-red-100 text-red-700 rounded-md">
               {error}
             </div>
           )}
 
-          {/* Agent Contact Display */}
+    
           {showContact && agentContact ? (
             <div className="mt-4 p-4 bg-gray-100 rounded-md">
               <h3 className="text-lg font-bold mb-2">Agent Contact</h3>
