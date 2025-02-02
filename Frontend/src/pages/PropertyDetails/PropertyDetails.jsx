@@ -15,7 +15,8 @@ const PropertyDetails = () => {
   const [error, setError] = useState(null);
 
   // Get agent details from localStorage if the user is an agent
-  const agentDetails = JSON.parse(localStorage.getItem("agentDetails"));
+  const agentDetails = localStorage.getItem("agentDetails");
+  const parsedAgentDetails = agentDetails ? JSON.parse(agentDetails) : null;
 
   // Find the property based on the URL parameter id
   const propertyDetail = property.find((prop) => prop._id === id);
@@ -68,10 +69,10 @@ const PropertyDetails = () => {
   };
 
   useEffect(() => {
-    if (!agentDetails) {
+    if (!parsedAgentDetails) {
       fetchAgentContact();
     }
-  }, [agentDetails]);
+  }, [parsedAgentDetails]);
 
   if (!propertyDetail) {
     return <div className="text-center py-8">Loading property details...</div>;
@@ -79,7 +80,9 @@ const PropertyDetails = () => {
 
   return (
     <div className="container mx-auto my-8 px-4">
-      <h2 className="text-3xl font-bold mb-6 text-center">{propertyDetail.name}</h2>
+      <h2 className="text-3xl font-bold mb-6 text-center">
+        {propertyDetail.name}
+      </h2>
 
       <div className="flex flex-col md:flex-row gap-6">
         {/* Property Image Section */}
@@ -174,21 +177,21 @@ const PropertyDetails = () => {
           )}
 
           {/* Agent Contact Details */}
-          {showContact || agentDetails ? (
+          {showContact || parsedAgentDetails ? (
             <div className="mt-4 p-4 bg-gray-100 rounded-md">
               <h3 className="text-lg font-bold mb-2">Agent Contact</h3>
               <div className="space-y-2">
                 <p>
-                  <strong>Name:</strong> {agentDetails ? `${agentDetails.firstname} ${agentDetails.lastname}` : `${agentContact?.firstname} ${agentContact?.lastname}`}
+                  <strong>Name:</strong> {parsedAgentDetails ? `${parsedAgentDetails.firstname} ${parsedAgentDetails.lastname}` : `${agentContact?.firstname} ${agentContact?.lastname}`}
                 </p>
                 <p>
-                  <strong>Phone:</strong> {agentDetails ? agentDetails.phoneNumber : agentContact?.phoneNumber}
+                  <strong>Phone:</strong> {parsedAgentDetails ? parsedAgentDetails.phoneNumber : agentContact?.phoneNumber}
                 </p>
                 <p>
-                  <strong>Email:</strong> {agentDetails ? agentDetails.email : agentContact?.email}
+                  <strong>Email:</strong> {parsedAgentDetails ? parsedAgentDetails.email : agentContact?.email}
                 </p>
                 <p>
-                  <strong>Location:</strong> {agentDetails ? agentDetails.location : agentContact?.location}
+                  <strong>Location:</strong> {parsedAgentDetails ? parsedAgentDetails.location : agentContact?.location}
                 </p>
               </div>
             </div>
