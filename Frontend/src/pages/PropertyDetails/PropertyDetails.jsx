@@ -48,7 +48,7 @@ const PropertyDetails = () => {
 
     try {
       // Replace the endpoint URL if needed
-      const response = await axios.get(`/api/agent/${propertyDetail.agentId}`);
+      const response = await axios.get(`https://koyocco-backend.onrender.com/api/agent/${propertyDetail.agentId}`);
       setAgentContact(response.data);
       setShowContact(true);
     } catch (err) {
