@@ -79,9 +79,7 @@ const PropertyDetails = () => {
 
   return (
     <div className="container mx-auto my-8 px-4">
-      <h2 className="text-3xl font-bold mb-6 text-center">
-        {propertyDetail.name}
-      </h2>
+      <h2 className="text-3xl font-bold mb-6 text-center">{propertyDetail.name}</h2>
 
       <div className="flex flex-col md:flex-row gap-6">
         {/* Property Image Section */}
