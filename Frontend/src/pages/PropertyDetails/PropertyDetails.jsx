@@ -137,10 +137,7 @@ const PropertyDetails = () => {
               {loading ? "Loading..." : "Contact Agent"}
             </button>
 
-            {/* Start Chat Button */}
-            <button className="bg-gray-300 text-black px-6 py-2 hover:bg-gray-400 duration-300 rounded-full w-full md:w-auto">
-              <FaCommentDots className="inline-block mr-2" /> Start Chat
-            </button>
+           
 
             {/* WhatsApp Button */}
             <button
