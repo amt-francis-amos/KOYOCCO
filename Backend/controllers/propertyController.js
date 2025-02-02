@@ -68,17 +68,19 @@ const uploadProperty = async (req, res) => {
 
 const getAllProperties = async (req, res) => {
   try {
-    const { propertyType } = req.query; 
+    const { propertyType } = req.query;
 
     let filter = {};
     if (propertyType) {
-      filter.propertyType = propertyType; 
+      filter.propertyType = propertyType;
     }
 
-    const properties = await Property.find(filter);
+   
+    const properties = await Property.find(filter).populate("owner", "companyLogo");
+
     res.status(200).json(properties);
   } catch (error) {
-    res.status(500).json({ message: 'Failed to fetch properties', error: error.message });
+    res.status(500).json({ message: "Failed to fetch properties", error: error.message });
   }
 };
 

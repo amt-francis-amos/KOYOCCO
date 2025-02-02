@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
   location: { type: String, required: true },  
   agentId: { type: String },
   profileImage: { type: String }, 
+  companyLogo: { type: String, default: `https://res.cloudinary.com/dkvs0lnab/image/upload/default-logo.png` },
   resetPasswordToken: { type: String },
   resetPasswordExpires: { type: Date },
 });

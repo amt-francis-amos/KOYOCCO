@@ -135,13 +135,13 @@ const Home = () => {
             </p>
 
             {/* Add the company logo here */}
-            <div className="flex justify-start mb-4">
-              <img
-                src={prop.companyLogo}
-                alt="Company Logo"
-                className="h-8 w-8 object-contain"
-              />
-            </div>
+            <div className="flex items-center justify-start mb-4">
+  <img
+    src={prop.companyLogo || assets.koyoccoLogo}
+    alt="Company Logo"
+    className="h-10 w-10 object-contain"
+  />
+</div>
 
             <div className="grid grid-cols-2 gap-4 text-gray-600 text-sm mb-4">
               <div className="flex flex-col">
