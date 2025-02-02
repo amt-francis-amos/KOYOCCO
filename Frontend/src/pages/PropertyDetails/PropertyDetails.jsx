@@ -1,7 +1,8 @@
+// src/components/PropertyDetails.js
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useProperty } from "../../context/PropertyContext";
-import { FaPhoneAlt, FaCommentDots, FaWhatsapp } from "react-icons/fa";
+import { FaPhoneAlt, FaWhatsapp } from "react-icons/fa";
 import { assets } from "../../assets/assets";
 import axios from "axios";
 
@@ -22,7 +23,7 @@ const PropertyDetails = () => {
       console.log("Property Detail:", propertyDetail);
       console.log("Agent ID:", propertyDetail.agentId);
     }
-  }, [propertyDetail]);
+  }, [propertyDetail, property]);
 
   useEffect(() => {
     if (propertyDetail?.images?.length > 0) {
@@ -47,7 +48,7 @@ const PropertyDetails = () => {
     }
 
     try {
-      // Replace the endpoint URL if needed
+      // Make sure the endpoint URL is correct and publicly accessible.
       const response = await axios.get(`https://koyocco-backend.onrender.com/api/agent/${propertyDetail.agentId}`);
       setAgentContact(response.data);
       setShowContact(true);
@@ -139,9 +140,7 @@ const PropertyDetails = () => {
             {/* Contact Agent Button */}
             <button
               className={`${
-                loading
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-red-500 hover:bg-black"
+                loading ? "bg-gray-400 cursor-not-allowed" : "bg-red-500 hover:bg-black"
               } text-white px-6 py-2 rounded-full w-full md:w-auto`}
               onClick={fetchAgentContact}
               disabled={loading}
@@ -153,7 +152,9 @@ const PropertyDetails = () => {
             {/* WhatsApp Button */}
             <button
               className="bg-green-500 text-white px-6 py-2 rounded-full w-full md:w-auto flex items-center justify-center hover:bg-green-600"
-              onClick={() => window.open("https://wa.me/233541742099", "_blank")}
+              onClick={() =>
+                window.open("https://wa.me/233541742099", "_blank")
+              }
             >
               <FaWhatsapp className="mr-2" /> WhatsApp
             </button>
