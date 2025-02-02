@@ -97,7 +97,6 @@ router.post("/signup", async (req, res) => {
     const userExists = await User.findOne({ email });
     if (userExists) return res.status(400).json({ message: "User already exists" });
 
-   
     let agentId = null;
     if (role === 'Agent') {
       agentId = crypto.randomBytes(16).toString('hex'); 
@@ -119,7 +118,6 @@ router.post("/signup", async (req, res) => {
 
     await sendConfirmationEmail(user);
 
-  
     res.status(201).json({
       message: "Signup successful! Confirmation email sent.",
       role: user.role,
@@ -133,12 +131,13 @@ router.post("/signup", async (req, res) => {
 });
 
 // Login route
-// Login route
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   // Validate the incoming request
-  if (!email || !password) return res.status(400).json({ message: "Email and password are required" });
+  if (!email || !password) {
+    return res.status(400).json({ message: "Email and password are required" });
+  }
 
   try {
     const user = await User.findOne({ email });
@@ -159,13 +158,14 @@ router.post("/login", async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    // Send response with token, userId, role, and agent details if the role is Agent
+    // Prepare the response data
     const responseData = {
       token,
       role: user.role,
       userId: user._id,
     };
 
+    // Include agent details if the user is an Agent
     if (user.role === "Agent") {
       const agentDetails = {
         agentId: user.agentId,
@@ -179,14 +179,24 @@ router.post("/login", async (req, res) => {
       responseData.agentDetails = agentDetails;
     }
 
+    // Include owner details if the user is a Property Owner
+    if (user.role === "Property Owner") {
+      const ownerDetails = {
+        firstname: user.firstname,
+        lastname: user.lastname,
+        phoneNumber: user.phoneNumber,
+        location: user.location,
+        profileImage: user.profileImage, // Adjust if needed or remove if not available
+      };
+      responseData.ownerDetails = ownerDetails;
+    }
+
     res.status(200).json(responseData);
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
-
-
 
 // Forgot password route
 router.post("/forgot-password", async (req, res) => {
