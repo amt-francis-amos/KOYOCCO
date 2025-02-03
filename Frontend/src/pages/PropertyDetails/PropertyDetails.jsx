@@ -64,7 +64,7 @@ const PropertyDetails = () => {
       condition: !!agentContact?.phoneNumber,
       href: `https://wa.me/233${agentContact?.phoneNumber}`,
       icon: <FaWhatsapp className="mr-2" />,
-      text: "WhatsApp",
+      text: "Agent WhatsApp",
       className: "bg-green-500 hover:bg-green-600 focus:ring-green-300",
     },
     {
@@ -82,7 +82,7 @@ const PropertyDetails = () => {
       condition: !!ownerContact?.phoneNumber,
       href: `https://wa.me/233${ownerContact?.phoneNumber}`,
       icon: <FaWhatsapp className="mr-2" />,
-      text: "WhatsApp",
+      text: "Owner WhatsApp",
       className: "bg-green-500 hover:bg-green-600 focus:ring-green-300",
     },
   ];
