@@ -56,7 +56,7 @@ const PropertyDetails = () => {
       onClick: () => setShowAgentContact(true),
       icon: <FaPhoneAlt className="inline-block mr-2" />,
       text: "Contact Agent",
-      className: "bg-red-500 hover:bg-red-600 focus:ring-red-300",
+      className: "bg-red-500  hover:bg-red-600 focus:ring-red-300",
     },
     {
       id: "whatsapp-agent",
@@ -74,7 +74,7 @@ const PropertyDetails = () => {
       onClick: () => setShowOwnerContact(true),
       icon: <FaPhoneAlt className="inline-block mr-2" />,
       text: "Contact Owner",
-      className: "bg-red-500 hover:bg-black focus:ring-blue-300",
+      className: "bg-blue-500 hover:bg-black focus:ring-blue-300",
     },
     {
       id: "whatsapp-owner",
@@ -156,40 +156,43 @@ const PropertyDetails = () => {
           </div>
 
           {/* Buttons Section (Dynamically Rendered) */}
-          <div className="flex flex-col md:flex-row items-center gap-4 mt-6">
-            {buttons
-              .filter((btn) => btn.condition)
-              .map((btn) => {
-                // Common styling for both buttons and links
-                const commonClasses =
-                  "text-white px-6 py-3 rounded-full shadow-md w-full md:w-auto flex items-center justify-center transition-all duration-200 ease-in-out focus:outline-none focus:ring-2";
-                if (btn.type === "button") {
-                  return (
-                    <button
-                      key={btn.id}
-                      onClick={btn.onClick}
-                      className={`${commonClasses} ${btn.className}`}
-                    >
-                      {btn.icon}
-                      {btn.text}
-                    </button>
-                  );
-                } else {
-                  return (
-                    <a
-                      key={btn.id}
-                      href={btn.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`${commonClasses} ${btn.className}`}
-                    >
-                      {btn.icon}
-                      {btn.text}
-                    </a>
-                  );
-                }
-              })}
-          </div>
+          <div className="flex flex-wrap gap-4 mt-6">
+  {buttons
+    .filter((btn) => btn.condition)
+    .map((btn) => {
+      // Common styling for both buttons and links
+      const commonClasses =
+        "w-30 text-white px-4 py-2 rounded-full shadow-md flex items-center justify-center gap-2 transition-all duration-200 ease-in-out focus:outline-none focus:ring-2";
+
+      if (btn.type === "button") {
+        return (
+          <button
+            key={btn.id}
+            onClick={btn.onClick}
+            className={`${commonClasses} ${btn.className}`}
+          >
+            {btn.icon}
+            {btn.text}
+          </button>
+        );
+      } else {
+        return (
+          <a
+            key={btn.id}
+            href={btn.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`${commonClasses} ${btn.className}`}
+          >
+            {btn.icon}
+            {btn.text}
+          </a>
+        );
+      }
+    })}
+</div>
+
+
 
           {/* Agent Contact Details */}
           {showAgentContact && (
