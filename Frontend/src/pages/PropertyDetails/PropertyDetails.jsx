@@ -60,7 +60,7 @@ const PropertyDetails = () => {
           <img
             src={assets.koyoccoLogo}
             alt="Company Logo"
-            className="absolute top-[40%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-40 w-40 opacity-50"
+            className="absolute top-[40%] rounded-lg left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-40 w-40 opacity-50"
           />
 
           <div className="flex space-x-2 mt-4 overflow-x-auto">
