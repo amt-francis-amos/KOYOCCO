@@ -104,7 +104,7 @@ const Home = () => {
               <option value="400000">Up to ₵400,000</option>
             </select>
           </div>
-          
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {paginatedProperties.length > 0 ? (
               paginatedProperties.map((prop) => (
@@ -112,9 +112,9 @@ const Home = () => {
                   <div className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105">
                     <div className="relative">
                       {/* Display both video and image with equal size */}
-                      <div className="flex">
+                      <div className="flex flex-col md:flex-row">
                         {prop.video ? (
-                          <div className="w-1/2 h-64">
+                          <div className="w-full md:w-1/2 h-64">
                             <video
                               className="w-full h-full object-cover"
                               controls
@@ -123,7 +123,7 @@ const Home = () => {
                             />
                           </div>
                         ) : null}
-                        <div className={`w-${prop.video ? '1/2' : 'full'} h-64`}>
+                        <div className={`w-full md:w-${prop.video ? "1/2" : "full"} h-64`}>
                           <img
                             src={prop.images[0]}
                             alt={prop.name}
