@@ -45,21 +45,6 @@ const Home = () => {
     navigate("/uploadProperty");
   };
 
-  // Handle video click to just play without navigating
-  const handleVideoClick = (propId, e) => {
-    // Prevent card navigation if clicking on the video
-    e.stopPropagation(); // This stops the card's click event from firing
-    const videoElement = document.getElementById(`video-${propId}`);
-    if (videoElement) {
-      videoElement.play();
-    }
-  };
-
-  // Handle card click to navigate to the propertyDetails page
-  const handleCardClick = (propId) => {
-    navigate(`/propertyDetails/${propId}`);
-  };
-
   return (
     <div className="flex flex-col min-h-screen">
       <header className="h-[70vh] md:h-screen">
@@ -123,22 +108,14 @@ const Home = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {paginatedProperties.length > 0 ? (
               paginatedProperties.map((prop) => (
-                <div
-                  key={prop._id}
-                  onClick={() => handleCardClick(prop._id)} // Click on the card navigates to propertyDetails page
-                  className="cursor-pointer"
-                >
+                <Link key={prop._id} to={`/property/${prop._id}`}>
                   <div className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105">
                     <div className="relative">
                       {/* Display both video and image with equal size */}
                       <div className="flex flex-col md:flex-row">
                         {prop.video ? (
-                          <div
-                            className="w-full md:w-1/2 h-64 cursor-pointer"
-                            onClick={(e) => handleVideoClick(prop._id, e)} // Prevent navigation when clicking on the video
-                          >
+                          <div className="w-full md:w-1/2 h-64">
                             <video
-                              id={`video-${prop._id}`}
                               className="w-full h-full object-cover"
                               controls
                               src={prop.video}
@@ -146,9 +123,7 @@ const Home = () => {
                             />
                           </div>
                         ) : null}
-                        <div
-                          className={`w-full md:w-${prop.video ? "1/2" : "full"} h-64`}
-                        >
+                        <div className={`w-full md:w-${prop.video ? "1/2" : "full"} h-64`}>
                           <img
                             src={prop.images[0]}
                             alt={prop.name}
@@ -208,7 +183,7 @@ const Home = () => {
                       </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))
             ) : (
               <p className="text-center text-sm md:text-base">
