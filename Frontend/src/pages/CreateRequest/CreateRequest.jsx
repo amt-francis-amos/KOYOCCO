@@ -72,25 +72,54 @@ const CreateRequest = () => {
   };
 
   return (
-    <div className="container mx-auto p-6">
-      <h1 className="text-3xl font-bold text-center mb-6">Request a Relocation</h1>
-      <form onSubmit={handleSubmit} className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
-        <input type="text" name="userName" value={formData.userName} onChange={handleChange} placeholder="Full Name" required />
-        <input type="email" name="userEmail" value={formData.userEmail} onChange={handleChange} placeholder="Email Address" required />
-        <input type="tel" name="phone" value={formData.phone} onChange={handleChange} placeholder="Phone Number" required />
-        <input type="date" name="date" value={formData.date} onChange={handleChange} required />
-        <input type="text" name="location" value={formData.location} onChange={handleChange} placeholder="Location" required />
-        
-        {/* New Car Details Fields */}
-        <input type="text" name="carType" value={formData.carType} onChange={handleChange} placeholder="Car Type" required />
-        <textarea name="description" value={formData.description} onChange={handleChange} placeholder="Car Description" required />
-        <input type="text" name="registrationNumber" value={formData.registrationNumber} onChange={handleChange} placeholder="Registration Number" required />
-        <input type="text" name="region" value={formData.region} onChange={handleChange} placeholder="Region" required />
-        <input type="text" name="driverContact" value={formData.driverContact} onChange={handleChange} placeholder="Driver Contact Info" required />
-
-        <button type="submit" disabled={isSubmitting} className="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700">
-          {isSubmitting ? 'Submitting...' : 'Submit Request'}
-        </button>
+    <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md mt-10">
+      <h1 className="text-2xl font-semibold text-center text-gray-800 mb-6">Request a Relocation</h1>
+      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="col-span-2">
+          <label className="block text-sm font-medium text-gray-700">Full Name</label>
+          <input type="text" name="userName" value={formData.userName} onChange={handleChange} required className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring focus:ring-blue-300" />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Email Address</label>
+          <input type="email" name="userEmail" value={formData.userEmail} onChange={handleChange} required className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring focus:ring-blue-300" />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Phone Number</label>
+          <input type="tel" name="phone" value={formData.phone} onChange={handleChange} required className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring focus:ring-blue-300" />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Date</label>
+          <input type="date" name="date" value={formData.date} onChange={handleChange} required className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring focus:ring-blue-300" />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Location</label>
+          <input type="text" name="location" value={formData.location} onChange={handleChange} required className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring focus:ring-blue-300" />
+        </div>
+        <div className="col-span-2">
+          <label className="block text-sm font-medium text-gray-700">Car Type</label>
+          <input type="text" name="carType" value={formData.carType} onChange={handleChange} required className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring focus:ring-blue-300" />
+        </div>
+        <div className="col-span-2">
+          <label className="block text-sm font-medium text-gray-700">Car Description</label>
+          <textarea name="description" value={formData.description} onChange={handleChange} required className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring focus:ring-blue-300" rows="3"></textarea>
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Registration Number</label>
+          <input type="text" name="registrationNumber" value={formData.registrationNumber} onChange={handleChange} required className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring focus:ring-blue-300" />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Region</label>
+          <input type="text" name="region" value={formData.region} onChange={handleChange} required className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring focus:ring-blue-300" />
+        </div>
+        <div className="col-span-2">
+          <label className="block text-sm font-medium text-gray-700">Driver Contact Info</label>
+          <input type="text" name="driverContact" value={formData.driverContact} onChange={handleChange} required className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring focus:ring-blue-300" />
+        </div>
+        <div className="col-span-2 flex justify-center mt-4">
+          <button type="submit" disabled={isSubmitting} className="w-full md:w-1/2 bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-black transition duration-300">
+            {isSubmitting ? 'Submitting...' : 'Submit Request'}
+          </button>
+        </div>
       </form>
     </div>
   );
