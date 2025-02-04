@@ -14,7 +14,6 @@ const PropertySales = () => {
         "https://koyocco-backend.onrender.com/api/properties?propertyType=PropertySales"
       );
 
-  
       const filteredSales = response.data.filter(
         (property) => property.propertyType === "PropertySales"
       );
@@ -31,8 +30,11 @@ const PropertySales = () => {
     fetchPropertySales();
   }, []);
 
+  const handleCardClick = (id) => {
+    navigate(`/property/${id}`);
+  };
+
   const handleBookSales = (sale) => {
- 
     navigate("/booking", {
       state: {
         id: sale._id,
@@ -56,7 +58,8 @@ const PropertySales = () => {
           {sales.map((sale) => (
             <div
               key={sale._id}
-              className="bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105"
+              onClick={() => handleCardClick(sale._id)}
+              className="bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 cursor-pointer"
             >
               {sale.images && sale.images.length > 0 && (
                 <img
@@ -69,15 +72,10 @@ const PropertySales = () => {
                 <h2 className="text-lg font-semibold text-gray-800">{sale.name}</h2>
                 <p className="text-sm text-gray-600 mt-2">{sale.description}</p>
                 <div className="flex justify-between items-center mt-4">
-                  <span className="text-red-500 font-bold text-lg">${sale.price}</span>
+                  <span className="text-red-500 font-bold text-lg">₵{sale.price}</span>
                   <span className="text-gray-500 text-sm">{sale.location}</span>
                 </div>
-                <button
-                  className="w-full mt-4 py-2 text-white bg-red-500 hover:bg-black font-semibold rounded-lg transition duration-300"
-                  onClick={() => handleBookSales(sale)} 
-                >
-                  Book Sales
-                </button>
+              
               </div>
             </div>
           ))}

@@ -14,7 +14,6 @@ const PropertyRentals = () => {
         "https://koyocco-backend.onrender.com/api/properties?propertyType=PropertyRentals"
       );
 
-      
       const filteredRentals = response.data.filter(
         (property) => property.propertyType === "PropertyRentals"
       );
@@ -31,16 +30,8 @@ const PropertyRentals = () => {
     fetchPropertyRentals();
   }, []);
 
-  const handleRentNow = (rental) => {
-   
-    navigate("/booking", {
-      state: {
-        id: rental._id,
-        name: rental.name,
-        price: rental.price,
-        location: rental.location,
-      },
-    });
+  const handleCardClick = (id) => {
+    navigate(`/property/${id}`);
   };
 
   if (loading) return <p>Loading...</p>;
@@ -56,28 +47,14 @@ const PropertyRentals = () => {
           {rentals.map((rental) => (
             <div
               key={rental._id}
-              className="bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105"
+              onClick={() => handleCardClick(rental._id)}
+              className="bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 cursor-pointer"
             >
-              {rental.images && rental.images.length > 0 && (
-                <img
-                  src={rental.images[0]}
-                  alt={rental.name}
-                  className="w-full h-48 object-cover"
-                />
-              )}
+              <img src={rental.images?.[0] || "/placeholder-image.jpg"} alt={rental.name} className="w-full h-56 object-cover"/>
               <div className="p-4">
-                <h2 className="text-lg font-semibold text-gray-800">{rental.name}</h2>
-                <p className="text-sm text-gray-600 mt-2">{rental.description}</p>
-                <div className="flex justify-between items-center mt-4">
-                  <span className="text-red-500 font-bold text-lg">${rental.price}</span>
-                  <span className="text-gray-500 text-sm">{rental.location}</span>
-                </div>
-                <button
-                  className="w-full mt-4 py-2 text-white bg-red-500 hover:bg-black font-semibold rounded-lg transition duration-300"
-                  onClick={() => handleRentNow(rental)} 
-                >
-                  Rent Now
-                </button>
+                <h3 className="text-xl font-semibold">{rental.name}</h3>
+                <p className="text-gray-500">{rental.location}</p>
+                <p className="text-red-500 font-bold">₵{rental.price}</p>
               </div>
             </div>
           ))}
