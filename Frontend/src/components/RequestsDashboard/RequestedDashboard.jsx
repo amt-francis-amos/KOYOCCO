@@ -35,7 +35,7 @@ const RequestsDashboard = () => {
             <th className="p-2 border-b">Service Type</th>
             <th className="p-2 border-b">Date</th>
             <th className="p-2 border-b">Region</th>
-            <th className="p-2 border-b">Status</th>
+          
           </tr>
         </thead>
         <tbody>
@@ -46,7 +46,7 @@ const RequestsDashboard = () => {
               <td className="p-2 border-b">{request.serviceType}</td>
               <td className="p-2 border-b">{request.date}</td>
               <td className="p-2 border-b">{request.region}</td>
-              <td className="p-2 border-b">{request.status}</td>
+             
             </tr>
           ))}
         </tbody>
