@@ -15,7 +15,7 @@ const uploadProperty = async (req, res) => {
     }
 
     // Use owner's company logo or default
-    const companyLogo = user.companyLogo || "https://res.cloudinary.com/dkvs0lnab/image/upload/default-logo.png";
+    const companyLogo = user.companyLogo || "https://res.cloudinary.com/dkvs0lnab/image/upload/koyocco-Logo.jpeg";
 
     // Handle images upload with company logo overlay
     let images = [];
@@ -25,15 +25,15 @@ const uploadProperty = async (req, res) => {
           cloudinary.uploader.upload_stream({ resource_type: "image" }, async (error, result) => {
             if (error) return reject(error);
 
-            // Apply transformation: blur logo in the center of the image
+           
             const modifiedImage = cloudinary.url(result.public_id, {
               transformation: [
-                { width: 800, height: 600, crop: "fill" }, // Resize image
+                { width: 800, height: 600, crop: "fill" }, 
                 {
                   overlay: companyLogo,
                   width: 150,
                   opacity: 50,
-                  effect: "blur:300", // Apply blur effect to logo
+                  effect: "blur:300",
                   gravity: "center",
                 },
               ],
@@ -67,7 +67,7 @@ const uploadProperty = async (req, res) => {
       propertyType,
       images,
       video,
-      owner: ownerId, // Link property to owner
+      owner: ownerId, 
     });
 
     await property.save();
