@@ -51,36 +51,29 @@ const PropertyDetails = () => {
 
       <div className="flex flex-col md:flex-row gap-6">
         {/* Image Section */}
-
-<div className="md:w-1/2 relative">
-  <img
-    src={mainImage || "/placeholder-image.jpg"}
-    alt={propertyDetail.name}
-    className="w-full h-[37.5rem] object-cover rounded-md"
-  />
-
-  {/* Logo positioned at the center of the main image */}
-  <div className="absolute inset-0 flex items-center justify-center">
-    <img
-      src={assets.koyoccoLogo}
-      alt="Company Logo"
-      className="h-40 w-40 object-contain blur-sm opacity-80"
-    />
-  </div>
-
-  <div className="flex space-x-2 mt-4 overflow-x-auto">
-    {propertyDetail.images?.map((image, index) => (
-      <img
-        key={index}
-        src={image}
-        alt={`Thumbnail ${index}`}
-        className="w-24 h-24 object-cover rounded-md cursor-pointer flex-shrink-0 hover:opacity-80 transition-all duration-200"
-        onClick={() => setMainImage(image)}
-      />
-    ))}
-  </div>
-</div>
-
+        <div className="md:w-1/2 relative">
+          <img
+            src={mainImage || "/placeholder-image.jpg"}
+            alt={propertyDetail.name}
+            className="w-full h-[37.5rem] object-cover rounded-md"
+          />
+          <img
+            src={assets.koyoccoLogo}
+            alt="Company Logo"
+            className="absolute top-4 left-4 h-16 w-16 opacity-50"
+          />
+          <div className="flex space-x-2 mt-4 overflow-x-auto">
+            {propertyDetail.images?.map((image, index) => (
+              <img
+                key={index}
+                src={image}
+                alt={`Thumbnail ${index}`}
+                className="w-24 h-24 object-cover rounded-md cursor-pointer flex-shrink-0 hover:opacity-80 transition-all duration-200"
+                onClick={() => setMainImage(image)}
+              />
+            ))}
+          </div>
+        </div>
 
         {/* Property Details Section */}
         <div className="md:w-1/2 bg-white shadow-lg rounded-md p-6 flex flex-col justify-between">
