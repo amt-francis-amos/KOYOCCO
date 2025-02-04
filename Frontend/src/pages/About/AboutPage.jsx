@@ -102,10 +102,10 @@ const AboutPage = () => {
         </motion.div>
 
         <div
-          className="w-full relative bg-cover bg-center"
-          style={{ backgroundImage: `url(${assets.aboutImg})` }}
+          className="w-full min-h-[600px] relative bg-cover bg-center p-20"
+          style={{ backgroundImage: `url(${assets.propertyImg2})` }}
         >
-          <div className="absolute inset-0 bg-red-600 opacity-50"></div>
+          <div className="absolute inset-0 bg-blue-900 opacity-50"></div>
           <div className="relative z-10 text-white py-12 px-6">
             <h2 className="text-xl md:text-2xl font-semibold mb-6 text-center">
               Contact Information
@@ -113,7 +113,7 @@ const AboutPage = () => {
             <div className="flex flex-wrap justify-center">
               <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 text-center">
                 <div className="flex flex-col items-center">
-                  <div className="w-12 h-12 flex items-center justify-center bg-red-600 text-white rounded-full mb-2">
+                  <div className="w-12 h-12 flex items-center justify-center bg-blue-900 text-white rounded-full mb-2">
                     <FaMapMarkerAlt />
                   </div>
                   <h3 className="text-lg font-semibold">Address</h3>
@@ -122,7 +122,7 @@ const AboutPage = () => {
               </div>
               <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 text-center">
                 <div className="flex flex-col items-center">
-                  <div className="w-12 h-12 flex items-center justify-center bg-red-600 text-white rounded-full mb-2">
+                  <div className="w-12 h-12 flex items-center justify-center bg-blue-900 text-white rounded-full mb-2">
                     <FaEnvelope />
                   </div>
                   <h3 className="text-lg font-semibold">Email</h3>
@@ -138,7 +138,7 @@ const AboutPage = () => {
               </div>
               <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 text-center">
                 <div className="flex flex-col items-center">
-                  <div className="w-12 h-12 flex items-center justify-center bg-red-600 text-white rounded-full mb-2">
+                  <div className="w-12 h-12 flex items-center justify-center bg-blue-900 text-white rounded-full mb-2">
                     <FaPhoneAlt />
                   </div>
                   <h3 className="text-lg font-semibold">Phone</h3>
@@ -147,7 +147,7 @@ const AboutPage = () => {
               </div>
               <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 text-center">
                 <div className="flex flex-col items-center">
-                  <div className="w-12 h-12 flex items-center justify-center bg-red-600 text-white rounded-full mb-2">
+                  <div className="w-12 h-12 flex items-center justify-center bg-blue-900 text-white rounded-full mb-2">
                     <FaGlobe />
                   </div>
                   <h3 className="text-lg font-semibold">Website</h3>
@@ -165,7 +165,7 @@ const AboutPage = () => {
           </div>
         </div>
 
-        <section className="container mx-auto px-4 mb-12">
+        <div className="container mx-auto px-4 mb-12 p-10">
           <h2 className="text-xl md:text-2xl font-semibold text-gray-800 mb-6 text-center">
             Follow Us
           </h2>
@@ -203,7 +203,7 @@ const AboutPage = () => {
               <FaLinkedinIn />
             </a>
           </div>
-        </section>
+        </div>
 
         <section className="container mx-auto px-4">
           <div className="text-center">
