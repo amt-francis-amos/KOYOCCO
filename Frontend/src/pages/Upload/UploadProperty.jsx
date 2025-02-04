@@ -214,17 +214,18 @@ const UploadProperty = () => {
           />
         </div>
         <select
-          name="condition"
-          value={propertyData.condition}
-          onChange={handleChange}
-          required
-          className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
-        >
-          <option value="">Select Condition</option>
-          <option value="Newly built">Newly built</option>
-          <option value="Innovated">Innovated</option>
-          <option value="Fairly Used">Fairly Used</option>
-        </select>
+  name="condition"
+  value={propertyData.condition}
+  onChange={handleChange}
+  required
+  className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+>
+  <option value="">Select Condition</option>
+  <option value="Newly built">Newly built</option>
+  <option value="Renovated">Renovated</option> {/* Corrected spelling */}
+  <option value="Fairly Used">Fairly Used</option>
+</select>
+
         <select
           name="region"
           value={propertyData.region}
