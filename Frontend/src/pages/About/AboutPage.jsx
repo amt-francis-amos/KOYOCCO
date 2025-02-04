@@ -17,7 +17,7 @@ const AboutPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <section
-        className="relative w-full h-[480px] bg-cover bg-center"
+        className="relative w-full h-[480px] md:h-[600px] bg-cover bg-center"
         style={{ backgroundImage: `url(${assets.aboutImg})` }}
       >
         <div className="absolute inset-0 bg-black opacity-50"></div>
@@ -26,7 +26,7 @@ const AboutPage = () => {
           transition={{ duration: 1.5 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white"
+          className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-4"
         >
           <h1 className="text-4xl md:text-5xl font-bold mb-4">About Us</h1>
           <div className="flex space-x-4">
@@ -102,109 +102,108 @@ const AboutPage = () => {
         </motion.div>
 
         <section
-  className="w-full relative bg-cover bg-center"
-  style={{ backgroundImage: `url(${assets.aboutImg})` }}
->
-  <div className="absolute inset-0 bg-red-600 opacity-50"></div>
-  <div className="relative z-10 text-white py-12">
-    <h2 className="text-xl md:text-2xl font-semibold mb-6 text-center">
-      Contact Information
-    </h2>
-    <div className="flex flex-wrap justify-center">
-      <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 text-center">
-        <div className="flex flex-col items-center">
-          <div className="w-12 h-12 flex items-center justify-center bg-red-600 text-white rounded-full mb-2">
-            <FaMapMarkerAlt />
+          className="w-full relative bg-cover bg-center"
+          style={{ backgroundImage: `url(${assets.aboutImg})` }}
+        >
+          <div className="absolute inset-0 bg-red-600 opacity-50"></div>
+          <div className="relative z-10 text-white py-12 px-6">
+            <h2 className="text-xl md:text-2xl font-semibold mb-6 text-center">
+              Contact Information
+            </h2>
+            <div className="flex flex-wrap justify-center">
+              <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 text-center">
+                <div className="flex flex-col items-center">
+                  <div className="w-12 h-12 flex items-center justify-center bg-red-600 text-white rounded-full mb-2">
+                    <FaMapMarkerAlt />
+                  </div>
+                  <h3 className="text-lg font-semibold">Address</h3>
+                  <p>Amarh Tettey Street, Ashaiman, Valco Flat</p>
+                </div>
+              </div>
+              <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 text-center">
+                <div className="flex flex-col items-center">
+                  <div className="w-12 h-12 flex items-center justify-center bg-red-600 text-white rounded-full mb-2">
+                    <FaEnvelope />
+                  </div>
+                  <h3 className="text-lg font-semibold">Email</h3>
+                  <p>
+                    <a
+                      href="mailto:info@koyocco.com"
+                      className="text-white hover:underline"
+                    >
+                      info@koyocco.com
+                    </a>
+                  </p>
+                </div>
+              </div>
+              <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 text-center">
+                <div className="flex flex-col items-center">
+                  <div className="w-12 h-12 flex items-center justify-center bg-red-600 text-white rounded-full mb-2">
+                    <FaPhoneAlt />
+                  </div>
+                  <h3 className="text-lg font-semibold">Phone</h3>
+                  <p>+233-241-333-361</p>
+                </div>
+              </div>
+              <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 text-center">
+                <div className="flex flex-col items-center">
+                  <div className="w-12 h-12 flex items-center justify-center bg-red-600 text-white rounded-full mb-2">
+                    <FaGlobe />
+                  </div>
+                  <h3 className="text-lg font-semibold">Website</h3>
+                  <p>
+                    <a
+                      href="http://www.koyocco.com"
+                      className="text-white hover:underline"
+                    >
+                      www.koyocco.com
+                    </a>
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
-          <h3 className="text-lg font-semibold">Address</h3>
-          <p>Amarh Tettey Street, Ashaiman, Valco Flat</p>
-        </div>
-      </div>
-      <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 text-center">
-        <div className="flex flex-col items-center">
-          <div className="w-12 h-12 flex items-center justify-center bg-red-600 text-white rounded-full mb-2">
-            <FaEnvelope />
-          </div>
-          <h3 className="text-lg font-semibold">Email</h3>
-          <p>
-            <a
-              href="mailto:info@koyocco.com"
-              className="text-white hover:underline"
-            >
-              info@koyocco.com
-            </a>
-          </p>
-        </div>
-      </div>
-      <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 text-center">
-        <div className="flex flex-col items-center">
-          <div className="w-12 h-12 flex items-center justify-center bg-red-600 text-white rounded-full mb-2">
-            <FaPhoneAlt />
-          </div>
-          <h3 className="text-lg font-semibold">Phone</h3>
-          <p>+233-241-333-361</p>
-        </div>
-      </div>
-      <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 text-center">
-        <div className="flex flex-col items-center">
-          <div className="w-12 h-12 flex items-center justify-center bg-red-600 text-white rounded-full mb-2">
-            <FaGlobe />
-          </div>
-          <h3 className="text-lg font-semibold">Website</h3>
-          <p>
-            <a
-              href="http://www.koyocco.com"
-              className="text-white hover:underline"
-            >
-              www.koyocco.com
-            </a>
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+        </section>
 
         <section className="container mx-auto px-4 mb-12">
-  <h2 className="text-xl md:text-2xl font-semibold text-gray-800 mb-6 text-center">
-    Follow Us
-  </h2>
-  <div className="flex justify-center space-x-6">
-    <a
-      href="https://www.facebook.com/"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="w-12 h-12 flex items-center justify-center bg-red-500 text-white rounded-full hover:bg-blue-700 transform transition duration-300"
-    >
-      <FaFacebookF />
-    </a>
-    <a
-      href="https://x.com/home"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="w-12 h-12 flex items-center justify-center bg-red-500 text-white rounded-full hover:bg-blue-500 transform transition duration-300"
-    >
-      <FaTwitter />
-    </a>
-    <a
-      href="https://www.instagram.com/koyocco_inc/profilecard/?igsh=MWN1d20xOW9rd2U0Ng=="
-      target="_blank"
-      rel="noopener noreferrer"
-      className="w-12 h-12 flex items-center justify-center bg-red-500 text-white rounded-full hover:bg-pink-700 transform transition duration-300"
-    >
-      <FaInstagram />
-    </a>
-    <a
-      href="https://www.linkedin.com/in/koyocco-real-estate-ltd-b01440244?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="w-12 h-12 flex items-center justify-center bg-red-500 text-white rounded-full hover:bg-blue-800 transform transition duration-300"
-    >
-      <FaLinkedinIn />
-    </a>
-  </div>
-</section>
-
+          <h2 className="text-xl md:text-2xl font-semibold text-gray-800 mb-6 text-center">
+            Follow Us
+          </h2>
+          <div className="flex justify-center space-x-6">
+            <a
+              href="https://www.facebook.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-12 h-12 flex items-center justify-center bg-red-500 text-white rounded-full hover:bg-blue-700 transform transition duration-300"
+            >
+              <FaFacebookF />
+            </a>
+            <a
+              href="https://x.com/home"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-12 h-12 flex items-center justify-center bg-red-500 text-white rounded-full hover:bg-blue-500 transform transition duration-300"
+            >
+              <FaTwitter />
+            </a>
+            <a
+              href="https://www.instagram.com/koyocco_inc/profilecard/?igsh=MWN1d20xOW9rd2U0Ng=="
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-12 h-12 flex items-center justify-center bg-red-500 text-white rounded-full hover:bg-pink-700 transform transition duration-300"
+            >
+              <FaInstagram />
+            </a>
+            <a
+              href="https://www.linkedin.com/in/koyocco-real-estate-ltd-b01440244?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-12 h-12 flex items-center justify-center bg-red-500 text-white rounded-full hover:bg-blue-800 transform transition duration-300"
+            >
+              <FaLinkedinIn />
+            </a>
+          </div>
+        </section>
 
         <section className="container mx-auto px-4">
           <div className="text-center">
