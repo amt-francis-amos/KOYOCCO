@@ -6,7 +6,7 @@ const User = require("../models/User");
 const uploadProperty = async (req, res) => {
   try {
     const { name, description, price, location, condition, region, propertyType, address } = req.body;
-    const ownerId = req.user.id; // Assuming user authentication middleware adds `req.user.id`
+    const ownerId = req.user.id; 
 
     // Fetch the user's details
     const user = await User.findById(ownerId);
