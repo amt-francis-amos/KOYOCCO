@@ -43,6 +43,9 @@ const PropertyDetails = () => {
     );
   }
 
+  // Assuming role is stored in localStorage as either 'agent' or 'owner'
+  const role = localStorage.getItem("role");
+
   return (
     <div className="container mx-auto my-8 px-4">
       <h2 className="text-3xl font-bold mb-6 text-center">
@@ -118,7 +121,7 @@ const PropertyDetails = () => {
               />
             </div>
 
-            {/* Video Section - Moved Below Logo */}
+            {/* Video Section */}
             {propertyDetail.video && (
               <div className="mt-4">
                 <h3 className="text-xl font-semibold mb-2">Property Video</h3>
@@ -133,44 +136,52 @@ const PropertyDetails = () => {
 
           {/* Contact Buttons */}
           <div className="flex flex-wrap gap-4 mt-6">
-            <button
-              onClick={() => setShowAgentContact(true)}
-              className="w-30 bg-red-500 text-white px-4 py-2 rounded-full flex items-center gap-2 hover:bg-red-600 transition-all"
-            >
-              <FaPhoneAlt />
-              Contact Agent
-            </button>
+            {role === "Agent" && (
+              <>
+                <button
+                  onClick={() => setShowAgentContact(true)}
+                  className="w-30 bg-red-500 text-white px-4 py-2 rounded-full flex items-center gap-2 hover:bg-red-600 transition-all"
+                >
+                  <FaPhoneAlt />
+                  Contact Agent
+                </button>
 
-            {agentContact?.phoneNumber && (
-              <a
-                href={`https://wa.me/233${agentContact.phoneNumber}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-30 bg-green-500 text-white px-4 py-2 rounded-full flex items-center gap-2 hover:bg-green-600 transition-all"
-              >
-                <FaWhatsapp />
-                Agent WhatsApp
-              </a>
+                {agentContact?.phoneNumber && (
+                  <a
+                    href={`https://wa.me/233${agentContact.phoneNumber}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-30 bg-green-500 text-white px-4 py-2 rounded-full flex items-center gap-2 hover:bg-green-600 transition-all"
+                  >
+                    <FaWhatsapp />
+                    WhatsApp
+                  </a>
+                )}
+              </>
             )}
 
-            <button
-              onClick={() => setShowOwnerContact(true)}
-              className="w-30 bg-blue-500 text-white px-4 py-2 rounded-full flex items-center gap-2 hover:bg-black transition-all"
-            >
-              <FaPhoneAlt />
-              Contact Owner
-            </button>
+            {role === "Property Owner" && (
+              <>
+                <button
+                  onClick={() => setShowOwnerContact(true)}
+                  className="w-30 bg-blue-500 text-white px-4 py-2 rounded-full flex items-center gap-2 hover:bg-black transition-all"
+                >
+                  <FaPhoneAlt />
+                  Contact Owner
+                </button>
 
-            {ownerContact?.phoneNumber && (
-              <a
-                href={`https://wa.me/233${ownerContact.phoneNumber}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-30 bg-green-500 text-white px-4 py-2 rounded-full flex items-center gap-2 hover:bg-green-600 transition-all"
-              >
-                <FaWhatsapp />
-                Owner WhatsApp
-              </a>
+                {ownerContact?.phoneNumber && (
+                  <a
+                    href={`https://wa.me/233${ownerContact.phoneNumber}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-30 bg-green-500 text-white px-4 py-2 rounded-full flex items-center gap-2 hover:bg-green-600 transition-all"
+                  >
+                    <FaWhatsapp />
+                    WhatsApp
+                  </a>
+                )}
+              </>
             )}
           </div>
 
