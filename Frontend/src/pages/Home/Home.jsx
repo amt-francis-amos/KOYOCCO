@@ -108,12 +108,15 @@ const Home = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {paginatedProperties.length > 0 ? (
               paginatedProperties.map((prop) => (
-                <Link key={prop._id} to={`/property/${prop._id}`}>
-                  <div className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105">
+                <div key={prop._id} className="relative">
+                  <div
+                    className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105"
+                    onClick={() => navigate(`/property/${prop._id}`)}
+                  >
                     <div className="relative">
                       {/* Display both video and image with equal size */}
                       <div className="flex flex-col md:flex-row">
-                        {prop.video ? (
+                        {prop.video && (
                           <div className="w-full md:w-1/2 h-64">
                             <video
                               className="w-full h-full object-cover"
@@ -122,8 +125,12 @@ const Home = () => {
                               alt={prop.name}
                             />
                           </div>
-                        ) : null}
-                        <div className={`w-full md:w-${prop.video ? "1/2" : "full"} h-64`}>
+                        )}
+                        <div
+                          className={`${
+                            prop.video ? "w-full md:w-1/2" : "w-full"
+                          } h-64`}
+                        >
                           <img
                             src={prop.images[0]}
                             alt={prop.name}
@@ -183,7 +190,7 @@ const Home = () => {
                       </div>
                     </div>
                   </div>
-                </Link>
+                </div>
               ))
             ) : (
               <p className="text-center text-sm md:text-base">
