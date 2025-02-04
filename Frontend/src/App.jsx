@@ -26,6 +26,7 @@ import PropertySales from "./pages/PropertySales/PropertySales";
 import Profile from "./pages/Profile/Profile";
 import ProfileUpdate from "./pages/ProfileUpdate/ProfileUpdate";
 import Dashboard from "../../admin/src/pages/Admin/Dashboard";
+import RequestsDashboard from "./components/RequestsDashboard/RequestedDashboard";
 
 
 const getRoleFromLocalStorage = () => {
@@ -79,6 +80,7 @@ function App() {
             <Route path="/property/:id" element={<PropertyDetails />} />
             <Route path="/sales" element={<PropertySales />} />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="/request-dashboard" element={<RequestsDashboard />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>
