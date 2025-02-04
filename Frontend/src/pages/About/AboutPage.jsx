@@ -101,8 +101,8 @@ const AboutPage = () => {
           </p>
         </motion.div>
 
-        <section
-          className="w-full  relative bg-cover bg-center"
+        <div
+          className="w-full relative bg-cover bg-center"
           style={{ backgroundImage: `url(${assets.aboutImg})` }}
         >
           <div className="absolute inset-0 bg-red-600 opacity-50"></div>
@@ -163,7 +163,7 @@ const AboutPage = () => {
               </div>
             </div>
           </div>
-        </section>
+        </div>
 
         <section className="container mx-auto px-4 mb-12">
           <h2 className="text-xl md:text-2xl font-semibold text-gray-800 mb-6 text-center">
