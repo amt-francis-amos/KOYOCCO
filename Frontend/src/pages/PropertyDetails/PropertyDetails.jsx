@@ -13,9 +13,7 @@ const PropertyDetails = () => {
   const [showAgentContact, setShowAgentContact] = useState(false);
   const [showOwnerContact, setShowOwnerContact] = useState(false);
 
-
   const propertyDetail = property.find((prop) => prop._id === id);
-
 
   useEffect(() => {
     const storedAgent = localStorage.getItem("agentDetails");
@@ -24,14 +22,12 @@ const PropertyDetails = () => {
     }
   }, []);
 
- 
   useEffect(() => {
     const storedOwner = localStorage.getItem("ownerDetails");
     if (storedOwner) {
       setOwnerContact(JSON.parse(storedOwner));
     }
   }, []);
-
 
   useEffect(() => {
     if (propertyDetail?.images?.length) {
@@ -47,46 +43,6 @@ const PropertyDetails = () => {
     );
   }
 
-
-  const buttons = [
-    {
-      id: "contact-agent",
-      type: "button",
-      condition: true,
-      onClick: () => setShowAgentContact(true),
-      icon: <FaPhoneAlt className="inline-block mr-2" />,
-      text: "Contact Agent",
-      className: "bg-red-500  hover:bg-red-600 focus:ring-red-300",
-    },
-    {
-      id: "whatsapp-agent",
-      type: "link",
-      condition: !!agentContact?.phoneNumber,
-      href: `https://wa.me/233${agentContact?.phoneNumber}`,
-      icon: <FaWhatsapp className="mr-2" />,
-      text: "Agent WhatsApp",
-      className: "bg-green-500 hover:bg-green-600 focus:ring-green-300",
-    },
-    {
-      id: "contact-owner",
-      type: "button",
-      condition: true,
-      onClick: () => setShowOwnerContact(true),
-      icon: <FaPhoneAlt className="inline-block mr-2" />,
-      text: "Contact Owner",
-      className: "bg-blue-500 hover:bg-black focus:ring-blue-300",
-    },
-    {
-      id: "whatsapp-owner",
-      type: "link",
-      condition: !!ownerContact?.phoneNumber,
-      href: `https://wa.me/233${ownerContact?.phoneNumber}`,
-      icon: <FaWhatsapp className="mr-2" />,
-      text: "Owner WhatsApp",
-      className: "bg-green-500 hover:bg-green-600 focus:ring-green-300",
-    },
-  ];
-
   return (
     <div className="container mx-auto my-8 px-4">
       <h2 className="text-3xl font-bold mb-6 text-center">
@@ -94,7 +50,7 @@ const PropertyDetails = () => {
       </h2>
 
       <div className="flex flex-col md:flex-row gap-6">
-   
+        {/* Image Section */}
         <div className="md:w-1/2">
           <img
             src={mainImage || "/placeholder-image.jpg"}
@@ -114,7 +70,7 @@ const PropertyDetails = () => {
           </div>
         </div>
 
-  
+        {/* Property Details Section */}
         <div className="md:w-1/2 bg-white shadow-lg rounded-md p-6 flex flex-col justify-between">
           <div>
             <p className="text-gray-600 mb-4">{propertyDetail.description}</p>
@@ -146,6 +102,8 @@ const PropertyDetails = () => {
             <p className="text-sm text-gray-600 mb-4">
               <strong>Type:</strong> {propertyDetail.propertyType}
             </p>
+
+            {/* Logo */}
             <div className="flex items-center justify-start mb-4">
               <img
                 src={assets.koyoccoLogo}
@@ -153,124 +111,99 @@ const PropertyDetails = () => {
                 className="h-10 w-10 object-contain"
               />
             </div>
+
+            {/* Video Section - Moved Below Logo */}
+            {propertyDetail.video && (
+              <div className="mt-4">
+                <h3 className="text-xl font-semibold mb-2">Property Video</h3>
+                <video
+                  controls
+                  className="w-full h-64 rounded-md"
+                  src={propertyDetail.video}
+                />
+              </div>
+            )}
           </div>
 
+          {/* Contact Buttons */}
           <div className="flex flex-wrap gap-4 mt-6">
-  {buttons
-    .filter((btn) => btn.condition)
-    .map((btn) => {
+            <button
+              onClick={() => setShowAgentContact(true)}
+              className="w-30 bg-red-500 text-white px-4 py-2 rounded-full flex items-center gap-2 hover:bg-red-600 transition-all"
+            >
+              <FaPhoneAlt />
+              Contact Agent
+            </button>
 
-      const commonClasses =
-        "w-30 text-white px-4 py-2 rounded-full shadow-md flex items-center justify-center gap-2 transition-all duration-200 ease-in-out focus:outline-none focus:ring-2";
+            {agentContact?.phoneNumber && (
+              <a
+                href={`https://wa.me/233${agentContact.phoneNumber}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-30 bg-green-500 text-white px-4 py-2 rounded-full flex items-center gap-2 hover:bg-green-600 transition-all"
+              >
+                <FaWhatsapp />
+                Agent WhatsApp
+              </a>
+            )}
 
-      if (btn.type === "button") {
-        return (
-          <button
-            key={btn.id}
-            onClick={btn.onClick}
-            className={`${commonClasses} ${btn.className}`}
-          >
-            {btn.icon}
-            {btn.text}
-          </button>
-        );
-      } else {
-        return (
-          <a
-            key={btn.id}
-            href={btn.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`${commonClasses} ${btn.className}`}
-          >
-            {btn.icon}
-            {btn.text}
-          </a>
-        );
-      }
-    })}
-</div>
+            <button
+              onClick={() => setShowOwnerContact(true)}
+              className="w-30 bg-blue-500 text-white px-4 py-2 rounded-full flex items-center gap-2 hover:bg-black transition-all"
+            >
+              <FaPhoneAlt />
+              Contact Owner
+            </button>
 
+            {ownerContact?.phoneNumber && (
+              <a
+                href={`https://wa.me/233${ownerContact.phoneNumber}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-30 bg-green-500 text-white px-4 py-2 rounded-full flex items-center gap-2 hover:bg-green-600 transition-all"
+              >
+                <FaWhatsapp />
+                Owner WhatsApp
+              </a>
+            )}
+          </div>
 
-
- 
-          {showAgentContact && (
-            <>
-              {agentContact ? (
-                <div className="mt-4 p-4 bg-gray-100 rounded-md">
-                  <h3 className="text-lg font-bold mb-2">Agent Contact</h3>
-                  <div className="flex items-center space-x-4">
-                    <img
-                      src={agentContact.profileImage || "/default-agent-image.jpg"}
-                      alt="Agent Profile"
-                      className="w-16 h-16 object-cover rounded-full"
-                    />
-                    <div>
-                      <p className="font-semibold">
-                        {agentContact.firstname} {agentContact.lastname}
-                      </p>
-                      <p>
-                        <strong>Phone:</strong>{" "}
-                        <a
-                          href={`tel:${agentContact.phoneNumber}`}
-                          className="text-blue-500 hover:underline"
-                        >
-                          {agentContact.phoneNumber}
-                        </a>
-                      </p>
-                      <p>
-                        <strong>Location:</strong>{" "}
-                        {agentContact.location || "Unknown"}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <div className="mt-4 text-gray-500">
-                  No agent contact information available.
-                </div>
-              )}
-            </>
+          {/* Agent Contact Info */}
+          {showAgentContact && agentContact && (
+            <div className="mt-4 p-4 bg-gray-100 rounded-md">
+              <h3 className="text-lg font-bold mb-2">Agent Contact</h3>
+              <p className="font-semibold">
+                {agentContact.firstname} {agentContact.lastname}
+              </p>
+              <p>
+                <strong>Phone:</strong>{" "}
+                <a
+                  href={`tel:${agentContact.phoneNumber}`}
+                  className="text-blue-500 hover:underline"
+                >
+                  {agentContact.phoneNumber}
+                </a>
+              </p>
+            </div>
           )}
 
-      
-          {showOwnerContact && (
-            <>
-              {ownerContact ? (
-                <div className="mt-4 p-4 bg-gray-100 rounded-md">
-                  <h3 className="text-lg font-bold mb-2">Owner Contact</h3>
-                  <div className="flex items-center space-x-4">
-                    <img
-                      src={ownerContact.profileImage || "/default-owner-image.jpg"}
-                      alt="Owner Profile"
-                      className="w-16 h-16 object-cover rounded-full"
-                    />
-                    <div>
-                      <p className="font-semibold">
-                        {ownerContact.firstname} {ownerContact.lastname}
-                      </p>
-                      <p>
-                        <strong>Phone:</strong>{" "}
-                        <a
-                          href={`tel:${ownerContact.phoneNumber}`}
-                          className="text-blue-500 hover:underline"
-                        >
-                          {ownerContact.phoneNumber}
-                        </a>
-                      </p>
-                      <p>
-                        <strong>Location:</strong>{" "}
-                        {ownerContact.location || "Unknown"}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <div className="mt-4 text-gray-500">
-                  No owner contact information available.
-                </div>
-              )}
-            </>
+          {/* Owner Contact Info */}
+          {showOwnerContact && ownerContact && (
+            <div className="mt-4 p-4 bg-gray-100 rounded-md">
+              <h3 className="text-lg font-bold mb-2">Owner Contact</h3>
+              <p className="font-semibold">
+                {ownerContact.firstname} {ownerContact.lastname}
+              </p>
+              <p>
+                <strong>Phone:</strong>{" "}
+                <a
+                  href={`tel:${ownerContact.phoneNumber}`}
+                  className="text-blue-500 hover:underline"
+                >
+                  {ownerContact.phoneNumber}
+                </a>
+              </p>
+            </div>
           )}
         </div>
       </div>
