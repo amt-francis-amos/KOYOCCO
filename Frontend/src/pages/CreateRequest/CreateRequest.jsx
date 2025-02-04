@@ -8,10 +8,15 @@ const CreateRequest = () => {
     userName: '',
     userEmail: '',
     phone: '',
-    serviceType: 'airport-pickup',
+    serviceType: 'relocation',
     details: '',
     date: '',
     location: '',
+    carType: '',
+    description: '',
+    registrationNumber: '',
+    region: '',
+    driverContact: '',
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -26,9 +31,9 @@ const CreateRequest = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const { userName, userEmail, phone, serviceType, date, location } = formData;
+    const { userName, userEmail, phone, serviceType, date, location, carType, description, registrationNumber, region, driverContact } = formData;
 
-    if (!userName || !userEmail || !phone || !serviceType || !date || !location) {
+    if (!userName || !userEmail || !phone || !serviceType || !date || !location || !carType || !description || !registrationNumber || !region || !driverContact) {
       toast.error('Please fill in all required fields.');
       setIsSubmitting(false);
       return;
@@ -38,15 +43,20 @@ const CreateRequest = () => {
       const response = await axios.post('https://koyocco-backend.onrender.com/api/requests/create', formData);
 
       if (response.status === 201) {
-        toast.success('Request submitted successfully!');
+        toast.success('Relocation request submitted successfully!');
         setFormData({
           userName: '',
           userEmail: '',
           phone: '',
-          serviceType: 'airport-pickup',
+          serviceType: 'relocation',
           details: '',
           date: '',
           location: '',
+          carType: '',
+          description: '',
+          registrationNumber: '',
+          region: '',
+          driverContact: '',
         });
 
         navigate('/cars');
@@ -63,97 +73,22 @@ const CreateRequest = () => {
 
   return (
     <div className="container mx-auto p-6">
-      <h1 className="text-3xl font-bold text-center mb-6">Create a Request</h1>
+      <h1 className="text-3xl font-bold text-center mb-6">Request a Relocation</h1>
       <form onSubmit={handleSubmit} className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
-        <div className="mb-4">
-          <label htmlFor="userName" className="block text-gray-700 font-bold mb-2">Full Name</label>
-          <input
-            type="text"
-            id="userName"
-            name="userName"
-            value={formData.userName}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="userEmail" className="block text-gray-700 font-bold mb-2">Email Address</label>
-          <input
-            type="email"
-            id="userEmail"
-            name="userEmail"
-            value={formData.userEmail}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="phone" className="block text-gray-700 font-bold mb-2">Phone Number</label>
-          <input
-            type="tel"
-            id="phone"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="serviceType" className="block text-gray-700 font-bold mb-2">Request Type</label>
-          <select
-            id="serviceType"
-            name="serviceType"
-            value={formData.serviceType}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-          >
-            <option value="airport-pickup">Airport Pickup</option>
-            <option value="relocation-service">Relocation Service</option>
-          </select>
-        </div>
-        <div className="mb-4">
-          <label htmlFor="date" className="block text-gray-700 font-bold mb-2">Date</label>
-          <input
-            type="date"
-            id="date"
-            name="date"
-            value={formData.date}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="location" className="block text-gray-700 font-bold mb-2">Location</label>
-          <input
-            type="text"
-            id="location"
-            name="location"
-            value={formData.location}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="details" className="block text-gray-700 font-bold mb-2">Additional Details</label>
-          <textarea
-            id="details"
-            name="details"
-            value={formData.details}
-            onChange={handleChange}
-            rows="4"
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-          ></textarea>
-        </div>
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-black"
-        >
+        <input type="text" name="userName" value={formData.userName} onChange={handleChange} placeholder="Full Name" required />
+        <input type="email" name="userEmail" value={formData.userEmail} onChange={handleChange} placeholder="Email Address" required />
+        <input type="tel" name="phone" value={formData.phone} onChange={handleChange} placeholder="Phone Number" required />
+        <input type="date" name="date" value={formData.date} onChange={handleChange} required />
+        <input type="text" name="location" value={formData.location} onChange={handleChange} placeholder="Location" required />
+        
+        {/* New Car Details Fields */}
+        <input type="text" name="carType" value={formData.carType} onChange={handleChange} placeholder="Car Type" required />
+        <textarea name="description" value={formData.description} onChange={handleChange} placeholder="Car Description" required />
+        <input type="text" name="registrationNumber" value={formData.registrationNumber} onChange={handleChange} placeholder="Registration Number" required />
+        <input type="text" name="region" value={formData.region} onChange={handleChange} placeholder="Region" required />
+        <input type="text" name="driverContact" value={formData.driverContact} onChange={handleChange} placeholder="Driver Contact Info" required />
+
+        <button type="submit" disabled={isSubmitting} className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700">
           {isSubmitting ? 'Submitting...' : 'Submit Request'}
         </button>
       </form>
