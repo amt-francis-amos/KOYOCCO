@@ -45,6 +45,14 @@ const Home = () => {
     navigate("/uploadProperty");
   };
 
+  // Handle video click to just play without navigating
+  const handleVideoClick = (propId) => {
+    const videoElement = document.getElementById(`video-${propId}`);
+    if (videoElement) {
+      videoElement.play();
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <header className="h-[70vh] md:h-screen">
@@ -108,14 +116,18 @@ const Home = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {paginatedProperties.length > 0 ? (
               paginatedProperties.map((prop) => (
-                <Link key={prop._id} to={`/property/${prop._id}`}>
+                <div key={prop._id}>
                   <div className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105">
                     <div className="relative">
                       {/* Display both video and image with equal size */}
                       <div className="flex flex-col md:flex-row">
                         {prop.video ? (
-                          <div className="w-full md:w-1/2 h-64">
+                          <div
+                            className="w-full md:w-1/2 h-64 cursor-pointer"
+                            onClick={() => handleVideoClick(prop._id)}
+                          >
                             <video
+                              id={`video-${prop._id}`}
                               className="w-full h-full object-cover"
                               controls
                               src={prop.video}
@@ -123,7 +135,9 @@ const Home = () => {
                             />
                           </div>
                         ) : null}
-                        <div className={`w-full md:w-${prop.video ? "1/2" : "full"} h-64`}>
+                        <div
+                          className={`w-full md:w-${prop.video ? "1/2" : "full"} h-64`}
+                        >
                           <img
                             src={prop.images[0]}
                             alt={prop.name}
@@ -183,7 +197,7 @@ const Home = () => {
                       </div>
                     </div>
                   </div>
-                </Link>
+                </div>
               ))
             ) : (
               <p className="text-center text-sm md:text-base">
