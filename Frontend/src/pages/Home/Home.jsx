@@ -46,11 +46,18 @@ const Home = () => {
   };
 
   // Handle video click to just play without navigating
-  const handleVideoClick = (propId) => {
+  const handleVideoClick = (propId, e) => {
+    // Prevent card navigation if clicking on the video
+    e.stopPropagation(); // This stops the card's click event from firing
     const videoElement = document.getElementById(`video-${propId}`);
     if (videoElement) {
       videoElement.play();
     }
+  };
+
+  // Handle card click to navigate to the propertyDetails page
+  const handleCardClick = (propId) => {
+    navigate(`/propertyDetails/${propId}`);
   };
 
   return (
@@ -116,7 +123,11 @@ const Home = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {paginatedProperties.length > 0 ? (
               paginatedProperties.map((prop) => (
-                <div key={prop._id}>
+                <div
+                  key={prop._id}
+                  onClick={() => handleCardClick(prop._id)} // Click on the card navigates to propertyDetails page
+                  className="cursor-pointer"
+                >
                   <div className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105">
                     <div className="relative">
                       {/* Display both video and image with equal size */}
@@ -124,7 +135,7 @@ const Home = () => {
                         {prop.video ? (
                           <div
                             className="w-full md:w-1/2 h-64 cursor-pointer"
-                            onClick={() => handleVideoClick(prop._id)}
+                            onClick={(e) => handleVideoClick(prop._id, e)} // Prevent navigation when clicking on the video
                           >
                             <video
                               id={`video-${prop._id}`}
