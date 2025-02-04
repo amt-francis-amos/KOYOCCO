@@ -1,26 +1,45 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const CreateRequest = () => {
   const [formData, setFormData] = useState({
-    userName: '',
-    userEmail: '',
-    phone: '',
-    serviceType: 'relocation',
-    details: '',
-    date: '',
-    location: '',
-    carType: '',
-    description: '',
-    registrationNumber: '',
-    region: '',
-    driverContact: '',
+    userName: "",
+    userEmail: "",
+    phone: "",
+    serviceType: "relocation",
+    details: "",
+    date: "",
+    location: "",
+    carType: "",
+    description: "",
+    registrationNumber: "",
+    region: "",
+    driverContact: "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
+
+  const regions = [
+    "Ahafo",
+    "Ashanti",
+    "Bono",
+    "Bono East",
+    "Central",
+    "Eastern",
+    "Greater Accra",
+    "North East",
+    "Northern",
+    "Oti",
+    "Savannah",
+    "Upper East",
+    "Upper West",
+    "Volta",
+    "Western",
+    "Western North",
+  ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,38 +53,38 @@ const CreateRequest = () => {
     const { userName, userEmail, phone, serviceType, date, location, carType, description, registrationNumber, region, driverContact } = formData;
 
     if (!userName || !userEmail || !phone || !serviceType || !date || !location || !carType || !description || !registrationNumber || !region || !driverContact) {
-      toast.error('Please fill in all required fields.');
+      toast.error("Please fill in all required fields.");
       setIsSubmitting(false);
       return;
     }
 
     try {
-      const response = await axios.post('https://koyocco-backend.onrender.com/api/requests/create', formData);
+      const response = await axios.post("https://koyocco-backend.onrender.com/api/requests/create", formData);
 
       if (response.status === 201) {
-        toast.success('Relocation request submitted successfully!');
+        toast.success("Relocation request submitted successfully!");
         setFormData({
-          userName: '',
-          userEmail: '',
-          phone: '',
-          serviceType: 'relocation',
-          details: '',
-          date: '',
-          location: '',
-          carType: '',
-          description: '',
-          registrationNumber: '',
-          region: '',
-          driverContact: '',
+          userName: "",
+          userEmail: "",
+          phone: "",
+          serviceType: "relocation",
+          details: "",
+          date: "",
+          location: "",
+          carType: "",
+          description: "",
+          registrationNumber: "",
+          region: "",
+          driverContact: "",
         });
 
-        navigate('/cars');
+        navigate("/cars");
       } else {
-        toast.error('Failed to submit request.');
+        toast.error("Failed to submit request.");
       }
     } catch (error) {
-      console.error('Error submitting request:', error);
-      toast.error('An error occurred while submitting the request.');
+      console.error("Error submitting request:", error);
+      toast.error("An error occurred while submitting the request.");
     } finally {
       setIsSubmitting(false);
     }
@@ -109,7 +128,14 @@ const CreateRequest = () => {
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">Region</label>
-          <input type="text" name="region" value={formData.region} onChange={handleChange} required className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring focus:ring-blue-300" />
+          <select name="region" value={formData.region} onChange={handleChange} required className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring focus:ring-blue-300">
+            <option value="">Select a Region</option>
+            {regions.map((region, index) => (
+              <option key={index} value={region}>
+                {region}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="col-span-2">
           <label className="block text-sm font-medium text-gray-700">Driver Contact Info</label>
@@ -117,7 +143,7 @@ const CreateRequest = () => {
         </div>
         <div className="col-span-2 flex justify-center mt-4">
           <button type="submit" disabled={isSubmitting} className="w-full md:w-1/2 bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-black transition duration-300">
-            {isSubmitting ? 'Submitting...' : 'Submit Request'}
+            {isSubmitting ? "Submitting..." : "Submit Request"}
           </button>
         </div>
       </form>
