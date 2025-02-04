@@ -13,10 +13,10 @@ const PropertyDetails = () => {
   const [showAgentContact, setShowAgentContact] = useState(false);
   const [showOwnerContact, setShowOwnerContact] = useState(false);
 
-  // Find the property based on the URL parameter id
+
   const propertyDetail = property.find((prop) => prop._id === id);
 
-  // Retrieve agent details from localStorage
+
   useEffect(() => {
     const storedAgent = localStorage.getItem("agentDetails");
     if (storedAgent) {
@@ -24,7 +24,7 @@ const PropertyDetails = () => {
     }
   }, []);
 
-  // Retrieve owner details from localStorage
+ 
   useEffect(() => {
     const storedOwner = localStorage.getItem("ownerDetails");
     if (storedOwner) {
@@ -32,7 +32,7 @@ const PropertyDetails = () => {
     }
   }, []);
 
-  // Set the main image
+
   useEffect(() => {
     if (propertyDetail?.images?.length) {
       setMainImage(propertyDetail.images[0]);
@@ -47,7 +47,7 @@ const PropertyDetails = () => {
     );
   }
 
-  // Dynamically define buttons
+
   const buttons = [
     {
       id: "contact-agent",
@@ -94,7 +94,7 @@ const PropertyDetails = () => {
       </h2>
 
       <div className="flex flex-col md:flex-row gap-6">
-        {/* Property Image Section */}
+   
         <div className="md:w-1/2">
           <img
             src={mainImage || "/placeholder-image.jpg"}
@@ -114,7 +114,7 @@ const PropertyDetails = () => {
           </div>
         </div>
 
-        {/* Property Details Section */}
+  
         <div className="md:w-1/2 bg-white shadow-lg rounded-md p-6 flex flex-col justify-between">
           <div>
             <p className="text-gray-600 mb-4">{propertyDetail.description}</p>
@@ -155,12 +155,11 @@ const PropertyDetails = () => {
             </div>
           </div>
 
-          {/* Buttons Section (Dynamically Rendered) */}
           <div className="flex flex-wrap gap-4 mt-6">
   {buttons
     .filter((btn) => btn.condition)
     .map((btn) => {
-      // Common styling for both buttons and links
+
       const commonClasses =
         "w-30 text-white px-4 py-2 rounded-full shadow-md flex items-center justify-center gap-2 transition-all duration-200 ease-in-out focus:outline-none focus:ring-2";
 
@@ -194,7 +193,7 @@ const PropertyDetails = () => {
 
 
 
-          {/* Agent Contact Details */}
+ 
           {showAgentContact && (
             <>
               {agentContact ? (
@@ -234,7 +233,7 @@ const PropertyDetails = () => {
             </>
           )}
 
-          {/* Owner Contact Details */}
+      
           {showOwnerContact && (
             <>
               {ownerContact ? (
