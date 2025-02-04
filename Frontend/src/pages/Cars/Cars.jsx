@@ -82,7 +82,7 @@ const Cars = () => {
                             onClick={() => handleRequestAirportPickup(car)}
                             className="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-black"
                         >
-                            Request Airport Pickup
+                            Request Relocation
                         </Link>
                     </div>
                 ))}
