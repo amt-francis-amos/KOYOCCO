@@ -78,8 +78,8 @@ const CreateRequest = () => {
           driverContact: "",
         });
   
-        // Redirect to request-dashboard
-        navigate("/request-dashboard");  // Change the redirection path to "/request-dashboard"
+       
+        navigate("/request-dashboard");  
       } else {
         toast.error("Failed to submit request.");
       }
