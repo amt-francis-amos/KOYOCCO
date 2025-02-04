@@ -17,7 +17,7 @@ const AboutPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <section
-        className="relative w-full h-[480px] md:h-[600px] bg-cover bg-center"
+        className="relative w-full h-[480px] md:h-[800px] bg-cover bg-center"
         style={{ backgroundImage: `url(${assets.aboutImg})` }}
       >
         <div className="absolute inset-0 bg-black opacity-50"></div>
@@ -102,7 +102,7 @@ const AboutPage = () => {
         </motion.div>
 
         <section
-          className="w-full relative bg-cover bg-center"
+          className="w-full  relative bg-cover bg-center"
           style={{ backgroundImage: `url(${assets.aboutImg})` }}
         >
           <div className="absolute inset-0 bg-red-600 opacity-50"></div>
