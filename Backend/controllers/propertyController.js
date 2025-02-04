@@ -77,7 +77,6 @@ const uploadProperty = async (req, res) => {
   }
 };
 
-
 const getAllProperties = async (req, res) => {
   try {
     const { propertyType } = req.query;
