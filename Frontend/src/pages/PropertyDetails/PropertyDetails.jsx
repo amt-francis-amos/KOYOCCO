@@ -51,36 +51,36 @@ const PropertyDetails = () => {
 
       <div className="flex flex-col md:flex-row gap-6">
         {/* Image Section */}
-        <div className="md:w-1/2 relative">
-          {/* Blurred Main Image */}
-          <img
-            src={mainImage || "/placeholder-image.jpg"}
-            alt={propertyDetail.name}
-            className="w-full h-[37.5rem] object-cover rounded-md blur-sm"
-          />
 
-          {/* Centered Logo */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <img
-              src={assets.koyoccoLogo}
-              alt="Company Logo"
-              className="h-24 w-24 object-contain opacity-90"
-            />
-          </div>
+<div className="md:w-1/2 relative">
+  <img
+    src={mainImage || "/placeholder-image.jpg"}
+    alt={propertyDetail.name}
+    className="w-full h-[37.5rem] object-cover rounded-md"
+  />
 
-          {/* Thumbnails */}
-          <div className="flex space-x-2 mt-4 overflow-x-auto">
-            {propertyDetail.images?.map((image, index) => (
-              <img
-                key={index}
-                src={image}
-                alt={`Thumbnail ${index}`}
-                className="w-24 h-24 object-cover rounded-md cursor-pointer flex-shrink-0 hover:opacity-80 transition-all duration-200"
-                onClick={() => setMainImage(image)}
-              />
-            ))}
-          </div>
-        </div>
+  {/* Logo positioned at the center of the main image */}
+  <div className="absolute inset-0 flex items-center justify-center">
+    <img
+      src={assets.koyoccoLogo}
+      alt="Company Logo"
+      className="h-40 w-40 object-contain blur-sm opacity-80"
+    />
+  </div>
+
+  <div className="flex space-x-2 mt-4 overflow-x-auto">
+    {propertyDetail.images?.map((image, index) => (
+      <img
+        key={index}
+        src={image}
+        alt={`Thumbnail ${index}`}
+        className="w-24 h-24 object-cover rounded-md cursor-pointer flex-shrink-0 hover:opacity-80 transition-all duration-200"
+        onClick={() => setMainImage(image)}
+      />
+    ))}
+  </div>
+</div>
+
 
         {/* Property Details Section */}
         <div className="md:w-1/2 bg-white shadow-lg rounded-md p-6 flex flex-col justify-between">
@@ -115,7 +115,16 @@ const PropertyDetails = () => {
               <strong>Type:</strong> {propertyDetail.propertyType}
             </p>
 
-            {/* Video Section */}
+            {/* Logo */}
+            <div className="flex items-center justify-start mb-4">
+              <img
+                src={assets.koyoccoLogo}
+                alt="Company Logo"
+                className="h-10 w-10 object-contain"
+              />
+            </div>
+
+            {/* Video Section - Moved Below Logo */}
             {propertyDetail.video && (
               <div className="mt-4">
                 <h3 className="text-xl font-semibold mb-2">Property Video</h3>
