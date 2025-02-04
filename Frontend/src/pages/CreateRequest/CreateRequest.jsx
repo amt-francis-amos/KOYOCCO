@@ -49,18 +49,18 @@ const CreateRequest = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-
+  
     const { userName, userEmail, phone, serviceType, date, location, carType, description, registrationNumber, region, driverContact } = formData;
-
+  
     if (!userName || !userEmail || !phone || !serviceType || !date || !location || !carType || !description || !registrationNumber || !region || !driverContact) {
       toast.error("Please fill in all required fields.");
       setIsSubmitting(false);
       return;
     }
-
+  
     try {
       const response = await axios.post("https://koyocco-backend.onrender.com/api/requests/create", formData);
-
+  
       if (response.status === 201) {
         toast.success("Relocation request submitted successfully!");
         setFormData({
@@ -77,8 +77,9 @@ const CreateRequest = () => {
           region: "",
           driverContact: "",
         });
-
-        navigate("/cars");
+  
+        // Redirect to request-dashboard
+        navigate("/request-dashboard");  // Change the redirection path to "/request-dashboard"
       } else {
         toast.error("Failed to submit request.");
       }
@@ -89,6 +90,7 @@ const CreateRequest = () => {
       setIsSubmitting(false);
     }
   };
+  
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md mt-10">
