@@ -26,7 +26,8 @@ import PropertySales from "./pages/PropertySales/PropertySales";
 import Profile from "./pages/Profile/Profile";
 import ProfileUpdate from "./pages/ProfileUpdate/ProfileUpdate";
 import Dashboard from "../../admin/src/pages/Admin/Dashboard";
-import RequestsDashboard from "./components/RequestsDashboard/RequestedDashboard";
+import RequestsDashboard from "./pages/RequestsDashboard/RequestedDashboard";
+
 
 
 const getRoleFromLocalStorage = () => {
