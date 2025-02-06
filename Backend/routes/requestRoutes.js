@@ -38,6 +38,35 @@ router.post('/create', async (req, res) => {
   }
 });
 
+
+
+// --POST request to upload car details
+router.post('/upload-car', async (req, res) => {
+  try {
+    const { carType, description, registrationNumber, location, region, driverContact } = req.body;
+
+    if (!carType || !description || !registrationNumber || !location || !region || !driverContact) {
+      return res.status(400).json({ error: 'All fields are required.' });
+    }
+
+    const newCar = new Car({
+      carType,
+      description,
+      registrationNumber,
+      location,
+      region,
+      driverContact,
+    });
+
+    const savedCar = await newCar.save();
+    res.status(201).json({ success: true, data: savedCar });
+  } catch (err) {
+    console.error('Error uploading car:', err);
+    res.status(500).json({ message: 'Internal Server Error', error: err.message });
+  }
+});
+
+
 // --GET request to fetch all relocation requests
 router.get('/', async (req, res) => {
   try {
