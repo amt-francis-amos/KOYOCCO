@@ -15,7 +15,6 @@ const ShortStays = () => {
           "https://koyocco-backend.onrender.com/api/properties?propertyType=Short-Stay"
         );
 
-        // Validate the fetched properties to ensure they are Short-Stay
         const shortStayProperties = response.data.filter(
           (property) => property.propertyType === "Short-Stay"
         );
@@ -31,7 +30,12 @@ const ShortStays = () => {
     fetchShortStayProperties();
   }, []);
 
-  const handleBookNow = (property) => {
+  const handleCardClick = (id) => {
+    navigate(`/property/${id}`);
+  };
+
+  const handleBookNow = (property, event) => {
+    event.stopPropagation(); // Prevent triggering the card click event
     navigate("/booking", {
       state: {
         id: property._id,
@@ -55,7 +59,8 @@ const ShortStays = () => {
           {properties.map((property) => (
             <div
               key={property._id}
-              className="bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105"
+              onClick={() => handleCardClick(property._id)}
+              className="bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 cursor-pointer"
             >
               {property.images && property.images.length > 0 && (
                 <img
@@ -72,7 +77,7 @@ const ShortStays = () => {
                   <span className="text-gray-500 text-sm">{property.location}</span>
                 </div>
                 <button
-                  onClick={() => handleBookNow(property)}
+                  onClick={(event) => handleBookNow(property, event)}
                   className="w-full mt-4 py-2 text-white bg-red-500 hover:bg-black font-semibold rounded-lg transition duration-300"
                 >
                   Book Now
