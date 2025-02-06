@@ -1,7 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { PropertyProvider } from "./context/PropertyContext";
 import Navbar from "./components/Navbar/Navbar";
 import Home from "./pages/Home/Home";
@@ -19,7 +19,7 @@ import Booking from "./pages/Booking/Booking";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
-import PropertyStatusPage from "./pages/PropertyStatusPage/PropertyStatusPage"; 
+import PropertyStatusPage from "./pages/PropertyStatusPage/PropertyStatusPage";
 import PropertyRentals from "./pages/PropertyRentals/PropertyRentals";
 import Cars from "./pages/Cars/Cars";
 import PropertySales from "./pages/PropertySales/PropertySales";
@@ -29,11 +29,7 @@ import Dashboard from "../../admin/src/pages/Admin/Dashboard";
 import RequestsDashboard from "./pages/RequestsDashboard/RequestedDashboard";
 
 
-
-const getRoleFromLocalStorage = () => {
-  const role = localStorage.getItem("role");
-  return role ? role : null;
-};
+const getRoleFromLocalStorage = () => localStorage.getItem("role");
 
 function App() {
   const role = getRoleFromLocalStorage();
@@ -48,8 +44,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            
-          
+
             <Route
               path="/profile"
               element={
@@ -62,12 +57,19 @@ function App() {
               path="/admin-login"
               element={
                 <ProtectedRoute role={role} requiredRoles={["admin"]}>
-                  <Dashboard/>
+                 <Dashboard />
                 </ProtectedRoute>
               }
             />
-            
-            <Route path="/property-status" element={<ProtectedRoute role={role}><PropertyStatusPage /></ProtectedRoute>} />
+
+            <Route
+              path="/property-status"
+              element={
+                <ProtectedRoute role={role}>
+                  <PropertyStatusPage />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/create-request" element={<CreateRequest />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
@@ -75,7 +77,14 @@ function App() {
             <Route path="/property-rentals" element={<PropertyRentals />} />
             <Route path="/cars" element={<Cars />} />
             <Route path="/booking" element={<Booking />} />
-            <Route path="/uploadProperty" element={<ProtectedRoute role={role}><UploadProperty /></ProtectedRoute>} />
+            <Route
+              path="/uploadProperty"
+              element={
+                <ProtectedRoute role={role}>
+                  <UploadProperty />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/property-list" element={<PropertyList />} />
             <Route path="/profile-update" element={<ProfileUpdate />} />
             <Route path="/property/:id" element={<PropertyDetails />} />
