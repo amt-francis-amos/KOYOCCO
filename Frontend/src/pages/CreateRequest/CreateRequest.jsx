@@ -138,7 +138,7 @@ const CreateRequest = () => {
       </div>
 
       {/* Relocation Request Form */}
-      <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md mt-10">
+      <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md mb-8 mt-10">
         <h1 className="text-2xl font-semibold text-center text-gray-800 mb-6">Request a Relocation</h1>
         <form onSubmit={handleSubmitRequest} className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Add your form fields here */}
