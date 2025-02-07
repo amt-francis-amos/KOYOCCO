@@ -6,7 +6,6 @@ const PropertyContext = createContext();
 export const PropertyProvider = ({ children }) => {
     const [property, setProperty] = useState([]);
 
-    // Fetch properties on component mount
     useEffect(() => {
         const fetchProperties = async () => {
             try {
@@ -20,9 +19,9 @@ export const PropertyProvider = ({ children }) => {
         fetchProperties();
     }, []);
 
-    // Update property list dynamically
+
     const updateProperty = (newProperty) => {
-        setProperty((prevProperties) => [newProperty, ...prevProperties]); // Add new property to the beginning
+        setProperty((prevProperties) => [newProperty, ...prevProperties]); 
     };
 
     return (
