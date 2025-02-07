@@ -27,4 +27,12 @@ const propertySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// Pre-save middleware to clean the price field
+propertySchema.pre("save", function (next) {
+  if (typeof this.price === "string") {
+    this.price = Number(this.price.replace(/,/g, ""));
+  }
+  next();
+});
+
 module.exports = mongoose.model("Property", propertySchema);
