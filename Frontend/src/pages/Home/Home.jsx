@@ -10,7 +10,7 @@ const Home = () => {
   const { property } = useProperty();
   const [searchTerm, setSearchTerm] = useState("");
   const [priceRange, setPriceRange] = useState("");
-  const [priceType, setPriceType] = useState("perMonth"); // NEW: Default price type
+  const [priceType, setPriceType] = useState("perMonth"); 
   const [currentPage, setCurrentPage] = useState(0);
   const navigate = useNavigate();
   const propertiesPerPage = 6;
@@ -42,7 +42,7 @@ const Home = () => {
   };
 
   const handleNavigateToLogin = () => {
-    navigate("/uploadProperty");
+    navigate("/login");
   };
 
   return (
@@ -104,7 +104,7 @@ const Home = () => {
               <option value="400000">Up to ₵400,000</option>
             </select>
 
-            {/* NEW: Price Type Dropdown */}
+    
             <select
               value={priceType}
               onChange={(e) => setPriceType(e.target.value)}
@@ -157,7 +157,7 @@ const Home = () => {
                           {prop.name}
                         </h3>
 
-                        {/* NEW: Display price based on selected type */}
+                
                         <p className="text-xl font-semibold text-red-500">
                           ₵{prop.price} ({priceType.replace(/([A-Z])/g, ' $1').trim()})
                         </p>
