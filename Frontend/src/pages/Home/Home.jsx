@@ -10,7 +10,7 @@ const Home = () => {
   const { property } = useProperty();
   const [searchTerm, setSearchTerm] = useState("");
   const [priceRange, setPriceRange] = useState("");
-  const [priceType, setPriceType] = useState("perMonth"); 
+  const [priceType, setPriceType] = useState(""); // New state for price type
   const [currentPage, setCurrentPage] = useState(0);
   const navigate = useNavigate();
   const propertiesPerPage = 6;
@@ -38,7 +38,8 @@ const Home = () => {
   );
 
   const handlePageClick = (data) => {
-    setCurrentPage(data.selected);
+    const selectedPage = data.selected;
+    setCurrentPage(selectedPage);
   };
 
   const handleNavigateToLogin = () => {
@@ -90,12 +91,12 @@ const Home = () => {
               placeholder="Search properties..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="border p-2 rounded-md w-full md:w-1/2"
+              className="border p-2 rounded-md w-full md:w-1/3"
             />
             <select
               value={priceRange}
               onChange={(e) => setPriceRange(e.target.value)}
-              className="border p-2 rounded-md w-full md:w-1/3"
+              className="border p-2 rounded-md w-full md:w-1/4"
             >
               <option value="">All Prices</option>
               <option value="100000">Up to ₵100,000</option>
@@ -104,16 +105,17 @@ const Home = () => {
               <option value="400000">Up to ₵400,000</option>
             </select>
 
-    
+            {/* Dropdown for selecting price type */}
             <select
               value={priceType}
               onChange={(e) => setPriceType(e.target.value)}
-              className="border p-2 rounded-md w-full md:w-1/3"
+              className="border p-2 rounded-md w-full md:w-1/4"
             >
+              <option value="">Select Price Type</option>
               <option value="perMonth">Per Month</option>
               <option value="perDay">Per Day</option>
-              <option value="perHour">Per Hour</option>
               <option value="total">Total</option>
+              <option value="perHour">Per Hour</option>
             </select>
           </div>
 
@@ -153,18 +155,42 @@ const Home = () => {
 
                     <div className="p-6">
                       <div className="flex justify-between mb-4">
-                        <h3 className="text-xl font-bold text-gray-800">
-                          {prop.name}
-                        </h3>
-
-                
+                        <h3 className="text-xl font-bold text-gray-800">{prop.name}</h3>
                         <p className="text-xl font-semibold text-red-500">
-                          ₵{prop.price} ({priceType.replace(/([A-Z])/g, ' $1').trim()})
+                          ₵{prop.price} {priceType && `(${priceType.replace(/([A-Z])/g, ' $1').trim()})`}
                         </p>
                       </div>
-                      <p className="text-gray-600 text-sm mb-4">
-                        {prop.description}
-                      </p>
+                      <p className="text-gray-600 text-sm mb-4">{prop.description}</p>
+
+                      <div className="grid grid-cols-2 gap-4 text-gray-600 text-sm mb-4">
+                        <div className="flex flex-col">
+                          <span className="font-medium">Region</span>
+                          <span>{prop.region}</span>
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="font-medium">Address</span>
+                          <span>{prop.address}</span>
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="font-medium">Condition</span>
+                          <span>{prop.condition}</span>
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="font-medium">Status</span>
+                          <span
+                            className={
+                              prop.status === "available"
+                                ? "text-green-500"
+                                : prop.status === "rented"
+                                ? "text-blue-500"
+                                : "text-red-500"
+                            }
+                          >
+                            {prop.status.charAt(0).toUpperCase() +
+                              prop.status.slice(1)}
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -174,24 +200,6 @@ const Home = () => {
                 No properties available at the moment.
               </p>
             )}
-          </div>
-
-          <div className="mt-8 flex justify-center">
-            <ReactPaginate
-              previousLabel={"Previous"}
-              nextLabel={"Next"}
-              breakLabel={"..."}
-              pageCount={Math.ceil(filteredProperties.length / propertiesPerPage)}
-              marginPagesDisplayed={2}
-              pageRangeDisplayed={5}
-              onPageChange={handlePageClick}
-              containerClassName="flex space-x-4"
-              pageClassName="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
-              previousClassName="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
-              nextClassName="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
-              disabledClassName="text-gray-400 cursor-not-allowed"
-              activeClassName="bg-red-500 text-white"
-            />
           </div>
         </div>
       </div>
