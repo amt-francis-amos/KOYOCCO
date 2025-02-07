@@ -220,10 +220,12 @@ const UploadProperty = () => {
   required
   className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
 >
-  <option value="">Select Condition</option>
+<option value="">Select Condition</option>
   <option value="Newly built">Newly built</option>
-  <option value="Renovated">Renovated</option> {/* Corrected spelling */}
+  <option value="Renovated">Renovated</option>
   <option value="Fairly Used">Fairly Used</option>
+  <option value="Virgin Land">Virgin Land</option>
+  <option value="Old House">Old House</option>
 </select>
 
         <select
