@@ -26,29 +26,24 @@ const UploadProperty = () => {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-  
     if (name === 'images') {
       const selectedImages = [...files];
-  
+
       if (selectedImages.length > 10) {
         toast.error('You can only upload up to 10 images.');
         return;
       }
-  
+
       setPropertyData({ ...propertyData, images: selectedImages });
-  
+
       const previews = selectedImages.map((file) => URL.createObjectURL(file));
       setImagePreviews(previews);
     } else if (name === 'video') {
       setPropertyData({ ...propertyData, video: files[0] });
-    } else if (name === 'price') {
-      const formattedPrice = value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-      setPropertyData({ ...propertyData, price: formattedPrice });
     } else {
       setPropertyData({ ...propertyData, [name]: value });
     }
   };
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -100,7 +95,7 @@ const UploadProperty = () => {
         video: null,
       });
       setImagePreviews([]);
-      navigate('/uploadProperty');
+      navigate('/');
     } catch (error) {
       toast.error('Failed to upload property. Please try again.');
     }
