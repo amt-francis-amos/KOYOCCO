@@ -38,6 +38,13 @@ router.post(
         });
       }
 
+      // Convert price from string to number
+      const cleanedPrice = typeof price === 'string' ? Number(price.replace(/,/g, '')) : price;
+
+      if (isNaN(cleanedPrice)) {
+        return res.status(400).json({ message: 'Invalid price format' });
+      }
+
       // Handle image uploads
       let images = [];
       if (req.files.images) {
@@ -68,7 +75,7 @@ router.post(
       const property = new Property({
         name,
         description,
-        price,
+        price: cleanedPrice, // Use the cleaned price
         location,
         address,
         condition,
