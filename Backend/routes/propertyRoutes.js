@@ -75,7 +75,7 @@ router.post(
       const property = new Property({
         name,
         description,
-        price: cleanedPrice, // Use the cleaned price
+        price: cleanedPrice, 
         location,
         address,
         condition,
