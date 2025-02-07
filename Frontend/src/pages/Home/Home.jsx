@@ -10,6 +10,7 @@ const Home = () => {
   const { property } = useProperty();
   const [searchTerm, setSearchTerm] = useState("");
   const [priceRange, setPriceRange] = useState("");
+  const [priceType, setPriceType] = useState(""); // New state for price type
   const [currentPage, setCurrentPage] = useState(0);
   const navigate = useNavigate();
   const propertiesPerPage = 6;
@@ -90,18 +91,31 @@ const Home = () => {
               placeholder="Search properties..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="border p-2 rounded-md w-full md:w-1/2"
+              className="border p-2 rounded-md w-full md:w-1/3"
             />
             <select
               value={priceRange}
               onChange={(e) => setPriceRange(e.target.value)}
-              className="border p-2 rounded-md w-full md:w-1/3"
+              className="border p-2 rounded-md w-full md:w-1/4"
             >
               <option value="">All Prices</option>
               <option value="100000">Up to ₵100,000</option>
               <option value="200000">Up to ₵200,000</option>
               <option value="300000">Up to ₵300,000</option>
               <option value="400000">Up to ₵400,000</option>
+            </select>
+
+            {/* Dropdown for selecting price type */}
+            <select
+              value={priceType}
+              onChange={(e) => setPriceType(e.target.value)}
+              className="border p-2 rounded-md w-full md:w-1/4"
+            >
+              <option value="">Select Price Type</option>
+              <option value="perMonth">Per Month</option>
+              <option value="perDay">Per Day</option>
+              <option value="total">Total</option>
+              <option value="perHour">Per Hour</option>
             </select>
           </div>
 
@@ -114,7 +128,6 @@ const Home = () => {
                     onClick={() => navigate(`/property/${prop._id}`)}
                   >
                     <div className="relative">
-                      {/* Display both video and image with equal size */}
                       <div className="flex flex-col md:flex-row">
                         {prop.video && (
                           <div className="w-full md:w-1/2 h-64">
@@ -143,18 +156,11 @@ const Home = () => {
                     <div className="p-6">
                       <div className="flex justify-between mb-4">
                         <h3 className="text-xl font-bold text-gray-800">{prop.name}</h3>
-                        <p className="text-xl font-semibold text-red-500">₵{prop.price}</p>
+                        <p className="text-xl font-semibold text-red-500">
+                          ₵{prop.price} {priceType && `(${priceType.replace(/([A-Z])/g, ' $1').trim()})`}
+                        </p>
                       </div>
                       <p className="text-gray-600 text-sm mb-4">{prop.description}</p>
-
-                      {/* Add the company logo here */}
-                      <div className="flex items-center justify-start mb-4">
-                        <img
-                          src={prop.companyLogo || assets.koyoccoLogo}
-                          alt="Company Logo"
-                          className="h-10 w-10 object-contain"
-                        />
-                      </div>
 
                       <div className="grid grid-cols-2 gap-4 text-gray-600 text-sm mb-4">
                         <div className="flex flex-col">
@@ -185,9 +191,6 @@ const Home = () => {
                           </span>
                         </div>
                       </div>
-                      <div className="flex justify-end mt-4">
-                        <span className="text-xs text-gray-500">{prop.propertyType || "Not Specified"}</span>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -197,24 +200,6 @@ const Home = () => {
                 No properties available at the moment.
               </p>
             )}
-          </div>
-
-          <div className="mt-8 flex justify-center">
-            <ReactPaginate
-              previousLabel={"Previous"}
-              nextLabel={"Next"}
-              breakLabel={"..."}
-              pageCount={Math.ceil(filteredProperties.length / propertiesPerPage)}
-              marginPagesDisplayed={2}
-              pageRangeDisplayed={5}
-              onPageChange={handlePageClick}
-              containerClassName="flex space-x-4"
-              pageClassName="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
-              previousClassName="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
-              nextClassName="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
-              disabledClassName="text-gray-400 cursor-not-allowed"
-              activeClassName="bg-red-500 text-white"
-            />
           </div>
         </div>
       </div>
