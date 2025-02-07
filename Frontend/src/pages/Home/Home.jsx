@@ -20,15 +20,17 @@ const Home = () => {
     { img: assets.houseImg3, text: "Affordable Housing Options" },
   ];
 
-  const filteredProperties = property.filter((prop) => {
-    const matchesSearchTerm =
-      prop.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      prop.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesPriceRange = priceRange
-      ? prop.price <= parseFloat(priceRange)
-      : true;
-    return matchesSearchTerm && matchesPriceRange;
-  });
+  const sortedProperties = [...property].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+const filteredProperties = sortedProperties.filter((prop) => {
+  const matchesSearchTerm =
+    prop.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    prop.description.toLowerCase().includes(searchTerm.toLowerCase());
+  const matchesPriceRange = priceRange
+    ? prop.price <= parseFloat(priceRange)
+    : true;
+  return matchesSearchTerm && matchesPriceRange;
+});
 
   // Paginate filtered properties
   const paginatedProperties = filteredProperties.slice(
