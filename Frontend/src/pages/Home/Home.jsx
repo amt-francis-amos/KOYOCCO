@@ -42,7 +42,7 @@ const Home = () => {
   };
 
   const handleNavigateToLogin = () => {
-    navigate("/uploadProperty");
+    navigate("/");
   };
 
   return (
