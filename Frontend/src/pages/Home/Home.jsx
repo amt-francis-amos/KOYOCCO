@@ -116,7 +116,7 @@ const filteredProperties = sortedProperties.filter((prop) => {
                     onClick={() => navigate(`/property/${prop._id}`)}
                   >
                     <div className="relative">
-                      {/* Display both video and image with equal size */}
+                 
                       <div className="flex flex-col md:flex-row">
                         {prop.video && (
                           <div className="w-full md:w-1/2 h-64">
