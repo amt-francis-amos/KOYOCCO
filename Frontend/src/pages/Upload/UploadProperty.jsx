@@ -19,7 +19,6 @@ const UploadProperty = () => {
     address: '',
     images: [],
     video: null,
-   
   });
   const [imagePreviews, setImagePreviews] = useState([]);
   const navigate = useNavigate();
@@ -40,6 +39,13 @@ const UploadProperty = () => {
       setImagePreviews(previews);
     } else if (name === 'video') {
       setPropertyData({ ...propertyData, video: files[0] });
+    } else if (name === 'price') {
+      // Remove commas from the input value
+      const rawValue = value.replace(/,/g, '');
+      // Only update if the value is empty or contains only digits
+      if (rawValue === '' || /^\d+$/.test(rawValue)) {
+        setPropertyData({ ...propertyData, price: rawValue });
+      }
     } else {
       setPropertyData({ ...propertyData, [name]: value });
     }
@@ -204,29 +210,31 @@ const UploadProperty = () => {
         <div className="flex items-center space-x-2">
           <span className="text-xl">₵</span>
           <input
-            type="number"
+            // Change type from "number" to "text" for formatting purposes
+            type="text"
             name="price"
             placeholder="Price"
-            value={propertyData.price}
+            // Format the displayed value with commas
+            value={propertyData.price ? parseInt(propertyData.price, 10).toLocaleString() : ''}
             onChange={handleChange}
             required
             className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
           />
         </div>
         <select
-  name="condition"
-  value={propertyData.condition}
-  onChange={handleChange}
-  required
-  className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
->
-<option value="">Select Condition</option>
-  <option value="Newly built">Newly built</option>
-  <option value="Renovated">Renovated</option>
-  <option value="Fairly Used">Fairly Used</option>
-  <option value="Virgin Land">Virgin Land</option>
-  <option value="Old House">Old House</option>
-</select>
+          name="condition"
+          value={propertyData.condition}
+          onChange={handleChange}
+          required
+          className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+        >
+          <option value="">Select Condition</option>
+          <option value="Newly built">Newly built</option>
+          <option value="Renovated">Renovated</option>
+          <option value="Fairly Used">Fairly Used</option>
+          <option value="Virgin Land">Virgin Land</option>
+          <option value="Old House">Old House</option>
+        </select>
 
         <select
           name="region"
