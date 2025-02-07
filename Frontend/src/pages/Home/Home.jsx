@@ -22,15 +22,15 @@ const Home = () => {
 
   const sortedProperties = [...property].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-const filteredProperties = sortedProperties.filter((prop) => {
-  const matchesSearchTerm =
-    prop.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    prop.description.toLowerCase().includes(searchTerm.toLowerCase());
-  const matchesPriceRange = priceRange
-    ? prop.price <= parseFloat(priceRange)
-    : true;
-  return matchesSearchTerm && matchesPriceRange;
-});
+  const filteredProperties = sortedProperties.filter((prop) => {
+    const matchesSearchTerm =
+      prop.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      prop.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesPriceRange = priceRange
+      ? prop.price <= parseFloat(priceRange)
+      : true;
+    return matchesSearchTerm && matchesPriceRange;
+  });
 
   // Paginate filtered properties
   const paginatedProperties = filteredProperties.slice(
@@ -39,8 +39,7 @@ const filteredProperties = sortedProperties.filter((prop) => {
   );
 
   const handlePageClick = (data) => {
-    const selectedPage = data.selected;
-    setCurrentPage(selectedPage);
+    setCurrentPage(data.selected);
   };
 
   const handleNavigateToLogin = () => {
@@ -116,7 +115,6 @@ const filteredProperties = sortedProperties.filter((prop) => {
                     onClick={() => navigate(`/property/${prop._id}`)}
                   >
                     <div className="relative">
-                 
                       <div className="flex flex-col md:flex-row">
                         {prop.video && (
                           <div className="w-full md:w-1/2 h-64">
@@ -145,11 +143,12 @@ const filteredProperties = sortedProperties.filter((prop) => {
                     <div className="p-6">
                       <div className="flex justify-between mb-4">
                         <h3 className="text-xl font-bold text-gray-800">{prop.name}</h3>
-                        <p className="text-xl font-semibold text-red-500">₵{prop.price}</p>
+                        <p className="text-xl font-semibold text-red-500">
+                          ₵{prop.price.toLocaleString()}
+                        </p>
                       </div>
                       <p className="text-gray-600 text-sm mb-4">{prop.description}</p>
 
-                      {/* Add the company logo here */}
                       <div className="flex items-center justify-start mb-4">
                         <img
                           src={prop.companyLogo || assets.koyoccoLogo}
@@ -202,7 +201,7 @@ const filteredProperties = sortedProperties.filter((prop) => {
           </div>
 
           <div className="mt-8 flex justify-center">
-            <ReactPaginate
+          <ReactPaginate
               previousLabel={"Previous"}
               nextLabel={"Next"}
               breakLabel={"..."}
