@@ -18,7 +18,7 @@ const UploadProperty = () => {
     region: '',
     address: '',
     images: [],
-    video: null,
+    video: null, // Retaining the video upload functionality
   });
 
   const [imagePreviews, setImagePreviews] = useState([]);
@@ -26,7 +26,6 @@ const UploadProperty = () => {
 
   // Function to format price with commas
   const formatPrice = (value) => {
-    // Remove any non-digit character, then format with commas
     return value.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   };
 
@@ -47,9 +46,8 @@ const UploadProperty = () => {
       const previews = selectedImages.map((file) => URL.createObjectURL(file));
       setImagePreviews(previews);
     } else if (name === 'video') {
-      setPropertyData({ ...propertyData, video: files[0] });
+      setPropertyData({ ...propertyData, video: files[0] }); // Adding video upload functionality back
     } else if (name === 'price') {
-      // Format price input with commas
       setPropertyData({ ...propertyData, price: formatPrice(value) });
     } else {
       setPropertyData({ ...propertyData, [name]: value });
@@ -73,7 +71,7 @@ const UploadProperty = () => {
           formData.append('images', image);
         });
       } else if (key === 'video') {
-        formData.append('video', propertyData[key]);
+        formData.append('video', propertyData[key]); // Ensuring video is uploaded
       } else {
         formData.append(key, propertyData[key]);
       }
@@ -83,9 +81,12 @@ const UploadProperty = () => {
       await axios.post(
         'https://koyocco-backend.onrender.com/api/properties/upload',
         formData,
-        { headers: { 'Content-Type': 'multipart/form-data' } }
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
       );
-
       toast.success('Property uploaded successfully!');
       setPropertyData({
         name: '',
@@ -100,13 +101,10 @@ const UploadProperty = () => {
         region: '',
         address: '',
         images: [],
-        video: null,
+        video: null, // Reset video after successful upload
       });
-
       setImagePreviews([]);
-
-      // Navigate to homepage after successful upload
-      navigate('/');
+      navigate('/uploadProperty');
     } catch (error) {
       toast.error('Failed to upload property. Please try again.');
     }
@@ -152,7 +150,22 @@ const UploadProperty = () => {
           required
           className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
         />
-        
+
+        {/* Property Type Selection */}
+        <select
+          name="propertyType"
+          value={propertyData.propertyType}
+          onChange={handleChange}
+          required
+          className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+        >
+          <option value="">Select Property Type</option>
+          <option value="Short-Stay">Short-Stay</option>
+          <option value="PropertySales">Property Sales</option>
+          <option value="PropertyRentals">Property Rentals</option>
+        </select>
+
+        {/* Price Input with Formatting */}
         <div className="flex items-center space-x-2">
           <span className="text-xl">₵</span>
           <input
@@ -166,37 +179,52 @@ const UploadProperty = () => {
           />
         </div>
 
-        <select name="propertyType" value={propertyData.propertyType} onChange={handleChange} required className="border border-gray-300 rounded-md p-2 w-full focus:outline-none">
-          <option value="">Select Property Type</option>
-          <option value="Short-Stay">Short-Stay</option>
-          <option value="PropertySales">Property Sales</option>
-          <option value="PropertyRentals">Property Rentals</option>
-        </select>
-
-        <select name="condition" value={propertyData.condition} onChange={handleChange} required className="border border-gray-300 rounded-md p-2 w-full focus:outline-none">
-        <option value="">Select Condition</option>
-  <option value="Newly built">Newly built</option>
-  <option value="Renovated">Renovated</option>
-  <option value="Fairly Used">Fairly Used</option>
-  <option value="Virgin Land">Virgin Land</option>
-  <option value="Old House">Old House</option>
-</select>
-
-        <select name="region" value={propertyData.region} onChange={handleChange} required className="border border-gray-300 rounded-md p-2 w-full focus:outline-none">
-          <option value="">Select Region</option>
-          {['Greater Accra', 'Ashanti', 'Western', 'Eastern', 'Northern', 'Volta', 'Central', 'Upper East', 'Upper West', 'Savannah', 'Bono', 'Bono East', 'Ahafo', 'Oti', 'Western North', 'North East'].map((region) => (
-            <option key={region} value={region}>
-              {region}
-            </option>
-          ))}
-        </select>
-
+        {/* Image Upload */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Upload Images (Max 10):</label>
-          <input type="file" name="images" multiple accept="image/*" onChange={handleChange} className="border border-gray-300 rounded-md p-2 w-full focus:outline-none" />
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Upload Images (Max 10):
+          </label>
+          <input
+            type="file"
+            name="images"
+            multiple
+            accept="image/*"
+            onChange={handleChange}
+            className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+          />
+          {imagePreviews.length > 0 && (
+            <div className="grid grid-cols-3 gap-2 mt-3">
+              {imagePreviews.map((preview, index) => (
+                <img
+                  key={index}
+                  src={preview}
+                  alt={`Preview ${index}`}
+                  className="w-full h-auto object-cover border rounded-md"
+                />
+              ))}
+            </div>
+          )}
         </div>
-        
-        <button type="submit" className="w-full bg-red-600 text-white font-bold rounded-md p-2 hover:bg-red-700 transition duration-200">
+
+        {/* Video Upload (Re-added) */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Upload Video:
+          </label>
+          <input
+            type="file"
+            name="video"
+            accept="video/*"
+            onChange={handleChange}
+            className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+          />
+        </div>
+
+        {/* Submit Button */}
+        <button
+          type="submit"
+          className="w-full bg-red-600 text-white font-bold rounded-md p-2 hover:bg-red-700 transition duration-200"
+        >
           Upload Property
         </button>
       </form>
