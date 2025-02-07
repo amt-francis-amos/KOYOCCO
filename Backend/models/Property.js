@@ -9,7 +9,7 @@ const propertySchema = new mongoose.Schema(
     condition: { 
       type: String, 
       required: true, 
-      enum: ["Newly built", "Fairly Used", "Renovated"] 
+      enum: ["Newly built", "Fairly Used", "Renovated", "Virgin Land", "Old House"] 
     },
     region: { type: String, required: true },
     propertyType: { 
