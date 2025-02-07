@@ -25,31 +25,34 @@ const UploadProperty = () => {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
+  
     if (name === 'images') {
       const selectedImages = [...files];
-
+  
       if (selectedImages.length > 10) {
         toast.error('You can only upload up to 10 images.');
         return;
       }
-
+  
       setPropertyData({ ...propertyData, images: selectedImages });
-
+  
       const previews = selectedImages.map((file) => URL.createObjectURL(file));
       setImagePreviews(previews);
     } else if (name === 'video') {
       setPropertyData({ ...propertyData, video: files[0] });
     } else if (name === 'price') {
-      // Remove commas from the input value
-      const rawValue = value.replace(/,/g, '');
-      // Only update if the value is empty or contains only digits
-      if (rawValue === '' || /^\d+$/.test(rawValue)) {
-        setPropertyData({ ...propertyData, price: rawValue });
-      }
+      // Remove non-numeric characters (except digits)
+      const rawValue = value.replace(/\D/g, '');
+  
+      // Format number with commas
+      const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  
+      setPropertyData({ ...propertyData, price: formattedValue });
     } else {
       setPropertyData({ ...propertyData, [name]: value });
     }
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -207,20 +210,19 @@ const UploadProperty = () => {
           </select>
         )}
 
-        <div className="flex items-center space-x-2">
-          <span className="text-xl">₵</span>
-          <input
-            // Change type from "number" to "text" for formatting purposes
-            type="text"
-            name="price"
-            placeholder="Price"
-            // Format the displayed value with commas
-            value={propertyData.price ? parseInt(propertyData.price, 10).toLocaleString() : ''}
-            onChange={handleChange}
-            required
-            className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
-          />
-        </div>
+<div className="flex items-center space-x-2">
+  <span className="text-xl">₵</span>
+  <input
+    type="text"
+    name="price"
+    placeholder="Price"
+    value={propertyData.price}
+    onChange={handleChange}
+    required
+    className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+  />
+</div>
+
         <select
           name="condition"
           value={propertyData.condition}
