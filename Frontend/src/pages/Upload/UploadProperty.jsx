@@ -19,39 +19,36 @@ const UploadProperty = () => {
     address: '',
     images: [],
     video: null,
+   
   });
-
   const [imagePreviews, setImagePreviews] = useState([]);
   const navigate = useNavigate();
 
-  const formatPrice = (value) => {
-    return value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  };
-
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    
+  
     if (name === 'images') {
       const selectedImages = [...files];
-
+  
       if (selectedImages.length > 10) {
         toast.error('You can only upload up to 10 images.');
         return;
       }
-
+  
       setPropertyData({ ...propertyData, images: selectedImages });
-
+  
       const previews = selectedImages.map((file) => URL.createObjectURL(file));
       setImagePreviews(previews);
     } else if (name === 'video') {
       setPropertyData({ ...propertyData, video: files[0] });
     } else if (name === 'price') {
-      const formattedPrice = formatPrice(value.replace(/,/g, ''));
+      const formattedPrice = value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       setPropertyData({ ...propertyData, price: formattedPrice });
     } else {
       setPropertyData({ ...propertyData, [name]: value });
     }
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -77,10 +74,14 @@ const UploadProperty = () => {
     });
 
     try {
-      await axios.post(
+      const response = await axios.post(
         'https://koyocco-backend.onrender.com/api/properties/upload',
         formData,
-        { headers: { 'Content-Type': 'multipart/form-data' } }
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
       );
       toast.success('Property uploaded successfully!');
       setPropertyData({
@@ -99,7 +100,7 @@ const UploadProperty = () => {
         video: null,
       });
       setImagePreviews([]);
-      navigate('/');
+      navigate('/uploadProperty');
     } catch (error) {
       toast.error('Failed to upload property. Please try again.');
     }
@@ -145,11 +146,70 @@ const UploadProperty = () => {
           required
           className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
         />
-        
+        <select
+          name="propertyType"
+          value={propertyData.propertyType}
+          onChange={handleChange}
+          required
+          className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+        >
+          <option value="">Select Property Type</option>
+          <option value="Short-Stay">Short-Stay</option>
+          <option value="PropertySales">Property Sales</option>
+          <option value="PropertyRentals">Property Rentals</option>
+        </select>
+
+        {/* Conditionally render options based on propertyType */}
+        {propertyData.propertyType === 'Short-Stay' && (
+          <select
+            name="shortStayType"
+            value={propertyData.shortStayType}
+            onChange={handleChange}
+            required
+            className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+          >
+            <option value="">Select Short-Stay Type</option>
+            <option value="Hotels">Hotels</option>
+            <option value="Movie House">Movie House</option>
+            <option value="Guest House">Guest House</option>
+          </select>
+        )}
+        {propertyData.propertyType === 'PropertySales' && (
+          <select
+            name="propertySalesType"
+            value={propertyData.propertySalesType}
+            onChange={handleChange}
+            required
+            className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+          >
+            <option value="">Select Sales Type</option>
+            <option value="Houses">Houses</option>
+            <option value="Land">Land</option>
+            <option value="Commercial">Commercial</option>
+          </select>
+        )}
+        {propertyData.propertyType === 'PropertyRentals' && (
+          <select
+            name="propertyRentalsType"
+            value={propertyData.propertyRentalsType}
+            onChange={handleChange}
+            required
+            className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+          >
+            <option value="">Select Rentals Type</option>
+            <option value="Apartments">Apartments</option>
+            <option value="Condos">Condos</option>
+            <option value="Houses">Houses</option>
+            <option value="Duplex">Duplex</option>
+            <option value="Office">Office</option>
+            <option value="Shop">Shop</option>
+          </select>
+        )}
+
         <div className="flex items-center space-x-2">
           <span className="text-xl">₵</span>
           <input
-            type="text"
+            type="number"
             name="price"
             placeholder="Price"
             value={propertyData.price}
@@ -158,21 +218,18 @@ const UploadProperty = () => {
             className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
           />
         </div>
-
         <select
-          name="condition"
-          value={propertyData.condition}
-          onChange={handleChange}
-          required
-          className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
-        >
-          <option value="">Select Condition</option>
-          <option value="Newly built">Newly built</option>
-          <option value="Renovated">Renovated</option>
-          <option value="Fairly Used">Fairly Used</option>
-          <option value="Virgin Land">Virgin Land</option>
-          <option value="Old House">Old House</option>
-        </select>
+  name="condition"
+  value={propertyData.condition}
+  onChange={handleChange}
+  required
+  className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+>
+  <option value="">Select Condition</option>
+  <option value="Newly built">Newly built</option>
+  <option value="Renovated">Renovated</option> {/* Corrected spelling */}
+  <option value="Fairly Used">Fairly Used</option>
+</select>
 
         <select
           name="region"
@@ -231,10 +288,21 @@ const UploadProperty = () => {
             </div>
           )}
         </div>
-
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Upload Video:
+          </label>
+          <input
+            type="file"
+            name="video"
+            accept="video/*"
+            onChange={handleChange}
+            className="border border-gray-300 rounded-md p-2 w-full focus:outline-none"
+          />
+        </div>
         <button
           type="submit"
-          className="bg-blue-600 text-white py-2 px-4 rounded-md w-full hover:bg-blue-700"
+          className="w-full bg-red-600 text-white font-bold rounded-md p-2 hover:bg-red-700 transition duration-200"
         >
           Upload Property
         </button>
