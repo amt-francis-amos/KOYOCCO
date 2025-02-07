@@ -1,5 +1,5 @@
-
 import  koyoccoLogo from './koyocco-logo.jpeg'
+import fadedLogo  from  './faded-logo.png'
 import  houseImg1  from  './house-1.png'
 import  houseImg2  from  './house-2.png'
 import  houseImg3  from  './house-3.png'
@@ -18,6 +18,7 @@ import uploadImg from './upload_area.svg'
 
 
 export const assets = {
+  fadedLogo,
   koyoccoLogo,
   uploadImg,
   aboutImg,

@@ -61,7 +61,7 @@ const PropertyDetails = () => {
             className="w-full h-[37.5rem] object-cover rounded-md"
           />
           <img
-            src={assets.koyoccoLogo}
+            src={assets.fadedLogo}
             alt="Company Logo"
             className="absolute top-[40%] rounded-lg left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-40 w-40 opacity-50"
           />

@@ -2,7 +2,7 @@ const express = require('express');
 const Request = require('../models/Request'); 
 const router = express.Router();
 
-// --POST request to create a new relocation request
+
 router.post('/create', async (req, res) => {
   try {
     const { userName, userEmail, phone, serviceType, details, date, location, carType, description, registrationNumber, region, driverContact } = req.body;
