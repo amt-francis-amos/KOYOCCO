@@ -10,7 +10,7 @@ const Home = () => {
   const { property } = useProperty();
   const [searchTerm, setSearchTerm] = useState("");
   const [priceRange, setPriceRange] = useState("");
-  const [priceType, setPriceType] = useState("Per Month"); // Added price type state
+  const [priceType, setPriceType] = useState("Per Month");
   const [currentPage, setCurrentPage] = useState(0);
   const navigate = useNavigate();
   const propertiesPerPage = 6;
@@ -21,7 +21,13 @@ const Home = () => {
     { img: assets.houseImg3, text: "Affordable Housing Options" },
   ];
 
-  const filteredProperties = property.filter((prop) => {
+  // Sort properties by createdAt (newest first)
+  const sortedProperties = [...property].sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  );
+
+  // Filter properties based on search and price
+  const filteredProperties = sortedProperties.filter((prop) => {
     const matchesSearchTerm =
       prop.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       prop.description.toLowerCase().includes(searchTerm.toLowerCase());
@@ -38,8 +44,7 @@ const Home = () => {
   );
 
   const handlePageClick = (data) => {
-    const selectedPage = data.selected;
-    setCurrentPage(selectedPage);
+    setCurrentPage(data.selected);
   };
 
   const handleNavigateToLogin = () => {
@@ -174,38 +179,18 @@ const Home = () => {
                         {prop.description}
                       </p>
 
-                      <div className="flex items-center justify-start mb-4">
-                        <img
-                          src={prop.companyLogo || assets.koyoccoLogo}
-                          alt="Company Logo"
-                          className="h-10 w-10 object-contain"
-                        />
-                      </div>
-
                       <div className="grid grid-cols-2 gap-4 text-gray-600 text-sm mb-4">
-                        <div className="flex flex-col">
+                        <div>
                           <span className="font-medium">Region</span>
                           <span>{prop.region}</span>
                         </div>
-                        <div className="flex flex-col">
+                        <div>
                           <span className="font-medium">Address</span>
                           <span>{prop.address}</span>
                         </div>
-                        <div className="flex flex-col">
-                          <span className="font-medium">Condition</span>
-                          <span>{prop.condition}</span>
-                        </div>
-                        <div className="flex flex-col">
+                        <div>
                           <span className="font-medium">Status</span>
-                          <span
-                            className={
-                              prop.status === "available"
-                                ? "text-green-500"
-                                : prop.status === "rented"
-                                ? "text-blue-500"
-                                : "text-red-500"
-                            }
-                          >
+                          <span className="text-green-500">
                             {prop.status.charAt(0).toUpperCase() +
                               prop.status.slice(1)}
                           </span>
