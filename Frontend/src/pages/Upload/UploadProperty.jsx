@@ -24,9 +24,10 @@ const UploadProperty = () => {
   const [imagePreviews, setImagePreviews] = useState([]);
   const navigate = useNavigate();
 
-  // Function to format price with commas
+  // Function to format price with the Ghana Cedis symbol and commas
   const formatPrice = (value) => {
-    return value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    const numericValue = value.replace(/\D/g, ""); // Remove non-numeric characters
+    return numericValue ? `₵${numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}` : "";
   };
 
   // Handle input changes
@@ -163,7 +164,6 @@ const UploadProperty = () => {
           <option value="PropertyRentals">Property Rentals</option>
         </select>
 
-        {/* Conditionally render options based on propertyType */}
         {propertyData.propertyType === "Short-Stay" && (
           <select
             name="shortStayType"
@@ -213,7 +213,7 @@ const UploadProperty = () => {
         <input
           type="text"
           name="price"
-          placeholder="Price"
+          placeholder="Price (₵)"
           value={propertyData.price}
           onChange={handleChange}
           required
