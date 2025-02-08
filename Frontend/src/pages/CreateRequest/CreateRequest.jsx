@@ -66,7 +66,6 @@ const CreateRequest = () => {
     try {
       const formDataToSend = new FormData();
       Object.keys(formData).forEach(key => formDataToSend.append(key, formData[key]));
-
       carImages.forEach((image) => formDataToSend.append("carImages", image));
 
       const response = await axios.post(
@@ -111,24 +110,66 @@ const CreateRequest = () => {
         {Object.keys(formData).map((key, index) => (
           <div key={index} className="sm:col-span-1">
             <label className="block text-sm font-medium text-gray-700 capitalize">{key.replace(/([A-Z])/g, ' $1')}</label>
-            <input type="text" name={key} value={formData[key]} onChange={handleChange} required className="w-full p-2 border rounded-md shadow-sm" />
+            <input 
+              type="text" 
+              name={key} 
+              value={formData[key] || ""} 
+              onChange={handleChange} 
+              required 
+              className="w-full p-2 border rounded-md shadow-sm" 
+            />
           </div>
         ))}
 
+        {/* Dropdown for Region */}
+        <div className="sm:col-span-1">
+          <label className="block text-sm font-medium text-gray-700">Region</label>
+          <select 
+            name="region" 
+            value={formData.region || ""} 
+            onChange={handleChange} 
+            required 
+            className="w-full p-2 border rounded-md shadow-sm"
+          >
+            <option value="">Select a region</option>
+            {regions.map((region) => (
+              <option key={region} value={region}>{region}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* File Upload */}
         <div className="sm:col-span-2">
           <label className="block text-sm font-medium text-gray-700">Upload Car Images (Max: 5)</label>
-          <input type="file" accept="image/*" multiple onChange={handleFileChange} required className="w-full p-2 border rounded-md shadow-sm" />
+          <input 
+            type="file" 
+            accept="image/*" 
+            multiple 
+            onChange={handleFileChange} 
+            className="w-full p-2 border rounded-md shadow-sm" 
+          />
           <div className="mt-2 flex gap-2">
             {imagePreviews.map((preview, index) => (
               <div key={index} className="relative">
                 <img src={preview} alt="Car preview" className="w-20 h-20 object-cover rounded-md" />
-                <button type="button" className="absolute top-0 right-0 bg-red-600 text-white text-xs px-1" onClick={() => handleRemoveImage(index)}>X</button>
+                <button 
+                  type="button" 
+                  className="absolute top-0 right-0 bg-red-600 text-white text-xs px-1" 
+                  onClick={() => handleRemoveImage(index)}
+                >
+                  X
+                </button>
               </div>
             ))}
           </div>
         </div>
 
-        <button type="submit" disabled={isSubmitting} className="w-full sm:w-auto px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-black transition duration-300">
+        {/* Submit Button */}
+        <button 
+          type="submit" 
+          disabled={isSubmitting} 
+          className="w-full sm:w-auto px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-black transition duration-300"
+        >
           {isSubmitting ? "Submitting..." : "Submit Request"}
         </button>
       </form>
