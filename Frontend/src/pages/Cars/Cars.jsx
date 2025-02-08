@@ -63,7 +63,11 @@ const Cars = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {cars.map(car => (
-                    <div key={car._id} className="bg-white shadow-lg rounded-lg p-7">
+                    <Link 
+                        to="/request-dashboard" 
+                        key={car._id} 
+                        className="bg-white shadow-lg rounded-lg p-7 hover:shadow-xl transition duration-300 transform hover:scale-105 cursor-pointer"
+                    >
                         <img 
                             src={car.carImages[0]} 
                             alt={car.carType} 
@@ -74,7 +78,7 @@ const Cars = () => {
                         <p className="text-gray-700 mb-2">Region: {car.region}</p>
                         <p className="text-gray-700 mb-2">Driver Contact: {car.driverContact}</p>
                         <p className="text-gray-700 mb-4">{car.description}</p>
-                    </div>
+                    </Link>
                 ))}
             </div>
         </motion.div>
