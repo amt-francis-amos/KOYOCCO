@@ -60,9 +60,10 @@ const CreateRequest = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    console.log("Submitting Form:", formData);
+    console.log("Submitting Form Data:", formData);
     console.log("Attached Images:", carImages);
 
+    // Ensure required fields are filled
     if (
       !formData.userName ||
       !formData.userEmail ||
@@ -92,12 +93,17 @@ const CreateRequest = () => {
         formDataToSend.append("carImages", image);
       });
 
+      // Log FormData key-value pairs
+      for (let pair of formDataToSend.entries()) {
+        console.log(pair[0], pair[1]);
+      }
+
       console.log("Sending Data to API...");
 
       const response = await axios.post(
         "https://koyocco-backend.onrender.com/api/requests/create",
         formDataToSend,
-        { headers: { "Content-Type": "multipart/form-data" } }
+        { headers: { "Accept": "application/json" } } // Remove manual "Content-Type"
       );
 
       console.log("API Response:", response);
@@ -105,8 +111,18 @@ const CreateRequest = () => {
       if (response.status === 201) {
         toast.success("Relocation request submitted successfully!");
         setFormData({
-          userName: "", userEmail: "", phone: "", serviceType: "relocation", details: "", date: "",
-          location: "", carType: "", description: "", registrationNumber: "", region: "", driverContact: "",
+          userName: "",
+          userEmail: "",
+          phone: "",
+          serviceType: "relocation",
+          details: "",
+          date: "",
+          location: "",
+          carType: "",
+          description: "",
+          registrationNumber: "",
+          region: "",
+          driverContact: "",
         });
         setCarImages([]);
         setImagePreviews([]);
