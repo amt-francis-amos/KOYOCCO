@@ -45,9 +45,7 @@ const RequestsDashboard = () => {
             <p className="text-sm text-gray-600">{request.userEmail}</p>
 
             <div className="mt-2 text-sm text-gray-700">
-              <p>
-                <strong>Service Type:</strong> {request.serviceType}
-              </p>
+              
               <p>
                 <strong>Date:</strong>{" "}
                 {new Date(request.date).toLocaleDateString()}
