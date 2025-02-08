@@ -72,7 +72,7 @@ const PropertySales = () => {
                 <h2 className="text-lg font-semibold text-gray-800">{sale.name}</h2>
                 <p className="text-sm text-gray-600 mt-2">{sale.description}</p>
                 <div className="flex justify-between items-center mt-4">
-                  <span className="text-red-500 font-bold text-lg">₵{sale.price}</span>
+                  <span className="text-red-500 font-bold text-lg">₵{sale.price.toLocaleString()}</span>
                   <span className="text-gray-500 text-sm">{sale.location}</span>
                 </div>
               

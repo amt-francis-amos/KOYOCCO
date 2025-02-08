@@ -54,7 +54,7 @@ const PropertyRentals = () => {
               <div className="p-4">
                 <h3 className="text-xl font-semibold">{rental.name}</h3>
                 <p className="text-gray-500">{rental.location}</p>
-                <p className="text-red-500 font-bold">₵{rental.price}</p>
+                <p className="text-red-500 font-bold">₵{rental.price.toLocaleString()}</p>
               </div>
             </div>
           ))}
