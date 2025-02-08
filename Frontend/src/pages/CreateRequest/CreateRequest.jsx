@@ -25,8 +25,8 @@ const CreateRequest = () => {
   const navigate = useNavigate();
 
   const regions = [
-    "Ahafo", "Ashanti", "Bono", "Bono East", "Central", "Eastern", "Greater Accra", 
-    "North East", "Northern", "Oti", "Savannah", "Upper East", "Upper West", 
+    "Ahafo", "Ashanti", "Bono", "Bono East", "Central", "Eastern", "Greater Accra",
+    "North East", "Northern", "Oti", "Savannah", "Upper East", "Upper West",
     "Volta", "Western", "Western North"
   ];
 
@@ -48,23 +48,28 @@ const CreateRequest = () => {
   };
 
   const handleRemoveImage = (index) => {
-    const newImages = [...carImages];
-    const newPreviews = [...imagePreviews];
-
-    newImages.splice(index, 1);
-    newPreviews.splice(index, 1);
-
-    setCarImages(newImages);
-    setImagePreviews(newPreviews);
+    setCarImages(carImages.filter((_, i) => i !== index));
+    setImagePreviews(imagePreviews.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    if (!formData.userName || !formData.userEmail || !formData.phone || !formData.serviceType || !formData.date ||
-        !formData.location || !formData.carType || !formData.description || !formData.registrationNumber ||
-        !formData.region || !formData.driverContact || carImages.length === 0) {
+    if (
+      !formData.userName ||
+      !formData.userEmail ||
+      !formData.phone ||
+      !formData.serviceType ||
+      !formData.date ||
+      !formData.location ||
+      !formData.carType ||
+      !formData.description ||
+      !formData.registrationNumber ||
+      !formData.region ||
+      !formData.driverContact ||
+      carImages.length === 0
+    ) {
       toast.error("Please fill in all fields and upload at least one image.");
       setIsSubmitting(false);
       return;
@@ -80,9 +85,13 @@ const CreateRequest = () => {
         formDataToSend.append("carImages", image);
       });
 
+      console.log("Submitting data:", formDataToSend);
+
       const response = await axios.post("https://koyocco-backend.onrender.com/api/requests/create", formDataToSend, {
         headers: { "Content-Type": "multipart/form-data" },
       });
+
+      console.log("Server response:", response);
 
       if (response.status === 201) {
         toast.success("Relocation request submitted successfully!");
@@ -94,11 +103,11 @@ const CreateRequest = () => {
         setImagePreviews([]);
         navigate("/request-dashboard");
       } else {
-        toast.error("Failed to submit request.");
+        toast.error("Failed to submit request. Please try again.");
       }
     } catch (error) {
-      console.error("Error submitting request:", error);
-      toast.error("An error occurred while submitting the request.");
+      console.error("Error submitting request:", error.response?.data || error.message);
+      toast.error(error.response?.data?.message || "An error occurred while submitting the request.");
     } finally {
       setIsSubmitting(false);
     }
