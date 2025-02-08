@@ -109,12 +109,39 @@ const CreateRequest = () => {
 
       <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {Object.keys(formData).map((key, index) => (
-          <div key={index} className="sm:col-span-1">
-            <label className="block text-sm font-medium text-gray-700 capitalize">{key.replace(/([A-Z])/g, ' $1')}</label>
-            <input type="text" name={key} value={formData[key]} onChange={handleChange} required className="w-full p-2 border rounded-md shadow-sm" />
-          </div>
+          key !== "region" && (
+            <div key={index} className="sm:col-span-1">
+              <label className="block text-sm font-medium text-gray-700 capitalize">{key.replace(/([A-Z])/g, ' $1')}</label>
+              <input 
+                type="text" 
+                name={key} 
+                value={formData[key]} 
+                onChange={handleChange} 
+                required 
+                className="w-full p-2 border rounded-md shadow-sm" 
+              />
+            </div>
+          )
         ))}
 
+        {/* Region Dropdown */}
+        <div className="sm:col-span-1">
+          <label className="block text-sm font-medium text-gray-700">Region</label>
+          <select 
+            name="region" 
+            value={formData.region} 
+            onChange={handleChange} 
+            required 
+            className="w-full p-2 border rounded-md shadow-sm"
+          >
+            <option value="" disabled>Select a region</option>
+            {regions.map((region, index) => (
+              <option key={index} value={region}>{region}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* Upload Car Images */}
         <div className="sm:col-span-2">
           <label className="block text-sm font-medium text-gray-700">Upload Car Images (Max: 5)</label>
           <input type="file" accept="image/*" multiple onChange={handleFileChange} required className="w-full p-2 border rounded-md shadow-sm" />
