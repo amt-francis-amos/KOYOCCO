@@ -108,21 +108,57 @@ const CreateRequest = () => {
       <h1 className="text-2xl font-semibold text-center text-gray-800 mb-4">Request a Relocation</h1>
 
       <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {Object.keys(formData).map((key, index) => (
-          key !== "region" && (
-            <div key={index} className="sm:col-span-1">
-              <label className="block text-sm font-medium text-gray-700 capitalize">{key.replace(/([A-Z])/g, ' $1')}</label>
-              <input 
-                type="text" 
-                name={key} 
-                value={formData[key]} 
-                onChange={handleChange} 
-                required 
-                className="w-full p-2 border rounded-md shadow-sm" 
-              />
-            </div>
-          )
-        ))}
+        {/* User Name */}
+        <div className="sm:col-span-1">
+          <label className="block text-sm font-medium text-gray-700">Full Name</label>
+          <input 
+            type="text" 
+            name="userName" 
+            value={formData.userName} 
+            onChange={handleChange} 
+            required 
+            className="w-full p-2 border rounded-md shadow-sm" 
+          />
+        </div>
+
+        {/* Email */}
+        <div className="sm:col-span-1">
+          <label className="block text-sm font-medium text-gray-700">Email</label>
+          <input 
+            type="email" 
+            name="userEmail" 
+            value={formData.userEmail} 
+            onChange={handleChange} 
+            required 
+            className="w-full p-2 border rounded-md shadow-sm" 
+          />
+        </div>
+
+        {/* Phone */}
+        <div className="sm:col-span-1">
+          <label className="block text-sm font-medium text-gray-700">Phone</label>
+          <input 
+            type="tel" 
+            name="phone" 
+            value={formData.phone} 
+            onChange={handleChange} 
+            required 
+            className="w-full p-2 border rounded-md shadow-sm" 
+          />
+        </div>
+
+        {/* Date Picker */}
+        <div className="sm:col-span-1">
+          <label className="block text-sm font-medium text-gray-700">Select Date</label>
+          <input 
+            type="date" 
+            name="date" 
+            value={formData.date} 
+            onChange={handleChange} 
+            required 
+            className="w-full p-2 border rounded-md shadow-sm"
+          />
+        </div>
 
         {/* Region Dropdown */}
         <div className="sm:col-span-1">
@@ -155,6 +191,7 @@ const CreateRequest = () => {
           </div>
         </div>
 
+        {/* Submit Button */}
         <button type="submit" disabled={isSubmitting} className="w-full sm:w-auto px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-black transition duration-300">
           {isSubmitting ? "Submitting..." : "Submit Request"}
         </button>
