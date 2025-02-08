@@ -1,7 +1,7 @@
 const express = require("express");
 const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
-const Request = require("../models/Request"); 
+const Request = require("../models/Request");
 const { Readable } = require("stream");
 
 const router = express.Router();
@@ -13,32 +13,53 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+
 const upload = multer({ storage: multer.memoryStorage() });
 
-// Helper function to upload an image to Cloudinary from buffer
+
 const uploadToCloudinary = (buffer) => {
   return new Promise((resolve, reject) => {
-    const stream = cloudinary.uploader.upload_stream((error, result) => {
-      if (error) reject(error);
-      else resolve(result.secure_url);
-    });
-
-    Readable.from(buffer).pipe(stream);
+    const stream = cloudinary.uploader.upload_stream(
+      { folder: "car_images" }, 
+      (error, result) => {
+        if (error) reject(error);
+        else resolve(result.secure_url);
+      }
+    );
+    stream.end(buffer);
   });
 };
 
+// Create Request Route
 router.post("/create", upload.array("carImages", 5), async (req, res) => {
   try {
     const { userName, userEmail, phone, date, location, carType, description, registrationNumber, region, driverContact } = req.body;
 
+    // Check if all required fields are provided
     if (!userName || !userEmail || !phone || !date || !location || !carType || !description || !registrationNumber || !region || !driverContact) {
       return res.status(400).json({ error: "All fields are required." });
     }
 
     // Upload images to Cloudinary
-    const carImages = await Promise.all(req.files.map(file => uploadToCloudinary(file.buffer)));
+    const carImages = req.files.length
+      ? await Promise.all(req.files.map((file) => uploadToCloudinary(file.buffer)))
+      : [];
 
-    const newRequest = new Request({ ...req.body, carImages });
+    // Create New Request
+    const newRequest = new Request({
+      userName,
+      userEmail,
+      phone,
+      date,
+      location,
+      carType,
+      description,
+      registrationNumber,
+      region,
+      driverContact,
+      carImages, 
+    });
+
     await newRequest.save();
 
     res.status(201).json({ message: "Request created successfully", request: newRequest });
@@ -48,6 +69,7 @@ router.post("/create", upload.array("carImages", 5), async (req, res) => {
   }
 });
 
+// Get All Requests
 router.get("/", async (req, res) => {
   try {
     const requests = await Request.find();
