@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const requestSchema = new mongoose.Schema({
   userName: { type: String, required: true },
@@ -11,7 +11,7 @@ const requestSchema = new mongoose.Schema({
   registrationNumber: { type: String, required: true },
   region: { type: String, required: true },
   driverContact: { type: String, required: true },
-  carImages: [{ type: String }],  
+  carImages: [{ type: String, required: true }],  
 });
 
-module.exports = mongoose.model('Request', requestSchema);
+module.exports = mongoose.model("Request", requestSchema);

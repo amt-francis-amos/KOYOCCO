@@ -30,8 +30,7 @@ const CreateRequest = () => {
 
   // Handle Input Change
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   // Handle Image Selection
@@ -57,54 +56,25 @@ const CreateRequest = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-  
-    // Debugging Log
-    console.log("Submitting Form Data: ", formData);
-    console.log("Car Images: ", carImages);
-  
-    if (
-      !formData.userName ||
-      !formData.userEmail ||
-      !formData.phone ||
-      !formData.date ||
-      !formData.location ||
-      !formData.carType ||
-      !formData.description ||
-      !formData.registrationNumber ||
-      !formData.region ||
-      !formData.driverContact ||
-      carImages.length === 0
-    ) {
+
+    if (Object.values(formData).some(value => !value.trim()) || carImages.length === 0) {
       toast.error("Please fill in all fields and upload at least one image.");
       setIsSubmitting(false);
       return;
     }
-  
+
     try {
       const formDataToSend = new FormData();
-  
-      // Append form data fields
-      Object.keys(formData).forEach((key) => {
-        formDataToSend.append(key, formData[key]);
-      });
-  
-      // Append images properly
-      carImages.forEach((image, index) => {
-        formDataToSend.append(`carImages[]`, image); // Ensure backend expects `carImages[]`
-      });
-  
-      console.log("Final FormData Payload:", Object.fromEntries(formDataToSend.entries()));
-  
+      Object.keys(formData).forEach(key => formDataToSend.append(key, formData[key]));
+
+      carImages.forEach((image) => formDataToSend.append("carImages", image));
+
       const response = await axios.post(
         "https://koyocco-backend.onrender.com/api/requests/create",
         formDataToSend,
-        {
-          headers: {
-            "Accept": "application/json",
-          },
-        }
+        { headers: { "Content-Type": "multipart/form-data" } }
       );
-  
+
       if (response.status === 201) {
         toast.success("Relocation request submitted successfully!");
         setFormData({
@@ -132,42 +102,18 @@ const CreateRequest = () => {
       setIsSubmitting(false);
     }
   };
-  
 
   return (
-    <div className="max-w-3xl mx-auto p-4 sm:p-6 mb-8 bg-white rounded-lg shadow-md mt-6">
+    <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md mt-6">
       <h1 className="text-2xl font-semibold text-center text-gray-800 mb-4">Request a Relocation</h1>
 
       <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="sm:col-span-2">
-          <label className="block text-sm font-medium text-gray-700">Full Name</label>
-          <input type="text" name="userName" value={formData.userName} onChange={handleChange} required className="w-full p-2 border rounded-md shadow-sm" />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Email Address</label>
-          <input type="email" name="userEmail" value={formData.userEmail} onChange={handleChange} required className="w-full p-2 border rounded-md shadow-sm" />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Phone Number</label>
-          <input type="tel" name="phone" value={formData.phone} onChange={handleChange} required className="w-full p-2 border rounded-md shadow-sm" />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Date</label>
-          <input type="date" name="date" value={formData.date} onChange={handleChange} required className="w-full p-2 border rounded-md shadow-sm" />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Car Type</label>
-          <input type="text" name="carType" value={formData.carType} onChange={handleChange} required className="w-full p-2 border rounded-md shadow-sm" />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Registration Number</label>
-          <input type="text" name="registrationNumber" value={formData.registrationNumber} onChange={handleChange} required className="w-full p-2 border rounded-md shadow-sm" />
-        </div>
+        {Object.keys(formData).map((key, index) => (
+          <div key={index} className="sm:col-span-1">
+            <label className="block text-sm font-medium text-gray-700 capitalize">{key.replace(/([A-Z])/g, ' $1')}</label>
+            <input type="text" name={key} value={formData[key]} onChange={handleChange} required className="w-full p-2 border rounded-md shadow-sm" />
+          </div>
+        ))}
 
         <div className="sm:col-span-2">
           <label className="block text-sm font-medium text-gray-700">Upload Car Images (Max: 5)</label>

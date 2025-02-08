@@ -11,50 +11,27 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Multer Setup for Memory Storage
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+const upload = multer({ storage: multer.memoryStorage() });
 
-// -- POST request to create a relocation request
-router.post('/create', upload.array('carImages', 5), async (req, res) => {
+router.post("/create", upload.array("carImages", 5), async (req, res) => {
   try {
-    const {
-      userName, userEmail, phone, date, location, 
-      carType, description, registrationNumber, region, driverContact,
-    } = req.body;
+    const { userName, userEmail, phone, date, location, carType, description, registrationNumber, region, driverContact } = req.body;
 
     if (!userName || !userEmail || !phone || !date || !location || !carType || !description || !registrationNumber || !region || !driverContact) {
-      return res.status(400).json({ error: 'All fields are required.' });
+      return res.status(400).json({ error: "All fields are required." });
     }
 
-  
+    const carImages = await Promise.all(req.files.map(file => cloudinary.uploader.upload_stream(file.buffer)));
 
-    let carImages = [];
-    if (req.files) {
-      carImages = await Promise.all(
-        req.files.map((image) =>
-          new Promise((resolve, reject) => {
-            cloudinary.uploader.upload_stream({ resource_type: 'image' }, (error, result) => {
-              if (error) return reject(error);
-              resolve(result.secure_url);
-            }).end(image.buffer);
-          })
-        )
-      );
-    }
-
-    const newRequest = new Request({
-      userName, userEmail, phone, date, location, 
-      carType, description, registrationNumber, region, driverContact, carImages
-    });
-
-    const savedRequest = await newRequest.save();
-    res.status(201).json({ success: true, data: savedRequest });
-  } catch (err) {
-    console.error('Error creating request:', err);
-    res.status(500).json({ message: 'Internal Server Error', error: err.message });
+    const newRequest = new Request({ ...req.body, carImages });
+    await newRequest.save();
+    
+    res.status(201).json({ message: "Request created successfully", request: newRequest });
+  } catch (error) {
+    res.status(500).json({ error: "Server error" });
   }
 });
+
 
 // -- GET request to fetch all relocation requests
 router.get('/', async (req, res) => {
