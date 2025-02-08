@@ -13,6 +13,16 @@ cloudinary.config({
 
 const upload = multer({ storage: multer.memoryStorage() });
 
+const uploadToCloudinary = (fileBuffer) => {
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream((error, result) => {
+      if (error) return reject(error);
+      resolve(result.secure_url);
+    });
+    stream.end(fileBuffer);
+  });
+};
+
 router.post("/create", upload.array("carImages", 5), async (req, res) => {
   try {
     const { userName, userEmail, phone, date, location, carType, description, registrationNumber, region, driverContact } = req.body;
@@ -21,17 +31,18 @@ router.post("/create", upload.array("carImages", 5), async (req, res) => {
       return res.status(400).json({ error: "All fields are required." });
     }
 
-    const carImages = await Promise.all(req.files.map(file => cloudinary.uploader.upload_stream(file.buffer)));
+    // Ensure files exist before attempting upload
+    const carImages = req.files ? await Promise.all(req.files.map(file => uploadToCloudinary(file.buffer))) : [];
 
     const newRequest = new Request({ ...req.body, carImages });
     await newRequest.save();
     
     res.status(201).json({ message: "Request created successfully", request: newRequest });
   } catch (error) {
+    console.error("Error creating request:", error);
     res.status(500).json({ error: "Server error" });
   }
 });
-
 
 // -- GET request to fetch all relocation requests
 router.get('/', async (req, res) => {
