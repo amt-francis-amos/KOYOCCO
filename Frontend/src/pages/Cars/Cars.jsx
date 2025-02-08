@@ -71,7 +71,7 @@ const Cars = () => {
                         <img 
                             src={car.carImages[0]} 
                             alt={car.carType} 
-                            className="w-full h-40 object-cover rounded-lg mb-4" 
+                            className="w-full h-[40vh] object-cover rounded-lg mb-4" 
                         />
                         <h3 className="text-xl font-semibold mb-2">{car.carType}</h3>
                         <p className="text-gray-700 mb-2">Location: {car.location}</p>
