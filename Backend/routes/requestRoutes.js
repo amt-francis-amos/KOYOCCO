@@ -27,9 +27,7 @@ router.post('/create', upload.array('carImages', 5), async (req, res) => {
       return res.status(400).json({ error: 'All fields are required.' });
     }
 
-    if (serviceType !== 'relocation') {
-      return res.status(400).json({ error: 'Invalid service type. Only "relocation" is allowed.' });
-    }
+  
 
     let carImages = [];
     if (req.files) {
