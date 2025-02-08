@@ -6,7 +6,7 @@ import {motion} from 'framer-motion'
 
 
 const Cars = () => {
- 
+    const [loading, setLoading] = useState(false);  // FIXED: Declare loading state
     const [error, setError] = useState(null);
 
     const fetchRequests = async () => {
@@ -26,7 +26,7 @@ const Cars = () => {
             setLoading(true);
             setError(null);
 
-            const user = JSON.parse(localStorage.getItem('user')); 
+            const user = JSON.parse(localStorage.getItem('user'));
 
             if (!user) {
                 setError('User not authenticated');
@@ -34,8 +34,8 @@ const Cars = () => {
             }
 
             const requestData = {
-                userName: user.name, 
-                userEmail: user.email, 
+                userName: user.name,
+                userEmail: user.email,
                 serviceType: "Airport Pickup",
                 vehicleId: car.id,
                 date: new Date().toISOString(),
@@ -54,18 +54,20 @@ const Cars = () => {
     };
 
     useEffect(() => {
-        fetchRequests();  
+        fetchRequests();
     }, []);
 
     return (
         <motion.div 
-        initial={{opacity:0, y:100}}
-        transition={{duration:1.5}}
-        whileInView={{opacity:1, y:0}}
-        viewport={{once:true}}
-  
-        className="container mx-auto p-4">
-            <h1 className="text-2xl md:text-4xl font-bold mb-4 text-center mt-10">Cars and Relocation Services</h1>
+            initial={{opacity:0, y:100}}
+            transition={{duration:1.5}}
+            whileInView={{opacity:1, y:0}}
+            viewport={{once:true}}
+            className="container mx-auto p-4"
+        >
+            <h1 className="text-2xl md:text-4xl font-bold mb-4 text-center mt-10">
+                Cars and Relocation Services
+            </h1>
 
             <p className="text-gray-600 mb-6 text-center">
                 Book a car for Relocation as part of your accommodation package.
@@ -77,21 +79,17 @@ const Cars = () => {
                         <img src={car.image} alt={car.name} className="w-full h-40 object-cover rounded-lg mb-4" />
                         <h3 className="text-xl font-semibold mb-2">{car.name}</h3>
                         <p className="text-gray-700 mb-4">{car.description}</p>
-                       
-                        <Link to='/create-request'
+
+                        <Link 
+                            to='/create-request'
                             onClick={() => handleRequestAirportPickup(car)}
                             className="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-black"
                         >
-                            Request Relocation
+                            {loading ? "Processing..." : "Request Relocation"}
                         </Link>
                     </div>
                 ))}
             </div>
-
-           
-           
-
-
         </motion.div>
     );
 };
