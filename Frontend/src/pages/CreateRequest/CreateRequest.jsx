@@ -8,8 +8,6 @@ const CreateRequest = () => {
     userName: "",
     userEmail: "",
     phone: "",
-    serviceType: "relocation",
-    details: "",
     date: "",
     location: "",
     carType: "",
@@ -59,13 +57,16 @@ const CreateRequest = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-
-    console.log("handleSubmit triggered"); // Debugging log
-
+  
+    // Debugging Log
+    console.log("Submitting Form Data: ", formData);
+    console.log("Car Images: ", carImages);
+  
     if (
       !formData.userName ||
       !formData.userEmail ||
       !formData.phone ||
+      !formData.serviceType ||
       !formData.date ||
       !formData.location ||
       !formData.carType ||
@@ -79,23 +80,32 @@ const CreateRequest = () => {
       setIsSubmitting(false);
       return;
     }
-
+  
     try {
       const formDataToSend = new FormData();
+  
+      // Append form data fields
       Object.keys(formData).forEach((key) => {
         formDataToSend.append(key, formData[key]);
       });
-
-      carImages.forEach((image) => {
-        formDataToSend.append("carImages", image);
+  
+      // Append images properly
+      carImages.forEach((image, index) => {
+        formDataToSend.append(`carImages[]`, image); // Ensure backend expects `carImages[]`
       });
-
+  
+      console.log("Final FormData Payload:", Object.fromEntries(formDataToSend.entries()));
+  
       const response = await axios.post(
         "https://koyocco-backend.onrender.com/api/requests/create",
         formDataToSend,
-        { headers: { "Content-Type": "multipart/form-data" } }
+        {
+          headers: {
+            "Accept": "application/json",
+          },
+        }
       );
-
+  
       if (response.status === 201) {
         toast.success("Relocation request submitted successfully!");
         setFormData({
@@ -117,11 +127,13 @@ const CreateRequest = () => {
         toast.error("Failed to submit request. Please try again.");
       }
     } catch (error) {
+      console.error("Error submitting form:", error);
       toast.error(error.response?.data?.message || "An error occurred while submitting the request.");
     } finally {
       setIsSubmitting(false);
     }
   };
+  
 
   return (
     <div className="max-w-3xl mx-auto p-4 sm:p-6 mb-8 bg-white rounded-lg shadow-md mt-6">
