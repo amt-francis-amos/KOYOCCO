@@ -29,7 +29,11 @@ const CreateRequest = () => {
   ];
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
 
   const handleFileChange = (e) => {
@@ -44,16 +48,13 @@ const CreateRequest = () => {
     setImagePreviews([...imagePreviews, ...newPreviews]);
   };
 
-  const handleRemoveImage = (index) => {
-    setCarImages(carImages.filter((_, i) => i !== index));
-    setImagePreviews(imagePreviews.filter((_, i) => i !== index));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    if (Object.values(formData).some(value => !value.trim()) || carImages.length === 0) {
+    console.log("Submitting Form Data:", formData);
+
+    if (Object.values(formData).some(value => value.trim() === "") || carImages.length === 0) {
       toast.error("Please fill in all fields and upload at least one image.");
       setIsSubmitting(false);
       return;
@@ -131,7 +132,7 @@ const CreateRequest = () => {
         <div className="sm:col-span-1">
           <label className="block text-sm font-medium text-gray-700">Region</label>
           <select name="region" value={formData.region} onChange={handleChange} required className="w-full p-2 border rounded-md shadow-sm">
-            <option value="" disabled>Select a region</option>
+            <option value="">Select a region</option>
             {regions.map((region, index) => (
               <option key={index} value={region}>{region}</option>
             ))}
