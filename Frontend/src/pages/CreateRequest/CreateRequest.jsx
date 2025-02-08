@@ -147,6 +147,11 @@ const CreateRequest = () => {
         </div>
 
         <div>
+          <label className="block text-sm font-medium text-gray-700">Date</label>
+          <input type="date" name="date" value={formData.date} onChange={handleChange} required className="w-full p-2 border rounded-md shadow-sm" />
+        </div>
+
+        <div>
           <label className="block text-sm font-medium text-gray-700">Car Type</label>
           <input type="text" name="carType" value={formData.carType} onChange={handleChange} required className="w-full p-2 border rounded-md shadow-sm" />
         </div>
@@ -154,16 +159,6 @@ const CreateRequest = () => {
         <div>
           <label className="block text-sm font-medium text-gray-700">Registration Number</label>
           <input type="text" name="registrationNumber" value={formData.registrationNumber} onChange={handleChange} required className="w-full p-2 border rounded-md shadow-sm" />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Region</label>
-          <select name="region" value={formData.region} onChange={handleChange} required className="w-full p-2 border rounded-md shadow-sm">
-            <option value="">Select a region</option>
-            {regions.map((region, index) => (
-              <option key={index} value={region}>{region}</option>
-            ))}
-          </select>
         </div>
 
         <div className="sm:col-span-2">
