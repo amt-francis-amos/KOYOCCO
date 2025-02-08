@@ -19,7 +19,7 @@ const upload = multer({ storage: storage });
 router.post('/create', upload.array('carImages', 5), async (req, res) => {
   try {
     const {
-      userName, userEmail, phone, serviceType, details, date, location, 
+      userName, userEmail, phone, serviceType,  date, location, 
       carType, description, registrationNumber, region, driverContact,
     } = req.body;
 
