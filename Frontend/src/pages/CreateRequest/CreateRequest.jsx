@@ -93,7 +93,7 @@ const CreateRequest = () => {
       const response = await axios.post(
         "https://koyocco-backend.onrender.com/api/requests/create",
         formDataToSend,
-        { headers: { "Accept": "application/json" } }
+        { headers: { "Content-Type": "multipart/form-data" } }
       );
 
       if (response.status === 201) {
@@ -160,7 +160,7 @@ const CreateRequest = () => {
 
         <div className="sm:col-span-2">
           <label className="block text-sm font-medium text-gray-700">Upload Car Images (Max: 5)</label>
-          <input type="file" accept="image/*" multiple onChange={handleFileChange} className="w-full p-2 border rounded-md shadow-sm" />
+          <input type="file" accept="image/*" multiple onChange={handleFileChange} required className="w-full p-2 border rounded-md shadow-sm" />
           <div className="mt-2 flex gap-2">
             {imagePreviews.map((preview, index) => (
               <div key={index} className="relative">
