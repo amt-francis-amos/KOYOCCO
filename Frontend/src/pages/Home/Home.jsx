@@ -43,7 +43,7 @@ const Home = () => {
   };
 
   const handleNavigateToLogin = () => {
-    navigate("/");
+    navigate("/signUp");
   };
 
   return (
@@ -91,12 +91,12 @@ const Home = () => {
               placeholder="Search properties..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="border p-2 rounded-md w-full md:w-1/2"
+              className="border p-2 rounded-md outline-none w-full md:w-1/2"
             />
             <select
               value={priceRange}
               onChange={(e) => setPriceRange(e.target.value)}
-              className="border p-2 rounded-md w-full md:w-1/3"
+              className="border p-2 rounded-md w-full outline-none md:w-1/3"
             >
               <option value="">All Prices</option>
               <option value="100000">Up to ₵100,000</option>

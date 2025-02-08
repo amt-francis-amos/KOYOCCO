@@ -118,7 +118,7 @@ const Login = () => {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-lg"
+            className="w-full p-2 border outline-none border-gray-300 rounded-lg"
             required
           />
           {errors.email && <p className="text-red-500">{errors.email}</p>}
@@ -129,7 +129,7 @@ const Login = () => {
             type={showPassword ? "text" : "password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-lg"
+            className="w-full p-2 border outline-none border-gray-300 rounded-lg"
             required
           />
           <span
@@ -155,7 +155,7 @@ const Login = () => {
           <Link to="/forgot-password" className="text-blue-500 mb-4 text-sm hover:underline">
             Forgot your password?
           </Link>
-          <Link to="/signup" className="text-gray-900 text-sm hover:underline">
+          <Link to="/signUp" className="text-gray-900 text-sm hover:underline">
             Don't have an account? Signup
           </Link>
         </div>
