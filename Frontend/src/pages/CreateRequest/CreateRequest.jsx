@@ -66,7 +66,6 @@ const CreateRequest = () => {
       !formData.userName ||
       !formData.userEmail ||
       !formData.phone ||
-      !formData.serviceType ||
       !formData.date ||
       !formData.location ||
       !formData.carType ||
