@@ -44,7 +44,7 @@ router.post('/create', upload.array('carImages', 5), async (req, res) => {
     }
 
     const newRequest = new Request({
-      userName, userEmail, phone, serviceType, details, date, location, 
+      userName, userEmail, phone, date, location, 
       carType, description, registrationNumber, region, driverContact, carImages
     });
 
