@@ -31,12 +31,31 @@ const Cars = () => {
             viewport={{ once: true }}
             className="container mx-auto p-4"
         >
-            <h1 className="text-2xl md:text-4xl font-bold mb-4 text-center mt-10">
-                Cars and Relocation Services
+            {/* Call-to-Action Section */}
+            <div className="relative bg-cover bg-center text-white py-20 px-6 rounded-lg" 
+                style={{ backgroundImage: "url('https://source.unsplash.com/1600x900/?car,road')" }}>
+                <div className="absolute inset-0 bg-black bg-opacity-50 rounded-lg"></div>
+                <div className="relative text-center z-10">
+                    <h2 className="text-3xl md:text-5xl font-bold mb-4">Need a Relocation Service?</h2>
+                    <p className="text-lg md:text-xl mb-6">
+                        Easily request a car for relocation as part of your accommodation package.
+                    </p>
+                    <Link 
+                        to="/create-request" 
+                        className="bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-6 rounded-lg text-lg shadow-lg transition duration-300"
+                    >
+                        Create a Request
+                    </Link>
+                </div>
+            </div>
+
+            {/* Car Listings Section */}
+            <h1 className="text-2xl md:text-4xl font-bold mt-16 mb-4 text-center">
+                Available Cars & Relocation Services
             </h1>
 
             <p className="text-gray-600 mb-6 text-center">
-                Book a car for Relocation as part of your accommodation package.
+                Browse available cars for your relocation needs.
             </p>
 
             {loading && <p className="text-center">Loading cars...</p>}
@@ -55,13 +74,6 @@ const Cars = () => {
                         <p className="text-gray-700 mb-2">Region: {car.region}</p>
                         <p className="text-gray-700 mb-2">Driver Contact: {car.driverContact}</p>
                         <p className="text-gray-700 mb-4">{car.description}</p>
-
-                        <Link 
-                            to='/create-request'
-                            className="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-black text-center block"
-                        >
-                            Request Relocation
-                        </Link>
                     </div>
                 ))}
             </div>
