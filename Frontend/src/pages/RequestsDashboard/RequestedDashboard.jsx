@@ -71,7 +71,7 @@ const RequestsDashboard = () => {
                       <img
                         src={img}
                         alt={`Car ${index + 1}`}
-                        className="w-24 h-24 object-cover rounded-md border border-gray-300"
+                        className="w-full object-cover rounded-md border border-gray-300"
                       />
                     </a>
                   ))}
