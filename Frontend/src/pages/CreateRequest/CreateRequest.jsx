@@ -55,7 +55,11 @@ const CreateRequest = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-
+  
+    // Debugging log to check form data
+    console.log("Form Data Before Submission:", formData);
+    console.log("Car Images:", carImages);
+  
     if (
       !formData.userName ||
       !formData.userEmail ||
@@ -74,25 +78,27 @@ const CreateRequest = () => {
       setIsSubmitting(false);
       return;
     }
-
+  
     try {
       const formDataToSend = new FormData();
       Object.keys(formData).forEach((key) => {
         formDataToSend.append(key, formData[key]);
       });
-
+  
       carImages.forEach((image) => {
         formDataToSend.append("carImages", image);
       });
-
-      console.log("Submitting data:", formDataToSend);
-
-      const response = await axios.post("https://koyocco-backend.onrender.com/api/requests/create", formDataToSend, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-
-      console.log("Server response:", response);
-
+  
+      console.log("Submitting Data to API...");
+  
+      const response = await axios.post(
+        "https://koyocco-backend.onrender.com/api/requests/create",
+        formDataToSend,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+  
+      console.log("Server Response:", response);
+  
       if (response.status === 201) {
         toast.success("Relocation request submitted successfully!");
         setFormData({
@@ -112,6 +118,7 @@ const CreateRequest = () => {
       setIsSubmitting(false);
     }
   };
+  
 
   return (
     <div className="max-w-3xl mx-auto p-4 sm:p-6 mb-8 bg-white rounded-lg shadow-md mt-6">
