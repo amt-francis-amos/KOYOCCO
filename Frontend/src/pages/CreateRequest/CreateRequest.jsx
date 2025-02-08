@@ -80,7 +80,7 @@ const CreateRequest = () => {
         });
         setCarImages([]);
         setImagePreviews([]);
-        navigate("/request-dashboard");
+        navigate("/cars");
       } else {
         toast.error("Failed to submit request. Please try again.");
       }
