@@ -30,7 +30,15 @@ const CreateRequest = () => {
 
   // Handle Input Change
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    let { name, value } = e.target;
+
+    if (name === "date") {
+      // Ensure date format is YYYY-MM-DD
+      const formattedDate = new Date(value).toISOString().split("T")[0];
+      value = formattedDate;
+    }
+
+    setFormData({ ...formData, [name]: value });
   };
 
   // Handle Image Selection
@@ -111,7 +119,7 @@ const CreateRequest = () => {
           <div key={index} className="sm:col-span-1">
             <label className="block text-sm font-medium text-gray-700 capitalize">{key.replace(/([A-Z])/g, ' $1')}</label>
             <input 
-              type="text" 
+              type={key === "date" ? "date" : "text"}
               name={key} 
               value={formData[key] || ""} 
               onChange={handleChange} 
