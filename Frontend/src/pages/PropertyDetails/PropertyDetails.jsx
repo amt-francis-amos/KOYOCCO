@@ -83,9 +83,10 @@ const PropertyDetails = () => {
         <div className="md:w-1/2 bg-white shadow-lg rounded-md p-6 flex flex-col justify-between">
           <div>
             <p className="text-gray-600 mb-4">{propertyDetail.description}</p>
-            <p className="text-red-500 font-bold text-lg mb-2">
-              ₵{propertyDetail.price}
+            <p className="text-xl font-semibold text-red-500">
+              ₵{propertyDetail.price.toLocaleString()}
             </p>
+
             <p className="text-gray-500 mb-4">{propertyDetail.location}</p>
             <p className="text-sm text-gray-600 mb-4">
               <strong>Region:</strong> {propertyDetail.region}
