@@ -60,7 +60,8 @@ const CreateRequest = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Ensure required fields are filled
+    console.log("handleSubmit triggered"); // Debugging log
+
     if (
       !formData.userName ||
       !formData.userEmail ||
