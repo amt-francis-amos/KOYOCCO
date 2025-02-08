@@ -1,7 +1,9 @@
-const express = require('express');
-const multer = require('multer');
-const cloudinary = require('cloudinary').v2;
-const Request = require('../models/Request'); 
+const express = require("express");
+const multer = require("multer");
+const cloudinary = require("cloudinary").v2;
+const Request = require("../models/Request"); 
+const { Readable } = require("stream");
+
 const router = express.Router();
 
 // Cloudinary Configuration
@@ -13,13 +15,15 @@ cloudinary.config({
 
 const upload = multer({ storage: multer.memoryStorage() });
 
-const uploadToCloudinary = (fileBuffer) => {
+// Helper function to upload an image to Cloudinary from buffer
+const uploadToCloudinary = (buffer) => {
   return new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream((error, result) => {
-      if (error) return reject(error);
-      resolve(result.secure_url);
+      if (error) reject(error);
+      else resolve(result.secure_url);
     });
-    stream.end(fileBuffer);
+
+    Readable.from(buffer).pipe(stream);
   });
 };
 
@@ -31,27 +35,26 @@ router.post("/create", upload.array("carImages", 5), async (req, res) => {
       return res.status(400).json({ error: "All fields are required." });
     }
 
-    // Ensure files exist before attempting upload
-    const carImages = req.files ? await Promise.all(req.files.map(file => uploadToCloudinary(file.buffer))) : [];
+    // Upload images to Cloudinary
+    const carImages = await Promise.all(req.files.map(file => uploadToCloudinary(file.buffer)));
 
     const newRequest = new Request({ ...req.body, carImages });
     await newRequest.save();
-    
+
     res.status(201).json({ message: "Request created successfully", request: newRequest });
   } catch (error) {
     console.error("Error creating request:", error);
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error: "Server error", details: error.message });
   }
 });
 
-// -- GET request to fetch all relocation requests
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const requests = await Request.find();
     res.status(200).json(requests);
   } catch (error) {
-    console.error('Error fetching requests:', error);
-    res.status(500).json({ message: 'Internal server error.' });
+    console.error("Error fetching requests:", error);
+    res.status(500).json({ message: "Internal server error." });
   }
 });
 
