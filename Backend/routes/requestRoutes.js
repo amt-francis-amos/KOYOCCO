@@ -19,11 +19,11 @@ const upload = multer({ storage: storage });
 router.post('/create', upload.array('carImages', 5), async (req, res) => {
   try {
     const {
-      userName, userEmail, phone, serviceType,  date, location, 
+      userName, userEmail, phone,   date, location, 
       carType, description, registrationNumber, region, driverContact,
     } = req.body;
 
-    if (!userName || !userEmail || !phone || !serviceType || !date || !location || !carType || !description || !registrationNumber || !region || !driverContact) {
+    if (!userName || !userEmail || !phone || !date || !location || !carType || !description || !registrationNumber || !region || !driverContact) {
       return res.status(400).json({ error: 'All fields are required.' });
     }
 
