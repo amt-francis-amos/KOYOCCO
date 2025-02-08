@@ -60,9 +60,6 @@ const CreateRequest = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    console.log("Submitting Form Data:", formData);
-    console.log("Attached Images:", carImages);
-
     // Ensure required fields are filled
     if (
       !formData.userName ||
@@ -93,20 +90,11 @@ const CreateRequest = () => {
         formDataToSend.append("carImages", image);
       });
 
-      // Log FormData key-value pairs
-      for (let pair of formDataToSend.entries()) {
-        console.log(pair[0], pair[1]);
-      }
-
-      console.log("Sending Data to API...");
-
       const response = await axios.post(
         "https://koyocco-backend.onrender.com/api/requests/create",
         formDataToSend,
-        { headers: { "Accept": "application/json" } } // Remove manual "Content-Type"
+        { headers: { "Accept": "application/json" } }
       );
-
-      console.log("API Response:", response);
 
       if (response.status === 201) {
         toast.success("Relocation request submitted successfully!");
@@ -131,7 +119,6 @@ const CreateRequest = () => {
         toast.error("Failed to submit request. Please try again.");
       }
     } catch (error) {
-      console.error("Submission Error:", error.response?.data || error.message);
       toast.error(error.response?.data?.message || "An error occurred while submitting the request.");
     } finally {
       setIsSubmitting(false);
@@ -181,6 +168,14 @@ const CreateRequest = () => {
         <div className="sm:col-span-2">
           <label className="block text-sm font-medium text-gray-700">Upload Car Images (Max: 5)</label>
           <input type="file" accept="image/*" multiple onChange={handleFileChange} className="w-full p-2 border rounded-md shadow-sm" />
+          <div className="mt-2 flex gap-2">
+            {imagePreviews.map((preview, index) => (
+              <div key={index} className="relative">
+                <img src={preview} alt="Car preview" className="w-20 h-20 object-cover rounded-md" />
+                <button type="button" className="absolute top-0 right-0 bg-red-600 text-white text-xs px-1" onClick={() => handleRemoveImage(index)}>X</button>
+              </div>
+            ))}
+          </div>
         </div>
 
         <button type="submit" disabled={isSubmitting} className="w-full sm:w-auto px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-black transition duration-300">
