@@ -28,39 +28,29 @@ const CreateRequest = () => {
     "Volta", "Western", "Western North"
   ];
 
-  // Handle Input Change
   const handleChange = (e) => {
     let { name, value } = e.target;
-
     if (name === "date") {
-      // Ensure date format is YYYY-MM-DD
-      const formattedDate = new Date(value).toISOString().split("T")[0];
-      value = formattedDate;
+      value = new Date(value).toISOString().split("T")[0];
     }
-
     setFormData({ ...formData, [name]: value });
   };
 
-  // Handle Image Selection
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
     if (files.length + carImages.length > 5) {
       toast.error("You can upload a maximum of 5 images.");
       return;
     }
-
     setCarImages([...carImages, ...files]);
-    const newPreviews = files.map((file) => URL.createObjectURL(file));
-    setImagePreviews([...imagePreviews, ...newPreviews]);
+    setImagePreviews([...imagePreviews, ...files.map((file) => URL.createObjectURL(file))]);
   };
 
-  // Remove Selected Image
   const handleRemoveImage = (index) => {
     setCarImages(carImages.filter((_, i) => i !== index));
     setImagePreviews(imagePreviews.filter((_, i) => i !== index));
   };
 
-  // Handle Form Submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -85,16 +75,8 @@ const CreateRequest = () => {
       if (response.status === 201) {
         toast.success("Relocation request submitted successfully!");
         setFormData({
-          userName: "",
-          userEmail: "",
-          phone: "",
-          date: "",
-          location: "",
-          carType: "",
-          description: "",
-          registrationNumber: "",
-          region: "",
-          driverContact: "",
+          userName: "", userEmail: "", phone: "", date: "", location: "", carType: "",
+          description: "", registrationNumber: "", region: "", driverContact: ""
         });
         setCarImages([]);
         setImagePreviews([]);
@@ -103,7 +85,6 @@ const CreateRequest = () => {
         toast.error("Failed to submit request. Please try again.");
       }
     } catch (error) {
-      console.error("Error submitting form:", error);
       toast.error(error.response?.data?.message || "An error occurred while submitting the request.");
     } finally {
       setIsSubmitting(false);
@@ -113,40 +94,39 @@ const CreateRequest = () => {
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md mt-6">
       <h1 className="text-2xl font-semibold text-center text-gray-800 mb-4">Request a Relocation</h1>
-
       <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {Object.keys(formData).map((key, index) => (
-          <div key={index} className="sm:col-span-1">
-            <label className="block text-sm font-medium text-gray-700 capitalize">{key.replace(/([A-Z])/g, ' $1')}</label>
-            <input 
-              type={key === "date" ? "date" : "text"}
-              name={key} 
-              value={formData[key] || ""} 
-              onChange={handleChange} 
-              required 
-              className="w-full p-2 border rounded-md shadow-sm" 
-            />
-          </div>
+        {Object.entries(formData).map(([key, value]) => (
+          key !== "region" && (
+            <div key={key} className="sm:col-span-1">
+              <label className="block text-sm font-medium text-gray-700 capitalize">{key.replace(/([A-Z])/g, ' $1')}</label>
+              <input 
+                type={key === "date" ? "date" : "text"}
+                name={key} 
+                value={value} 
+                onChange={handleChange} 
+                required 
+                className="w-full p-2 border rounded-md shadow-sm" 
+              />
+            </div>
+          )
         ))}
 
-        {/* Dropdown for Region */}
         <div className="sm:col-span-1">
           <label className="block text-sm font-medium text-gray-700">Region</label>
           <select 
             name="region" 
-            value={formData.region || ""} 
+            value={formData.region} 
             onChange={handleChange} 
             required 
             className="w-full p-2 border rounded-md shadow-sm"
           >
             <option value="">Select a region</option>
-            {regions.map((region) => (
+            {regions.map(region => (
               <option key={region} value={region}>{region}</option>
             ))}
           </select>
         </div>
 
-        {/* File Upload */}
         <div className="sm:col-span-2">
           <label className="block text-sm font-medium text-gray-700">Upload Car Images (Max: 5)</label>
           <input 
@@ -172,7 +152,6 @@ const CreateRequest = () => {
           </div>
         </div>
 
-        {/* Submit Button */}
         <button 
           type="submit" 
           disabled={isSubmitting} 
