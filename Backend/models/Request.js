@@ -12,8 +12,8 @@ const requestSchema = new mongoose.Schema({
   description: { type: String, required: true },
   registrationNumber: { type: String, required: true },
   region: { type: String, required: true },
-  driverContact: { type: String, required: true },
-  carImages: [{ type: String }],  // Store Cloudinary image URLs
+  driverContact: { type: String, rred: true },
+  carImages: [{ type: String }],  
 });
 
 module.exports = mongoose.model('Request', requestSchema);
