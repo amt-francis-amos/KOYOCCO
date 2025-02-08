@@ -69,7 +69,7 @@ const Cars = () => {
             formData.append("image", file);
 
             const response = await axios.post(
-                "https://koyocco-backend.onrender.com/api/upload",
+                "https://koyocco-backend.onrender.com/api/requests/upload",
                 formData,
                 {
                     headers: { "Content-Type": "multipart/form-data" },
