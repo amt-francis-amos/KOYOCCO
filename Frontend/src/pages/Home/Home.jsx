@@ -32,7 +32,7 @@ const Home = () => {
     return matchesSearchTerm && matchesPriceRange;
   });
 
-  // Paginate filtered properties
+  
   const paginatedProperties = filteredProperties.slice(
     currentPage * propertiesPerPage,
     (currentPage + 1) * propertiesPerPage
