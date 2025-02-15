@@ -36,16 +36,17 @@ const UploadProperty = () => {
   
       setPropertyData({ ...propertyData, images: selectedImages });
   
-   
-      imagePreviews.forEach((url) => URL.revokeObjectURL(url));
-  
       const previews = selectedImages.map((file) => URL.createObjectURL(file));
       setImagePreviews(previews);
     } else if (name === 'video') {
       setPropertyData({ ...propertyData, video: files[0] });
     } else if (name === 'price') {
-      const rawValue = value.replace(/\D/g, ''); 
+      // Remove non-numeric characters (except digits)
+      const rawValue = value.replace(/\D/g, '');
+  
+      // Format number with commas
       const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  
       setPropertyData({ ...propertyData, price: formattedValue });
     } else {
       setPropertyData({ ...propertyData, [name]: value });
