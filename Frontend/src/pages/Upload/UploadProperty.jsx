@@ -36,17 +36,16 @@ const UploadProperty = () => {
   
       setPropertyData({ ...propertyData, images: selectedImages });
   
+   
+      imagePreviews.forEach((url) => URL.revokeObjectURL(url));
+  
       const previews = selectedImages.map((file) => URL.createObjectURL(file));
       setImagePreviews(previews);
     } else if (name === 'video') {
       setPropertyData({ ...propertyData, video: files[0] });
     } else if (name === 'price') {
-      // Remove non-numeric characters (except digits)
-      const rawValue = value.replace(/\D/g, '');
-  
-      // Format number with commas
+      const rawValue = value.replace(/\D/g, ''); 
       const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  
       setPropertyData({ ...propertyData, price: formattedValue });
     } else {
       setPropertyData({ ...propertyData, [name]: value });
@@ -163,7 +162,7 @@ const UploadProperty = () => {
           <option value="PropertyRentals">Property Rentals</option>
         </select>
 
-        {/* Conditionally render options based on propertyType */}
+        
         {propertyData.propertyType === 'Short-Stay' && (
           <select
             name="shortStayType"
